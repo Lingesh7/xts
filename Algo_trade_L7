@@ -1,0 +1,39 @@
+Install Python 3.8 Win AMD 64 Exe file
+echo %PATH% variable - check python added --;C:\Users\SYUS2\AppData\Local\Programs\Python\Python38\
+
+Install pip
+>python -m pip install pypiwin32
+
+pip install alice_blue
+
+
+import logging
+logging.basicConfig(level=logging.DEBUG)
+
+from alice_blue import *
+
+access_token = AliceBlue.login_and_get_access_token(username='username', password='password', twoFA='a',  api_secret='api_secret')
+
+TC744 - Welcom@123
+
+cd C:\Users\SYUS2\AppData\Local\Programs\Python\Python38
+
+c:\>pip install https://github.com/symphonyfintech/xts-pythonclient-api-sdk.git
+Collecting https://github.com/symphonyfintech/xts-pythonclient-api-sdk.git
+  Downloading https://github.com/symphonyfintech/xts-pythonclient-api-sdk.git
+     | 160 kB 1.7 MB/s
+  ERROR: Cannot unpack file C:\Users\SYUS2\AppData\Local\Temp\pip-unpack-ipdt_6m
+w\xts-pythonclient-api-sdk.git (downloaded from C:\Users\SYUS2\AppData\Local\Tem
+p\pip-req-build-m9t3vo1h, content-type: text/html; charset=utf-8); cannot detect
+ archive format
+ERROR: Cannot determine archive format of C:\Users\SYUS2\AppData\Local\Temp\pip-
+req-build-m9t3vo1h
+
+
+c:\>
+
+c:\>pip install C:\Users\SYUS2\AppData\Local\Programs\Python\Python38\xts-pyth
+client-api-sdk-main
+ERROR: Directory 'C:\\Users\\SYUS2\\AppData\\Local\\Programs\\Python\\Python38
+xts-pythonclient-api-sdk-main' is not installable. Neither 'setup.py' nor 'pyp
+ject.toml' found.

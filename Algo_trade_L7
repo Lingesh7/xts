@@ -37,3 +37,29 @@ client-api-sdk-main
 ERROR: Directory 'C:\\Users\\SYUS2\\AppData\\Local\\Programs\\Python\\Python38
 xts-pythonclient-api-sdk-main' is not installable. Neither 'setup.py' nor 'pyp
 ject.toml' found.
+
+
+
+
+
+
+install requests, six
+
+place a folder xts contains a file -- initfile and another folder named XTConnect
+
+from XTConnect.Connect import XTSConnect
+API_KEY = "2f899dc8ef15881e844463"
+API_SECRET = "Ykyi834#tr"
+XTS_API_BASE_URL = "https://xts-api.trading"
+source = "WEBAPI"
+xt = XTSConnect(API_KEY, API_SECRET, source)
+response = xt.interactive_login()
+print("Login: ", response)
+
+"""Order book Request"""
+response = xt.get_order_book()
+print("Order Book: ", response)
+
+
+
+

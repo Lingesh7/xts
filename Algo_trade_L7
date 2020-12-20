@@ -18,38 +18,15 @@ TC744 - Welcom@123
 
 cd C:\Users\SYUS2\AppData\Local\Programs\Python\Python38
 
-c:\>pip install https://github.com/symphonyfintech/xts-pythonclient-api-sdk.git
-Collecting https://github.com/symphonyfintech/xts-pythonclient-api-sdk.git
-  Downloading https://github.com/symphonyfintech/xts-pythonclient-api-sdk.git
-     | 160 kB 1.7 MB/s
-  ERROR: Cannot unpack file C:\Users\SYUS2\AppData\Local\Temp\pip-unpack-ipdt_6m
-w\xts-pythonclient-api-sdk.git (downloaded from C:\Users\SYUS2\AppData\Local\Tem
-p\pip-req-build-m9t3vo1h, content-type: text/html; charset=utf-8); cannot detect
- archive format
-ERROR: Cannot determine archive format of C:\Users\SYUS2\AppData\Local\Temp\pip-
-req-build-m9t3vo1h
 
-
-c:\>
-
-c:\>pip install C:\Users\SYUS2\AppData\Local\Programs\Python\Python38\xts-pyth
-client-api-sdk-main
-ERROR: Directory 'C:\\Users\\SYUS2\\AppData\\Local\\Programs\\Python\\Python38
-xts-pythonclient-api-sdk-main' is not installable. Neither 'setup.py' nor 'pyp
-ject.toml' found.
-
-
-
-
-
-
+---------------------------------------------------------
 install requests, six
 
 place a folder xts contains a file -- initfile and another folder named XTConnect
 
 from XTConnect.Connect import XTSConnect
-API_KEY = "2f899dc8ef15881e844463"
-API_SECRET = "Ykyi834#tr"
+API_KEY = "ebaa4a8cf2de358e53c942"
+API_SECRET = "Ojre664@S9"
 XTS_API_BASE_URL = "https://xts-api.trading"
 source = "WEBAPI"
 xt = XTSConnect(API_KEY, API_SECRET, source)
@@ -60,6 +37,60 @@ print("Login: ", response)
 response = xt.get_order_book()
 print("Order Book: ", response)
 
+---------------------------------------------------------
+Dear RAJA1310,
+
+You have successfully create a new application with IIFL dashboard APIs. With package Interactive Order API this package will valid till 30 Sep 2020.
+
+Application Name :	IIFLXTS
+App Key :	2f899dc8ef15881e844463
+App Secret :	Ykyi834#tr
+
+https://xts-api.trading
+---------------------------------------------------------
+
+Please find below test environment details:
+
+Broker Name: SYMPHONY
+
+User ID : IIFL24
+Password: Xts@123456
+
+MarketData Key :1f69e651e541597cedd513
+MarketData: secretKey: Dqkv635$Y3
+
+Trading Key: ebaa4a8cf2de358e53c942
+Trading secretKey: Ojre664@S9
+
+
+Following are the urls to connect to the API server :
+ 
+https://developers.symphonyfintech.in/interactive
+https://developers.symphonyfintech.in/marketdata  
+ 
+Interactive API Document :
+https://developers.symphonyfintech.in/doc/interactive/  
+
+ 
+
+MarketData API Document :
+https://developers.symphonyfintech.in/doc/marketdata/  
+ 
+Git Hub link :
+ttps://github.com/symphonyfintech
+
+
+Regards, 
+. 
+Keval Shah
+Product Manager | Algo Desk
+IP - 536405 | 022 61086405 | +91 8879610532
+
+
+API_KEY = "1f69e651e541597cedd513"
+API_SECRET = "Dqkv635$Y3"
+XTS_API_BASE_URL = "https://developers.symphonyfintech.in"
+source = "WEBAPI"
 
 
 

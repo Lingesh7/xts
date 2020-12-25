@@ -53,6 +53,18 @@ def nextThu_and_lastThu_expiry_date ():
 nThu,lThu=nextThu_and_lastThu_expiry_date()
 
 
+def placeSLMOrder(symbol,):
+    
+     print(f'''oder_resp = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
+                   exchangeInstrumentID= {eID} ,
+                   productType=xt.PRODUCT_MIS, 
+                   orderType=xt.ORDER_TYPE_MARKET,                   
+                   orderSide={t_type},
+                   timeInForce=xt.VALIDITY_DAY,
+                   disclosedQuantity=0,
+                   orderQuantity={quantity},
+                   # orderUniqueIdentifier="1test1"
+                   )''')
 
 def placeMarketOrder(symbol,buy_sell,ce_pe,exp,mul=1):    
     # Place an intraday market order on NSE
@@ -141,6 +153,23 @@ get_eID("NIFTY","ce",nThu)
 get_eID("BANKNIFTY","pe",lThu)
 
 
+orderBook = {'type': 'success', 'code': 's-orders-0001', 'description': 'Success order book', 'result': [{'LoginID': 'IIFL24', 'ClientID': 'IIFL24', 'AppOrderID': 10026335, 'OrderReferenceID': '', 'GeneratedBy': 'TWSAPI', 'ExchangeOrderID': 'X_30698353', 'OrderCategoryType': 'NORMAL', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentID': 39972, 'OrderSide': 'Buy', 'OrderType': 'Market', 'ProductType': 'MIS', 'TimeInForce': 'DAY', 'OrderPrice': 0, 'OrderQuantity': 75, 'OrderStopPrice': 0, 'OrderStatus': 'Filled', 'OrderAverageTradedPrice': '23.90', 'LeavesQuantity': 0, 'CumulativeQuantity': 75, 'OrderDisclosedQuantity': 0, 'OrderGeneratedDateTime': '2020-12-21T14:59:41.1535468', 'ExchangeTransactTime': '2020-12-21T14:59:42+05:30', 'LastUpdateDateTime': '2020-12-21T14:59:42.1276213', 'OrderExpiryDate': '1980-01-01T00:00:00', 'CancelRejectReason': '', 'OrderUniqueIdentifier': '123888','IsSpread': False, 'MessageCode': 9004, 'MessageVersion': 4, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 307029544559178}, {'LoginID': 'IIFL24', 'ClientID': 'IIFL24', 'AppOrderID': 10026325, 'OrderReferenceID': '', 'GeneratedBy': 'TWSAPI', 'ExchangeOrderID': 'X_30698343', 'OrderCategoryType': 'NORMAL', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentID': 39972, 'OrderSide': 'Sell', 'OrderType': 'Market', 'ProductType': 'MIS', 'TimeInForce': 'DAY', 'OrderPrice': 0, 'OrderQuantity': 75, 'OrderStopPrice': 0, 'OrderStatus': 'Filled', 'OrderAverageTradedPrice': '31.80', 'LeavesQuantity': 0, 'CumulativeQuantity': 75, 'OrderDisclosedQuantity': 0, 'OrderGeneratedDateTime': '2020-12-21T14:49:16.0287269', 'ExchangeTransactTime': '2020-12-21T14:49:16+05:30', 'LastUpdateDateTime': '2020-12-21T14:49:16.350748', 'OrderExpiryDate': '1980-01-01T00:00:00', 'CancelRejectReason': '', 'OrderUniqueIdentifier': '123777', 'OrderLegStatus': 'SingleOrderLeg', 'IsSpread': False, 'MessageCode': 9004, 'MessageVersion': 4, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 307029544559177}]}
+orderId = 10026335
+orderList = orderBook["result"]
+
+for i in orderList:
+    # print(i)
+    print(i["AppOrderID"])
+    if orderId == i["AppOrderID"] and i["OrderStatus"] == 'Filled':
+        orderPrice = float(( i["OrderAverageTradedPrice"]))
+
+type(orderPrice)
+
+
+
+
+
+##################################
 instruments = [
     {'exchangeSegment': 2, 'exchangeInstrumentID': 39992}]
 
@@ -150,12 +179,6 @@ response = xt.get_quote(
     xtsMessageCode=1504,
     publishFormat='JSON')
 print('Quote :', response)
-
-
-
-
-
-
 
 
 
@@ -195,17 +218,5 @@ print("Master: " + str(response))
 response = xt.get_config()
 print('Config :', response)
 
-
-import pandas as pd
-
-orderBook = {'type': 'success', 'code': 's-orders-0001', 'description': 'Success order book', 'result': [{'LoginID': 'IIFL24', 'ClientID': 'IIFL24', 'AppOrderID': 10026325, 'OrderReferenceID': '', 'GeneratedBy': 'TWSAPI', 'ExchangeOrderID': 'X_30698343', 'OrderCategoryType': 'NORMAL', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentID': 39972, 'OrderSide': 'Sell', 'OrderType': 'Market', 'ProductType': 'MIS', 'TimeInForce': 'DAY', 'OrderPrice': 0, 'OrderQuantity': 75, 'OrderStopPrice': 0, 'OrderStatus': 'Filled', 'OrderAverageTradedPrice': '31.80', 'LeavesQuantity': 0, 'CumulativeQuantity': 75, 'OrderDisclosedQuantity': 0, 'OrderGeneratedDateTime': '2020-12-21T14:49:16.0287269', 'ExchangeTransactTime': '2020-12-21T14:49:16+05:30', 'LastUpdateDateTime': '2020-12-21T14:49:16.350748', 'OrderExpiryDate': '1980-01-01T00:00:00', 'CancelRejectReason': '', 'OrderUniqueIdentifier': '123777', 'OrderLegStatus': 'SingleOrderLeg', 'IsSpread': False, 'MessageCode': 9004, 'MessageVersion': 4, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 307029544554927}]}
-
-ob = orderBook["result"][0]
-type(ob)
-# df1=pd.Series(ob).to_frame()
-df = pd.DataFrame(ob, index=[0] )
-
-df1 = pd.DataFrame([ob])
-str(df1.AppOrderID[0])
 
 

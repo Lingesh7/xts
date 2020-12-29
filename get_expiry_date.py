@@ -98,6 +98,25 @@ def nextThu_and_lastThu_expiry_date ():
 
 
 get_expiry_from_option_chain("NIFTY")
+exp =get_expiry_from_option_chain("NIFTY")
+a,b=(exp[:2])
+
+if 'JAN' in exp:
+    
+if len(b) != 9:
+    print(b)
+    b= "0"+b
+    print(b)
+    
+    
+c = a[:2] + a[2] + a[3:].swapcase()
+d = b[:2] + b[2] + b[3:].swapcase()
+d
+
+
+
+a.capitalize()
+type(a)
 get_strike_price_from_option_chain("NIFTY","24DEC2020")
 
 str_next_thursday_expiry,str_month_last_thu_expiry=nextThu_and_lastThu_expiry_date()

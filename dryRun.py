@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Dec 23 23:21:16 2020
-
 @author: mling
 """
 from datetime import datetime
@@ -91,9 +90,19 @@ def get_eID(symbol,ce_pe,expiry):
     #print('Option Symbol:', str(response))
     print("ExchangeInstrumentID is:", (int(response["result"][0]["ExchangeInstrumentID"])))
     return int(response["result"][0]["ExchangeInstrumentID"])
-    
+   
+xt.get_option_symbol(
+    exchangeSegment=2,
+    series='OPTIDX',
+    symbol='NIFTY',
+    expiryDate='07JAN2021',
+    optionType='CE',
+    strikePrice=13750)
 
-#get_eID("NIFTY","ce",nThu)
+
+ 
+
+get_eID("NIFTY","pe",nThu)
 # get_eID("BANKNIFTY","pe",lThu)
 
 def placeMarketOrder(symbol,buy_sell,ce_pe,exp,mul=1):    
@@ -141,9 +150,12 @@ def placeMarketOrder(symbol,buy_sell,ce_pe,exp,mul=1):
     time.sleep(15)
     orderBook = xt.get_order_book()
     print(":::getting orderBook:::")
-    # orderBook =  {'type': 'success', 'code': 's-orders-0001', 'description': 'Success order book', 'result': [{'LoginID': 'IIFL24', 'ClientID': 'IIFL24', 'AppOrderID': 10026325, 'OrderReferenceID': '', 'GeneratedBy': 'TWSAPI', 'ExchangeOrderID': 'X_30698343', 'OrderCategoryType': 'NORMAL', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentID': 39972, 'OrderSide': 'Sell', 'OrderType': 'Market', 'ProductType': 'MIS', 'TimeInForce': 'DAY', 'OrderPrice': 0, 'OrderQuantity': 75, 'OrderStopPrice': 0, 'OrderStatus': 'Filled', 'OrderAverageTradedPrice': '31.80', 'LeavesQuantity': 0, 'CumulativeQuantity': 75, 'OrderDisclosedQuantity': 0, 'OrderGeneratedDateTime': '2020-12-21T14:49:16.0287269', 'ExchangeTransactTime': '2020-12-21T14:49:16+05:30', 'LastUpdateDateTime': '2020-12-21T14:49:16.350748', 'OrderExpiryDate': '1980-01-01T00:00:00', 'CancelRejectReason': '', 'OrderUniqueIdentifier': '123777', 'OrderLegStatus': 'SingleOrderLeg', 'IsSpread': False, 'MessageCode': 9004, 'MessageVersion': 4, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 307029544554927}]}
+    orderBook =  {'type': 'success', 'code': 's-orders-0001', 'description': 'Success order book', 'result': [{'LoginID': 'IIFL24', 'ClientID': 'IIFL24', 'AppOrderID': 10026325, 'OrderReferenceID': '', 'GeneratedBy': 'TWSAPI', 'ExchangeOrderID': 'X_30698343', 'OrderCategoryType': 'NORMAL', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentID': 39972, 'OrderSide': 'Sell', 'OrderType': 'Market', 'ProductType': 'MIS', 'TimeInForce': 'DAY', 'OrderPrice': 0, 'OrderQuantity': 75, 'OrderStopPrice': 0, 'OrderStatus': 'Filled', 'OrderAverageTradedPrice': '31.80', 'LeavesQuantity': 0, 'CumulativeQuantity': 75, 'OrderDisclosedQuantity': 0, 'OrderGeneratedDateTime': '2020-12-21T14:49:16.0287269', 'ExchangeTransactTime': '2020-12-21T14:49:16+05:30', 'LastUpdateDateTime': '2020-12-21T14:49:16.350748', 'OrderExpiryDate': '1980-01-01T00:00:00', 'CancelRejectReason': '', 'OrderUniqueIdentifier': '123777', 'OrderLegStatus': 'SingleOrderLeg', 'IsSpread': False, 'MessageCode': 9004, 'MessageVersion': 4, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 307029544554927}]}
     orderList = orderBook["result"]
     print("orderList has:", orderList)
+    
+    orderBook['result']
+    
     for i in orderList:
         # print(i)
         # print(i["AppOrderID"])
@@ -188,6 +200,7 @@ def placeSLMOrder(eID,orderPrice,sl_tType,quantity):
     #                orderQuantity={quantity},
     #                stopPrice={orderPrice+15}
     #                )''')
+    print(SL_Order_resp)
     if SL_Order_resp['type'] != 'error':
          SL_orderID = SL_Order_resp['result']['AppOrderID']
          print("order id after ordering place StopLoss market order function:", SL_orderID)
@@ -206,7 +219,7 @@ placeMarketOrder("BANKNIFTY","SELL","ce",lThu,1) #sl_test5 pl_test5
 
 
 
-response = xt.squareoff_position(
+sq_off = xt.squareoff_position(
     exchangeSegment=xt.EXCHANGE_NSECM,
     exchangeInstrumentID=39992,
     productType=xt.PRODUCT_MIS,
@@ -215,7 +228,7 @@ response = xt.squareoff_position(
     squareOffQtyValue=0,
     blockOrderSending=True,
     cancelOrders=True)
-print("Position Squareoff: ", response)
+print("Position Squareoff: ", sq_off)
 
 
 
@@ -231,30 +244,33 @@ print("Position by Day: ", response)
 
 
 
-xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
+placed_order = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
                    exchangeInstrumentID=39992,
                    productType=xt.PRODUCT_MIS, 
                    orderType=xt.ORDER_TYPE_MARKET,                   
-                   orderSide=xt.TRANSACTION_TYPE_BUY,
+                   orderSide=xt.TRANSACTION_TYPE_SELL,
                    timeInForce=xt.VALIDITY_DAY,
                    disclosedQuantity=0,
-                   orderQuantity=750,
+                   orderQuantity=75,
                    limitPrice=0,
                    stopPrice=0,
-                   orderUniqueIdentifier="dummytest1"
+                   orderUniqueIdentifier="dec29_1"
                    )
+if placed_order['type'] != 'error':
+         placed_orderID = placed_order['result']['AppOrderID']
+         print("order id after ordering place StopLoss market order function", placed_orderID)
 
-dummy_SL_resp=xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
+dummy_SL_resp= xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
                    exchangeInstrumentID= 39992 ,
                    productType=xt.PRODUCT_MIS, 
-                   orderType=xt.ORDER_TYPE_MARKET,                   
-                   orderSide=xt.TRANSACTION_TYPE_BUY,
+                   orderType="StopMarket",                   
+                   orderSide=xt.TRANSACTION_TYPE_SELL,
                    timeInForce=xt.VALIDITY_DAY,
                    disclosedQuantity=0,
                    orderQuantity=75,
                    limitPrice=0,
                    stopPrice=88.85+15,
-                   orderUniqueIdentifier="sl_dummy1"
+                   orderUniqueIdentifier="slm_dummy1"
                    )
 if dummy_SL_resp['type'] != 'error':
          dummy_SL_OID = dummy_SL_resp['result']['AppOrderID']
@@ -262,7 +278,7 @@ if dummy_SL_resp['type'] != 'error':
 
    
 
-orderBook =  xt.get_order_book()#{'type': 'success', 'code': 's-orders-0001', 'description': 'Success order book', 'result': [{'LoginID': 'IIFL24', 'ClientID': 'IIFL24', 'AppOrderID': 10026335, 'OrderReferenceID': '', 'GeneratedBy': 'TWSAPI', 'ExchangeOrderID': 'X_30698353', 'OrderCategoryType': 'NORMAL', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentID': 39972, 'OrderSide': 'Buy', 'OrderType': 'Market', 'ProductType': 'MIS', 'TimeInForce': 'DAY', 'OrderPrice': 0, 'OrderQuantity': 75, 'OrderStopPrice': 0, 'OrderStatus': 'Filled', 'OrderAverageTradedPrice': '23.90', 'LeavesQuantity': 0, 'CumulativeQuantity': 75, 'OrderDisclosedQuantity': 0, 'OrderGeneratedDateTime': '2020-12-21T14:59:41.1535468', 'ExchangeTransactTime': '2020-12-21T14:59:42+05:30', 'LastUpdateDateTime': '2020-12-21T14:59:42.1276213', 'OrderExpiryDate': '1980-01-01T00:00:00', 'CancelRejectReason': '', 'OrderUniqueIdentifier': '123888','IsSpread': False, 'MessageCode': 9004, 'MessageVersion': 4, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 307029544559178}, {'LoginID': 'IIFL24', 'ClientID': 'IIFL24', 'AppOrderID': 10026325, 'OrderReferenceID': '', 'GeneratedBy': 'TWSAPI', 'ExchangeOrderID': 'X_30698343', 'OrderCategoryType': 'NORMAL', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentID': 39972, 'OrderSide': 'Sell', 'OrderType': 'Market', 'ProductType': 'MIS', 'TimeInForce': 'DAY', 'OrderPrice': 0, 'OrderQuantity': 75, 'OrderStopPrice': 0, 'OrderStatus': 'Filled', 'OrderAverageTradedPrice': '31.80', 'LeavesQuantity': 0, 'CumulativeQuantity': 75, 'OrderDisclosedQuantity': 0, 'OrderGeneratedDateTime': '2020-12-21T14:49:16.0287269', 'ExchangeTransactTime': '2020-12-21T14:49:16+05:30', 'LastUpdateDateTime': '2020-12-21T14:49:16.350748', 'OrderExpiryDate': '1980-01-01T00:00:00', 'CancelRejectReason': '', 'OrderUniqueIdentifier': '123777', 'OrderLegStatus': 'SingleOrderLeg', 'IsSpread': False, 'MessageCode': 9004, 'MessageVersion': 4, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 307029544559177}]}
+orderBook = {'type': 'success', 'code': 's-orders-0001', 'description': 'Success order book', 'result': [{'LoginID': 'IIFL24', 'ClientID': 'IIFL24', 'AppOrderID': 10026335, 'OrderReferenceID': '', 'GeneratedBy': 'TWSAPI', 'ExchangeOrderID': 'X_30698353', 'OrderCategoryType': 'NORMAL', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentID': 39972, 'OrderSide': 'Buy', 'OrderType': 'Market', 'ProductType': 'MIS', 'TimeInForce': 'DAY', 'OrderPrice': 0, 'OrderQuantity': 75, 'OrderStopPrice': 0, 'OrderStatus': 'Filled', 'OrderAverageTradedPrice': '23.90', 'LeavesQuantity': 0, 'CumulativeQuantity': 75, 'OrderDisclosedQuantity': 0, 'OrderGeneratedDateTime': '2020-12-21T14:59:41.1535468', 'ExchangeTransactTime': '2020-12-21T14:59:42+05:30', 'LastUpdateDateTime': '2020-12-21T14:59:42.1276213', 'OrderExpiryDate': '1980-01-01T00:00:00', 'CancelRejectReason': '', 'OrderUniqueIdentifier': '123888','IsSpread': False, 'MessageCode': 9004, 'MessageVersion': 4, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 307029544559178}, {'LoginID': 'IIFL24', 'ClientID': 'IIFL24', 'AppOrderID': 10026325, 'OrderReferenceID': '', 'GeneratedBy': 'TWSAPI', 'ExchangeOrderID': 'X_30698343', 'OrderCategoryType': 'NORMAL', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentID': 39972, 'OrderSide': 'Sell', 'OrderType': 'Market', 'ProductType': 'MIS', 'TimeInForce': 'DAY', 'OrderPrice': 0, 'OrderQuantity': 75, 'OrderStopPrice': 0, 'OrderStatus': 'Filled', 'OrderAverageTradedPrice': '31.80', 'LeavesQuantity': 0, 'CumulativeQuantity': 75, 'OrderDisclosedQuantity': 0, 'OrderGeneratedDateTime': '2020-12-21T14:49:16.0287269', 'ExchangeTransactTime': '2020-12-21T14:49:16+05:30', 'LastUpdateDateTime': '2020-12-21T14:49:16.350748', 'OrderExpiryDate': '1980-01-01T00:00:00', 'CancelRejectReason': '', 'OrderUniqueIdentifier': '123777', 'OrderLegStatus': 'SingleOrderLeg', 'IsSpread': False, 'MessageCode': 9004, 'MessageVersion': 4, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 307029544559177}]}
 # orderID = 10026325
 orderList = orderBook["result"]
 sl_tType ='Sell'
@@ -277,8 +293,23 @@ for i in orderList:
     #             sl_tType = 'SELL'
     #         print(orderPrice,sl_tType)
             
-         
+type(orderList[0])
 
+
+orderDf = pd.DataFrame(orderList)
+print(df)
+type(df)
+
+df1 = df[['LoginID','OrderSide','AppOrderID','OrderAverageTradedPrice','OrderStatus']]
+
+df.AppOrderID
+df['AppOrderID']
+df.iloc[0]
+df3 = df.iloc[[0],[0]]
+
+
+
+import pandas as pd
 tradeBook =  xt.get_trade()
 tradeList = tradeBook["result"]
 for i in tradeList:
@@ -338,6 +369,3 @@ print("Master: " + str(response))
 """Get Config Request"""
 response = xt.get_config()
 print('Config :', response)
-
-
-

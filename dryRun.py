@@ -309,6 +309,9 @@ df3 = df.iloc[[0],[0]]
 
 
 
+
+    
+
 import pandas as pd
 tradeBook =  xt.get_trade()
 tradeList = tradeBook["result"]

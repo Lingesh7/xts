@@ -49,7 +49,6 @@ placed_order = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
 if placed_order['type'] != 'error':
          placed_orderID = placed_order['result']['AppOrderID']
          print("order id market order", placed_orderID)
-
 placed_SL_order= xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
                    exchangeInstrumentID= 41379 ,
                    productType=xt.PRODUCT_MIS, 
@@ -102,19 +101,11 @@ def get_global_PnL():
          
 
 
-def get_global_PnL_df():
-    totalMTMdf = 0.0
-    positionList=xt.get_position_daywise()['result']['positionList']
-    posDf = pd.DataFrame(positionList)
-    # posDf['MTM'].replace({',':''},regex=True).apply(pd.to_numeric,1).sum()
-    totalMTMdf = posDf['MTM'].replace({',':''},regex=True).apply(pd.to_numeric,1).sum()
-    print(totalMTMdf)
 
 import time
 start = time.time()
 get_global_PnL()
 print(f'Time: {time.time() - start}')
-
 
 start = time.time()
 get_global_PnL_df()
@@ -144,17 +135,57 @@ schedule.every(5).seconds.do(job)
 schedule.cancel_job(job)
 
 import datetime
+
+def dummy():
+    return 1599
+
 cdate = datetime.datetime.strftime(datetime.datetime.now(), "%d-%m-%Y")
-if (datetime.datetime.strptime(cdate + " 09:00:00", "%d-%m-%Y %H:%M:%S") <= datetime.datetime.now() <= datetime.datetime.strptime(cdate + " 15:30:00", "%d-%m-%Y %H:%M:%S")):
+
+check=True
+while check:
+    if (dummy() > 1500) or (datetime.datetime.now() >= datetime.datetime.strptime(cdate + " 15:00:00", "%d-%m-%Y %H:%M:%S")):
+        print('trigger stop loss')
+        check=False
+    else:
+        print('PNL')
+        time.sleep(5)
+
+
     
+positionList= [{'AccountID': 'IIFL24',
+    'TradingSymbol': 'NIFTY 24DEC2020 CE 13650',
+    'ExchangeSegment': 'NSEFO',
+    'ExchangeInstrumentId': '39972',
+    'ProductType': 'MIS',
+    'Marketlot': '75',
+    'Multiplier': '1',
+    'BuyAveragePrice': '23.90',
+    'SellAveragePrice': '31.80',
+    'OpenBuyQuantity': '75',
+    'OpenSellQuantity': '75',
+    'Quantity': '0',
+    'BuyAmount': '1,792.50',
+    'SellAmount': '2,385.00',
+    'NetAmount': '592.50',
+    'UnrealizedMTM': '0.00',
+    'RealizedMTM': '592.50', 
+    'MTM': '592.50',
+    'BEP': '0.00',
+    'SumOfTradedQuantityAndPriceBuy': '1,792.50',
+    'SumOfTradedQuantityAndPriceSell': '2,385.00',
+    'MessageCode': 9002,
+    'MessageVersion': 1,
+    'TokenID': 0,
+    'ApplicationType': 0,
+    'SequenceNumber': 307029544564651}]
 
-
-
-
-
-
-
-
+pos_df = pd.DataFrame(positionList)
+for i in range(len(pos_df)):
+    symbol = pos_df["ExchangeInstrumentId"].values[i]
+    if pos_df["OpenBuyQuantity"].values[i] != pos_df["OpenSellQuantity"].values[i]:
+        print("success")
+            
+    
 
 
 

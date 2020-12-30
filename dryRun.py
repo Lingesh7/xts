@@ -242,7 +242,7 @@ print("Trade Book: ", response)
 response = xt.get_position_daywise()
 print("Position by Day: ", response)
 
-
+ab = round((77.77+15),2)
 
 placed_order = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
                    exchangeInstrumentID=39992,

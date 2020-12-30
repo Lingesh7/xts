@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Dec 29 17:11:25 2020
-Proper lineup
-@author: mling
+Created on Wed Dec 30 11:00:53 2020
+
+@author: Welcome
 """
+
 from datetime import datetime
 from dateutil.relativedelta import relativedelta, TH
 from XTConnect.Connect import XTSConnect
@@ -155,9 +156,11 @@ def main(ticker):
                 quantity = 25
                 bnknfty_ltp = nse.get_index_quote("nifty bank")['lastPrice']
                 strikePrice = strkPrcCalc(bnknfty_ltp,100)
-                
             eID = get_eID(ticker,oType,weekly_exp,strikePrice)
+            print(f"symbol = {ticker}  expiry = {weekly_exp}  Otype = {oType}  strikePrice = {strikePrice }  Exchange_Instrument_ID = {eID}" )#
             placeOrderWithSL(eID,'sell',quantity)
+            
+    print('#################--CODE ENDS HERE#--###################')
     
     check=True
     while check:

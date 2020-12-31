@@ -9,7 +9,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta, TH
 from XTConnect.Connect import XTSConnect
 import time
-import datetime
+import datetime as dt2
 import pandas as pd
 from sys import exit
 from nsetools import Nse
@@ -215,17 +215,26 @@ for ticker in tickers:
         print(f"symbol = {ticker}  expiry = {weekly_exp}  Otype = {oType}  strikePrice = {strikePrice } ")#.format(ticker,expiry,Otype,strikePrice,eID))
         eID = get_eID(ticker,oType,weekly_exp,strikePrice)
         print("EID is :", eID)
-        placeOrderWithSL(eID,'sell',quantity)
+        nstart=True
+        ndate = dt2.datetime.strftime(dt2.datetime.now(), "%d-%m-%Y")
+        while nstart:
+            if (dt2.datetime.now() >= dt2.datetime.strptime(ndate + " 09:48:00", "%d-%m-%Y %H:%M:%S")):
+                placeOrderWithSL(eID,'sell',quantity)
+                nstart = False
+            else:
+                print("Waiting to place the order at 09:48...")
+                time.sleep(5)
     
 
 print('#################--CODE ENDS HERE#--###################')
 
 get_global_PnL()
 
+import datetime
 cdate = datetime.datetime.strftime(datetime.datetime.now(), "%d-%m-%Y")
 check=True
 while check:
-    if (get_global_PnL() < -1500) or (datetime.datetime.now() >= datetime.datetime.strptime(cdate + " 15:29:00", "%d-%m-%Y %H:%M:%S")):
+    if (get_global_PnL() < -1500) or (datetime.datetime.now() >= datetime.datetime.strptime(cdate + " 15:25:00", "%d-%m-%Y %H:%M:%S")):
         #closing all open positions
         positionList=xt.get_position_daywise()['result']['positionList']
         pos_df = pd.DataFrame(positionList)
@@ -257,7 +266,7 @@ while check:
         check=False #exit the main loop
     else:
         print(time.strftime("%d-%m-%Y %H:%M:%S"),"|",get_global_PnL())
-        time.sleep(30)
+        time.sleep(10)
 
         
 # print(time.strftime("%d-%m-%Y %H:%M:%S"),"|",get_global_PnL())            

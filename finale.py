@@ -203,5 +203,5 @@ cdate = datetime.datetime.strftime(datetime.datetime.now(), "%d-%m-%Y")
         main(capital)
         time.sleep(300 - ((time.time() - starttime) % 300.0))
     except KeyboardInterrupt:
-        print('\n\nKeyboard exception received. Exiting.')
+        print('\n\nKeyboard exception receiv ed. Exiting.')
         exit()        

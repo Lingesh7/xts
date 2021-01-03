@@ -8,4 +8,5 @@ setup(name='xts',
       author_email='flyingcircus@example.com',
       license='MIT',
       packages=['XTConnect'],
+      data_files=[('XTConnect', ['XTConnect/config.ini'])],
       zip_safe=False)

@@ -29,7 +29,7 @@ xt = XTSConnect(API_KEY, API_SECRET, source)
 login_resp = xt.interactive_login()
 
 def nextThu_and_lastThu_expiry_date ():
-
+    global weekly_exp, monthly_exp
     todayte = datetime.today()
     
     cmon = todayte.month
@@ -48,9 +48,11 @@ def nextThu_and_lastThu_expiry_date ():
                 t = t + relativedelta(weekday=TH(-2))
                 month_last_thu_expiry=t
                 break
-    str_month_last_thu_expiry=str((month_last_thu_expiry.strftime("%d")))+month_last_thu_expiry.strftime("%b").capitalize()+month_last_thu_expiry.strftime("%Y")
-    str_next_thursday_expiry=str((next_thursday_expiry.strftime("%d")))+next_thursday_expiry.strftime("%b").capitalize()+next_thursday_expiry.strftime("%Y")
-    return (str_next_thursday_expiry,str_month_last_thu_expiry)
+    weekly_exp=str((month_last_thu_expiry.strftime("%d")))+month_last_thu_expiry.strftime("%b").capitalize()+month_last_thu_expiry.strftime("%Y")
+    monthly_exp=str((next_thursday_expiry.strftime("%d")))+next_thursday_expiry.strftime("%b").capitalize()+next_thursday_expiry.strftime("%Y")
+    # str_month_last_thu_expiry=str((month_last_thu_expiry.strftime("%d")))+month_last_thu_expiry.strftime("%b").capitalize()+month_last_thu_expiry.strftime("%Y")
+    # str_next_thursday_expiry=str((next_thursday_expiry.strftime("%d")))+next_thursday_expiry.strftime("%b").capitalize()+next_thursday_expiry.strftime("%Y")
+    # return (str_next_thursday_expiry,str_month_last_thu_expiry)
 
 
 def strkPrcCalc(ltp,base):    
@@ -191,22 +193,20 @@ def cancelOrder(OrderID):
 ###################################################
 #maybe main()
     
-tickers = ["NIFTY"] 
-for ticker in tickers:
-    # for oType in "ce","pe":
-    weekly_exp,monthly_exp = nextThu_and_lastThu_expiry_date()
-    #expiry = get_expiry_from_option_chain(ticker)
-    # weekly_exp,monthly_exp=(expiry[:2])
+ticker = "NIFTY" 
+def runOrders(ticker):    
+    # for ticker in tickers:
+    margin_ok = int(checkBalance()) >= 1000000001
     if ticker == "NIFTY":
          quantity = 75
          nfty_ltp = nse.get_index_quote("nifty 50")['lastPrice']
          strikePrice = strkPrcCalc(nfty_ltp,50)
-         margin_ok = int(checkBalance()) >= 1000000001  
+         # margin_ok = int(checkBalance()) >= 1000000001  
     if ticker == "BANKNIFTY":
         quantity = 25
         bnknfty_ltp = nse.get_index_quote("nifty bank")['lastPrice']
         strikePrice = strkPrcCalc(bnknfty_ltp,100)
-        margin_ok = int(checkBalance()) >= 1000000001 
+        # margin_ok = int(checkBalance()) >= 1000000001 
     print(f"symbol = {ticker}  expiry = {weekly_exp} strikePrice = {strikePrice } ")#.format(ticker,expiry,Otype,strikePrice,eID))
     if margin_ok:
         # eID = get_eID(ticker,oType,weekly_exp,strikePrice)
@@ -231,7 +231,6 @@ for ticker in tickers:
 
 print('#################--CODE ENDS HERE#--###################')
 
-get_global_PnL()
 
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
 check=True

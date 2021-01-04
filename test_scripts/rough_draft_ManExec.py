@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Dec 30 11:02:52 2020
-BASE TEST 1
+Live execution - manual 
 @author: Welcome
 """
 
@@ -48,8 +48,8 @@ def nextThu_and_lastThu_expiry_date ():
                 t = t + relativedelta(weekday=TH(-2))
                 month_last_thu_expiry=t
                 break
-    str_month_last_thu_expiry=str(int(month_last_thu_expiry.strftime("%d")))+month_last_thu_expiry.strftime("%b").capitalize()+month_last_thu_expiry.strftime("%Y")
-    str_next_thursday_expiry=str(int(next_thursday_expiry.strftime("%d")))+next_thursday_expiry.strftime("%b").capitalize()+next_thursday_expiry.strftime("%Y")
+    str_month_last_thu_expiry=str((month_last_thu_expiry.strftime("%d")))+month_last_thu_expiry.strftime("%b").capitalize()+month_last_thu_expiry.strftime("%Y")
+    str_next_thursday_expiry=str((next_thursday_expiry.strftime("%d")))+next_thursday_expiry.strftime("%b").capitalize()+next_thursday_expiry.strftime("%Y")
     return (str_next_thursday_expiry,str_month_last_thu_expiry)
 
 
@@ -76,8 +76,25 @@ def get_eID(symbol,ce_pe,expiry,strikePrice):
     # print("ExchangeInstrumentID is:",eID_resp)# (int(response["result"][0]["ExchangeInstrumentID"])))
     return int(eID_resp["result"][0]["ExchangeInstrumentID"])
 
+def checkBalance():
+    a = 0
+    while a < 10:
+        try:
+           bal_resp = xt.get_balance()
+           break
+        except:
+            print("can't extract position data..retrying")
+            a+=1
+    if bal_resp['type'] != 'error':
+         balanceList = bal_resp['result']['BalanceList']
+         cashAvailable = balanceList[0]['limitObject']['marginAvailable']['CashMarginAvailable']
+         # print("Balance Available is: ", cashAvailable)
+    else:
+        print(bal_resp['description'])
+        print("Unable to fetch Cash margins... try again..")
+    return int(cashAvailable)
 
-def placeOrderWithSL(symbol,buy_sell,quantity):  
+def placeOrderWithSL(symbols,buy_sell,quantity):  
     # Place an intraday stop loss order on NSE
     if buy_sell == "buy":
         t_type=xt.TRANSACTION_TYPE_BUY
@@ -89,84 +106,58 @@ def placeOrderWithSL(symbol,buy_sell,quantity):
         slPoints = +15
     tradedPrice = 0
     # quantity = mul*nifty_lot_size
-    print('placing order for --', symbol)
-    order_resp = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
-                    exchangeInstrumentID= symbol ,
-                    productType=xt.PRODUCT_MIS, 
-                    orderType=xt.ORDER_TYPE_MARKET,                   
-                    orderSide=t_type,
-                    timeInForce=xt.VALIDITY_DAY,
-                    disclosedQuantity=0,
-                    orderQuantity=quantity,
-                    limitPrice=0,
-                    stopPrice=0,
-                    orderUniqueIdentifier="FirstChoice0"
-                    )
-    # print(f'''placing Market  Order = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
-    #                 exchangeInstrumentID= {symbol} ,
-    #                 productType=xt.PRODUCT_MIS, 
-    #                 orderType=xt.ORDER_TYPE_MARKET,                   
-    #                 orderSide={t_type},
-    #                 timeInForce=xt.VALIDITY_DAY,
-    #                 disclosedQuantity=0,
-    #                 orderQuantity={quantity},
-    #                 limitPrice=0,
-    #                 stopPrice=0,
-    #                 orderUniqueIdentifier="1test1"
-    #                 )''')
-    # print("Place Order: ", oder_resp)
-    # return oder_resp
-    # order_resp = {'type': 'success', 'code': 's-orders-0001', 'description': 'Request sent', 'result': {'AppOrderID': 10026325, 'OrderUniqueIdentifier': '123777', 'ClientID': 'IIFL24'}}
-    # # extracting the order id from response
-    if order_resp['type'] != 'error':
-         orderID = order_resp['result']['AppOrderID']
-         print(f''' Order ID for {t_type} {symbol} is: ", {orderID}''')
-    elif order_resp['type'] == 'error':
-            print("Error placing Order.. Exiting...")
-            exit()
-    time.sleep(3)
-    # stopPrice = 0
-    orderBook = xt.get_order_book()
-    orderList =  orderBook['result'] #
-    # orderList =  [{'LoginID': 'IIFL24', 'ClientID': 'IIFL24', 'AppOrderID': 10026325, 'OrderReferenceID': '', 'GeneratedBy': 'TWSAPI', 'ExchangeOrderID': 'X_31389582', 'OrderCategoryType': 'NORMAL', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentID': 39992, 'OrderSide': 'Buy', 'OrderType': 'StopMarket', 'ProductType': 'MIS', 'TimeInForce': 'DAY', 'OrderPrice': 0, 'OrderQuantity': 75, 'OrderStopPrice': 269.3, 'OrderStatus': 'Filled', 'OrderAverageTradedPrice': '77.77', 'LeavesQuantity': 75, 'CumulativeQuantity': 0, 'OrderDisclosedQuantity': 0, 'OrderGeneratedDateTime': '2020-12-29T13:13:54.0517821', 'ExchangeTransactTime': '2020-12-29T15:05:57+05:30', 'LastUpdateDateTime': '2020-12-29T15:05:57.3474221', 'OrderExpiryDate': '1980-01-01T00:00:00', 'CancelRejectReason': '', 'OrderUniqueIdentifier': 'dec29_sl_1', 'OrderLegStatus': 'SingleOrderLeg', 'IsSpread': False, 'MessageCode': 9004, 'MessageVersion': 4, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 313939350474164}, {'LoginID': 'IIFL24', 'ClientID': 'IIFL24', 'AppOrderID': 20030735, 'OrderReferenceID': '', 'GeneratedBy': 'TWS', 'ExchangeOrderID': 'X_31389805', 'OrderCategoryType': 'NORMAL', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentID': 39992, 'OrderSide': 'Buy', 'OrderType': 'Market', 'ProductType': 'MIS', 'TimeInForce': 'DAY', 'OrderPrice': 0, 'OrderQuantity': 75, 'OrderStopPrice': 0, 'OrderStatus': 'Filled', 'OrderAverageTradedPrice': '208.75', 'LeavesQuantity': 0, 'CumulativeQuantity': 75, 'OrderDisclosedQuantity': 0, 'OrderGeneratedDateTime': '2020-12-29T14:56:31.871326', 'ExchangeTransactTime': '2020-12-29T14:56:32+05:30', 'LastUpdateDateTime': '2020-12-29T14:56:32.1253445', 'OrderExpiryDate': '1980-01-01T00:00:00', 'CancelRejectReason': '', 'OrderUniqueIdentifier': '', 'OrderLegStatus': 'SingleOrderLeg', 'IsSpread': False, 'MessageCode': 9004, 'MessageVersion': 4, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 313939350474163}, {'LoginID': 'IIFL24', 'ClientID': 'IIFL24', 'AppOrderID': 10026385, 'OrderReferenceID': '', 'GeneratedBy': 'TWSAPI', 'ExchangeOrderID': 'X_31389601', 'OrderCategoryType': 'NORMAL', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentID': 41379, 'OrderSide': 'Buy', 'OrderType': 'Market', 'ProductType': 'MIS', 'TimeInForce': 'DAY', 'OrderPrice': 0, 'OrderQuantity': 75, 'OrderStopPrice': 93.35, 'OrderStatus': 'Filled', 'OrderAverageTradedPrice': '95.45', 'LeavesQuantity': 0, 'CumulativeQuantity': 75, 'OrderDisclosedQuantity': 0, 'OrderGeneratedDateTime': '2020-12-29T13:28:09.5274879', 'ExchangeTransactTime': '2020-12-29T13:50:59+05:30', 'LastUpdateDateTime': '2020-12-29T13:50:59.2861998', 'OrderExpiryDate': '1980-01-01T00:00:00', 'CancelRejectReason': '', 'OrderUniqueIdentifier': 'dec29_sl_2', 'OrderLegStatus': 'SingleOrderLeg', 'IsSpread': False, 'MessageCode': 9004, 'MessageVersion': 4, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 313939350474162}, {'LoginID': 'IIFL24', 'ClientID': 'IIFL24', 'AppOrderID': 10026383, 'OrderReferenceID': '', 'GeneratedBy': 'TWSAPI', 'ExchangeOrderID': 'X_31389599', 'OrderCategoryType': 'NORMAL', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentID': 41379, 'OrderSide': 'Sell', 'OrderType': 'Market', 'ProductType': 'MIS', 'TimeInForce': 'DAY', 'OrderPrice': 0, 'OrderQuantity': 75, 'OrderStopPrice': 0, 'OrderStatus': 'Filled', 'OrderAverageTradedPrice': '78.35', 'LeavesQuantity': 0, 'CumulativeQuantity': 75, 'OrderDisclosedQuantity': 0, 'OrderGeneratedDateTime': '2020-12-29T13:26:41.0961354', 'ExchangeTransactTime': '2020-12-29T13:26:41+05:30', 'LastUpdateDateTime': '2020-12-29T13:26:41.9091972', 'OrderExpiryDate': '1980-01-01T00:00:00', 'CancelRejectReason': '', 'OrderUniqueIdentifier': 'dec29_2', 'OrderLegStatus': 'SingleOrderLeg', 'IsSpread': False, 'MessageCode': 9004, 'MessageVersion': 4, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 313939350474161}, {'LoginID': 'IIFL24', 'ClientID': 'IIFL24', 'AppOrderID': 10026364, 'OrderReferenceID': '', 'GeneratedBy': 'TWSAPI', 'ExchangeOrderID': 'X_31389580', 'OrderCategoryType': 'NORMAL', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentID': 39992, 'OrderSide': 'Sell', 'OrderType': 'Market', 'ProductType': 'MIS', 'TimeInForce': 'DAY', 'OrderPrice': 0, 'OrderQuantity': 75, 'OrderStopPrice': 0, 'OrderStatus': 'Filled', 'OrderAverageTradedPrice': '219.30', 'LeavesQuantity': 0, 'CumulativeQuantity': 75, 'OrderDisclosedQuantity': 0, 'OrderGeneratedDateTime': '2020-12-29T13:12:36.8657664', 'ExchangeTransactTime': '2020-12-29T13:12:37+05:30', 'LastUpdateDateTime': '2020-12-29T13:12:37.5668251', 'OrderExpiryDate': '1980-01-01T00:00:00', 'CancelRejectReason': '', 'OrderUniqueIdentifier': 'dec29_1', 'OrderLegStatus': 'SingleOrderLeg', 'IsSpread': False, 'MessageCode': 9004, 'MessageVersion': 4, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 313939350474160}]
-    # orderID = 10026325
-    for i in orderList:
-        if orderID == i["AppOrderID"] and i["OrderStatus"] == 'Filled':
-            tradedPrice = float(( i["OrderAverageTradedPrice"]))
-            print('traded price is: ', tradedPrice)
-    print('placing SL order for --', symbol)
-    placed_SL_order = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
-                    exchangeInstrumentID= symbol ,
-                    productType=xt.PRODUCT_MIS, 
-                    orderType="StopMarket",                   
-                    orderSide=t_type_sl,
-                    timeInForce=xt.VALIDITY_DAY,
-                    disclosedQuantity=0,
-                    orderQuantity=quantity,
-                    limitPrice=0,
-                    stopPrice=round((tradedPrice+slPoints),2),
-                    orderUniqueIdentifier="FirstChoice1"
-                    )
-    # print(f'''placed_SL_order = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
-    #                exchangeInstrumentID= {symbol} ,
-    #                productType=xt.PRODUCT_MIS, 
-    #                orderType="StopMarket",                   
-    #                orderSide={t_type_sl},
-    #                timeInForce=xt.VALIDITY_DAY,
-    #                disclosedQuantity=0,
-    #                orderQuantity={quantity},
-    #                limitPrice=0,
-    #                stopPrice=round(({tradedPrice}+{slPoints}),2),
-    #                orderUniqueIdentifier="FirstChoice1"
-    #                )''')
-    # placed_SL_order = {'type': 'success', 'code': 's-orders-0001', 'description': 'Request sent', 'result': {'AppOrderID': 10066666, 'OrderUniqueIdentifier': '123777', 'ClientID': 'IIFL24'}}
-    if placed_SL_order['type'] != 'error':
-        placed_SL_orderID = placed_SL_order['result']['AppOrderID']
-        print("order id for StopLoss :", placed_SL_orderID)
-    else:
-        print("Error placing SL Order.. try again manually...")
+    for symbol in symbols:
+        print('placing order for --', symbol)
+        order_resp = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
+                        exchangeInstrumentID= symbol ,
+                        productType=xt.PRODUCT_MIS, 
+                        orderType=xt.ORDER_TYPE_MARKET,                   
+                        orderSide=t_type,
+                        timeInForce=xt.VALIDITY_DAY,
+                        disclosedQuantity=0,
+                        orderQuantity=quantity,
+                        limitPrice=0,
+                        stopPrice=0,
+                        orderUniqueIdentifier="FirstChoice0"
+                        )
+       
         
         
+        # # extracting the order id from response
+        if order_resp['type'] != 'error':
+             orderID = order_resp['result']['AppOrderID']
+             print(f''' Order ID for {t_type} {symbol} is: ", {orderID}''')
+        elif order_resp['type'] == 'error':
+                print("Error placing Order.. Exiting...")
+                exit()
+        time.sleep(3)
+        # stopPrice = 0
+        orderBook = xt.get_order_book()
+        orderList =  orderBook['result'] 
+        for i in orderList:
+            if orderID == i["AppOrderID"] and i["OrderStatus"] == 'Filled':
+                tradedPrice = float(( i["OrderAverageTradedPrice"]))
+                print('traded price is: ', tradedPrice)
+        print('placing SL order for --', symbol)
+        placed_SL_order = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
+                        exchangeInstrumentID= symbol ,
+                        productType=xt.PRODUCT_MIS, 
+                        orderType="StopMarket",                   
+                        orderSide=t_type_sl,
+                        timeInForce=xt.VALIDITY_DAY,
+                        disclosedQuantity=0,
+                        orderQuantity=quantity,
+                        limitPrice=0,
+                        stopPrice=round((tradedPrice+slPoints),2),
+                        orderUniqueIdentifier="FirstChoice1"
+                        )
+        if placed_SL_order['type'] != 'error':
+            placed_SL_orderID = placed_SL_order['result']['AppOrderID']
+            print("order id for StopLoss :", placed_SL_orderID)
+        else:
+            print("Error placing SL Order.. try again manually...")
+            
+            
 def get_global_PnL():
     totalMTMdf = 0.0
     positionList=xt.get_position_daywise()['result']['positionList']
@@ -197,43 +188,58 @@ def cancelOrder(OrderID):
     
     
     
+###################################################
+#maybe main()    
+    
 tickers = ["NIFTY"] 
 for ticker in tickers:
-    for oType in "ce","pe":
-        weekly_exp,monthly_exp = nextThu_and_lastThu_expiry_date()
-        #expiry = get_expiry_from_option_chain(ticker)
-        # weekly_exp,monthly_exp=(expiry[:2])
-        if ticker == "NIFTY":
-             quantity = 75
-             nfty_ltp = nse.get_index_quote("nifty 50")['lastPrice']
-             strikePrice = strkPrcCalc(nfty_ltp,50)
-        if ticker == "BANKNIFTY":
-            quantity = 25
-            bnknfty_ltp = nse.get_index_quote("nifty bank")['lastPrice']
-            strikePrice = strkPrcCalc(bnknfty_ltp,100)
-        print(f"symbol = {ticker}  expiry = {weekly_exp}  Otype = {oType}  strikePrice = {strikePrice } ")#.format(ticker,expiry,Otype,strikePrice,eID))
-        eID = get_eID(ticker,oType,weekly_exp,strikePrice)
+    # for oType in "ce","pe":
+    weekly_exp,monthly_exp = nextThu_and_lastThu_expiry_date()
+    #expiry = get_expiry_from_option_chain(ticker)
+    # weekly_exp,monthly_exp=(expiry[:2])
+    if ticker == "NIFTY":
+         quantity = 75
+         nfty_ltp = nse.get_index_quote("nifty 50")['lastPrice']
+         strikePrice = strkPrcCalc(nfty_ltp,50)
+         margin_ok = int(checkBalance()) >= 1000000001
+    if ticker == "BANKNIFTY":
+        quantity = 25
+        bnknfty_ltp = nse.get_index_quote("nifty bank")['lastPrice']
+        strikePrice = strkPrcCalc(bnknfty_ltp,100)
+        margin_ok = int(checkBalance()) >= 1000000001
+    print(f"symbol = {ticker}  expiry = {weekly_exp}  strikePrice = {strikePrice } ")#.format(ticker,expiry,Otype,strikePrice,eID))
+    if margin_ok:
+        # eID = get_eID(ticker,oType,weekly_exp,strikePrice)
+        eID = [ (get_eID(ticker,i,weekly_exp,strikePrice)) for i in ['ce','pe'] ]
         print("EID is :", eID)
         nstart=True
-        ndate = dt2.datetime.strftime(dt2.datetime.now(), "%d-%m-%Y")
+        ndate = datetime.strftime(datetime.now(), "%d-%m-%Y")
         while nstart:
-            if (dt2.datetime.now() >= dt2.datetime.strptime(ndate + " 09:48:00", "%d-%m-%Y %H:%M:%S")):
+            if (datetime.now() >= datetime.strptime(ndate + " 09:48:00", "%d-%m-%Y %H:%M:%S")):
                 placeOrderWithSL(eID,'sell',quantity)
                 nstart = False
             else:
                 print("Waiting to place the order at 09:48...")
                 time.sleep(5)
+    else:
+        cur_cash = checkBalance()
+        print(f'''Margin is less to place orders... 
+                  Required cash avalable in your trading account should be 55000
+                  But cash available is: {cur_cash}
+                  Exiting without placing any orders.. 
+                  ''')
     
 
 print('#################--CODE ENDS HERE#--###################')
 
 get_global_PnL()
 
-import datetime
-cdate = datetime.datetime.strftime(datetime.datetime.now(), "%d-%m-%Y")
+cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
 check=True
+m=0
+bag=[]
 while check:
-    if (get_global_PnL() < -1500) or (datetime.datetime.now() >= datetime.datetime.strptime(cdate + " 15:25:00", "%d-%m-%Y %H:%M:%S")):
+    if (get_global_PnL() < -1500) or (datetime.now() >= datetime.strptime(cdate + " 15:25:00", "%d-%m-%Y %H:%M:%S")):
         #closing all open positions
         positionList=xt.get_position_daywise()['result']['positionList']
         pos_df = pd.DataFrame(positionList)
@@ -264,8 +270,20 @@ while check:
                 
         check=False #exit the main loop
     else:
-        print(time.strftime("%d-%m-%Y %H:%M:%S"),"|",get_global_PnL())
-        time.sleep(10)
+        # print(time.strftime("%d-%m-%Y %H:%M:%S"),",",get_global_PnL())
+        # time.sleep(10)
+        data = time.strftime("%d-%m-%Y %H:%M:%S"),",",get_global_PnL()
+        # print(data)
+        bag.append(data) 
+        m+=1
+        if len(bag) >= 5:
+            tup=bag[-1]
+            bagstr=" ".join(str(x) for x in tup)
+            print(bagstr)
+            bag = []
+            m=0
+        # print(m,len(bag))
+        time.sleep(2)
 
         
 # print(time.strftime("%d-%m-%Y %H:%M:%S"),"|",get_global_PnL())            
@@ -273,22 +291,6 @@ while check:
 # if get_global_PnL() > -200:
 #     print(time.strftime("%d-%m-%Y %H:%M:%S"),"|",get_global_PnL())
 
-# -1400 < -1500
-
-orderList=xt.get_order_book()['result']
-ord_df = pd.DataFrame(orderList)
-pending = ord_df[ord_df['OrderStatus'].isin(["New","Open","Partially Filled"])]["AppOrderID"].tolist()
-drop = []
-attempt = 0
-while len(pending)>0 and attempt<5:
-    pending = [j for j in pending if j not in drop]
-    for order in pending:
-        try:
-            cancelOrder(order)
-            drop.append(order)
-        except:
-            print("unable to delete order id : ",order)
-            attempt+=1
 
 orderList=xt.get_order_book()['result']
 orderDf = pd.DataFrame(orderList)

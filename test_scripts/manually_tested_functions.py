@@ -5,7 +5,7 @@ Created on Tue Dec 29 12:46:43 2020
 @author: mling
 """
 
-from XTConnect.Connect import XTSConnect
+from XTConnect import XTSConnect
 import pandas as pd
 
 # Trading Interactive Creds
@@ -24,6 +24,8 @@ response = xt.interactive_login()
 # response = xt.marketdata_login()
 print("Login: ", response)
 
+
+
 orderList=xt.get_order_book()['result']
 orderDf = pd.DataFrame(orderList)
 
@@ -32,6 +34,50 @@ tradeDf = pd.DataFrame(tradeList)
 
 positionList=xt.get_position_daywise()['result']['positionList']
 posDf = pd.DataFrame(positionList)
+
+"""Get Balance Request"""
+response = xt.get_balance()
+balanceList = xt.get_balance()['result']['BalanceList']
+
+def checkBalance():
+    a = 0
+    while a < 10:
+        try:
+           bal_resp = xt.get_balance()
+           break
+        except:
+            print("can't extract position data..retrying")
+            a+=1
+    if bal_resp['type'] != 'error':
+         balanceList = bal_resp['result']['BalanceList']
+         cashAvailable = balanceList[0]['limitObject']['marginAvailable']['CashMarginAvailable']
+         print("Balance Available is: ", cashAvailable)
+    else:
+        print(bal_resp['description'])
+        print("Unable to fetch Cash margins... try again..")
+    return cashAvailable
+
+tickers = ["NIFTY"] 
+for ticker in tickers:
+    # for oType in "ce","pe":
+    weekly_exp,monthly_exp = nextThu_and_lastThu_expiry_date()
+    #expiry = get_expiry_from_option_chain(ticker)
+    # weekly_exp,monthly_exp=(expiry[:2])
+    if ticker == "NIFTY":
+         quantity = 75
+         nfty_ltp = nse.get_index_quote("nifty 50")['lastPrice']
+         strikePrice = strkPrcCalc(nfty_ltp,50)
+    if ticker == "BANKNIFTY":
+        quantity = 25
+        bnknfty_ltp = nse.get_index_quote("nifty bank")['lastPrice']
+        strikePrice = strkPrcCalc(bnknfty_ltp,100)
+eID = get_eID(ticker,oType,weekly_exp,strikePrice)
+
+
+
+
+
+
 
 
 placed_order = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
@@ -200,6 +246,21 @@ while len(pending)>0 and attempt<5:
         except:
             print("unable to print order id : ",order)
             attempt+=1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

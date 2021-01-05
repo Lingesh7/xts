@@ -183,7 +183,9 @@ def cancelOrder(OrderID):
     cancel_resp = xt.cancel_order(
         appOrderID=OrderID,
         orderUniqueIdentifier='FC_Cancel_Orders_1') 
-    print(cancel_resp)
+    if cancel_resp['type'] != 'error':
+            cancelled_SL_orderID = cancel_resp['result']['AppOrderID']
+            print("Cancelled SL order id :", cancelled_SL_orderID)
     
     
     
@@ -201,12 +203,12 @@ for ticker in tickers:
          quantity = 75
          nfty_ltp = nse.get_index_quote("nifty 50")['lastPrice']
          strikePrice = strkPrcCalc(nfty_ltp,50)
-         margin_ok = int(checkBalance()) >= 1000000001
+         margin_ok = int(checkBalance()) >= 55000
     if ticker == "BANKNIFTY":
         quantity = 25
         bnknfty_ltp = nse.get_index_quote("nifty bank")['lastPrice']
         strikePrice = strkPrcCalc(bnknfty_ltp,100)
-        margin_ok = int(checkBalance()) >= 1000000001
+        margin_ok = int(checkBalance()) >= 55000
     print(f"symbol = {ticker}  expiry = {weekly_exp}  strikePrice = {strikePrice } ")#.format(ticker,expiry,Otype,strikePrice,eID))
     if margin_ok:
         # eID = get_eID(ticker,oType,weekly_exp,strikePrice)
@@ -215,7 +217,7 @@ for ticker in tickers:
         nstart=True
         ndate = datetime.strftime(datetime.now(), "%d-%m-%Y")
         while nstart:
-            if (datetime.now() >= datetime.strptime(ndate + " 09:48:00", "%d-%m-%Y %H:%M:%S")):
+            if (datetime.now() >= datetime.strptime(ndate + " 09:45:00", "%d-%m-%Y %H:%M:%S")):
                 placeOrderWithSL(eID,'sell',quantity)
                 nstart = False
             else:
@@ -239,7 +241,7 @@ check=True
 m=0
 bag=[]
 while check:
-    if (get_global_PnL() < -1500) or (datetime.now() >= datetime.strptime(cdate + " 15:25:00", "%d-%m-%Y %H:%M:%S")):
+    if (get_global_PnL() < -1500) or (get_global_PnL() >= 3000) or (datetime.now() >= datetime.strptime(cdate + " 15:25:00", "%d-%m-%Y %H:%M:%S")):
         #closing all open positions
         positionList=xt.get_position_daywise()['result']['positionList']
         pos_df = pd.DataFrame(positionList)
@@ -276,7 +278,7 @@ while check:
         # print(data)
         bag.append(data) 
         m+=1
-        if len(bag) >= 5:
+        if len(bag) >= 30:
             tup=bag[-1]
             bagstr=" ".join(str(x) for x in tup)
             print(bagstr)

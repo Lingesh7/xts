@@ -194,8 +194,9 @@ def cancelOrder(OrderID):
 #maybe main()
     
 ticker = "NIFTY" 
-def runOrders(ticker):    
+def prepareVars(ticker):    
     # for ticker in tickers:
+    global margin_ok, quantity,eID
     margin_ok = int(checkBalance()) >= 1000000001
     if ticker == "NIFTY":
          quantity = 75
@@ -212,15 +213,6 @@ def runOrders(ticker):
         # eID = get_eID(ticker,oType,weekly_exp,strikePrice)
         eID = [ (get_eID(ticker,i,weekly_exp,strikePrice)) for i in ['ce','pe'] ]
         print("EID is :", eID)
-        nstart=True
-        ndate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-        while nstart:
-            if (datetime.now() >= datetime.strptime(ndate + " 14:31:00", "%d-%m-%Y %H:%M:%S")):
-                placeOrderWithSL(eID,'sell',quantity)
-                nstart = False
-            else:
-                print("Waiting to place the order at 09:48...")
-                time.sleep(5)
     else:
         cur_cash = checkBalance()
         print(f'''Margin is less to place orders... 
@@ -229,6 +221,18 @@ def runOrders(ticker):
                   Exiting without placing any orders.. 
                   ''')
 
+
+nstart=True
+        ndate = datetime.strftime(datetime.now(), "%d-%m-%Y")
+        while nstart:
+            if (datetime.now() >= datetime.strptime(ndate + " 14:31:00", "%d-%m-%Y %H:%M:%S")):
+                placeOrderWithSL(eID,'sell',quantity)
+                nstart = False
+            else:
+                print("Waiting to place the order at 09:48...")
+                time.sleep(5)
+                
+                
 print('#################--CODE ENDS HERE#--###################')
 
 
@@ -239,6 +243,7 @@ bag=[]
 while check:
     if (get_global_PnL() < -1500) or (datetime.now() >= datetime.strptime(cdate + " 15:25:00", "%d-%m-%Y %H:%M:%S")):
         #closing all open positions
+        
         positionList=xt.get_position_daywise()['result']['positionList']
         pos_df = pd.DataFrame(positionList)
         for i in range(len(pos_df)):
@@ -307,10 +312,13 @@ while len(pending)>0 and attempt<5:
             attempt+=1
 
 orderList=xt.get_order_book()['result']
+orderList==[{'AccountID': 'IIFL24', 'TradingSymbol': 'NIFTY 07JAN2021 PE 14100', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentId': '43413', 'ProductType': 'MIS', 'Marketlot': '75', 'Multiplier': '1', 'BuyAveragePrice': '0.00', 'SellAveragePrice': '91.50', 'OpenBuyQuantity': '0', 'OpenSellQuantity': '75', 'Quantity': '-75', 'BuyAmount': '0.00', 'SellAmount': '6,862.50', 'NetAmount': '6,862.50', 'UnrealizedMTM': '-243.75', 'RealizedMTM': '0.00', 'MTM': '-243.75', 'BEP': '91.50', 'SumOfTradedQuantityAndPriceBuy': '0.00', 'SumOfTradedQuantityAndPriceSell': '6,862.50', 'MessageCode': 9002, 'MessageVersion': 1, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 319966916727016}, {'AccountID': 'IIFL24', 'TradingSymbol': 'NIFTY 07JAN2021 CE 14100', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentId': '43412', 'ProductType': 'MIS', 'Marketlot': '75', 'Multiplier': '1', 'BuyAveragePrice': '0.00', 'SellAveragePrice': '78.05', 'OpenBuyQuantity': '0', 'OpenSellQuantity': '75', 'Quantity': '-75', 'BuyAmount': '0.00', 'SellAmount': '5,853.75', 'NetAmount': '5,853.75', 'UnrealizedMTM': '172.50', 'RealizedMTM': '0.00', 'MTM': '172.50', 'BEP': '78.05', 'SumOfTradedQuantityAndPriceBuy': '0.00', 'SumOfTradedQuantityAndPriceSell': '5,853.75', 'MessageCode': 9002, 'MessageVersion': 1, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 319966916727017}]
 orderDf = pd.DataFrame(orderList)
 
 tradeList=xt.get_trade()['result']
+tradeList=[{'LoginID': 'IIFL24', 'ClientID': 'IIFL24', 'AppOrderID': 10027535, 'OrderReferenceID': '', 'GeneratedBy': 'TWSAPI', 'ExchangeOrderID': 'X_31995553', 'OrderCategoryType': 'NORMAL', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentID': 43413, 'OrderSide': 'Sell', 'OrderType': 'Market', 'ProductType': 'MIS', 'TimeInForce': 'DAY', 'OrderPrice': 0, 'OrderQuantity': 75, 'OrderStopPrice': 0, 'OrderStatus': 'Filled', 'OrderAverageTradedPrice': '91.50', 'LeavesQuantity': 0, 'CumulativeQuantity': 75, 'OrderDisclosedQuantity': 0, 'OrderGeneratedDateTime': '2021-01-05T09:45:17.2608188', 'ExchangeTransactTime': '2021-01-05T09:45:17+05:30', 'LastUpdateDateTime': '2021-01-05T09:45:17.7088565', 'CancelRejectReason': '', 'OrderUniqueIdentifier': 'FirstChoice0', 'OrderLegStatus': 'SingleOrderLeg', 'LastTradedPrice': 91.5, 'LastTradedQuantity': 75, 'LastExecutionTransactTime': '2021-01-05T09:45:17', 'ExecutionID': '31995558', 'ExecutionReportIndex': 3, 'IsSpread': False, 'MessageCode': 9005, 'MessageVersion': 4, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 319966916727015}, {'LoginID': 'IIFL24', 'ClientID': 'IIFL24', 'AppOrderID': 10027533, 'OrderReferenceID': '', 'GeneratedBy': 'TWSAPI', 'ExchangeOrderID': 'X_31995551', 'OrderCategoryType': 'NORMAL', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentID': 43412, 'OrderSide': 'Sell', 'OrderType': 'Market', 'ProductType': 'MIS', 'TimeInForce': 'DAY', 'OrderPrice': 0, 'OrderQuantity': 75, 'OrderStopPrice': 0, 'OrderStatus': 'Filled', 'OrderAverageTradedPrice': '78.05', 'LeavesQuantity': 0, 'CumulativeQuantity': 75, 'OrderDisclosedQuantity': 0, 'OrderGeneratedDateTime': '2021-01-05T09:45:09.4501717', 'ExchangeTransactTime': '2021-01-05T09:45:10+05:30', 'LastUpdateDateTime': '2021-01-05T09:45:10.6562702', 'CancelRejectReason': '', 'OrderUniqueIdentifier': 'FirstChoice0', 'OrderLegStatus': 'SingleOrderLeg', 'LastTradedPrice': 78.05, 'LastTradedQuantity': 75, 'LastExecutionTransactTime': '2021-01-05T09:45:10', 'ExecutionID': '31995552', 'ExecutionReportIndex': 3, 'IsSpread': False, 'MessageCode': 9005, 'MessageVersion': 4, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 319966916727014}]
 tradeDf = pd.DataFrame(tradeList)
 
 positionList=xt.get_position_daywise()['result']['positionList']
+positionList=[{'AccountID': 'IIFL24', 'TradingSymbol': 'NIFTY 07JAN2021 PE 14100', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentId': '43413', 'ProductType': 'MIS', 'Marketlot': '75', 'Multiplier': '1', 'BuyAveragePrice': '0.00', 'SellAveragePrice': '91.50', 'OpenBuyQuantity': '0', 'OpenSellQuantity': '75', 'Quantity': '-75', 'BuyAmount': '0.00', 'SellAmount': '6,862.50', 'NetAmount': '6,862.50', 'UnrealizedMTM': '-243.75', 'RealizedMTM': '0.00', 'MTM': '-243.75', 'BEP': '91.50', 'SumOfTradedQuantityAndPriceBuy': '0.00', 'SumOfTradedQuantityAndPriceSell': '6,862.50', 'MessageCode': 9002, 'MessageVersion': 1, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 319966916727016}, {'AccountID': 'IIFL24', 'TradingSymbol': 'NIFTY 07JAN2021 CE 14100', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentId': '43412', 'ProductType': 'MIS', 'Marketlot': '75', 'Multiplier': '1', 'BuyAveragePrice': '0.00', 'SellAveragePrice': '78.05', 'OpenBuyQuantity': '0', 'OpenSellQuantity': '75', 'Quantity': '-75', 'BuyAmount': '0.00', 'SellAmount': '5,853.75', 'NetAmount': '5,853.75', 'UnrealizedMTM': '172.50', 'RealizedMTM': '0.00', 'MTM': '172.50', 'BEP': '78.05', 'SumOfTradedQuantityAndPriceBuy': '0.00', 'SumOfTradedQuantityAndPriceSell': '5,853.75', 'MessageCode': 9002, 'MessageVersion': 1, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 319966916727017}]
 posDf = pd.DataFrame(positionList)

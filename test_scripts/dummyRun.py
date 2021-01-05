@@ -50,6 +50,7 @@ def nextThu_and_lastThu_expiry_date ():
                 break
     weekly_exp=str((month_last_thu_expiry.strftime("%d")))+month_last_thu_expiry.strftime("%b").capitalize()+month_last_thu_expiry.strftime("%Y")
     monthly_exp=str((next_thursday_expiry.strftime("%d")))+next_thursday_expiry.strftime("%b").capitalize()+next_thursday_expiry.strftime("%Y")
+    
     # str_month_last_thu_expiry=str((month_last_thu_expiry.strftime("%d")))+month_last_thu_expiry.strftime("%b").capitalize()+month_last_thu_expiry.strftime("%Y")
     # str_next_thursday_expiry=str((next_thursday_expiry.strftime("%d")))+next_thursday_expiry.strftime("%b").capitalize()+next_thursday_expiry.strftime("%Y")
     # return (str_next_thursday_expiry,str_month_last_thu_expiry)
@@ -132,7 +133,7 @@ def placeOrderWithSL(symbols,buy_sell,quantity):
         elif order_resp['type'] == 'error':
                 print("Error placing Order.. Exiting...")
                 exit()
-        time.sleep(3)
+        # time.sleep(1)
         # stopPrice = 0
         # orderBook = xt.get_order_book()
         # orderList =  orderBook['result'] #
@@ -190,49 +191,75 @@ def cancelOrder(OrderID):
         orderUniqueIdentifier='FC_Cancel_Orders_1') 
     print(cancel_resp)
     
-###################################################
-#maybe main()
     
-ticker = "NIFTY" 
-def prepareVars(ticker):    
+# ticker = "NIFTY" 
+def prepareVars(ticker): 
+    
     # for ticker in tickers:
-    global margin_ok, quantity,eID
-    margin_ok = int(checkBalance()) >= 1000000001
+    global margin_ok, quantity,eID,strikePrice
+    nextThu_and_lastThu_expiry_date ()
+    # try:
     if ticker == "NIFTY":
          quantity = 75
          nfty_ltp = nse.get_index_quote("nifty 50")['lastPrice']
          strikePrice = strkPrcCalc(nfty_ltp,50)
          # margin_ok = int(checkBalance()) >= 1000000001  
-    if ticker == "BANKNIFTY":
+    elif ticker == "BANKNIFTY":
         quantity = 25
         bnknfty_ltp = nse.get_index_quote("nifty bank")['lastPrice']
         strikePrice = strkPrcCalc(bnknfty_ltp,100)
         # margin_ok = int(checkBalance()) >= 1000000001 
-    print(f"symbol = {ticker}  expiry = {weekly_exp} strikePrice = {strikePrice } ")#.format(ticker,expiry,Otype,strikePrice,eID))
+    else:
+        print("Enter a Valid symbol - NIFTY or BANKNIFTY")
+    eID = [ (get_eID(ticker,i,weekly_exp,strikePrice)) for i in ['ce','pe'] ]
+    # print("EID is :", eID)
+    margin_ok = int(checkBalance()) >= 1000000001
+    # return True
+    # expect:
+        
+
+
+def runOrders(ticker):
+    # nstart=True
+    # ndate = datetime.strftime(datetime.now(), "%d-%m-%Y")
     if margin_ok:
-        # eID = get_eID(ticker,oType,weekly_exp,strikePrice)
-        eID = [ (get_eID(ticker,i,weekly_exp,strikePrice)) for i in ['ce','pe'] ]
-        print("EID is :", eID)
+        print("Required Margin Available.. Taking positions...")
+        print(f"symbol = {ticker} EID = {eID} expiry = {weekly_exp} strikePrice = {strikePrice} ")#.format(ticker,expiry,Otype,strikePrice,eID))
+        # while nstart:
+        #     if (datetime.now() >= datetime.strptime(ndate + " 14:31:00", "%d-%m-%Y %H:%M:%S")):
+        placeOrderWithSL(eID,'sell',quantity)
+        # placeOrderWithSL(eID2,'sell',quantity)
+        # nstart = False
+        # else:
+        #         print("Waiting to place the order at 09:48...")
+        #         time.sleep(5)
+        #        else:
     else:
         cur_cash = checkBalance()
         print(f'''Margin is less to place orders... 
-                  Required cash avalable in your trading account should be 55000
-                  But cash available is: {cur_cash}
-                  Exiting without placing any orders.. 
-                  ''')
+              Required cash avalable in your trading account should be 55000
+              But cash available is: {cur_cash}
+              Exiting without placing any orders.. 
+              ''')     
+  
+###################################################
+#maybe main()
+ticker='NIFTY'
 
 
-nstart=True
-        ndate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-        while nstart:
-            if (datetime.now() >= datetime.strptime(ndate + " 14:31:00", "%d-%m-%Y %H:%M:%S")):
-                placeOrderWithSL(eID,'sell',quantity)
-                nstart = False
-            else:
-                print("Waiting to place the order at 09:48...")
-                time.sleep(5)
-                
-                
+start = time.time()
+prepareVars(ticker)
+print(f'Time: {time.time() - start}')
+
+start = time.time()
+runOrders(ticker)
+print(f'Time: {time.time() - start}')
+
+
+
+
+
+          
 print('#################--CODE ENDS HERE#--###################')
 
 
@@ -312,7 +339,7 @@ while len(pending)>0 and attempt<5:
             attempt+=1
 
 orderList=xt.get_order_book()['result']
-orderList==[{'AccountID': 'IIFL24', 'TradingSymbol': 'NIFTY 07JAN2021 PE 14100', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentId': '43413', 'ProductType': 'MIS', 'Marketlot': '75', 'Multiplier': '1', 'BuyAveragePrice': '0.00', 'SellAveragePrice': '91.50', 'OpenBuyQuantity': '0', 'OpenSellQuantity': '75', 'Quantity': '-75', 'BuyAmount': '0.00', 'SellAmount': '6,862.50', 'NetAmount': '6,862.50', 'UnrealizedMTM': '-243.75', 'RealizedMTM': '0.00', 'MTM': '-243.75', 'BEP': '91.50', 'SumOfTradedQuantityAndPriceBuy': '0.00', 'SumOfTradedQuantityAndPriceSell': '6,862.50', 'MessageCode': 9002, 'MessageVersion': 1, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 319966916727016}, {'AccountID': 'IIFL24', 'TradingSymbol': 'NIFTY 07JAN2021 CE 14100', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentId': '43412', 'ProductType': 'MIS', 'Marketlot': '75', 'Multiplier': '1', 'BuyAveragePrice': '0.00', 'SellAveragePrice': '78.05', 'OpenBuyQuantity': '0', 'OpenSellQuantity': '75', 'Quantity': '-75', 'BuyAmount': '0.00', 'SellAmount': '5,853.75', 'NetAmount': '5,853.75', 'UnrealizedMTM': '172.50', 'RealizedMTM': '0.00', 'MTM': '172.50', 'BEP': '78.05', 'SumOfTradedQuantityAndPriceBuy': '0.00', 'SumOfTradedQuantityAndPriceSell': '5,853.75', 'MessageCode': 9002, 'MessageVersion': 1, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 319966916727017}]
+orderList=[{'AccountID': 'IIFL24', 'TradingSymbol': 'NIFTY 07JAN2021 PE 14100', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentId': '43413', 'ProductType': 'MIS', 'Marketlot': '75', 'Multiplier': '1', 'BuyAveragePrice': '0.00', 'SellAveragePrice': '91.50', 'OpenBuyQuantity': '0', 'OpenSellQuantity': '75', 'Quantity': '-75', 'BuyAmount': '0.00', 'SellAmount': '6,862.50', 'NetAmount': '6,862.50', 'UnrealizedMTM': '-243.75', 'RealizedMTM': '0.00', 'MTM': '-243.75', 'BEP': '91.50', 'SumOfTradedQuantityAndPriceBuy': '0.00', 'SumOfTradedQuantityAndPriceSell': '6,862.50', 'MessageCode': 9002, 'MessageVersion': 1, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 319966916727016}, {'AccountID': 'IIFL24', 'TradingSymbol': 'NIFTY 07JAN2021 CE 14100', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentId': '43412', 'ProductType': 'MIS', 'Marketlot': '75', 'Multiplier': '1', 'BuyAveragePrice': '0.00', 'SellAveragePrice': '78.05', 'OpenBuyQuantity': '0', 'OpenSellQuantity': '75', 'Quantity': '-75', 'BuyAmount': '0.00', 'SellAmount': '5,853.75', 'NetAmount': '5,853.75', 'UnrealizedMTM': '172.50', 'RealizedMTM': '0.00', 'MTM': '172.50', 'BEP': '78.05', 'SumOfTradedQuantityAndPriceBuy': '0.00', 'SumOfTradedQuantityAndPriceSell': '5,853.75', 'MessageCode': 9002, 'MessageVersion': 1, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 319966916727017}]
 orderDf = pd.DataFrame(orderList)
 
 tradeList=xt.get_trade()['result']

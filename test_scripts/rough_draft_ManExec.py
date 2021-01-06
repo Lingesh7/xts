@@ -13,7 +13,7 @@ import pandas as pd
 from sys import exit
 from nsetools import Nse
 nse = Nse()
-
+import schedule
 
 # Trading Interactive Creds
 API_KEY = "ebaa4a8cf2de358e53c942"
@@ -29,7 +29,7 @@ xt = XTSConnect(API_KEY, API_SECRET, source)
 login_resp = xt.interactive_login()
 
 def nextThu_and_lastThu_expiry_date ():
-
+    global weekly_exp, monthly_exp
     todayte = datetime.today()
     
     cmon = todayte.month
@@ -48,11 +48,9 @@ def nextThu_and_lastThu_expiry_date ():
                 t = t + relativedelta(weekday=TH(-2))
                 month_last_thu_expiry=t
                 break
-    str_month_last_thu_expiry=str((month_last_thu_expiry.strftime("%d")))+month_last_thu_expiry.strftime("%b").capitalize()+month_last_thu_expiry.strftime("%Y")
-    str_next_thursday_expiry=str((next_thursday_expiry.strftime("%d")))+next_thursday_expiry.strftime("%b").capitalize()+next_thursday_expiry.strftime("%Y")
-    return (str_next_thursday_expiry,str_month_last_thu_expiry)
-
-
+    weekly_exp=str((month_last_thu_expiry.strftime("%d")))+month_last_thu_expiry.strftime("%b").capitalize()+month_last_thu_expiry.strftime("%Y")
+    monthly_exp=str((next_thursday_expiry.strftime("%d")))+next_thursday_expiry.strftime("%b").capitalize()+next_thursday_expiry.strftime("%Y")
+ 
 def strkPrcCalc(ltp,base):    
     return base * round(ltp/base)
 
@@ -130,7 +128,7 @@ def placeOrderWithSL(symbols,buy_sell,quantity):
         elif order_resp['type'] == 'error':
                 print("Error placing Order.. Exiting...")
                 exit()
-        time.sleep(3)
+        # time.sleep(3)
         # stopPrice = 0
         orderBook = xt.get_order_book()
         orderList =  orderBook['result'] 
@@ -188,60 +186,125 @@ def cancelOrder(OrderID):
             print("Cancelled SL order id :", cancelled_SL_orderID)
     
     
+def prepareVars(ticker): 
     
-    
-###################################################
-#maybe main()    
-    
-tickers = ["NIFTY"] 
-for ticker in tickers:
-    # for oType in "ce","pe":
-    weekly_exp,monthly_exp = nextThu_and_lastThu_expiry_date()
-    #expiry = get_expiry_from_option_chain(ticker)
-    # weekly_exp,monthly_exp=(expiry[:2])
+    # for ticker in tickers:
+    global margin_ok, quantity,eID,strikePrice
+    nextThu_and_lastThu_expiry_date ()
+    # try:
     if ticker == "NIFTY":
          quantity = 75
          nfty_ltp = nse.get_index_quote("nifty 50")['lastPrice']
          strikePrice = strkPrcCalc(nfty_ltp,50)
-         margin_ok = int(checkBalance()) >= 55000
-    if ticker == "BANKNIFTY":
+         # margin_ok = int(checkBalance()) >= 1000000001  
+    elif ticker == "BANKNIFTY":
         quantity = 25
         bnknfty_ltp = nse.get_index_quote("nifty bank")['lastPrice']
         strikePrice = strkPrcCalc(bnknfty_ltp,100)
-        margin_ok = int(checkBalance()) >= 55000
-    print(f"symbol = {ticker}  expiry = {weekly_exp}  strikePrice = {strikePrice } ")#.format(ticker,expiry,Otype,strikePrice,eID))
+        # margin_ok = int(checkBalance()) >= 1000000001 
+    else:
+        print("Enter a Valid symbol - NIFTY or BANKNIFTY")
+    eID = [ (get_eID(ticker,i,weekly_exp,strikePrice)) for i in ['ce','pe'] ]
+    # print("EID is :", eID)
+    margin_ok = int(checkBalance()) >= 55000
+    # return True
+    # expect:
+        
+
+
+def runOrders(ticker):
+    # nstart=True
+    # ndate = datetime.strftime(datetime.now(), "%d-%m-%Y")
     if margin_ok:
-        # eID = get_eID(ticker,oType,weekly_exp,strikePrice)
-        eID = [ (get_eID(ticker,i,weekly_exp,strikePrice)) for i in ['ce','pe'] ]
-        print("EID is :", eID)
-        nstart=True
-        ndate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-        while nstart:
-            if (datetime.now() >= datetime.strptime(ndate + " 09:45:00", "%d-%m-%Y %H:%M:%S")):
-                placeOrderWithSL(eID,'sell',quantity)
-                nstart = False
-            else:
-                print("Waiting to place the order at 09:48...")
-                time.sleep(5)
+        print("Required Margin Available.. Taking positions...")
+        print(f"symbol = {ticker} EID = {eID} expiry = {weekly_exp} strikePrice = {strikePrice} ")#.format(ticker,expiry,Otype,strikePrice,eID))
+        # while nstart:
+        #     if (datetime.now() >= datetime.strptime(ndate + " 14:31:00", "%d-%m-%Y %H:%M:%S")):
+        placeOrderWithSL(eID,'sell',quantity)
+        # placeOrderWithSL(eID2,'sell',quantity)
+        # nstart = False
+        # else:
+        #         print("Waiting to place the order at 09:48...")
+        #         time.sleep(5)
+        #        else:
     else:
         cur_cash = checkBalance()
         print(f'''Margin is less to place orders... 
-                  Required cash avalable in your trading account should be 55000
-                  But cash available is: {cur_cash}
-                  Exiting without placing any orders.. 
-                  ''')
+              Required cash avalable in your trading account should be 55000
+              But cash available is: {cur_cash}
+              Exiting without placing any orders.. 
+              ''')     
+
+def scheduler():
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+###################################################
+#maybe main()
+ticker='NIFTY'
+
+
+start = time.time()
+prepareVars(ticker)
+print(f'Time: {time.time() - start}')
+
+schedule.every().day.at('10:10').do(runOrders,ticker)
+
+schedule.clear()
+scheduler()    
+
+# ###################################################
+# #maybe main()    
+    
+# tickers = ["NIFTY"] 
+# for ticker in tickers:
+#     # for oType in "ce","pe":
+#     weekly_exp,monthly_exp = nextThu_and_lastThu_expiry_date()
+#     #expiry = get_expiry_from_option_chain(ticker)
+#     # weekly_exp,monthly_exp=(expiry[:2])
+#     if ticker == "NIFTY":
+#          quantity = 75
+#          nfty_ltp = nse.get_index_quote("nifty 50")['lastPrice']
+#          strikePrice = strkPrcCalc(nfty_ltp,50)
+#          margin_ok = int(checkBalance()) >= 55000
+#     if ticker == "BANKNIFTY":
+#         quantity = 25
+#         bnknfty_ltp = nse.get_index_quote("nifty bank")['lastPrice']
+#         strikePrice = strkPrcCalc(bnknfty_ltp,100)
+#         margin_ok = int(checkBalance()) >= 55000
+#     print(f"symbol = {ticker}  expiry = {weekly_exp}  strikePrice = {strikePrice } ")#.format(ticker,expiry,Otype,strikePrice,eID))
+#     if margin_ok:
+#         # eID = get_eID(ticker,oType,weekly_exp,strikePrice)
+#         eID = [ (get_eID(ticker,i,weekly_exp,strikePrice)) for i in ['ce','pe'] ]
+#         print("EID is :", eID)
+#         nstart=True
+#         ndate = datetime.strftime(datetime.now(), "%d-%m-%Y")
+#         while nstart:
+#             if (datetime.now() >= datetime.strptime(ndate + " 09:45:00", "%d-%m-%Y %H:%M:%S")):
+#                 placeOrderWithSL(eID,'sell',quantity)
+#                 nstart = False
+#             else:
+#                 print("Waiting to place the order at 09:48...")
+#                 time.sleep(5)
+#     else:
+#         cur_cash = checkBalance()
+#         print(f'''Margin is less to place orders... 
+#                   Required cash avalable in your trading account should be 55000
+#                   But cash available is: {cur_cash}
+#                   Exiting without placing any orders.. 
+#                   ''')
     
 
-print('#################--CODE ENDS HERE#--###################')
+# print('#################--CODE ENDS HERE#--###################')
 
-get_global_PnL()
+# get_global_PnL()
 
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
 check=True
 m=0
 bag=[]
 while check:
-    if (get_global_PnL() < -1500) or (get_global_PnL() >= 3000) or (datetime.now() >= datetime.strptime(cdate + " 15:25:00", "%d-%m-%Y %H:%M:%S")):
+    if (get_global_PnL() < -1500) or (get_global_PnL() >= 3000) or (datetime.now() >= datetime.strptime(cdate + " 15:00:00", "%d-%m-%Y %H:%M:%S")):
         #closing all open positions
         positionList=xt.get_position_daywise()['result']['positionList']
         pos_df = pd.DataFrame(positionList)
@@ -278,7 +341,7 @@ while check:
         # print(data)
         bag.append(data) 
         m+=1
-        if len(bag) >= 30:
+        if len(bag) >= 10:
             tup=bag[-1]
             bagstr=" ".join(str(x) for x in tup)
             print(bagstr)

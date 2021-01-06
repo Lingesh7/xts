@@ -248,7 +248,7 @@ start = time.time()
 prepareVars(ticker)
 print(f'Time: {time.time() - start}')
 
-schedule.every().day.at('10:10').do(runOrders,ticker)
+schedule.every().day.at('09:45').do(runOrders,ticker)
 
 schedule.clear()
 scheduler()    

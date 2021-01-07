@@ -159,12 +159,15 @@ def placeOrderWithSL(symbols,buy_sell,quantity):
 def get_global_PnL():
     totalMTMdf = 0.0
     positionList=xt.get_position_daywise()['result']['positionList']
-    posDf = pd.DataFrame(positionList)
-    # posDf['MTM'].replace({',':''},regex=True).apply(pd.to_numeric,1).sum()
-    totalMTMdf = posDf['MTM'].replace({',':''},regex=True).apply(pd.to_numeric,1).sum()
-    return totalMTMdf
-
-def squareOff(eid):
+    if positionList:
+        posDf = pd.DataFrame(positionList)
+        # posDf['MTM'].replace({',':''},regex=True).apply(pd.to_numeric,1).sum()
+        totalMTMdf = posDf['MTM'].replace({',':''},regex=True).apply(pd.to_numeric,1).sum()
+        return totalMTMdf
+    else:
+        return totalMTMdf
+    
+def squareOff(eid,symbol):
     sq_off_resp = xt.squareoff_position(
                 exchangeSegment=xt.EXCHANGE_NSEFO,
                 exchangeInstrumentID=eid,
@@ -187,71 +190,138 @@ def cancelOrder(OrderID):
     
     
 def prepareVars(ticker): 
-    
-    # for ticker in tickers:
-    global margin_ok, quantity,eID,strikePrice
-    nextThu_and_lastThu_expiry_date ()
-    # try:
-    if ticker == "NIFTY":
-         quantity = 75
-         nfty_ltp = nse.get_index_quote("nifty 50")['lastPrice']
-         strikePrice = strkPrcCalc(nfty_ltp,50)
-         # margin_ok = int(checkBalance()) >= 1000000001  
-    elif ticker == "BANKNIFTY":
-        quantity = 25
-        bnknfty_ltp = nse.get_index_quote("nifty bank")['lastPrice']
-        strikePrice = strkPrcCalc(bnknfty_ltp,100)
-        # margin_ok = int(checkBalance()) >= 1000000001 
-    else:
-        print("Enter a Valid symbol - NIFTY or BANKNIFTY")
-    eID = [ (get_eID(ticker,i,weekly_exp,strikePrice)) for i in ['ce','pe'] ]
-    # print("EID is :", eID)
-    margin_ok = int(checkBalance()) >= 55000
-    # return True
-    # expect:
-        
+    try:
+        # for ticker in tickers:
+        global net_cash, margin_ok, quantity,eID,strikePrice
+        nextThu_and_lastThu_expiry_date ()
+        # try:
+        if ticker == "NIFTY":
+             quantity = 75
+             nfty_ltp = nse.get_index_quote("nifty 50")['lastPrice']
+             strikePrice = strkPrcCalc(nfty_ltp,50)
+             # margin_ok = int(checkBalance()) >= 1000000001  
+        elif ticker == "BANKNIFTY":
+            quantity = 25
+            bnknfty_ltp = nse.get_index_quote("nifty bank")['lastPrice']
+            strikePrice = strkPrcCalc(bnknfty_ltp,100)
+            # margin_ok = int(checkBalance()) >= 1000000001 
+        else:
+            print("Enter a Valid symbol - NIFTY or BANKNIFTY")
+        eID = [ (get_eID(ticker,i,weekly_exp,strikePrice)) for i in ['ce','pe'] ]
+        # print("EID is :", eID)
+        net_cash = checkBalance()
+        margin_ok = int(net_cash) >= 55000
+        return True
+    except:
+        print("unable to set variables to place order")
+        return False
 
 
-def runOrders(ticker):
+def runOrders(go):
     # nstart=True
     # ndate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-    if margin_ok:
-        print("Required Margin Available.. Taking positions...")
-        print(f"symbol = {ticker} EID = {eID} expiry = {weekly_exp} strikePrice = {strikePrice} ")#.format(ticker,expiry,Otype,strikePrice,eID))
-        # while nstart:
-        #     if (datetime.now() >= datetime.strptime(ndate + " 14:31:00", "%d-%m-%Y %H:%M:%S")):
-        placeOrderWithSL(eID,'sell',quantity)
-        # placeOrderWithSL(eID2,'sell',quantity)
-        # nstart = False
-        # else:
-        #         print("Waiting to place the order at 09:48...")
-        #         time.sleep(5)
-        #        else:
+    if go:
+        if margin_ok:
+            print("Required Margin Available.. Taking positions...")
+            print(f"symbol = {ticker} EID = {eID} expiry = {weekly_exp} strikePrice = {strikePrice} ")#.format(ticker,expiry,Otype,strikePrice,eID))
+            # while nstart:
+            #     if (datetime.now() >= datetime.strptime(ndate + " 14:31:00", "%d-%m-%Y %H:%M:%S")):
+            placeOrderWithSL(eID,'sell',quantity)
+            # placeOrderWithSL(eID2,'sell',quantity)
+            # nstart = False
+            # else:
+            #         print("Waiting to place the order at 09:48...")
+            #         time.sleep(5)
+            #        else:
+        else:
+            # cur_cash = checkBalance()
+            print(f''' \t Margin is less to place orders... 
+                  Required cash : 55000
+                   But cash available is: {net_cash}
+                    Exiting without placing any orders.. 
+                  ''')     
     else:
-        cur_cash = checkBalance()
-        print(f'''Margin is less to place orders... 
-              Required cash avalable in your trading account should be 55000
-              But cash available is: {cur_cash}
-              Exiting without placing any orders.. 
-              ''')     
+        print("vars not set....")
+  
 
+def runSqOffLogics():
+    cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
+    check=True
+    m=0
+    bag=[]
+    while check:
+        cur_PnL = get_global_PnL()
+        if (cur_PnL < -1500) or (cur_PnL >= 3000) or (datetime.now() >= datetime.strptime(cdate + " 15:10:00", "%d-%m-%Y %H:%M:%S")):
+            #closing all open positions
+            positionList=xt.get_position_daywise()['result']['positionList']
+            pos_df = pd.DataFrame(positionList)
+            for i in range(len(pos_df)):
+                if int(pos_df["Quantity"].values[i]) != 0:
+                    symbol=pos_df['TradingSymbol'].values[i]
+                    eid = pos_df["ExchangeInstrumentId"].values[i]
+                    squareOff(eid,symbol)
+            print("Position Squareoff COmpleted ")
+            
+            #closing all pending orders
+            orderList=xt.get_order_book()['result']
+            ord_df = pd.DataFrame(orderList)
+            pending = ord_df[ord_df['OrderStatus'].isin(["New","Open","Partially Filled"])]["AppOrderID"].tolist()
+            drop = []
+            attempt = 0
+            while len(pending)>0 and attempt<5:
+                pending = [j for j in pending if j not in drop]
+                for order in pending:
+                    try:
+                        cancelOrder(order)
+                        drop.append(order)
+                    except:
+                        print("unable to delete order id : ",order)
+                        attempt+=1
+            else:
+                print("No Open orders to Cancel")
+                    
+            check=False #exit this main loop
+        else:
+            # print(time.strftime("%d-%m-%Y %H:%M:%S"),",",get_global_PnL())
+            # time.sleep(10)
+            data = time.strftime("%d-%m-%Y %H:%M:%S"),",",cur_PnL
+            # print(data)
+            bag.append(data) 
+            m+=1
+            if len(bag) >= 10:
+                tup=bag[-1]
+                bagstr=" ".join(str(x) for x in tup)
+                print(bagstr)
+                bag = []
+                m=0
+            # print(m,len(bag))
+            time.sleep(2)
+        
 def scheduler():
     while True:
         schedule.run_pending()
         time.sleep(1)
 ###################################################
 #maybe main()
+
 ticker='NIFTY'
 
+go = prepareVars(ticker)
+runOrders(go)
+runSqOffLogics()
+# schedule.every().day.at('14:58').do(runOrders,go)
 
-start = time.time()
-prepareVars(ticker)
-print(f'Time: {time.time() - start}')
 
-schedule.every().day.at('09:45').do(runOrders,ticker)
 
-schedule.clear()
-scheduler()    
+scheduler()
+# start = time.time()
+# runOrders(prepareVars(ticker))
+# print(f'Time: {time.time() - start}')
+
+
+
+# schedule.every().day.at('09:45').do(runOrders,go)
+    
 
 # ###################################################
 # #maybe main()    
@@ -298,57 +368,6 @@ scheduler()
 # print('#################--CODE ENDS HERE#--###################')
 
 # get_global_PnL()
-
-cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-check=True
-m=0
-bag=[]
-while check:
-    if (get_global_PnL() < -1500) or (get_global_PnL() >= 3000) or (datetime.now() >= datetime.strptime(cdate + " 15:00:00", "%d-%m-%Y %H:%M:%S")):
-        #closing all open positions
-        positionList=xt.get_position_daywise()['result']['positionList']
-        pos_df = pd.DataFrame(positionList)
-        for i in range(len(pos_df)):
-            if int(pos_df["Quantity"].values[i]) != 0:
-                symbol=pos_df['TradingSymbol'].values[i]
-                eid = pos_df["ExchangeInstrumentId"].values[i]
-                squareOff(eid)
-        print("Position Squareoff COmpleted ")
-        
-        #closing all pending orders
-        orderList=xt.get_order_book()['result']
-        ord_df = pd.DataFrame(orderList)
-        pending = ord_df[ord_df['OrderStatus'].isin(["New","Open","Partially Filled"])]["AppOrderID"].tolist()
-        drop = []
-        attempt = 0
-        while len(pending)>0 and attempt<5:
-            pending = [j for j in pending if j not in drop]
-            for order in pending:
-                try:
-                    cancelOrder(order)
-                    drop.append(order)
-                except:
-                    print("unable to delete order id : ",order)
-                    attempt+=1
-        else:
-            print("No Open orders to Cancel")
-                
-        check=False #exit the main loop
-    else:
-        # print(time.strftime("%d-%m-%Y %H:%M:%S"),",",get_global_PnL())
-        # time.sleep(10)
-        data = time.strftime("%d-%m-%Y %H:%M:%S"),",",get_global_PnL()
-        # print(data)
-        bag.append(data) 
-        m+=1
-        if len(bag) >= 10:
-            tup=bag[-1]
-            bagstr=" ".join(str(x) for x in tup)
-            print(bagstr)
-            bag = []
-            m=0
-        # print(m,len(bag))
-        time.sleep(2)
 
         
 # print(time.strftime("%d-%m-%Y %H:%M:%S"),"|",get_global_PnL())            

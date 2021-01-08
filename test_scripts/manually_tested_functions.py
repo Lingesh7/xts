@@ -75,7 +75,14 @@ eID = get_eID(ticker,oType,weekly_exp,strikePrice)
 
 
 
-
+a = 0
+while a < 10:
+    try:
+       bal_resp = xt.get_balance()
+       break
+    except:
+        print("can't extract position data..retrying")
+        a+=1
 
 
 
@@ -148,13 +155,23 @@ def get_global_PnL():
 
 
 import time
-start = time.time()
-get_global_PnL()
-print(f'Time: {time.time() - start}')
+def getOrderList():
+    aa = 0
+    while aa < 10:
+        try:
+           orderBook_resp = xt.get_order_book()
+           orderList =  orderBook_resp['result'] 
+           return orderList
+           break
+        except:
+            print("can't extract position data..retrying")
+            aa+=1
+
 
 start = time.time()
-get_global_PnL_df()
+getOrderList()
 print(f'Time: {time.time() - start}')
+
     
 from datetime import datetime
 now = datetime.now()
@@ -216,6 +233,7 @@ print("starting...")
 rt1 = RepeatedTimer(1, hello, "L7","GM!") # it auto-starts, no need of rt.start()
 rt2 = RepeatedTimer(5, hello, "Modfied")
 try:
+    
     sleep(5) # your long-running job goes here...
 finally:
     rt1.stop() # better in a try/finally block to make sure the program ends!

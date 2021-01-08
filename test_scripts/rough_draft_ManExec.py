@@ -104,61 +104,87 @@ def placeOrderWithSL(symbols,buy_sell,quantity):
         slPoints = +15
     tradedPrice = 0
     # quantity = mul*nifty_lot_size
-    for symbol in symbols:
-        print('placing order for --', symbol)
-        order_resp = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
-                        exchangeInstrumentID= symbol ,
-                        productType=xt.PRODUCT_MIS, 
-                        orderType=xt.ORDER_TYPE_MARKET,                   
-                        orderSide=t_type,
-                        timeInForce=xt.VALIDITY_DAY,
-                        disclosedQuantity=0,
-                        orderQuantity=quantity,
-                        limitPrice=0,
-                        stopPrice=0,
-                        orderUniqueIdentifier="FirstChoice0"
-                        )
-       
-        
-        
-        # # extracting the order id from response
-        if order_resp['type'] != 'error':
-             orderID = order_resp['result']['AppOrderID']
-             print(f''' Order ID for {t_type} {symbol} is: ", {orderID}''')
-        elif order_resp['type'] == 'error':
-                print("Error placing Order.. Exiting...")
-                exit()
-        # time.sleep(3)
-        # stopPrice = 0
-        orderBook = xt.get_order_book()
-        orderList =  orderBook['result'] 
-        for i in orderList:
-            if orderID == i["AppOrderID"] and i["OrderStatus"] == 'Filled':
-                tradedPrice = float(( i["OrderAverageTradedPrice"]))
-                print('traded price is: ', tradedPrice)
-        print('placing SL order for --', symbol)
-        placed_SL_order = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
-                        exchangeInstrumentID= symbol ,
-                        productType=xt.PRODUCT_MIS, 
-                        orderType="StopMarket",                   
-                        orderSide=t_type_sl,
-                        timeInForce=xt.VALIDITY_DAY,
-                        disclosedQuantity=0,
-                        orderQuantity=quantity,
-                        limitPrice=0,
-                        stopPrice=round((tradedPrice+slPoints),2),
-                        orderUniqueIdentifier="FirstChoice1"
-                        )
-        if placed_SL_order['type'] != 'error':
-            placed_SL_orderID = placed_SL_order['result']['AppOrderID']
-            print("order id for StopLoss :", placed_SL_orderID)
-        else:
-            print("Error placing SL Order.. try again manually...")
-            
+    try:
+        for symbol in symbols:
+            print('placing order for --', symbol)
+            order_resp = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
+                            exchangeInstrumentID= symbol ,
+                            productType=xt.PRODUCT_MIS, 
+                            orderType=xt.ORDER_TYPE_MARKET,                   
+                            orderSide=t_type,
+                            timeInForce=xt.VALIDITY_DAY,
+                            disclosedQuantity=0,
+                            orderQuantity=quantity,
+                            limitPrice=0,
+                            stopPrice=0,
+                            orderUniqueIdentifier="FirstChoice0"
+                            )
+           # # extracting the order id from response
+            if order_resp['type'] != 'error':
+                 orderID = order_resp['result']['AppOrderID']
+                 print(f''' Order ID for {t_type} {symbol} is: ", {orderID}''')
+            elif order_resp['type'] == 'error':
+                    print("Error placing Order.. Exiting...")
+                    exit()
+            # time.sleep(3)
+            # stopPrice = 0
+            #get trade price of the last order processed from orderList
+            orderList = getOrderList()
+            for i in orderList:
+                if orderID == i["AppOrderID"] and i["OrderStatus"] == 'Filled':
+                    tradedPrice = float(( i["OrderAverageTradedPrice"]))
+                    print('Traded price is: ', tradedPrice)
+                    break
+            print('placing SL order for --', symbol)
+            placed_SL_order = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
+                            exchangeInstrumentID= symbol ,
+                            productType=xt.PRODUCT_MIS, 
+                            orderType="StopMarket",                   
+                            orderSide=t_type_sl,
+                            timeInForce=xt.VALIDITY_DAY,
+                            disclosedQuantity=0,
+                            orderQuantity=quantity,
+                            limitPrice=0,
+                            stopPrice=round((tradedPrice+slPoints),2),
+                            orderUniqueIdentifier="FirstChoice1"
+                            )
+            if placed_SL_order['type'] != 'error':
+                placed_SL_orderID = placed_SL_order['result']['AppOrderID']
+                print("order id for StopLoss :", placed_SL_orderID)
+            else:
+                print("Error placing SL Order.. try again manually...")
+        return True
+    except:
+        return False
+
+def getOrderList():
+    aa = 0
+    while aa < 10:
+        try:
+           orderBook_resp = xt.get_order_book()
+           orderList =  orderBook_resp['result'] 
+           return orderList
+           break
+        except:
+            print("can't extract position data..retrying")
+            aa+=1
+
+def getPositionList():
+    a = 0
+    while a < 10:
+        try:
+           pos_resp = xt.get_position_daywise()
+           positionList = pos_resp['result']['positionList']
+           return positionList
+           break
+        except:
+            print("Can't extract position data...retrying")
+            a+=1
             
 def get_global_PnL():
+    global pos_df
     totalMTMdf = 0.0
-    positionList=xt.get_position_daywise()['result']['positionList']
+    positionList=getPositionList()
     if positionList:
         posDf = pd.DataFrame(positionList)
         # posDf['MTM'].replace({',':''},regex=True).apply(pd.to_numeric,1).sum()
@@ -168,7 +194,10 @@ def get_global_PnL():
         return totalMTMdf
     
 def squareOff(eid,symbol):
-    sq_off_resp = xt.squareoff_position(
+    ab = 0
+    while ab < 10:
+        try:
+           sq_off_resp = xt.squareoff_position(
                 exchangeSegment=xt.EXCHANGE_NSEFO,
                 exchangeInstrumentID=eid,
                 productType=xt.PRODUCT_MIS,
@@ -177,6 +206,11 @@ def squareOff(eid,symbol):
                 squareOffQtyValue=100,
                 blockOrderSending=True,
                 cancelOrders=True)
+           break
+        except:
+            print("Unable to sq off positions... retrying")
+            ab+=1
+    
     if sq_off_resp['type'] == 'success':
         print(f"Squared-off for symbol {symbol} | {eid}")
         
@@ -226,7 +260,8 @@ def runOrders(go):
             print(f"symbol = {ticker} EID = {eID} expiry = {weekly_exp} strikePrice = {strikePrice} ")#.format(ticker,expiry,Otype,strikePrice,eID))
             # while nstart:
             #     if (datetime.now() >= datetime.strptime(ndate + " 14:31:00", "%d-%m-%Y %H:%M:%S")):
-            placeOrderWithSL(eID,'sell',quantity)
+            monitor = placeOrderWithSL(eID,'sell',quantity)
+            runSqOffLogics(monitor)
             # placeOrderWithSL(eID2,'sell',quantity)
             # nstart = False
             # else:
@@ -244,58 +279,63 @@ def runOrders(go):
         print("vars not set....")
   
 
-def runSqOffLogics():
-    cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-    check=True
-    m=0
-    bag=[]
-    while check:
-        cur_PnL = get_global_PnL()
-        if (cur_PnL < -1500) or (cur_PnL >= 3000) or (datetime.now() >= datetime.strptime(cdate + " 15:10:00", "%d-%m-%Y %H:%M:%S")):
-            #closing all open positions
-            positionList=xt.get_position_daywise()['result']['positionList']
-            pos_df = pd.DataFrame(positionList)
-            for i in range(len(pos_df)):
-                if int(pos_df["Quantity"].values[i]) != 0:
-                    symbol=pos_df['TradingSymbol'].values[i]
-                    eid = pos_df["ExchangeInstrumentId"].values[i]
-                    squareOff(eid,symbol)
-            print("Position Squareoff COmpleted ")
-            
-            #closing all pending orders
-            orderList=xt.get_order_book()['result']
-            ord_df = pd.DataFrame(orderList)
-            pending = ord_df[ord_df['OrderStatus'].isin(["New","Open","Partially Filled"])]["AppOrderID"].tolist()
-            drop = []
-            attempt = 0
-            while len(pending)>0 and attempt<5:
-                pending = [j for j in pending if j not in drop]
-                for order in pending:
-                    try:
-                        cancelOrder(order)
-                        drop.append(order)
-                    except:
-                        print("unable to delete order id : ",order)
-                        attempt+=1
+def runSqOffLogics(monitor):
+    if monitor:
+        cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
+        check=True
+        m=0
+        bag=[]
+        while check:
+            cur_PnL = get_global_PnL()
+            if (cur_PnL < -1500) or (cur_PnL >= 3000) or (datetime.now() >= datetime.strptime(cdate + " 15:10:00", "%d-%m-%Y %H:%M:%S")):
+                #closing all open positions
+                # positionList=xt.get_position_daywise()['result']['positionList']
+                # pos_df = pd.DataFrame(positionList)
+                for i in range(len(pos_df)):
+                    if int(pos_df["Quantity"].values[i]) != 0:
+                        symbol=pos_df['TradingSymbol'].values[i]
+                        eid = pos_df["ExchangeInstrumentId"].values[i]
+                        squareOff(eid,symbol)
+                print("Position Squareoff COmpleted ")
+                
+                #closing all pending orders
+                # orderBook = getOrderBook()
+                # orderList=xt.get_order_book()['result']
+                orderList = getOrderList()
+                ord_df = pd.DataFrame(orderList)
+                pending = ord_df[ord_df['OrderStatus'].isin(["New","Open","Partially Filled"])]["AppOrderID"].tolist()
+                drop = []
+                attempt = 0
+                while len(pending)>0 and attempt<5:
+                    pending = [j for j in pending if j not in drop]
+                    for order in pending:
+                        try:
+                            cancelOrder(order)
+                            drop.append(order)
+                        except:
+                            print("unable to delete order id : ",order)
+                            attempt+=1
+                else:
+                    print("No Open orders to Cancel")
+                        
+                check=False #exit this main loop
             else:
-                print("No Open orders to Cancel")
-                    
-            check=False #exit this main loop
-        else:
-            # print(time.strftime("%d-%m-%Y %H:%M:%S"),",",get_global_PnL())
-            # time.sleep(10)
-            data = time.strftime("%d-%m-%Y %H:%M:%S"),",",cur_PnL
-            # print(data)
-            bag.append(data) 
-            m+=1
-            if len(bag) >= 10:
-                tup=bag[-1]
-                bagstr=" ".join(str(x) for x in tup)
-                print(bagstr)
-                bag = []
-                m=0
-            # print(m,len(bag))
-            time.sleep(2)
+                # print(time.strftime("%d-%m-%Y %H:%M:%S"),",",get_global_PnL())
+                # time.sleep(10)
+                data = time.strftime("%d-%m-%Y %H:%M:%S"),",",cur_PnL
+                # print(data)
+                bag.append(data) 
+                m+=1
+                if len(bag) >= 10:
+                    tup=bag[-1]
+                    bagstr=" ".join(str(x) for x in tup)
+                    print(bagstr)
+                    bag = []
+                    m=0
+                # print(m,len(bag))
+                time.sleep(2)
+    else:
+        print("No Orders Placed")
         
 def scheduler():
     while True:
@@ -307,11 +347,11 @@ def scheduler():
 ticker='NIFTY'
 
 go = prepareVars(ticker)
-runOrders(go)
-runSqOffLogics()
-# schedule.every().day.at('14:58').do(runOrders,go)
+# monitor=runOrders(go)
+monitor=1
+runSqOffLogics(monitor)
 
-
+# schedule.every().day.at('10:00').do(runOrders,go)
 
 scheduler()
 # start = time.time()
@@ -376,11 +416,11 @@ scheduler()
 #     print(time.strftime("%d-%m-%Y %H:%M:%S"),"|",get_global_PnL())
 
 
-orderList=xt.get_order_book()['result']
-orderDf = pd.DataFrame(orderList)
+# orderList=xt.get_order_book()['result']
+# orderDf = pd.DataFrame(orderList)
 
-tradeList=xt.get_trade()['result']
-tradeDf = pd.DataFrame(tradeList)
+# tradeList=xt.get_trade()['result']
+# tradeDf = pd.DataFrame(tradeList)
 
-positionList=xt.get_position_daywise()['result']['positionList']
-posDf = pd.DataFrame(positionList)
+# positionList=xt.get_position_daywise()['result']['positionList']
+# posDf = pd.DataFrame(positionList)

@@ -321,3 +321,124 @@ Out[40]:
     'TokenID': 0,
     'ApplicationType': 0,
     'SequenceNumber': 307029544564651}]}}
+    
+  
+08-01-2021 10:23:08 , -326.25
+Traceback (most recent call last):
+
+  File "C:\Users\mling\anaconda3\lib\site-packages\urllib3\connection.py", line 159, in _new_conn
+    conn = connection.create_connection(
+
+  File "C:\Users\mling\anaconda3\lib\site-packages\urllib3\util\connection.py", line 84, in create_connection
+    raise err
+
+  File "C:\Users\mling\anaconda3\lib\site-packages\urllib3\util\connection.py", line 74, in create_connection
+    sock.connect(sa)
+
+TimeoutError: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+
+  File "C:\Users\mling\anaconda3\lib\site-packages\urllib3\connectionpool.py", line 670, in urlopen
+    httplib_response = self._make_request(
+
+  File "C:\Users\mling\anaconda3\lib\site-packages\urllib3\connectionpool.py", line 381, in _make_request
+    self._validate_conn(conn)
+
+  File "C:\Users\mling\anaconda3\lib\site-packages\urllib3\connectionpool.py", line 978, in _validate_conn
+    conn.connect()
+
+  File "C:\Users\mling\anaconda3\lib\site-packages\urllib3\connection.py", line 309, in connect
+    conn = self._new_conn()
+
+  File "C:\Users\mling\anaconda3\lib\site-packages\urllib3\connection.py", line 171, in _new_conn
+    raise NewConnectionError(
+
+NewConnectionError: <urllib3.connection.HTTPSConnection object at 0x00000199062C4310>: Failed to establish a new connection: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+
+  File "C:\Users\mling\anaconda3\lib\site-packages\requests\adapters.py", line 439, in send
+    resp = conn.urlopen(
+
+  File "C:\Users\mling\anaconda3\lib\site-packages\urllib3\connectionpool.py", line 726, in urlopen
+    retries = retries.increment(
+
+  File "C:\Users\mling\anaconda3\lib\site-packages\urllib3\util\retry.py", line 446, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+
+MaxRetryError: HTTPSConnectionPool(host='developers.symphonyfintech.in', port=443): Max retries exceeded with url: /interactive/portfolio/positions?dayOrNet=DayWise (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000199062C4310>: Failed to establish a new connection: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond'))
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 351, in get_position_daywise
+    response = self._get('portfolio.positions', params)
+
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 635, in _get
+    return self._request(route, "GET", params)
+
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 671, in _request
+    raise e
+
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 663, in _request
+    r = self.reqsession.request(method,
+
+  File "C:\Users\mling\anaconda3\lib\site-packages\requests\api.py", line 61, in request
+    return session.request(method=method, url=url, **kwargs)
+
+  File "C:\Users\mling\anaconda3\lib\site-packages\requests\sessions.py", line 530, in request
+    resp = self.send(prep, **send_kwargs)
+
+  File "C:\Users\mling\anaconda3\lib\site-packages\requests\sessions.py", line 643, in send
+    r = adapter.send(request, **kwargs)
+
+  File "C:\Users\mling\anaconda3\lib\site-packages\requests\adapters.py", line 516, in send
+    raise ConnectionError(e, request=request)
+
+ConnectionError: HTTPSConnectionPool(host='developers.symphonyfintech.in', port=443): Max retries exceeded with url: /interactive/portfolio/positions?dayOrNet=DayWise (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000199062C4310>: Failed to establish a new connection: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond'))
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+
+  File "<ipython-input-8-a97bd6f16c32>", line 1, in <module>
+    scheduler()
+
+  File "<ipython-input-1-8142b3337030>", line 303, in scheduler
+    schedule.run_pending()
+
+  File "C:\Users\mling\anaconda3\lib\site-packages\schedule\__init__.py", line 563, in run_pending
+    default_scheduler.run_pending()
+
+  File "C:\Users\mling\anaconda3\lib\site-packages\schedule\__init__.py", line 94, in run_pending
+    self._run_job(job)
+
+  File "C:\Users\mling\anaconda3\lib\site-packages\schedule\__init__.py", line 147, in _run_job
+    ret = job.run()
+
+  File "C:\Users\mling\anaconda3\lib\site-packages\schedule\__init__.py", line 466, in run
+    ret = self.job_func()
+
+  File "<ipython-input-1-8142b3337030>", line 227, in runOrders
+    runSqOffLogics(monitor)
+
+  File "<ipython-input-1-8142b3337030>", line 252, in runSqOffLogics
+    cur_PnL = get_global_PnL()
+
+  File "<ipython-input-1-8142b3337030>", line 158, in get_global_PnL
+    positionList=xt.get_position_daywise()['result']['positionList']
+
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 354, in get_position_daywise
+    return response['description']
+
+UnboundLocalError: local variable 'response' referenced before assignment

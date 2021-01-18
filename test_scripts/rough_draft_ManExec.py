@@ -347,13 +347,14 @@ def scheduler():
 ticker='NIFTY'
 
 go = prepareVars(ticker)
-# monitor=runOrders(go)
-monitor=1
-runSqOffLogics(monitor)
+runOrders(go)
+
+# monitor=1
+# runSqOffLogics(monitor)
 
 # schedule.every().day.at('10:00').do(runOrders,go)
 
-scheduler()
+# scheduler()
 # start = time.time()
 # runOrders(prepareVars(ticker))
 # print(f'Time: {time.time() - start}')

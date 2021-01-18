@@ -226,14 +226,17 @@ class RepeatedTimer(object):
         
 from time import sleep
 
-def hello(name,greet):
-    print("Hello ", name, greet)
+def s(name):
+    print("Hello ", name)
 
-print("starting...")
-rt1 = RepeatedTimer(1, hello, "L7","GM!") # it auto-starts, no need of rt.start()
-rt2 = RepeatedTimer(5, hello, "Modfied")
-try:
+def hello(name):
+    print("Hello ", name)
     
+print("starting...")
+rt1 = RepeatedTimer(1, hello, "L7") # it auto-starts, no need of rt.start()
+rt2 = RepeatedTimer(3, hello, "Modfied")
+try:
+    print("Big sleep")
     sleep(5) # your long-running job goes here...
 finally:
     rt1.stop() # better in a try/finally block to make sure the program ends!
@@ -242,53 +245,41 @@ finally:
 
 
 
-
-import threading
+import threading 
 import time
-exitFlag = 0
+  
+def print_hello():
+  for i in range(4):
+    time.sleep(0.5)
+    print("Hello")
+  
+def print_hi(): 
+    for i in range(4): 
+      time.sleep(0.7)
+      print("Hi") 
 
-class myThread (threading.Thread):
-   def __init__(self, threadID, name, counter):
-      threading.Thread.__init__(self)
-      self.threadID = threadID
-      self.name = name
-      self.counter = counter
-   def run(self):
-      print( "Starting " + self.name)
-      print_time(self.name, 10, self.counter)
-      print("Exiting " + self.name)
-
-def print_time(threadName, counter, delay):
-   while counter:
-      if exitFlag:
-         threadName.exit()
-      time.sleep(delay)
-      print( "%s: %s" % (threadName, time.ctime(time.time())))
-      counter -= 1
-
-# Create new threads
-thread1 = myThread(1, "Thread-1", 1)
-thread2 = myThread(2, "Thread-2", 2)
-thread3 = myThread(3, "Thread-3", 3)
-# Start new Threads
-thread1.start()
-thread2.start()
-thread3.start()
-thread3.is_alive()
-print ("Exiting Main Thread")
+t1 = threading.Thread(target=print_hello)  
+t2 = threading.Thread(target=print_hi)  
+t1.start()
+t2.start()
 
 
 
+symbol = 41288  
+initial_order = []
+order_id = 1234
+initial_order.append(order_id)
+o2_id = 7894
+initial_order.append(o2_id)
+dict = {}
+dict[symbol] = initial_order
+dict[41288][1]
 
 
-
-
-
-
-
-
-
-
+dict1 = {}
+dict1[symbol] = []
+dict1[symbol].append(order_id)
+print(dict1)
 
 import datetime
 

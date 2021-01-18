@@ -99,6 +99,8 @@ def checkBalance():
 
 def placeOrderWithSL(symbols,buy_sell,quantity):  
     # Place an intraday stop loss order on NSE
+    global initial_orders
+    initial_orders = []
     if buy_sell == "buy":
         t_type=xt.TRANSACTION_TYPE_BUY
         t_type_sl=xt.TRANSACTION_TYPE_SELL
@@ -130,6 +132,7 @@ def placeOrderWithSL(symbols,buy_sell,quantity):
         if order_resp['type'] != 'error':
              orderID = order_resp['result']['AppOrderID']
              print(f''' Order ID for {t_type} {symbol} is: ", {orderID}''')
+             initial_orders = initial_orders.append(orderID)
         elif order_resp['type'] == 'error':
                 print("Error placing Order.. Exiting...")
                 exit()
@@ -160,6 +163,7 @@ def placeOrderWithSL(symbols,buy_sell,quantity):
         if placed_SL_order['type'] != 'error':
             placed_SL_orderID = placed_SL_order['result']['AppOrderID']
             print("order id for StopLoss :", placed_SL_orderID)
+            initial_orders = initial_orders.append(placed_SL_orderID)
         else:
             print("Error placing SL Order.. try again manually...")
         
@@ -213,7 +217,7 @@ def prepareVars(ticker):
         print("Enter a Valid symbol - NIFTY or BANKNIFTY")
     eID = [ (get_eID(ticker,i,weekly_exp,strikePrice)) for i in ['ce','pe'] ]
     # print("EID is :", eID)
-    margin_ok = int(checkBalance()) >= 1000000001
+    margin_ok = int(checkBalance()) >= 55000
     # return True
     # expect:
         
@@ -241,7 +245,8 @@ def runOrders(ticker):
               But cash available is: {cur_cash}
               Exiting without placing any orders.. 
               ''')     
-  
+ 
+    
 ###################################################
 #maybe main()
 ticker='NIFTY'

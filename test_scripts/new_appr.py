@@ -1,52 +1,70 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Dec 30 11:02:52 2020
-Live execution - manual 
+Created on Wed Jan 19 11:02:52 2020
+Live execution - New Approach with Threaded Timer
 @author: Welcome
 """
 
 from datetime import datetime
 from dateutil.relativedelta import relativedelta, TH
 from itertools import repeat
+from collections import defaultdict
 from XTConnect.Connect import XTSConnect
-import time
-import pandas as pd
 from sys import exit
 from nsetools import Nse
 nse = Nse()
-# import schedule
+import time
+import pandas as pd
 import concurrent.futures
-# import multiprocessing
-import threading 
 
+from threading import Timer
+# import multiprocessing
+# import threading 
+# import schedule
+
+class RepeatedTimer(object):
+    def __init__(self, interval, function, *args, **kwargs):
+        self._timer     = None
+        self.interval   = interval
+        self.function   = function
+        self.args       = args
+        self.kwargs     = kwargs
+        self.is_running = False
+        self.start()
+
+    def _run(self):
+        self.is_running = False
+        self.start()
+        self.function(*self.args, **self.kwargs)
+
+    def start(self):
+        if not self.is_running:
+            self._timer = Timer(self.interval, self._run)
+            self._timer.start()
+            self.is_running = True
+
+    def stop(self):
+        self._timer.cancel()
+        self.is_running = False 
+        
 global ordersEid
 ordersEid = {}
-# global xt
-# # monitor = False
+
+# def login():
+global xt
+# Trading Interactive Creds
+API_KEY = "ebaa4a8cf2de358e53c942"
+API_SECRET = "Ojre664@S9"
+
+# MarketData Creds
 # API_KEY = "ebaa4a8cf2de358e53c942"
 # API_SECRET = "Ojre664@S9"
-# XTS_API_BASE_URL = "https://xts-api.trading"
-# source = "WEBAPI"
-# xt = XTSConnect(API_KEY, API_SECRET, source)
-# login_resp = xt.interactive_login()
-# if login_resp['type'] != 'error':
-#     print("Login Successful")
-
-def login():
-    global xt
-    # Trading Interactive Creds
-    API_KEY = "ebaa4a8cf2de358e53c942"
-    API_SECRET = "Ojre664@S9"
-    
-    # MarketData Creds
-    # API_KEY = "ebaa4a8cf2de358e53c942"
-    # API_SECRET = "Ojre664@S9"
-    XTS_API_BASE_URL = "https://xts-api.trading"
-    source = "WEBAPI"
-    xt = XTSConnect(API_KEY, API_SECRET, source)
-    login_resp = xt.interactive_login()
-    if login_resp['type'] != 'error':
-        print("Login Successful")
+XTS_API_BASE_URL = "https://xts-api.trading"
+source = "WEBAPI"
+xt = XTSConnect(API_KEY, API_SECRET, source)
+login_resp = xt.interactive_login()
+if login_resp['type'] != 'error':
+    print("Login Successful")
 
 def nextThu_and_lastThu_expiry_date ():
     global weekly_exp, monthly_exp
@@ -75,9 +93,6 @@ def strkPrcCalc(ltp,base):
     return base * round(ltp/base)
 
 def get_eID(symbol,ce_pe,expiry,strikePrice):
-    global eID_resp
-    # print("Current nifty price is:", nfty_ltp)
-    # print("Current BankNifty price is:", bnknfty_ltp)
     if ce_pe == "ce":
         oType="CE"
     elif ce_pe == "pe":
@@ -93,7 +108,7 @@ def get_eID(symbol,ce_pe,expiry,strikePrice):
     #print('Option Symbol:', str(response))
     # print("ExchangeInstrumentID is:",eID_resp)# (int(response["result"][0]["ExchangeInstrumentID"])))
     eid = int(eID_resp["result"][0]["ExchangeInstrumentID"])
-    ordersEid[oType]=(eid)
+    ordersEid[eid]=(oType)
     # return int(eID_resp["result"][0]["ExchangeInstrumentID"])
     return eid
 
@@ -212,9 +227,9 @@ def prepareVars(ticker):
 
 def placeOrderWithSL(symbol,buy_sell,quantity):
     # Place an intraday stop loss order on NSE
-    global order_dict
-    order_dict = {}
-    order_dict[symbol] = []
+    global orderID_dict
+    orderID_dict = {}
+    orderID_dict[symbol] = []
     
     if buy_sell == "buy":
         t_type=xt.TRANSACTION_TYPE_BUY
@@ -244,7 +259,8 @@ def placeOrderWithSL(symbol,buy_sell,quantity):
         if order_resp['type'] != 'error':
             orderID = order_resp['result']['AppOrderID']
             print(f''' Order ID for {t_type} {symbol} is: ", {orderID}''')
-            order_dict[symbol].append(orderID)
+            orderID_dict[symbol].append(orderID)
+            orderID_dict[symbol].append(symbol)
         elif order_resp['type'] == 'error':
             print("Error placing Order.. Exiting...")
             exit()
@@ -272,15 +288,51 @@ def placeOrderWithSL(symbol,buy_sell,quantity):
         if placed_SL_order['type'] != 'error':
             placed_SL_orderID = placed_SL_order['result']['AppOrderID']
             print("order id for StopLoss :", placed_SL_orderID)
-            order_dict[symbol].append(placed_SL_orderID)
+            orderID_dict[symbol].append(placed_SL_orderID)
         else:
              print("Error placing SL Order.. try again manually...")
-        return order_dict
+        return orderID_dict
     except:
         # return False
         # monitor=False
         print("Orders Not Placed..")
-       
+
+def placeOrder(symbol,buy_sell,quantity):
+    # Place an intraday stop loss order on NSE
+    if buy_sell == "buy":
+        t_type=xt.TRANSACTION_TYPE_BUY
+        
+    elif buy_sell == "sell":
+        t_type=xt.TRANSACTION_TYPE_SELL
+        # quantity = mul*nifty_lot_size
+    bb = 0
+    while bb < 10:
+        try:
+            print('placing order for --', symbol)
+            order_resp = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
+                         exchangeInstrumentID= symbol ,
+                         productType=xt.PRODUCT_MIS, 
+                         orderType=xt.ORDER_TYPE_MARKET,                   
+                         orderSide=t_type,
+                         timeInForce=xt.VALIDITY_DAY,
+                         disclosedQuantity=0,
+                         orderQuantity=quantity,
+                         limitPrice=0,
+                         stopPrice=0,
+                         orderUniqueIdentifier="FirstChoice_repairOrder"
+                         )
+            break
+        except:
+            print("Unable to place repair order... retrying")
+            bb+=1
+            
+        # extracting the order id from response
+        if order_resp['type'] != 'error':
+            orderID = order_resp['result']['AppOrderID']
+            print(f''' Order ID for {t_type} {symbol} is: ", {orderID}''')
+        elif order_resp['type'] == 'error':
+            print("Error placing Order.. Exiting...")
+            
 def runOrders():
     global monitor
     monitor=False
@@ -305,19 +357,20 @@ def runOrders():
 def runSqOffLogics():
     # login()
     # if monitor:
+    global cur_PnL
     print("--- Entering runSqOffLogics func ---")
     cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
     check=True
-    m=0
-    bag=[]
+    # m=0
+    # bag=[]
     while check:
         # print("--- getting cur_PnL ---")
         cur_PnL = get_global_PnL()
         if (cur_PnL < -1500) or (cur_PnL >= 3000) or (datetime.now() >= datetime.strptime(cdate + " 15:08:00", "%d-%m-%Y %H:%M:%S")):
             #closing all open positions
             # positionList=xt.get_position_daywise()['result']['positionList']
-            positionList = getPositionList()
-            pos_df = pd.DataFrame(positionList)
+            # positionList = getPositionList()
+            # pos_df = pd.DataFrame(positionList)
             for i in range(len(pos_df)):
                 if int(pos_df["Quantity"].values[i]) != 0:
                     symbol=pos_df['TradingSymbol'].values[i]
@@ -362,40 +415,96 @@ def runSqOffLogics():
             # print(m,len(bag))
             time.sleep(2)
 
-def repairStrategy():
-    print("--- Checking for repair if symbol goes +- 40 ---")
-    nse.get_index_quote("nifty 50")['lastPrice']
+def orderDicts():
+    dd = defaultdict(list)
+    for d in (ordersEid, orderID_dict): 
+        for key, value in d.items():
+            dd[key].append(value)
+    oIDs={}
+    for k,v in dd.items():
+        i = iter(v)
+        b = dict(zip(i, i))
+        oIDs.update(b)
+    return oIDs
 
+def repairStrategy(ticker):
+    if monitor:
+        print("--- Checking for repair if symbol goes +- 40 ---")
+        curPrc=nse.get_index_quote("nifty 50")['lastPrice']
+        if curPrc > nfty_ltp+40:
+            oIDs = orderDicts()           
+            print("Dictionary of orders :",oIDs)
 
+            print(" -- symbol goes + 40 -- ")
+            positionList = getPositionList()
+            pos_df = pd.DataFrame(positionList)
+            pos_eids = pos_df[ (pos_df['Quantity'] != '0') ]["ExchangeInstrumentId"].astype(int).values.tolist()
+            ce_pos_eids = [i for i in oIDs['CE'] if i in pos_eids]
+            print("--- squaring off CE positions ---")
+            for ids in ce_pos_eids:
+                squareOff(ids,"Call Option SELL")
+           
+            print("--- Cancelling SL-M orders for CE ---")
+            orderList = getOrderList()
+            ord_df = pd.DataFrame(orderList)
+            pendings = ord_df[ (ord_df['OrderType'] == "StopMarket") & (ord_df['OrderStatus'].isin(["New","Open","Partially Filled"])) ]["AppOrderID"].tolist()
+            pending = [i for i in oIDs['CE'] if i in pendings]
+            drop = []
+            attempt = 0
+            while len(pending)>0 and attempt<5:
+                pending = [j for j in pending if j not in drop]
+                for order in pending:
+                    try:
+                        cancelOrder(order)
+                        drop.append(order)
+                    except:
+                        print("unable to cancel order id : ",order)
+                        attempt+=1
+            
+            print("--- placing a sell CE Order for next strikeprice ---")
+            eid1 = get_eID(ticker, 'ce', weekly_exp, strikePrice+50)
+            placeOrder(eid1, 'sell', quantity)
+            rt1.stop()
+        
+        elif curPrc < nfty_ltp-40:
+            oIDs = orderDicts()           
+            print("Dictionary of orders :",oIDs)
 
-######
-from threading import Timer
-from time import sleep
+            print(" -- symbol goes -ve 40 -- ")
+            positionList = getPositionList()
+            pos_df = pd.DataFrame(positionList)
+            pos_eids = pos_df[ (pos_df['Quantity'] != '0') ]["ExchangeInstrumentId"].astype(int).values.tolist()
+            pe_pos_eids = [i for i in oIDs['PE'] if i in pos_eids]
+            print("--- squaring off EE positions ---")
+            for ids in pe_pos_eids:
+                squareOff(ids,"Put Option SELL")
+           
+            print("--- Cancelling SL-M orders for PE ---")
+            orderList = getOrderList()
+            ord_df = pd.DataFrame(orderList)
+            pendings = ord_df[ (ord_df['OrderType'] == "StopMarket") & (ord_df['OrderStatus'].isin(["New","Open","Partially Filled"])) ]["AppOrderID"].tolist()
+            pending = [i for i in oIDs['PE'] if i in pendings]
+            drop = []
+            attempt = 0
+            while len(pending)>0 and attempt<5:
+                pending = [j for j in pending if j not in drop]
+                for order in pending:
+                    try:
+                        cancelOrder(order)
+                        drop.append(order)
+                    except:
+                        print("unable to cancel order id : ",order)
+                        attempt+=1
+            
+            print("--- placing a sell PE Order for next strikeprice ---")
+            eid2 = get_eID(ticker, 'pe', weekly_exp, strikePrice-50)
+            placeOrder(eid2, 'sell', quantity)
+            rt1.stop()
+        else:
+            print("Repair running...")
+                    
 
-class RepeatedTimer(object):
-    def __init__(self, interval, function, *args, **kwargs):
-        self._timer     = None
-        self.interval   = interval
-        self.function   = function
-        self.args       = args
-        self.kwargs     = kwargs
-        self.is_running = False
-        self.start()
-
-    def _run(self):
-        self.is_running = False
-        self.start()
-        self.function(*self.args, **self.kwargs)
-
-    def start(self):
-        if not self.is_running:
-            self._timer = Timer(self.interval, self._run)
-            self._timer.start()
-            self.is_running = True
-
-    def stop(self):
-        self._timer.cancel()
-        self.is_running = False       
+      
 # def scheduler():
 #     while True:
 #         schedule.run_pending()
@@ -403,31 +512,33 @@ class RepeatedTimer(object):
 ###################################################
 #maybe main()
 if __name__ == '__main__':
-    
+    # login()
     ticker='NIFTY'
     go = prepareVars(ticker)
     if go:
+        print("required variables set-- ready to trigger orders at desired time")
         nstart=True
         ndate = datetime.strftime(datetime.now(), "%d-%m-%Y")
         while nstart:
-            if (datetime.now() >= datetime.strptime(ndate + " 09:45:00", "%d-%m-%Y %H:%M:%S")):
+            if (datetime.now() >= datetime.strptime(ndate + " 03:08:00", "%d-%m-%Y %H:%M:%S")):
                 runOrders()
                 nstart = False
             else:
                 time.sleep(0.5)
         
         print("starting multi funcs with threaded timer...")
-        rt1 = RepeatedTimer(1, strategy, "strategy") # it auto-starts, no need of rt.start()
-        rt2 = RepeatedTimer(60, printPNL, "printPNL")
-        try:
-            print("--- Entering SquareOffLogic Function after placing orders ---")
-            SquareOffLogic()
-            print("--- Sq-off Func Exit ---")
-        finally:
-            print("finally block")
-            rt1.stop() # better in a try/finally block to make sure the program ends!
-            rt2.stop()
-            print("stopped all")
+        if monitor:
+            rt1 = RepeatedTimer(5, repairStrategy, ticker) # it auto-starts, no need of rt.start()
+            rt2 = RepeatedTimer(15, printPNL)
+            try:
+                print("--- Entering SquareOffLogic Function after placing orders ---")
+                runSqOffLogics()
+                print("--- Sq-off Func Exit ---")
+            finally:
+                print("finally block")
+                rt1.stop() # better in a try/finally block to make sure the program ends!
+                rt2.stop()
+                print("stopped all")
                 
             # if monitor:
             # t1 = threading.Thread(target=runSqOffLogics)

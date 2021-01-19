@@ -107,3 +107,6 @@ https://nsetools.readthedocs.io/en/latest/usage.html#getting-a-stock-quote
 14100 --- 10:30 == > +40pts ce square off - sell ce next strike
 
  					 -40pts pe square off - sell pe next strike
+
+
+IIFL24 // login - Jan@1234 // tranx - Jan@123

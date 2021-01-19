@@ -19,16 +19,18 @@ import concurrent.futures
 # import multiprocessing
 import threading 
 
-global xt
-# monitor = False
-API_KEY = "ebaa4a8cf2de358e53c942"
-API_SECRET = "Ojre664@S9"
-XTS_API_BASE_URL = "https://xts-api.trading"
-source = "WEBAPI"
-xt = XTSConnect(API_KEY, API_SECRET, source)
-login_resp = xt.interactive_login()
-if login_resp['type'] != 'error':
-    print("Login Successful")
+global ordersEid
+ordersEid = {}
+# global xt
+# # monitor = False
+# API_KEY = "ebaa4a8cf2de358e53c942"
+# API_SECRET = "Ojre664@S9"
+# XTS_API_BASE_URL = "https://xts-api.trading"
+# source = "WEBAPI"
+# xt = XTSConnect(API_KEY, API_SECRET, source)
+# login_resp = xt.interactive_login()
+# if login_resp['type'] != 'error':
+#     print("Login Successful")
 
 def login():
     global xt
@@ -39,14 +41,12 @@ def login():
     # MarketData Creds
     # API_KEY = "ebaa4a8cf2de358e53c942"
     # API_SECRET = "Ojre664@S9"
-    
     XTS_API_BASE_URL = "https://xts-api.trading"
     source = "WEBAPI"
     xt = XTSConnect(API_KEY, API_SECRET, source)
     login_resp = xt.interactive_login()
     if login_resp['type'] != 'error':
         print("Login Successful")
-
 
 def nextThu_and_lastThu_expiry_date ():
     global weekly_exp, monthly_exp
@@ -74,8 +74,8 @@ def nextThu_and_lastThu_expiry_date ():
 def strkPrcCalc(ltp,base):    
     return base * round(ltp/base)
 
-
 def get_eID(symbol,ce_pe,expiry,strikePrice):
+    global eID_resp
     # print("Current nifty price is:", nfty_ltp)
     # print("Current BankNifty price is:", bnknfty_ltp)
     if ce_pe == "ce":
@@ -92,7 +92,10 @@ def get_eID(symbol,ce_pe,expiry,strikePrice):
                 strikePrice=strikePrice)
     #print('Option Symbol:', str(response))
     # print("ExchangeInstrumentID is:",eID_resp)# (int(response["result"][0]["ExchangeInstrumentID"])))
-    return int(eID_resp["result"][0]["ExchangeInstrumentID"])
+    eid = int(eID_resp["result"][0]["ExchangeInstrumentID"])
+    ordersEid[oType]=(eid)
+    # return int(eID_resp["result"][0]["ExchangeInstrumentID"])
+    return eid
 
 def checkBalance():
     a = 0
@@ -111,7 +114,6 @@ def checkBalance():
         print(bal_resp['description'])
         print("Unable to fetch Cash margins... try again..")
     return int(cashAvailable)
-
 
 def getOrderList():
     aa = 0
@@ -148,6 +150,9 @@ def get_global_PnL():
         return totalMTMdf
     else:
         return totalMTMdf
+
+def printPNL():
+    print(time.strftime("%d-%m-%Y %H:%M:%S"),",",cur_PnL)
     
 def squareOff(eid,symbol):
     ab = 0
@@ -177,12 +182,11 @@ def cancelOrder(OrderID):
     if cancel_resp['type'] != 'error':
             cancelled_SL_orderID = cancel_resp['result']['AppOrderID']
             print("Cancelled SL order id :", cancelled_SL_orderID)
-    
-    
+        
 def prepareVars(ticker): 
     try:
         # for ticker in tickers:
-        global net_cash, margin_ok, quantity,eID,strikePrice
+        global net_cash, margin_ok, quantity,eID,strikePrice,nfty_ltp,bnknfty_ltp
         nextThu_and_lastThu_expiry_date ()
         # try:
         if ticker == "NIFTY":
@@ -205,7 +209,6 @@ def prepareVars(ticker):
     except:
         print("unable to set variables to place order")
         return False
-
 
 def placeOrderWithSL(symbol,buy_sell,quantity):
     # Place an intraday stop loss order on NSE
@@ -275,9 +278,9 @@ def placeOrderWithSL(symbol,buy_sell,quantity):
         return order_dict
     except:
         # return False
-        print("Orders Not Placed..")
         # monitor=False
-
+        print("Orders Not Placed..")
+       
 def runOrders():
     global monitor
     monitor=False
@@ -298,12 +301,9 @@ def runOrders():
              But cash available is: {net_cash}
              Exiting without placing any orders.. 
                   ''')     
-# else:
-#     print("vars not set....")
-  
-
+ 
 def runSqOffLogics():
-    login()
+    # login()
     # if monitor:
     print("--- Entering runSqOffLogics func ---")
     cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
@@ -311,7 +311,7 @@ def runSqOffLogics():
     m=0
     bag=[]
     while check:
-        print("--- getting cur_PnL ---")
+        # print("--- getting cur_PnL ---")
         cur_PnL = get_global_PnL()
         if (cur_PnL < -1500) or (cur_PnL >= 3000) or (datetime.now() >= datetime.strptime(cdate + " 15:08:00", "%d-%m-%Y %H:%M:%S")):
             #closing all open positions
@@ -349,20 +349,53 @@ def runSqOffLogics():
         else:
             # print(time.strftime("%d-%m-%Y %H:%M:%S"),",",get_global_PnL())
             # time.sleep(10)
-            data = time.strftime("%d-%m-%Y %H:%M:%S"),",",cur_PnL
+            # data = time.strftime("%d-%m-%Y %H:%M:%S"),",",cur_PnL
             # print(data)
-            bag.append(data) 
-            m+=1
-            if len(bag) >= 10:
-                tup=bag[-1]
-                bagstr=" ".join(str(x) for x in tup)
-                print(bagstr)
-                bag = []
-                m=0
+            # bag.append(data) 
+            # m+=1
+            # if len(bag) >= 10:
+            #     tup=bag[-1]
+            #     bagstr=" ".join(str(x) for x in tup)
+            #     print(bagstr)
+            #     bag = []
+            #     m=0
             # print(m,len(bag))
             time.sleep(2)
 
-        
+def repairStrategy():
+    print("--- Checking for repair if symbol goes +- 40 ---")
+    nse.get_index_quote("nifty 50")['lastPrice']
+
+
+
+######
+from threading import Timer
+from time import sleep
+
+class RepeatedTimer(object):
+    def __init__(self, interval, function, *args, **kwargs):
+        self._timer     = None
+        self.interval   = interval
+        self.function   = function
+        self.args       = args
+        self.kwargs     = kwargs
+        self.is_running = False
+        self.start()
+
+    def _run(self):
+        self.is_running = False
+        self.start()
+        self.function(*self.args, **self.kwargs)
+
+    def start(self):
+        if not self.is_running:
+            self._timer = Timer(self.interval, self._run)
+            self._timer.start()
+            self.is_running = True
+
+    def stop(self):
+        self._timer.cancel()
+        self.is_running = False       
 # def scheduler():
 #     while True:
 #         schedule.run_pending()
@@ -374,26 +407,34 @@ if __name__ == '__main__':
     ticker='NIFTY'
     go = prepareVars(ticker)
     if go:
-        # schedule.every().day.at('15:00').do(runOrders)
-        # schedule.every(5).seconds.do(runSqOffLogics)
-        runOrders()
-        if monitor:
-            t1 = threading.Thread(target=runSqOffLogics)
-            t1.start()
+        nstart=True
+        ndate = datetime.strftime(datetime.now(), "%d-%m-%Y")
+        while nstart:
+            if (datetime.now() >= datetime.strptime(ndate + " 09:45:00", "%d-%m-%Y %H:%M:%S")):
+                runOrders()
+                nstart = False
+            else:
+                time.sleep(0.5)
+        
+        print("starting multi funcs with threaded timer...")
+        rt1 = RepeatedTimer(1, strategy, "strategy") # it auto-starts, no need of rt.start()
+        rt2 = RepeatedTimer(60, printPNL, "printPNL")
+        try:
+            print("--- Entering SquareOffLogic Function after placing orders ---")
+            SquareOffLogic()
+            print("--- Sq-off Func Exit ---")
+        finally:
+            print("finally block")
+            rt1.stop() # better in a try/finally block to make sure the program ends!
+            rt2.stop()
+            print("stopped all")
+                
+            # if monitor:
+            # t1 = threading.Thread(target=runSqOffLogics)
+            # t1.start()
             # t1.join()
         else:
             print("No Orders Placed")
     else:
         print("Vars not set properly...")
-
-
-
-
-
-
-
-
-
-
-
 

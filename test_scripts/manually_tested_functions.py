@@ -225,22 +225,36 @@ class RepeatedTimer(object):
         self.is_running = False
         
 from time import sleep
+from nsetools import Nse
+nse = Nse()
 
-def s(name):
+nfty_ltp = 14450
+
+def squareOff(name):
     print("Hello ", name)
 
-def hello(name):
-    print("Hello ", name)
+      
+
+    
+def printPNL(name):
+    print("PNL")
     
 print("starting...")
-rt1 = RepeatedTimer(1, hello, "L7") # it auto-starts, no need of rt.start()
-rt2 = RepeatedTimer(3, hello, "Modfied")
+rt1 = RepeatedTimer(2, strategy, "strategy") # it auto-starts, no need of rt.start()
+rt2 = RepeatedTimer(10, printPNL, "printPNL")
 try:
-    print("Big sleep")
-    sleep(5) # your long-running job goes here...
+    print("sqOff started")
+    squareOff(" in sqoff")
+    sleep(20) # your long-running job goes here...
+    print("squareoff completed")
 finally:
+    print("finally block")
     rt1.stop() # better in a try/finally block to make sure the program ends!
     rt2.stop()
+    print("stopped all")
+
+
+
 
 
 
@@ -263,7 +277,25 @@ t2 = threading.Thread(target=print_hi)
 t1.start()
 t2.start()
 
+# d1 = { 'CE' :58346 , 'PE' : 58349 }
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+from collections import defaultdict
+dd=0
+d1 = {58346: 'CE' , 58349 : 'PE' }
+d2 = {58346: [1234, 7894],58349: [1237, 7897]}
+dd = defaultdict(list)
+
+for d in (d1, d2): 
+    for key, value in d.items():
+        dd[key].append(value)
+c={}
+for k,v in dd.items():
+    i = iter(v)
+    b = dict(zip(i, i))
+    c.update(b)              
+print(c)
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 symbol = 41288  
 initial_order = []
@@ -275,7 +307,12 @@ dict = {}
 dict[symbol] = initial_order
 dict[41288][1]
 
-
+d = {41288: [1234, 7894],41287: [1237, 7897]}
+[[i for i in d[x]] for x in d.keys()][0][0] 
+for v in d.values():
+    print(v)
+    
+    
 dict1 = {}
 dict1[symbol] = []
 dict1[symbol].append(order_id)
@@ -349,7 +386,17 @@ while len(pending)>0 and attempt<5:
             print("unable to print order id : ",order)
             attempt+=1
 
+def strategy():
+    # def repairStrategy():
+    print("--- Checking for repair if symbol goes +- 40 ---")
+    curPrc = nse.get_index_quote("nifty 50")['lastPrice']
+    if curPrc > nfty_ltp+40:
+        print("Logic entered")
+        
+    if curPrc < nfty_ltp-40:
+        print("Logic entered")
 
+order_dict = {}  
 
 
 

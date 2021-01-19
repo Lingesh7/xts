@@ -19,6 +19,16 @@ import concurrent.futures
 # import multiprocessing
 import threading 
 
+global xt
+# monitor = False
+API_KEY = "ebaa4a8cf2de358e53c942"
+API_SECRET = "Ojre664@S9"
+XTS_API_BASE_URL = "https://xts-api.trading"
+source = "WEBAPI"
+xt = XTSConnect(API_KEY, API_SECRET, source)
+login_resp = xt.interactive_login()
+if login_resp['type'] != 'error':
+    print("Login Successful")
 
 def login():
     global xt
@@ -199,8 +209,10 @@ def prepareVars(ticker):
 
 def placeOrderWithSL(symbol,buy_sell,quantity):
     # Place an intraday stop loss order on NSE
-    global monitor, initial_orders
-    initial_orders = {}
+    global order_dict
+    order_dict = {}
+    order_dict[symbol] = []
+    
     if buy_sell == "buy":
         t_type=xt.TRANSACTION_TYPE_BUY
         t_type_sl=xt.TRANSACTION_TYPE_SELL
@@ -229,7 +241,7 @@ def placeOrderWithSL(symbol,buy_sell,quantity):
         if order_resp['type'] != 'error':
             orderID = order_resp['result']['AppOrderID']
             print(f''' Order ID for {t_type} {symbol} is: ", {orderID}''')
-            initial_orders[symbol] = orderID
+            order_dict[symbol].append(orderID)
         elif order_resp['type'] == 'error':
             print("Error placing Order.. Exiting...")
             exit()
@@ -257,16 +269,18 @@ def placeOrderWithSL(symbol,buy_sell,quantity):
         if placed_SL_order['type'] != 'error':
             placed_SL_orderID = placed_SL_order['result']['AppOrderID']
             print("order id for StopLoss :", placed_SL_orderID)
+            order_dict[symbol].append(placed_SL_orderID)
         else:
              print("Error placing SL Order.. try again manually...")
-        monitor=True
-        # return True
+        return order_dict
     except:
         # return False
         print("Orders Not Placed..")
-        monitor=False
+        # monitor=False
 
 def runOrders():
+    global monitor
+    monitor=False
     if margin_ok:
         print("Required Margin Available.. Taking positions...")
         print(f"symbol = {ticker} EID = {eID} expiry = {weekly_exp} strikePrice = {strikePrice} ")#.format(ticker,expiry,Otype,strikePrice,eID))
@@ -275,8 +289,9 @@ def runOrders():
                 results = executor.map(placeOrderWithSL,eID,repeat('sell'),repeat(quantity))
                 for result in results:
                     print(result)
+                monitor = True
             except Exception as e:
-                print("got exception: terminating the pool:", e)
+                print("got exception - Something wrong with placing order:", e)
     else:
         print(f''' \t Margin is less to place orders... 
              Required cash : 55000
@@ -288,6 +303,7 @@ def runOrders():
   
 
 def runSqOffLogics():
+    login()
     # if monitor:
     print("--- Entering runSqOffLogics func ---")
     cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
@@ -297,7 +313,7 @@ def runSqOffLogics():
     while check:
         print("--- getting cur_PnL ---")
         cur_PnL = get_global_PnL()
-        if (cur_PnL < -1500) or (cur_PnL >= 3000) or (datetime.now() >= datetime.strptime(cdate + " 15:10:00", "%d-%m-%Y %H:%M:%S")):
+        if (cur_PnL < -1500) or (cur_PnL >= 3000) or (datetime.now() >= datetime.strptime(cdate + " 15:08:00", "%d-%m-%Y %H:%M:%S")):
             #closing all open positions
             # positionList=xt.get_position_daywise()['result']['positionList']
             positionList = getPositionList()
@@ -354,8 +370,8 @@ def runSqOffLogics():
 ###################################################
 #maybe main()
 if __name__ == '__main__':
+    
     ticker='NIFTY'
-    monitor = False
     go = prepareVars(ticker)
     if go:
         # schedule.every().day.at('15:00').do(runOrders)
@@ -364,7 +380,7 @@ if __name__ == '__main__':
         if monitor:
             t1 = threading.Thread(target=runSqOffLogics)
             t1.start()
-            # t1.stop()
+            # t1.join()
         else:
             print("No Orders Placed")
     else:

@@ -57,6 +57,34 @@ def checkBalance():
         print("Unable to fetch Cash margins... try again..")
     return cashAvailable
 
+from datetime import datetime
+from dateutil.relativedelta import relativedelta, TH
+
+def nextThu_and_lastThu_expiry_date ():
+    global weekly_exp, monthly_exp
+    todayte = datetime.today()
+    
+    cmon = todayte.month
+    if_month_next=(todayte + relativedelta(weekday=TH(1))).month
+    next_thursday_expiry=todayte + relativedelta(weekday=TH(1))
+   
+    if (if_month_next!=cmon):
+        month_last_thu_expiry= todayte + relativedelta(weekday=TH(5))
+        if (month_last_thu_expiry.month!=if_month_next):
+            month_last_thu_expiry= todayte + relativedelta(weekday=TH(4))
+    else:
+        for i in range(1, 7):
+            t = todayte + relativedelta(weekday=TH(i))
+            if t.month != cmon:
+                # since t is exceeded we need last one  which we can get by subtracting -2 since it is already a Thursday.
+                t = t + relativedelta(weekday=TH(-2))
+                month_last_thu_expiry=t
+                break
+    monthly_exp=str((month_last_thu_expiry.strftime("%d")))+month_last_thu_expiry.strftime("%b").capitalize()+month_last_thu_expiry.strftime("%Y")
+    weekly_exp=str((next_thursday_expiry.strftime("%d")))+next_thursday_expiry.strftime("%b").capitalize()+next_thursday_expiry.strftime("%Y")
+ 
+    
+ 
 tickers = ["NIFTY"] 
 for ticker in tickers:
     # for oType in "ce","pe":

@@ -50,8 +50,8 @@ class RepeatedTimer(object):
 global ordersEid
 ordersEid = {}
 
-# def login():
-global xt
+
+# global xt
 # Trading Interactive Creds
 API_KEY = "ebaa4a8cf2de358e53c942"
 API_SECRET = "Ojre664@S9"
@@ -65,6 +65,22 @@ xt = XTSConnect(API_KEY, API_SECRET, source)
 login_resp = xt.interactive_login()
 if login_resp['type'] != 'error':
     print("Login Successful")
+        
+def login():
+    global xt
+    # Trading Interactive Creds
+    API_KEY = "ebaa4a8cf2de358e53c942"
+    API_SECRET = "Ojre664@S9"
+    
+    # MarketData Creds
+    # API_KEY = "ebaa4a8cf2de358e53c942"
+    # API_SECRET = "Ojre664@S9"
+    XTS_API_BASE_URL = "https://xts-api.trading"
+    source = "WEBAPI"
+    xt = XTSConnect(API_KEY, API_SECRET, source)
+    login_resp = xt.interactive_login()
+    if login_resp['type'] != 'error':
+        print("Login Successful")
 
 def nextThu_and_lastThu_expiry_date ():
     global weekly_exp, monthly_exp
@@ -86,8 +102,8 @@ def nextThu_and_lastThu_expiry_date ():
                 t = t + relativedelta(weekday=TH(-2))
                 month_last_thu_expiry=t
                 break
-    weekly_exp=str((month_last_thu_expiry.strftime("%d")))+month_last_thu_expiry.strftime("%b").capitalize()+month_last_thu_expiry.strftime("%Y")
-    monthly_exp=str((next_thursday_expiry.strftime("%d")))+next_thursday_expiry.strftime("%b").capitalize()+next_thursday_expiry.strftime("%Y")
+    monthly_exp=str((month_last_thu_expiry.strftime("%d")))+month_last_thu_expiry.strftime("%b").capitalize()+month_last_thu_expiry.strftime("%Y")
+    weekly_exp=str((next_thursday_expiry.strftime("%d")))+next_thursday_expiry.strftime("%b").capitalize()+next_thursday_expiry.strftime("%Y")
  
 def strkPrcCalc(ltp,base):    
     return base * round(ltp/base)
@@ -159,9 +175,9 @@ def get_global_PnL():
     totalMTMdf = 0.0
     positionList=getPositionList()
     if positionList:
-        posDf = pd.DataFrame(positionList)
+        pos_df = pd.DataFrame(positionList)
         # posDf['MTM'].replace({',':''},regex=True).apply(pd.to_numeric,1).sum()
-        totalMTMdf = posDf['MTM'].replace({',':''},regex=True).apply(pd.to_numeric,1).sum()
+        totalMTMdf = pos_df['MTM'].replace({',':''},regex=True).apply(pd.to_numeric,1).sum()
         return totalMTMdf
     else:
         return totalMTMdf
@@ -220,6 +236,11 @@ def prepareVars(ticker):
         # print("EID is :", eID)
         net_cash = checkBalance()
         margin_ok = int(net_cash) >= 55000
+        print(f''' net_cash - {net_cash},
+              strikePrice - {strikePrice},
+              nfty_ltp - {nfty_ltp},
+              eID - {eID}
+              ''')
         return True
     except:
         print("unable to set variables to place order")
@@ -227,7 +248,7 @@ def prepareVars(ticker):
 
 def placeOrderWithSL(symbol,buy_sell,quantity):
     # Place an intraday stop loss order on NSE
-    global orderID_dict
+    # global orderID_dict
     orderID_dict = {}
     orderID_dict[symbol] = []
     
@@ -262,7 +283,7 @@ def placeOrderWithSL(symbol,buy_sell,quantity):
             orderID_dict[symbol].append(orderID)
             orderID_dict[symbol].append(symbol)
         elif order_resp['type'] == 'error':
-            print("Error placing Order.. Exiting...")
+            print("Error placing 1st Order.. Exiting...")
             exit()
             
         # get trade price of the last order processed from orderList
@@ -334,16 +355,20 @@ def placeOrder(symbol,buy_sell,quantity):
             print("Error placing Order.. Exiting...")
             
 def runOrders():
-    global monitor
+    global monitor,orderID_dictR
+    orderID_dictR = {}
     monitor=False
     if margin_ok:
         print("Required Margin Available.. Taking positions...")
-        print(f"symbol = {ticker} EID = {eID} expiry = {weekly_exp} strikePrice = {strikePrice} ")#.format(ticker,expiry,Otype,strikePrice,eID))
+        # print(f"symbol = {ticker} EID = {eID} expiry = {weekly_exp} strikePrice = {strikePrice} ")#.format(ticker,expiry,Otype,strikePrice,eID))
         with concurrent.futures.ProcessPoolExecutor() as executor:
             try:
-                results = executor.map(placeOrderWithSL,eID,repeat('sell'),repeat(quantity))
-                for result in results:
-                    print(result)
+                # orderID_dict = executor.map(placeOrderWithSL,eID,repeat('sell'),repeat(quantity))
+                results = [executor.submit(placeOrderWithSL,i,'sell',quantity) for i in eID]
+                # orderID_dict = results
+                for f in concurrent.futures.as_completed(results):
+                    orderID_dictR.update(f.result())
+                    print(f.result())
                 monitor = True
             except Exception as e:
                 print("got exception - Something wrong with placing order:", e)
@@ -355,7 +380,7 @@ def runOrders():
                   ''')     
  
 def runSqOffLogics():
-    # login()
+    login()
     # if monitor:
     global cur_PnL
     print("--- Entering runSqOffLogics func ---")
@@ -366,7 +391,7 @@ def runSqOffLogics():
     while check:
         # print("--- getting cur_PnL ---")
         cur_PnL = get_global_PnL()
-        if (cur_PnL < -1500) or (cur_PnL >= 3000) or (datetime.now() >= datetime.strptime(cdate + " 15:08:00", "%d-%m-%Y %H:%M:%S")):
+        if (cur_PnL < -1500) or (cur_PnL >= 4000) or (datetime.now() >= datetime.strptime(cdate + " 15:21:00", "%d-%m-%Y %H:%M:%S")):
             #closing all open positions
             # positionList=xt.get_position_daywise()['result']['positionList']
             # positionList = getPositionList()
@@ -413,11 +438,12 @@ def runSqOffLogics():
             #     bag = []
             #     m=0
             # print(m,len(bag))
+            print("Sq-off logic also running")
             time.sleep(2)
 
 def orderDicts():
     dd = defaultdict(list)
-    for d in (ordersEid, orderID_dict): 
+    for d in (ordersEid, orderID_dictR): 
         for key, value in d.items():
             dd[key].append(value)
     oIDs={}
@@ -429,8 +455,9 @@ def orderDicts():
 
 def repairStrategy(ticker):
     if monitor:
-        print("--- Checking for repair if symbol goes +- 40 ---")
+        # print("--- Checking for repair if symbol goes +- 40 ---")
         curPrc=nse.get_index_quote("nifty 50")['lastPrice']
+        print(f''' NIFTY_LTP = {nfty_ltp} & Cuurent NFTY PRC = {curPrc} ''')
         if curPrc > nfty_ltp+40:
             oIDs = orderDicts()           
             print("Dictionary of orders :",oIDs)
@@ -501,7 +528,9 @@ def repairStrategy(ticker):
             placeOrder(eid2, 'sell', quantity)
             rt1.stop()
         else:
-            print("Repair running...")
+            # print("Repair running...")
+            print("")
+            
                     
 
       
@@ -520,7 +549,7 @@ if __name__ == '__main__':
         nstart=True
         ndate = datetime.strftime(datetime.now(), "%d-%m-%Y")
         while nstart:
-            if (datetime.now() >= datetime.strptime(ndate + " 03:08:00", "%d-%m-%Y %H:%M:%S")):
+            if (datetime.now() >= datetime.strptime(ndate + " 15:19:00", "%d-%m-%Y %H:%M:%S")):
                 runOrders()
                 nstart = False
             else:

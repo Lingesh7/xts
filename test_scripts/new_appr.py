@@ -7,7 +7,6 @@ Live execution - New Approach with Threaded Timer
 
 from datetime import datetime
 from dateutil.relativedelta import relativedelta, TH
-from itertools import repeat
 from collections import defaultdict
 from XTConnect.Connect import XTSConnect
 from sys import exit
@@ -16,12 +15,26 @@ nse = Nse()
 import time
 import pandas as pd
 import concurrent.futures
-
 from threading import Timer
+from operator import add,sub
+
+# from itertools import repeat
 # import multiprocessing
-# import threading 
 # import schedule
 
+global ordersEid
+ordersEid = {}
+cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
+
+API_KEY = "ebaa4a8cf2de358e53c942"
+API_SECRET = "Ojre664@S9"
+XTS_API_BASE_URL = "https://xts-api.trading"
+source = "WEBAPI"
+xt = XTSConnect(API_KEY, API_SECRET, source)
+login_resp = xt.interactive_login()
+if login_resp['type'] != 'error':
+    print("Login Successful")
+    
 class RepeatedTimer(object):
     def __init__(self, interval, function, *args, **kwargs):
         self._timer     = None
@@ -46,25 +59,6 @@ class RepeatedTimer(object):
     def stop(self):
         self._timer.cancel()
         self.is_running = False 
-        
-global ordersEid
-ordersEid = {}
-
-
-# global xt
-# Trading Interactive Creds
-API_KEY = "ebaa4a8cf2de358e53c942"
-API_SECRET = "Ojre664@S9"
-
-# MarketData Creds
-# API_KEY = "ebaa4a8cf2de358e53c942"
-# API_SECRET = "Ojre664@S9"
-XTS_API_BASE_URL = "https://xts-api.trading"
-source = "WEBAPI"
-xt = XTSConnect(API_KEY, API_SECRET, source)
-login_resp = xt.interactive_login()
-if login_resp['type'] != 'error':
-    print("Login Successful")
         
 def login():
     global xt
@@ -127,24 +121,6 @@ def get_eID(symbol,ce_pe,expiry,strikePrice):
     ordersEid[eid]=(oType)
     # return int(eID_resp["result"][0]["ExchangeInstrumentID"])
     return eid
-
-def checkBalance():
-    a = 0
-    while a < 10:
-        try:
-           bal_resp = xt.get_balance()
-           break
-        except:
-            print("can't extract position data..retrying")
-            a+=1
-    if bal_resp['type'] != 'error':
-         balanceList = bal_resp['result']['BalanceList']
-         cashAvailable = balanceList[0]['limitObject']['marginAvailable']['CashMarginAvailable']
-         # print("Balance Available is: ", cashAvailable)
-    else:
-        print(bal_resp['description'])
-        print("Unable to fetch Cash margins... try again..")
-    return int(cashAvailable)
 
 def getOrderList():
     aa = 0
@@ -213,6 +189,24 @@ def cancelOrder(OrderID):
     if cancel_resp['type'] != 'error':
             cancelled_SL_orderID = cancel_resp['result']['AppOrderID']
             print("Cancelled SL order id :", cancelled_SL_orderID)
+
+def checkBalance():
+    a = 0
+    while a < 10:
+        try:
+           bal_resp = xt.get_balance()
+           break
+        except:
+            print("can't extract position data..retrying")
+            a+=1
+    if bal_resp['type'] != 'error':
+         balanceList = bal_resp['result']['BalanceList']
+         cashAvailable = balanceList[0]['limitObject']['marginAvailable']['CashMarginAvailable']
+         # print("Balance Available is: ", cashAvailable)
+    else:
+        print(bal_resp['description'])
+        print("Unable to fetch Cash margins... try again..")
+    return int(cashAvailable)
         
 def prepareVars(ticker): 
     try:
@@ -317,6 +311,92 @@ def placeOrderWithSL(symbol,buy_sell,quantity):
         # return False
         # monitor=False
         print("Orders Not Placed..")
+            
+def runOrders():
+    global monitor,orderID_dictR
+    orderID_dictR = {}
+    monitor=False
+    if margin_ok:
+        print("Required Margin Available.. Taking positions...")
+        # print(f"symbol = {ticker} EID = {eID} expiry = {weekly_exp} strikePrice = {strikePrice} ")#.format(ticker,expiry,Otype,strikePrice,eID))
+        with concurrent.futures.ProcessPoolExecutor() as executor:
+            try:
+                # orderID_dict = executor.map(placeOrderWithSL,eID,repeat('sell'),repeat(quantity))
+                results = [executor.submit(placeOrderWithSL,i,'sell',quantity) for i in eID]
+                # orderID_dict = results
+                for f in concurrent.futures.as_completed(results):
+                    orderID_dictR.update(f.result())
+                    print(f.result())
+                monitor = True
+            except Exception as e:
+                print("got exception - Something wrong with placing order:", e)
+    else:
+        print(f''' \t Margin is less to place orders... 
+             Required cash : 55000
+             But cash available is: {net_cash}
+             Exiting without placing any orders.. 
+                  ''')     
+ 
+def runSqOffLogics():
+    login()
+    # if monitor:
+    global cur_PnL
+    print("--- ---\n")
+    print('''\n        Entering runSqOffLogics func,  
+             This logic runs till the end of the script and 
+              checks SL/TARGET/TIMEings \n''')
+    # cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
+    check=True
+    while check:
+        # print("--- getting cur_PnL ---")
+        cur_PnL = get_global_PnL()
+        if (cur_PnL < -1500) or (cur_PnL >= 3000) or (datetime.now() >= datetime.strptime(cdate + " 15:05:00", "%d-%m-%Y %H:%M:%S")):
+            # closing all open positions             # not taking getPositionList() bcoz
+            # positionList = getPositionList()      # get_global_PnL() has the latest pos_df
+            # pos_df = pd.DataFrame(positionList)   # also runs every 2 secs so no need to get again
+            for i in range(len(pos_df)):
+                if int(pos_df["Quantity"].values[i]) != 0:
+                    symbol=pos_df['TradingSymbol'].values[i]
+                    eid = pos_df["ExchangeInstrumentId"].values[i]
+                    squareOff(eid,symbol)
+            print("Position Squareoff Completed ")
+            
+            #closing all pending orders
+            # orderBook = getOrderBook()
+            # orderList=xt.get_order_book()['result']
+            orderList = getOrderList()
+            ord_df = pd.DataFrame(orderList)
+            pending = ord_df[ord_df['OrderStatus'].isin(["New","Open","Partially Filled"])]["AppOrderID"].tolist()
+            drop = []
+            attempt = 0
+            while len(pending)>0 and attempt<5:
+                pending = [j for j in pending if j not in drop]
+                for order in pending:
+                    try:
+                        cancelOrder(order)
+                        drop.append(order)
+                    except:
+                        print("unable to delete order id : ",order)
+                        attempt+=1
+            else:
+                print("No Open orders to Cancel")
+                    
+            check=False # exit this long run main loop
+        else:
+            # print("Sq-off logic running parallelly")
+            time.sleep(2)
+
+def createOrderDicts():
+    dd = defaultdict(list)
+    for d in (ordersEid, orderID_dictR): 
+        for key, value in d.items():
+            dd[key].append(value)
+    oIDs={}
+    for k,v in dd.items():
+        i = iter(v)
+        b = dict(zip(i, i))
+        oIDs.update(b)
+    return oIDs
 
 def placeOrder(symbol,buy_sell,quantity):
     # Place an intraday stop loss order on NSE
@@ -353,192 +433,70 @@ def placeOrder(symbol,buy_sell,quantity):
             print(f''' Order ID for {t_type} {symbol} is: ", {orderID}''')
         elif order_resp['type'] == 'error':
             print("Error placing Order.. Exiting...")
-            
-def runOrders():
-    global monitor,orderID_dictR
-    orderID_dictR = {}
-    monitor=False
-    if margin_ok:
-        print("Required Margin Available.. Taking positions...")
-        # print(f"symbol = {ticker} EID = {eID} expiry = {weekly_exp} strikePrice = {strikePrice} ")#.format(ticker,expiry,Otype,strikePrice,eID))
-        with concurrent.futures.ProcessPoolExecutor() as executor:
+
+def runRepairActions(c_p):
+    print(" --- symbol hits + 40 --- ")
+    positionList = getPositionList()
+    pos_df = pd.DataFrame(positionList)
+    pos_eids = pos_df[ (pos_df['Quantity'] != '0') ]["ExchangeInstrumentId"].astype(int).values.tolist()
+    cp_pos_eids = [i for i in oIDs[c_p] if i in pos_eids]
+    
+    print(f"--------------------- Sq-Off {c_p} positions -----------------------")
+    for ids in cp_pos_eids:
+        squareOff(ids,"Call Option SELL")
+    print(f"---------------------  Sq-Off {c_p} Completed -------------------------")
+    
+    print(f"------------------ Cancelling SL-M {c_p} Orders --------------------")
+    orderList = getOrderList()
+    ord_df = pd.DataFrame(orderList)
+    pendings = ord_df[ (ord_df['OrderType'] == "StopMarket") & (ord_df['OrderStatus'].isin(["New","Open","Partially Filled"])) ]["AppOrderID"].tolist()
+    pending = [i for i in oIDs[c_p] if i in pendings]
+    drop = []
+    attempt = 0
+    while len(pending)>0 and attempt<5:
+        pending = [j for j in pending if j not in drop]
+        for order in pending:
             try:
-                # orderID_dict = executor.map(placeOrderWithSL,eID,repeat('sell'),repeat(quantity))
-                results = [executor.submit(placeOrderWithSL,i,'sell',quantity) for i in eID]
-                # orderID_dict = results
-                for f in concurrent.futures.as_completed(results):
-                    orderID_dictR.update(f.result())
-                    print(f.result())
-                monitor = True
-            except Exception as e:
-                print("got exception - Something wrong with placing order:", e)
-    else:
-        print(f''' \t Margin is less to place orders... 
-             Required cash : 55000
-             But cash available is: {net_cash}
-             Exiting without placing any orders.. 
-                  ''')     
- 
-def runSqOffLogics():
-    login()
-    # if monitor:
-    global cur_PnL
-    print("--- Entering runSqOffLogics func ---")
-    cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-    check=True
-    # m=0
-    # bag=[]
-    while check:
-        # print("--- getting cur_PnL ---")
-        cur_PnL = get_global_PnL()
-        if (cur_PnL < -1500) or (cur_PnL >= 4000) or (datetime.now() >= datetime.strptime(cdate + " 15:21:00", "%d-%m-%Y %H:%M:%S")):
-            #closing all open positions
-            # positionList=xt.get_position_daywise()['result']['positionList']
-            # positionList = getPositionList()
-            # pos_df = pd.DataFrame(positionList)
-            for i in range(len(pos_df)):
-                if int(pos_df["Quantity"].values[i]) != 0:
-                    symbol=pos_df['TradingSymbol'].values[i]
-                    eid = pos_df["ExchangeInstrumentId"].values[i]
-                    squareOff(eid,symbol)
-            print("Position Squareoff COmpleted ")
-            
-            #closing all pending orders
-            # orderBook = getOrderBook()
-            # orderList=xt.get_order_book()['result']
-            orderList = getOrderList()
-            ord_df = pd.DataFrame(orderList)
-            pending = ord_df[ord_df['OrderStatus'].isin(["New","Open","Partially Filled"])]["AppOrderID"].tolist()
-            drop = []
-            attempt = 0
-            while len(pending)>0 and attempt<5:
-                pending = [j for j in pending if j not in drop]
-                for order in pending:
-                    try:
-                        cancelOrder(order)
-                        drop.append(order)
-                    except:
-                        print("unable to delete order id : ",order)
-                        attempt+=1
-            else:
-                print("No Open orders to Cancel")
-                    
-            check=False #exit this main loop
-        else:
-            # print(time.strftime("%d-%m-%Y %H:%M:%S"),",",get_global_PnL())
-            # time.sleep(10)
-            # data = time.strftime("%d-%m-%Y %H:%M:%S"),",",cur_PnL
-            # print(data)
-            # bag.append(data) 
-            # m+=1
-            # if len(bag) >= 10:
-            #     tup=bag[-1]
-            #     bagstr=" ".join(str(x) for x in tup)
-            #     print(bagstr)
-            #     bag = []
-            #     m=0
-            # print(m,len(bag))
-            print("Sq-off logic also running")
-            time.sleep(2)
-
-def orderDicts():
-    dd = defaultdict(list)
-    for d in (ordersEid, orderID_dictR): 
-        for key, value in d.items():
-            dd[key].append(value)
-    oIDs={}
-    for k,v in dd.items():
-        i = iter(v)
-        b = dict(zip(i, i))
-        oIDs.update(b)
-    return oIDs
-
+                cancelOrder(order)
+                drop.append(order)
+            except:
+                print("unable to cancel order id : ",order)
+                attempt+=1
+    print(f"------------------ Cancel SL-M {c_p} Orders completed -------------")
+    
+    print("\n---------Placing a sell {c_p} Order for next strikeprice ----------")
+    if c_p == 'CE':
+        sign=add
+        otyp='ce'
+    if c_p == 'PE':
+        sign=sub
+        otyp='pe'
+    eid1 = get_eID(ticker, otyp, weekly_exp, sign(strikePrice,50))
+    placeOrder(eid1, 'sell', quantity)
+    print("----Stopping repeatedTimer------")
+    rt1.stop()
+    
 def repairStrategy(ticker):
     if monitor:
-        # print("--- Checking for repair if symbol goes +- 40 ---")
+        global oIDs
+        oIDs = createOrderDicts()
+        print("Dictionary of orders :", oIDs)
         curPrc=nse.get_index_quote("nifty 50")['lastPrice']
-        print(f''' NIFTY_LTP = {nfty_ltp} & Cuurent NFTY PRC = {curPrc} ''')
-        if curPrc > nfty_ltp+40:
-            oIDs = orderDicts()           
-            print("Dictionary of orders :",oIDs)
-
-            print(" -- symbol goes + 40 -- ")
-            positionList = getPositionList()
-            pos_df = pd.DataFrame(positionList)
-            pos_eids = pos_df[ (pos_df['Quantity'] != '0') ]["ExchangeInstrumentId"].astype(int).values.tolist()
-            ce_pos_eids = [i for i in oIDs['CE'] if i in pos_eids]
-            print("--- squaring off CE positions ---")
-            for ids in ce_pos_eids:
-                squareOff(ids,"Call Option SELL")
-           
-            print("--- Cancelling SL-M orders for CE ---")
-            orderList = getOrderList()
-            ord_df = pd.DataFrame(orderList)
-            pendings = ord_df[ (ord_df['OrderType'] == "StopMarket") & (ord_df['OrderStatus'].isin(["New","Open","Partially Filled"])) ]["AppOrderID"].tolist()
-            pending = [i for i in oIDs['CE'] if i in pendings]
-            drop = []
-            attempt = 0
-            while len(pending)>0 and attempt<5:
-                pending = [j for j in pending if j not in drop]
-                for order in pending:
-                    try:
-                        cancelOrder(order)
-                        drop.append(order)
-                    except:
-                        print("unable to cancel order id : ",order)
-                        attempt+=1
-            
-            print("--- placing a sell CE Order for next strikeprice ---")
-            eid1 = get_eID(ticker, 'ce', weekly_exp, strikePrice+50)
-            placeOrder(eid1, 'sell', quantity)
-            rt1.stop()
+        print(f''' Cuurent NFTY PRICE = {curPrc} ''')
+        try:
+            if curPrc > nfty_ltp+40:
+                runRepairActions('CE')
         
-        elif curPrc < nfty_ltp-40:
-            oIDs = orderDicts()           
-            print("Dictionary of orders :",oIDs)
-
-            print(" -- symbol goes -ve 40 -- ")
-            positionList = getPositionList()
-            pos_df = pd.DataFrame(positionList)
-            pos_eids = pos_df[ (pos_df['Quantity'] != '0') ]["ExchangeInstrumentId"].astype(int).values.tolist()
-            pe_pos_eids = [i for i in oIDs['PE'] if i in pos_eids]
-            print("--- squaring off EE positions ---")
-            for ids in pe_pos_eids:
-                squareOff(ids,"Put Option SELL")
+            elif curPrc < nfty_ltp-40:
+                runRepairActions('PE')
            
-            print("--- Cancelling SL-M orders for PE ---")
-            orderList = getOrderList()
-            ord_df = pd.DataFrame(orderList)
-            pendings = ord_df[ (ord_df['OrderType'] == "StopMarket") & (ord_df['OrderStatus'].isin(["New","Open","Partially Filled"])) ]["AppOrderID"].tolist()
-            pending = [i for i in oIDs['PE'] if i in pendings]
-            drop = []
-            attempt = 0
-            while len(pending)>0 and attempt<5:
-                pending = [j for j in pending if j not in drop]
-                for order in pending:
-                    try:
-                        cancelOrder(order)
-                        drop.append(order)
-                    except:
-                        print("unable to cancel order id : ",order)
-                        attempt+=1
+            else:
+                # print("Repair check running...")
+                print(".")
+        except Exception() as e:
+             print("got exception - Something wrong with runRepairActions :", e)
             
-            print("--- placing a sell PE Order for next strikeprice ---")
-            eid2 = get_eID(ticker, 'pe', weekly_exp, strikePrice-50)
-            placeOrder(eid2, 'sell', quantity)
-            rt1.stop()
-        else:
-            # print("Repair running...")
-            print("")
-            
-                    
-
-      
-# def scheduler():
-#     while True:
-#         schedule.run_pending()
-#         time.sleep(1)
-###################################################
+           
 #maybe main()
 if __name__ == '__main__':
     # login()
@@ -547,9 +505,9 @@ if __name__ == '__main__':
     if go:
         print("required variables set-- ready to trigger orders at desired time")
         nstart=True
-        ndate = datetime.strftime(datetime.now(), "%d-%m-%Y")
+        # ndate = datetime.strftime(datetime.now(), "%d-%m-%Y")
         while nstart:
-            if (datetime.now() >= datetime.strptime(ndate + " 15:19:00", "%d-%m-%Y %H:%M:%S")):
+            if (datetime.now() >= datetime.strptime(cdate + " 15:19:00", "%d-%m-%Y %H:%M:%S")):
                 runOrders()
                 nstart = False
             else:
@@ -558,7 +516,7 @@ if __name__ == '__main__':
         print("starting multi funcs with threaded timer...")
         if monitor:
             rt1 = RepeatedTimer(5, repairStrategy, ticker) # it auto-starts, no need of rt.start()
-            rt2 = RepeatedTimer(15, printPNL)
+            # rt2 = RepeatedTimer(15, printPNL)
             try:
                 print("--- Entering SquareOffLogic Function after placing orders ---")
                 runSqOffLogics()
@@ -566,7 +524,7 @@ if __name__ == '__main__':
             finally:
                 print("finally block")
                 rt1.stop() # better in a try/finally block to make sure the program ends!
-                rt2.stop()
+                # rt2.stop()
                 print("stopped all")
                 
             # if monitor:
@@ -578,3 +536,4 @@ if __name__ == '__main__':
     else:
         print("Vars not set properly...")
 
+#################################

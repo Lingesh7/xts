@@ -17,7 +17,7 @@ import pandas as pd
 import concurrent.futures
 from threading import Timer
 from operator import add,sub
-
+import traceback
 # from itertools import repeat
 # import multiprocessing
 # import schedule
@@ -25,6 +25,11 @@ from operator import add,sub
 global ordersEid
 ordersEid = {}
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
+kickTime = "01:35:00"
+wrapTime = "15:05:00"
+globalSL = -1500
+globalTarget = 3000
+
 
 API_KEY = "ebaa4a8cf2de358e53c942"
 API_SECRET = "Ojre664@S9"
@@ -126,24 +131,49 @@ def getOrderList():
     aa = 0
     while aa < 10:
         try:
-           orderBook_resp = xt.get_order_book()
-           orderList =  orderBook_resp['result'] 
-           return orderList
-           break
-        except:
-            print("can't extract order data..retrying")
+           oBook_resp = xt.get_order_book()
+           if oBook_resp['type'] != "error":
+               orderList =  oBook_resp['result']
+               return orderList
+               break
+           if oBook_resp['type'] == "error":
+               print(oBook_resp["description"])
+               if (oBook_resp["description"] == "Please Provide token to Authenticate") \
+                   or (oBook_resp["description"] == "Your session has been expired") \
+                   or (oBook_resp["description"] == "Token/Authorization not found"):
+                   print("Trying login in again...")
+                   login()
+                   continue
+           else:
+               raise Exception("Unkonwn error in getOrderList func")           
+        except Exception as e:
+            print("got exception - can't extract order data..retrying", e)
+            traceback.print_exc()
             aa+=1
 
 def getPositionList():
     a = 0
-    while a < 10:
+    while a < 5:
         try:
            pos_resp = xt.get_position_daywise()
-           positionList = pos_resp['result']['positionList']
-           return positionList
-           break
-        except:
-            print("Can't extract position data...retrying")
+           if pos_resp['type'] != "error":
+               positionList = pos_resp['result']['positionList']
+               return positionList
+               break
+           if pos_resp['type'] == "error":
+               print(pos_resp["description"])
+               if (pos_resp["description"] == "Please Provide token to Authenticate") \
+                   or (pos_resp["description"] == "Your session has been expired") \
+                   or (pos_resp["description"] == "Token/Authorization not found"):
+                   print("Trying login in again...")
+                   login()
+                   continue
+           else:
+               raise Exception("Unkonwn error in getPositionoList func")
+        except Exception as e:
+            print("got exception - Can't extract position data...retrying",e)
+            traceback.print_exc()
+            time.sleep(2)
             a+=1
             
 def get_global_PnL():
@@ -330,6 +360,7 @@ def runOrders():
                 monitor = True
             except Exception as e:
                 print("got exception - Something wrong with placing order:", e)
+                traceback.print_exc()
     else:
         print(f''' \t Margin is less to place orders... 
              Required cash : 55000
@@ -342,15 +373,15 @@ def runSqOffLogics():
     # if monitor:
     global cur_PnL
     print("--- ---\n")
-    print('''\n        Entering runSqOffLogics func,  
-             This logic runs till the end of the script and 
+    print('''Entering runSqOffLogics func,\n \t This logic runs till the end of the script and 
               checks SL/TARGET/TIMEings \n''')
     # cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
     check=True
     while check:
         # print("--- getting cur_PnL ---")
         cur_PnL = get_global_PnL()
-        if (cur_PnL < -1500) or (cur_PnL >= 3000) or (datetime.now() >= datetime.strptime(cdate + " 15:05:00", "%d-%m-%Y %H:%M:%S")):
+        if (cur_PnL < globalSL) or (cur_PnL >= globalTarget) or (datetime.now() >= datetime.strptime(cdate + " " + wrapTime, "%d-%m-%Y %H:%M:%S")):
+            print("/n SquareOff Logic met...")
             # closing all open positions             # not taking getPositionList() bcoz
             # positionList = getPositionList()      # get_global_PnL() has the latest pos_df
             # pos_df = pd.DataFrame(positionList)   # also runs every 2 secs so no need to get again
@@ -435,9 +466,12 @@ def placeOrder(symbol,buy_sell,quantity):
             print("Error placing Order.. Exiting...")
 
 def runRepairActions(c_p):
-    print(" --- symbol hits + 40 --- ")
-    positionList = getPositionList()
-    pos_df = pd.DataFrame(positionList)
+    # global oIDs
+    oIDs = createOrderDicts()
+    print("Dictionary of orders :", oIDs)
+    print(" --- symbol hits +/- 40 --- ")
+    # positionList = getPositionList()
+    # pos_df = pd.DataFrame(positionList)
     pos_eids = pos_df[ (pos_df['Quantity'] != '0') ]["ExchangeInstrumentId"].astype(int).values.tolist()
     cp_pos_eids = [i for i in oIDs[c_p] if i in pos_eids]
     
@@ -477,25 +511,25 @@ def runRepairActions(c_p):
     rt1.stop()
     
 def repairStrategy(ticker):
-    if monitor:
-        global oIDs
-        oIDs = createOrderDicts()
-        print("Dictionary of orders :", oIDs)
-        curPrc=nse.get_index_quote("nifty 50")['lastPrice']
-        print(f''' Cuurent NFTY PRICE = {curPrc} ''')
-        try:
-            if curPrc > nfty_ltp+40:
-                runRepairActions('CE')
-        
-            elif curPrc < nfty_ltp-40:
-                runRepairActions('PE')
-           
-            else:
-                # print("Repair check running...")
-                print(".")
-        except Exception() as e:
-             print("got exception - Something wrong with runRepairActions :", e)
-            
+    # if monitor:
+    # global oIDs
+    # oIDs = createOrderDicts()
+    # print("Dictionary of orders :", oIDs)
+    curPrc=nse.get_index_quote("nifty 50")['lastPrice']
+    print(f''' Cuurent NFTY PRICE = {curPrc} ''')
+    try:
+        if curPrc > nfty_ltp+40:
+            runRepairActions('CE')
+    
+        elif curPrc < nfty_ltp-40:
+            runRepairActions('PE')
+       
+        else:
+            # print("Repair check running...")
+            print(".")
+    except Exception() as e:
+         print("got exception - Something wrong with runRepairActions :", e)
+         traceback.print_exc()   
            
 #maybe main()
 if __name__ == '__main__':
@@ -507,7 +541,7 @@ if __name__ == '__main__':
         nstart=True
         # ndate = datetime.strftime(datetime.now(), "%d-%m-%Y")
         while nstart:
-            if (datetime.now() >= datetime.strptime(cdate + " 15:19:00", "%d-%m-%Y %H:%M:%S")):
+            if (datetime.now() >= datetime.strptime(cdate + " " + kickTime, "%d-%m-%Y %H:%M:%S")):
                 runOrders()
                 nstart = False
             else:
@@ -525,7 +559,7 @@ if __name__ == '__main__':
                 print("finally block")
                 rt1.stop() # better in a try/finally block to make sure the program ends!
                 # rt2.stop()
-                print("stopped all")
+                print("END")
                 
             # if monitor:
             # t1 = threading.Thread(target=runSqOffLogics)
@@ -533,6 +567,7 @@ if __name__ == '__main__':
             # t1.join()
         else:
             print("No Orders Placed")
+            print(" not started any multi funcs threaded timer")
     else:
         print("Vars not set properly...")
 

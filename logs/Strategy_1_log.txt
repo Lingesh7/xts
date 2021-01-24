@@ -1,0 +1,22 @@
+2021-01-23 14:52:12,743:INFO:root:squaring-off for :, aasss , 58346
+2021-01-23 14:52:12,747:DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-23 14:52:13,727:DEBUG:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "PUT /interactive/portfolio/squareoff HTTP/1.1" 400 91
+2021-01-23 14:52:13,727:ERROR:root:Please Provide token to Authenticate
+2021-01-23 14:52:13,727:DEBUG:root:Trying login in again...
+2021-01-23 14:52:13,727:DEBUG:root:login initializing..
+2021-01-23 14:52:13,727:DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-23 14:52:14,717:DEBUG:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
+2021-01-23 14:52:14,721:INFO:root:Login Successful
+2021-01-23 14:52:14,724:DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-23 14:52:15,664:DEBUG:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "PUT /interactive/portfolio/squareoff HTTP/1.1" 200 None
+2021-01-23 14:52:15,664:INFO:root:Squared-off for symbol aasss | 58346
+2021-01-23 15:15:55,783:INFO:root:Time-PnL printing below
+2021-01-23 15:16:55,335:INFO:root:Time-PnL printing below
+2021-01-23 15:18:40,723:INFO:root:Time-PnL printing below
+2021-01-23 15:21:56,213:INFO:root:Time-PnL printing below
+2021-01-23 15:29:29,457:INFO:root:Time-PnL printing below
+2021-01-23 15:29:29,457:INFO:root:('23-01-2021 15:29:29', ',', 12.12)
+2021-01-23 15:30:20,215:INFO:root:Time-PnL printing below
+2021-01-23 15:30:20,215:INFO:root:('23-01-2021 15:30:20', 12.12)
+2021-01-23 15:57:25,139:INFO:root:Time-PnL printing below
+2021-01-23 15:57:25,139:INFO:root:('23-01-2021 15:57:25', ',', 123.12)

@@ -110,3 +110,10 @@ https://nsetools.readthedocs.io/en/latest/usage.html#getting-a-stock-quote
 
 
 IIFL24 // login - Jan@1234 // tranx - Jan@123
+
+Thank you VERY much! Adding future.result() it seems to work just like expected: goes ok if the code is correct, prints the error if there's something wrong... Anyway I think it would be important to report this strange behaviour to users which are/will be in the same situation as me – Alessio Martorana Feb 20 '19 at 10:15
+future = executor.submit(f, vars) followed by print(f'{future.result()}') worked for me as well. My thanks to both of you for this solution!
+
+logging-vs-performance:
+https://stackoverflow.com/questions/33715344/python-logging-vs-performance
+

@@ -1,0 +1,54 @@
+2021-01-25 14:57:17,049:root:login initializing..
+2021-01-25 14:57:17,065:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-25 14:57:17,366:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
+2021-01-25 14:57:17,366:root:Login Successful
+2021-01-25 14:57:17,366:root:Calculating everything before executing orders..
+2021-01-25 14:57:17,366:root:Calculating weekly and monthly expiry dates..
+2021-01-25 14:57:17,366:root:weekly expiry is : 28Jan2021, monthly expiry is: 28Jan2021
+2021-01-25 14:57:17,522:root:('StrikePrice computed as : ', 14300)
+2021-01-25 14:57:17,522:root:Input of get_eID fn : NIFTY, ce,28Jan2021,14300
+2021-01-25 14:57:17,522:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-25 14:57:17,882:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /marketdata/instruments/instrument/optionsymbol?exchangeSegment=2&series=OPTIDX&symbol=NIFTY&expiryDate=28Jan2021&optionType=CE&strikePrice=14300 HTTP/1.1" 200 None
+2021-01-25 14:57:17,897:root:Exchange Instrument ID : 45194, {45194: 'CE'}
+2021-01-25 14:57:17,897:root:Input of get_eID fn : NIFTY, pe,28Jan2021,14300
+2021-01-25 14:57:17,897:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-25 14:57:18,180:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /marketdata/instruments/instrument/optionsymbol?exchangeSegment=2&series=OPTIDX&symbol=NIFTY&expiryDate=28Jan2021&optionType=PE&strikePrice=14300 HTTP/1.1" 200 None
+2021-01-25 14:57:18,180:root:Exchange Instrument ID : 45195, {45194: 'CE', 45195: 'PE'}
+2021-01-25 14:57:18,180:root:Checking margin from user..
+2021-01-25 14:57:18,180:root:Checking balance..
+2021-01-25 14:57:18,180:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-25 14:57:20,493:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /interactive/user/balance HTTP/1.1" 200 None
+2021-01-25 14:57:20,508:root:Balance retreived success, available cash : 1000000000
+2021-01-25 14:57:20,508:root: 
+              net_cash - 1000000000,
+              strikePrice - 14300,
+              Nifty LTP - 14287.75,
+              BankNiftyLTP - None
+              exchangeInstrumentID - [45194, 45195]
+              
+2021-01-25 14:57:20,508:root:All set from prepareVars func.. Giving a go for orders..
+2021-01-25 14:57:20,508:root:required variables set-- ready to trigger orders at desired time
+2021-01-25 14:58:00,320:root:Required Margin Available.. Taking positions...
+2021-01-25 14:58:01,586:root:Placing Orders with StopLoss..
+2021-01-25 14:58:01,586:root:Placing Orders with StopLoss..
+2021-01-25 14:58:01,586:root:got exception - Something wrong with placing order:
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "C:\Users\Welcome\Anaconda3\lib\concurrent\futures\process.py", line 239, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "D:\Python\First_Choice_Git\xts\strategy\Strategy_1.py", line 382, in placeOrderWithSL
+    t_type=xt.TRANSACTION_TYPE_SELL
+NameError: name 'xt' is not defined
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Python\First_Choice_Git\xts\strategy\Strategy_1.py", line 423, in runOrders
+    orderID_dictR.update(f.result())
+  File "C:\Users\Welcome\Anaconda3\lib\concurrent\futures\_base.py", line 432, in result
+    return self.__get_result()
+  File "C:\Users\Welcome\Anaconda3\lib\concurrent\futures\_base.py", line 388, in __get_result
+    raise self._exception
+NameError: name 'xt' is not defined

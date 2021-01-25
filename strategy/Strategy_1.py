@@ -8,14 +8,14 @@ Created on Thu Jan 21 21:44:33 2021
 from datetime import datetime
 from dateutil.relativedelta import relativedelta, TH
 from XTConnect.Connect import XTSConnect
-from sys import exit
+# from sys import exit
 from nsetools import Nse
 nse = Nse()
 import time
 import pandas as pd
 import concurrent.futures
 from threading import Timer
-import traceback
+# import traceback
 import logging
 # from itertools import repeat
 # import multiprocessing
@@ -28,7 +28,7 @@ logging.basicConfig(filename='../logs/Strategy_1_log.txt',level=logging.DEBUG,
 global ordersEid
 ordersEid = {}
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-kickTime = "01:35:00"
+kickTime = "14:37:30"
 wrapTime = "15:05:00"
 globalSL = -1500
 globalTarget = 3000
@@ -41,7 +41,7 @@ source = "WEBAPI"
 xt = XTSConnect(API_KEY, API_SECRET, source)
 login_resp = xt.interactive_login()
 if login_resp['type'] != 'error':
-    logging.info("Login Successful")
+    logging.info("Main Login Successful")
     
 class RepeatedTimer(object):
     def __init__(self, interval, function, *args, **kwargs):
@@ -157,7 +157,7 @@ def getOrderList():
            oBook_resp = xt.get_order_book()
            if oBook_resp['type'] != "error":
                orderList =  oBook_resp['result']
-               logging.info(f'OrderBook result retreived success, {orderList}')
+               logging.info('OrderBook result retreived success')
                return orderList
                break
            if oBook_resp['type'] == "error":
@@ -282,6 +282,8 @@ def prepareVars(ticker):
     try:
         # for ticker in tickers:
         global net_cash,margin_ok, quantity,eID,strikePrice,nfty_ltp,bnknfty_ltp
+        nfty_ltp=None
+        bnknfty_ltp=None
         nextThu_and_lastThu_expiry_date ()
         # try:
         if ticker == "NIFTY":
@@ -314,18 +316,20 @@ def prepareVars(ticker):
         logging.exception("Unable to reterive info like margin,strikePrice,nfty_ltp,bnknfty_ltp  to place order")
         return False
 
-def placeOrder(symbol,buy_sell,quantity,sl=0):
+def placeOrder(symbol,buy_sell,quantity,t_type,sl=0):
     # Place an intraday stop loss order on NSE
-    orderID = None
-    if buy_sell == "buy":
-        t_type=xt.TRANSACTION_TYPE_BUY
-    elif buy_sell == "sell":
-        t_type=xt.TRANSACTION_TYPE_SELL
-        # quantity = mul*nifty_lot_size
+    orderID = 0
+    tradedPrice = 0
+    # if buy_sell == "buy":
+    #     t_type=xt.TRANSACTION_TYPE_BUY
+    # elif buy_sell == "sell":
+    #     t_type=xt.TRANSACTION_TYPE_SELL
+    #     # quantity = mul*nifty_lot_size
     if sl == 0:
         o_type=xt.ORDER_TYPE_MARKET
     else:
         o_type="StopMarket"
+        
     logging.info(f'placing order for --, {symbol}')
     order_resp = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
                          exchangeInstrumentID= symbol ,
@@ -343,19 +347,28 @@ def placeOrder(symbol,buy_sell,quantity,sl=0):
         orderID = order_resp['result']['AppOrderID']            #extracting the order id from response
         logging.info(f'Order ID for {t_type} {symbol} is: {orderID}')
         # return orderID
-        loop = True 
-        while loop:
+        # loop = True
+        a=0
+        while a<3:
             orderLists = getOrderList()
-            new_orders = [ol for ol in orderLists if ol[k] == orderID and ol['OrderStatus'] != 'Filled']  
-            if not new_orders:
-                tradedPrice = float(next((orderList['OrderAverageTradedPrice'] for orderList in orderList7 if orderList[k] == orderID and orderList['OrderStatus'] == 'Filled'),None))
-                print(tradedPrice)
-                loop = False
-            time.sleep(3)
-    elif order_resp['type'] != 'error':
-        auth_issue_fix(order_resp)
-
-
+            if orderLists:
+                new_orders = [ol for ol in orderLists if ol['AppOrderID'] == orderID and ol['OrderStatus'] != 'Filled']  
+                if not new_orders:
+                    tradedPrice = float(next((orderList['OrderAverageTradedPrice'] for orderList in orderLists if orderList['AppOrderID'] == orderID and orderList['OrderStatus'] == 'Filled'),None))
+                    print("traded price is: ", tradedPrice)
+                    break
+                    # loop = False
+                else:
+                    logging.info(f'Placed order {orderID} might be in Open or New Status, Hence retrying..{a}')
+                    a+=1
+                    if a==2:
+                        logging.info('traded price is calculated as Zero, place SL order Manually')
+                    time.sleep(3)
+            else:
+                logging.info('Unable to get OrderList inside place order function..')
+                logging.info('..Hence traded price will retun as None')
+                # return orderID, tradedPrice
+    return orderID, tradedPrice
             
 def placeOrderWithSL(symbol,buy_sell,quantity):
     # Place an intraday stop loss order on NSE
@@ -374,76 +387,56 @@ def placeOrderWithSL(symbol,buy_sell,quantity):
         slPoints = +15
     # tradedPrice = 0
     # quantity = mul*nifty_lot_size
-    bb = 0
-    while bb < 3:
-        try:
-            orderID = placeOrder(symbol,buy_sell,quantity)
+    # bb = 0
+    # while bb < 3:
+    try:
+        orderID,tradedPrice = placeOrder(symbol,buy_sell,quantity,t_type)
+        logging.info(f'orderId and Traded price in try block of placeOrderWithSL: {orderID} and {tradedPrice}')
+        print("orderId and Traded price in try block of placeOrderWithSL", orderID, tradedPrice)
+        orderID_dict[symbol].append(orderID)
+        orderID_dict[symbol].append(tradedPrice)
+    except:
+        logging.debug('Unable to place order in placeOrderWithSL func...')
+        time.sleep(1)
+        # bb+=1
+    else:
+        # get trade price of the last order processed from orderList
+        logging.info('placing SL order for -- {symbol}')
+        if tradedPrice != 0:
+            stopPrice = round((tradedPrice+slPoints),2)
+            logging.info(f'stopLoss price fixed as: {stopPrice}')
+            orderID,tradedPrice = placeOrder(symbol,buy_sell,quantity,t_type_sl,sl=stopPrice)
             orderID_dict[symbol].append(orderID)
-            # orderID_dict[symbol].append(symbol)
-            break
-        except:
-            print("Unable to place repair order... retrying ", bb)
-            time.sleep(1)
-            bb+=1
         else:
-            # get trade price of the last order processed from orderList
-            time.sleep(1)
-            orderList = getOrderList()
-            for i in orderList:
-                # print(orderID , i["AppOrderID"], i["OrderStatus"] )
-                while orderID == i["AppOrderID"] and (i["OrderStatus"] == 'Open' or i["OrderStatus"] == 'New'):
-                    # if orderID == i["AppOrderID"] and (i["OrderStatus"] == 'New' or i["OrderStatus"] == 'Open'):
-                    print('Orders not filled.. wait for sometime.. and try again to fetch')
-                    orderList = getOrderList()
-                    time.sleep(3)
-                if orderID == i["AppOrderID"] and i["OrderStatus"] == 'Filled':
-                    tradedPrice = float(( i["OrderAverageTradedPrice"]))
-                    print('Traded price is: ', tradedPrice)
-                    break
-            print('placing SL order for --', symbol)
-            placed_SL_order = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
-                             exchangeInstrumentID= symbol ,
-                             productType=xt.PRODUCT_MIS, 
-                             orderType="StopMarket",                   
-                             orderSide=t_type_sl,
-                             timeInForce=xt.VALIDITY_DAY,
-                             disclosedQuantity=0,
-                             orderQuantity=quantity,
-                             limitPrice=0,
-                             stopPrice=round((tradedPrice+slPoints),2),
-                             orderUniqueIdentifier="StopLossOrder"
-                             )
-            if placed_SL_order['type'] != 'error':
-                placed_SL_orderID = placed_SL_order['result']['AppOrderID']
-                print("order id for StopLoss :", placed_SL_orderID)
-                orderID_dict[symbol].append(placed_SL_orderID)
-            else:
-                 print("Error placing SL Order.. try again manually...")
-            return orderID_dict
-        except:
-            # return False
-            # monitor=False
-            print("Orders Not Placed..")
+            logging.info('TradedPice is not available, Hence not placing SL order, TRY MANUALLY..')
             
+    logging.info(f'orderDictionary from placeOrderWithSL {orderID_dict}')
+    print("orderDictionary from placeOrderWithSL ", orderID_dict)
+    return orderID_dict
+
+
 def runOrders():
     global monitor,orderID_dictR
     orderID_dictR = {}
     monitor=False
     if margin_ok:
-        print("Required Margin Available.. Taking positions...")
+        logging.info('Required Margin Available.. Taking positions...')
         # print(f"symbol = {ticker} EID = {eID} expiry = {weekly_exp} strikePrice = {strikePrice} ")#.format(ticker,expiry,Otype,strikePrice,eID))
         with concurrent.futures.ProcessPoolExecutor() as executor:
             try:
                 # orderID_dict = executor.map(placeOrderWithSL,eID,repeat('sell'),repeat(quantity))
                 results = [executor.submit(placeOrderWithSL,i,'sell',quantity) for i in eID]
-                # orderID_dict = results
+                print(results)
                 for f in concurrent.futures.as_completed(results):
-                    orderID_dictR.update(f.result())
+                    print('printiing f.results')
                     print(f.result())
+                    orderID_dictR.update(f.result())
+                    print('printiing orderID Dict value')
+                    print(orderID_dictR)
                 monitor = True
-            except Exception as e:
-                print("got exception - Something wrong with placing order:", e)
-                traceback.print_exc()
+            except Exception:
+                logging.exception('got exception - Something wrong with placing order:')
+                # traceback.print_exc()
     else:
         print(f''' \t Margin is less to place orders... 
              Required cash : 55000
@@ -464,6 +457,7 @@ def runSqOffLogics():
         # print("--- getting cur_PnL ---")
         cur_PnL = get_global_PnL()
         if (cur_PnL < globalSL) or (cur_PnL >= globalTarget) or (datetime.now() >= datetime.strptime(cdate + " " + wrapTime, "%d-%m-%Y %H:%M:%S")):
+            logging.info('SquareOff Logic met...')
             print("/n SquareOff Logic met...")
             # closing all open positions             # not taking getPositionList() bcoz
             # positionList = getPositionList()      # get_global_PnL() has the latest pos_df
@@ -507,6 +501,7 @@ if __name__ == '__main__':
     ticker='NIFTY'
     go = prepareVars(ticker)
     if go:
+        logging.info('required variables set-- ready to trigger orders at desired time')
         print("required variables set-- ready to trigger orders at desired time")
         nstart=True
         # ndate = datetime.strftime(datetime.now(), "%d-%m-%Y")
@@ -517,21 +512,21 @@ if __name__ == '__main__':
             else:
                 time.sleep(0.5)
         
-        print("starting multi funcs with threaded timer...")
-        if monitor:
-            try:
-                print("--- Entering SquareOffLogic Function after placing orders ---")
-                runSqOffLogics()
-                print("--- Sq-off Func Exit ---")
-            except Exception as e:
-                print("Something went wrong.. try closing the orders manually..", e)
-            finally:
-                print("-- Script Ended --")
+        # print("starting multi funcs with threaded timer...")
+        # if monitor:
+        #     try:
+        #         print("--- Entering SquareOffLogic Function after placing orders ---")
+        #         runSqOffLogics()
+        #         print("--- Sq-off Func Exit ---")
+        #     except Exception as e:
+        #         print("Something went wrong.. try closing the orders manually..", e)
+        #     finally:
+        #         print("-- Script Ended --")
                 
 
-        else:
-            print("No Orders Placed")
-            print(" not started any multi funcs threaded timer")
+        # else:
+        #     print("No Orders Placed")
+        #     print(" not started any multi funcs threaded timer")
     else:
         print("Vars not set properly...")
 

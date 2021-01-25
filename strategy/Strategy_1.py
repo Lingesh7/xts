@@ -393,6 +393,7 @@ def placeOrderWithSL(symbol,buy_sell,quantity):
         orderID,tradedPrice = placeOrder(symbol,buy_sell,quantity,t_type)
         logging.info(f'orderId and Traded price in try block of placeOrderWithSL: {orderID} and {tradedPrice}')
         print("orderId and Traded price in try block of placeOrderWithSL", orderID, tradedPrice)
+        orderID_dict[symbol].append(symbol)
         orderID_dict[symbol].append(orderID)
         orderID_dict[symbol].append(tradedPrice)
     except:

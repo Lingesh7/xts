@@ -812,8 +812,60 @@ nexf = float(next((orderList['OrderAverageTradedPrice'] for orderList in orderLi
 # positionList = [{'AccountID': 'IIFL24', 'TradingSymbol': 'NIFTY 31DEC2020 CE 13900', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentId': '39308', 'ProductType': 'MIS', 'Marketlot': '75', 'Multiplier': '1', 'BuyAveragePrice': '0.00', 'SellAveragePrice': '82.70', 'OpenBuyQuantity': '0', 'OpenSellQuantity': '75', 'Quantity': '-75', 'BuyAmount': '0.00', 'SellAmount': '6,202.50', 'NetAmount': '6,202.50', 'UnrealizedMTM': '1,485.00', 'RealizedMTM': '0.00', 'MTM': '1,485.00', 'BEP': '82.70', 'SumOfTradedQuantityAndPriceBuy': '0.00', 'SumOfTradedQuantityAndPriceSell': '6,202.50', 'MessageCode': 9002, 'MessageVersion': 1, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 314802227723717}, {'AccountID': 'IIFL24', 'TradingSymbol': 'NIFTY 31DEC2020 PE 13900', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentId': '41377', 'ProductType': 'MIS', 'Marketlot': '75', 'Multiplier': '1', 'BuyAveragePrice': '72.35', 'SellAveragePrice': '57.10', 'OpenBuyQuantity': '75', 'OpenSellQuantity': '75', 'Quantity': '75', 'BuyAmount': '5,426.25', 'SellAmount': '4,282.50', 'NetAmount': '-1,143.75', 'UnrealizedMTM': '0.00', 'RealizedMTM': '-1,143.75', 'MTM': '-1,143.75', 'BEP': '0.00', 'SumOfTradedQuantityAndPriceBuy': '5,426.25', 'SumOfTradedQuantityAndPriceSell': '4,282.50', 'MessageCode': 9002, 'MessageVersion': 1, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 314802227723718}]#getPositionList()
 # pos_df=pd.DataFrame(positionList)
 
+eid = {'CE': [43422, 10036036, 63.9, 75], 'PE': [43423, 10036037, 70.1, 75]}
 
-def pnl():
+import pandas as pd
+j ={'orderID':[10036036, 10036037], 
+ 'tradedProce':[63.9, 70.1], 
+ 'symbol':['43422', '43423'],
+ 'qty':[75,75]
+ }
+import json
+
+dff=pd.DataFrame(j)
+instruments=[]
+for i in range(len(dff)):
+    instruments.append({'exchangeSegment': 2, 'exchangeInstrumentID': dff['symbol'].values[i]})
+print(instruments)
+# subs_resp = xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
+subs_resp = {"type":"success","code":"s-quotes-0001","description":"Get quotes successfully!","result":{"mdp":1502,"quotesList":[{"exchangeSegment":2,"exchangeInstrumentID":"43423"},{"exchangeSegment":2,"exchangeInstrumentID":"43422"}],"listQuotes":["{\"MessageCode\":1502,\"MessageVersion\":4,\"ApplicationType\":0,\"TokenID\":0,\"ExchangeSegment\":2,\"ExchangeInstrumentID\":43423,\"ExchangeTimeStamp\":1296226865,\"Bids\":[{\"Size\":600,\"Price\":76.45,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":300,\"Price\":76.3,\"TotalOrders\":3,\"BuyBackMarketMaker\":0},{\"Size\":150,\"Price\":76.25,\"TotalOrders\":2,\"BuyBackMarketMaker\":0},{\"Size\":450,\"Price\":76.2,\"TotalOrders\":2,\"BuyBackMarketMaker\":0},{\"Size\":150,\"Price\":76.15,\"TotalOrders\":2,\"BuyBackMarketMaker\":0}],\"Asks\":[{\"Size\":75,\"Price\":76.65,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":450,\"Price\":76.7,\"TotalOrders\":2,\"BuyBackMarketMaker\":0},{\"Size\":75,\"Price\":76.75,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":1200,\"Price\":76.8,\"TotalOrders\":4,\"BuyBackMarketMaker\":0},{\"Size\":1050,\"Price\":76.85,\"TotalOrders\":6,\"BuyBackMarketMaker\":0}],\"Touchline\":{\"BidInfo\":{\"Size\":600,\"Price\":76.45,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},\"AskInfo\":{\"Size\":75,\"Price\":76.65,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},\"LastTradedPrice\":99.9,\"LastTradedQunatity\":75,\"TotalBuyQuantity\":707700,\"TotalSellQuantity\":390825,\"TotalTradedQuantity\":91123350,\"AverageTradedPrice\":53.44,\"LastTradedTime\":1296226865,\"LastUpdateTime\":1296226865,\"PercentChange\":174.55197132616487,\"Open\":22.95,\"High\":107.55,\"Low\":21.35,\"Close\":27.9,\"TotalValueTraded\":null,\"BuyBackTotalBuy\":0,\"BuyBackTotalSell\":0},\"BookType\":1,\"XMarketType\":1,\"SequenceNumber\":338944086942332}","{\"MessageCode\":1502,\"MessageVersion\":4,\"ApplicationType\":0,\"TokenID\":0,\"ExchangeSegment\":2,\"ExchangeInstrumentID\":43422,\"ExchangeTimeStamp\":1296226865,\"Bids\":[{\"Size\":75,\"Price\":56.85,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":1200,\"Price\":56.8,\"TotalOrders\":4,\"BuyBackMarketMaker\":0},{\"Size\":1050,\"Price\":56.7,\"TotalOrders\":3,\"BuyBackMarketMaker\":0},{\"Size\":975,\"Price\":56.65,\"TotalOrders\":3,\"BuyBackMarketMaker\":0},{\"Size\":1575,\"Price\":56.6,\"TotalOrders\":4,\"BuyBackMarketMaker\":0}],\"Asks\":[{\"Size\":75,\"Price\":57.1,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":300,\"Price\":57.15,\"TotalOrders\":3,\"BuyBackMarketMaker\":0},{\"Size\":150,\"Price\":57.2,\"TotalOrders\":2,\"BuyBackMarketMaker\":0},{\"Size\":150,\"Price\":57.25,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":1275,\"Price\":57.3,\"TotalOrders\":6,\"BuyBackMarketMaker\":0}],\"Touchline\":{\"BidInfo\":{\"Size\":75,\"Price\":56.85,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},\"AskInfo\":{\"Size\":75,\"Price\":57.1,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},\"LastTradedPrice\":66.6,\"LastTradedQunatity\":75,\"TotalBuyQuantity\":651225,\"TotalSellQuantity\":452775,\"TotalTradedQuantity\":34126875,\"AverageTradedPrice\":85.86,\"LastTradedTime\":1296226865,\"LastUpdateTime\":1296226865,\"PercentChange\":-79.70499377998934,\"Open\":222,\"High\":233.4,\"Low\":39.1,\"Close\":281.35,\"TotalValueTraded\":null,\"BuyBackTotalBuy\":0,\"BuyBackTotalSell\":0},\"BookType\":1,\"XMarketType\":1,\"SequenceNumber\":338944086942324}"]}}
+if subs_resp['type'] == 'success':
+    ltp=[]
+    for i in range(len(dff)):
+        listQuotes = json.loads(subs_resp['result']['listQuotes'][i])
+        ltp.append(listQuotes['Touchline']['LastTradedPrice'])
+dff['ltp']=ltp
+dff['pnl']=(dff['ltp']-dff['tradedProce'])*dff['qty']        
+cur_PnL=round(dff['pnl'].sum(),2)   
+ 
+Out[149]: 
+    orderID  tradedProce symbol  qty   ltp    pnl
+0  10036036         63.9  43422   75  76.6  952.5
+1  10036037         70.1  43423   75  57.1 -975.0
+
+Out[153]: 
+    orderID  tradedProce symbol  qty   ltp     pnl
+0  10036036         63.9  43422   75  99.9  2700.0
+1  10036037         70.1  43423   75  66.6  -262.5
+
+    get_quote_resp = {"type":"success","code":"s-quotes-0001","description":"Get quotes successfully!","result":{"mdp":1502,"quotesList":[{"exchangeSegment":2,"exchangeInstrumentID":"43423"},{"exchangeSegment":2,"exchangeInstrumentID":"43422"}],"listQuotes":["{\"MessageCode\":1502,\"MessageVersion\":4,\"ApplicationType\":0,\"TokenID\":0,\"ExchangeSegment\":2,\"ExchangeInstrumentID\":43423,\"ExchangeTimeStamp\":1296226865,\"Bids\":[{\"Size\":600,\"Price\":76.45,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":300,\"Price\":76.3,\"TotalOrders\":3,\"BuyBackMarketMaker\":0},{\"Size\":150,\"Price\":76.25,\"TotalOrders\":2,\"BuyBackMarketMaker\":0},{\"Size\":450,\"Price\":76.2,\"TotalOrders\":2,\"BuyBackMarketMaker\":0},{\"Size\":150,\"Price\":76.15,\"TotalOrders\":2,\"BuyBackMarketMaker\":0}],\"Asks\":[{\"Size\":75,\"Price\":76.65,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":450,\"Price\":76.7,\"TotalOrders\":2,\"BuyBackMarketMaker\":0},{\"Size\":75,\"Price\":76.75,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":1200,\"Price\":76.8,\"TotalOrders\":4,\"BuyBackMarketMaker\":0},{\"Size\":1050,\"Price\":76.85,\"TotalOrders\":6,\"BuyBackMarketMaker\":0}],\"Touchline\":{\"BidInfo\":{\"Size\":600,\"Price\":76.45,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},\"AskInfo\":{\"Size\":75,\"Price\":76.65,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},\"LastTradedPrice\":76.6,\"LastTradedQunatity\":75,\"TotalBuyQuantity\":707700,\"TotalSellQuantity\":390825,\"TotalTradedQuantity\":91123350,\"AverageTradedPrice\":53.44,\"LastTradedTime\":1296226865,\"LastUpdateTime\":1296226865,\"PercentChange\":174.55197132616487,\"Open\":22.95,\"High\":107.55,\"Low\":21.35,\"Close\":27.9,\"TotalValueTraded\":null,\"BuyBackTotalBuy\":0,\"BuyBackTotalSell\":0},\"BookType\":1,\"XMarketType\":1,\"SequenceNumber\":338944086942332}","{\"MessageCode\":1502,\"MessageVersion\":4,\"ApplicationType\":0,\"TokenID\":0,\"ExchangeSegment\":2,\"ExchangeInstrumentID\":43422,\"ExchangeTimeStamp\":1296226865,\"Bids\":[{\"Size\":75,\"Price\":56.85,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":1200,\"Price\":56.8,\"TotalOrders\":4,\"BuyBackMarketMaker\":0},{\"Size\":1050,\"Price\":56.7,\"TotalOrders\":3,\"BuyBackMarketMaker\":0},{\"Size\":975,\"Price\":56.65,\"TotalOrders\":3,\"BuyBackMarketMaker\":0},{\"Size\":1575,\"Price\":56.6,\"TotalOrders\":4,\"BuyBackMarketMaker\":0}],\"Asks\":[{\"Size\":75,\"Price\":57.1,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":300,\"Price\":57.15,\"TotalOrders\":3,\"BuyBackMarketMaker\":0},{\"Size\":150,\"Price\":57.2,\"TotalOrders\":2,\"BuyBackMarketMaker\":0},{\"Size\":150,\"Price\":57.25,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":1275,\"Price\":57.3,\"TotalOrders\":6,\"BuyBackMarketMaker\":0}],\"Touchline\":{\"BidInfo\":{\"Size\":75,\"Price\":56.85,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},\"AskInfo\":{\"Size\":75,\"Price\":57.1,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},\"LastTradedPrice\":57.1,\"LastTradedQunatity\":75,\"TotalBuyQuantity\":651225,\"TotalSellQuantity\":452775,\"TotalTradedQuantity\":34126875,\"AverageTradedPrice\":85.86,\"LastTradedTime\":1296226865,\"LastUpdateTime\":1296226865,\"PercentChange\":-79.70499377998934,\"Open\":222,\"High\":233.4,\"Low\":39.1,\"Close\":281.35,\"TotalValueTraded\":null,\"BuyBackTotalBuy\":0,\"BuyBackTotalSell\":0},\"BookType\":1,\"XMarketType\":1,\"SequenceNumber\":338944086942324}"]}}
+    
+    # df=pd.DataFrame(eid,index=['symbol','orderID','tp','qty']).T
+    # df.reset_index(level=0, inplace=True)
+    
+    
+    
+        # pnl=[]
+        # pnl.append(eid['CE'])
+        # pnl.append(eid['PE'])
+        # pd=pd.DataFrame(pnl,columns=('symbol','orderID','tp','qty'))
+    
+    
+    
+    
+    
+    
+    
     
 instruments = [
     {'exchangeSegment': 2, 'exchangeInstrumentID': 43422}]
@@ -840,7 +892,20 @@ qty= next((orderList['OrderQuantity'] for orderList in orderLists if orderList[k
 
 pnl_resp = success', 'code': 's-search-0002', 'description': 'Instruments Found', 'result': [{'StrikePrice': 14000, 'OptionType': 3, 'ContractExpiration': '2021-01-28T14:30:00', 'RemainingExpiryDays': 2, 'RemainingExpiryDaysABS': 2, 'ContractExpirationString': '28Jan2021', 'HasContractExpired': False, 'UnderlyingType': 5, 'UnderlyingInstrumentId': -1, 'UnderlyingIndexName': 'Nifty 50', 'InstrumentID': 2102800043422, 'ExchangeInstrumentID': 43422, 'DisplayName': 'NIFTY 28JAN2021 CE 14000', 'Name': 'NIFTY', 'AuctionNumber': 0, 'MinimumQty': 1, 'QuantityMultiplier': 1, 'Multiplier': 1, 'PriceNumerator': 1, 'PriceDenominator': 1, 'LotSize': 75, 'InstrumentType': 2, 'SymbolType': 0, 'CfiCode': 'OCEXXX', 'Status': '', 'TicksPerPoint': 20, 'TickSize': 0.05, 'Description': 'NIFTY21JAN14000CE', 'IsImpliedMarket': False, 'IsTradeable': False, 'ExchangeSegment': 2, 'Series': 'OPTIDX', 'MaxTradeVolume': 2147483647, 'PriceBand': {'High': 1124, 'Low': 0.05, 'HighString': '1124.00', 'LowString': '0.05', 'CreditRating': '0.05-1124.00'}, 'DecimalDisplace': 2, 'ExtendedMarketProperties': {'CallAuctionIndicator': {'Name': {'Name': 'CallAuctionIndicator'}, 'Value': ''}, 'ExpulsionDate': {'Name': {'Name': 'ExpulsionDate'}, 'Value': '01Jan1980'}, 'IssueMaturityDate': {'Name': {'Name': 'IssueMaturityDate'}, 'Value': '28Jan2021'}, 'SettlementIndicator': {'Name': {'Name': 'SettlementIndicator'}, 'Value': 'C'}, 'SettlementNo': {'Name': {'Name': 'SettlementNo'}, 'Value': 'Missing'}, 'ListingDate': {'Name': {'Name': 'ListingDate'}, 'Value': '11Nov2020'}, 'CompanyName': {'Name': {'Name': 'CompanyName'}, 'Value': 'NIFTY21JAN14000CE'}, 'UniqueKey': {'Name': {'Name': 'UniqueKey'}, 'Value': 'NIFTY'}, 'RecordDate': {'Name': {'Name': 'RecordDate'}, 'Value': '01Jan1980'}, 'ExposureMargin': {'Name': {'Name': 'ExposureMargin'}, 'Value': '2'}, 'MarketType': {'Name': {'Name': 'MarketType'}, 'Value': 'NORMAL'}, 'BookClosureStartDate': {'Name': {'Name': 'BookClosureStartDate'}, 'Value': '01Jan1980'}, 'ExDate': {'Name': {'Name': 'ExDate'}, 'Value': '01Jan1980'}, 'IssueStartDate': {'Name': {'Name': 'IssueStartDate'}, 'Value': '11Nov2020'}, 'BookClosureEndDate': {'Name': {'Name': 'BookClosureEndDate'}, 'Value': '01Jan1980'}, 'Remarks': {'Name': {'Name': 'Remarks'}, 'Value': ''}}, 'MarketTypeStatusEligibility': {'Normal': {'MarketType': 1, 'Eligibile': True, 'TradingStatus': 2}, 'OddLot': {'MarketType': 2, 'Eligibile': False, 'TradingStatus': 2}, 'RetailDebt': {'MarketType': 3, 'Eligibile': False, 'TradingStatus': 2}, 'Auction': {'MarketType': 4, 'Eligibile': False, 'TradingStatus': 3}}, 'NameWithSeries': 'NIFTY-OPTIDX', 'DisplayNameWithExchange': 'NIFTY 28JAN2021 CE 14000 - NSEFO', 'DisplayNameWithSeries': 'NIFTY 28JAN2021 CE 14000 - OPTIDX', 'DisplayNameWithSeriesAndExchange': 'NIFTY 28JAN2021 CE 14000 - OPTIDX - NSEFO', 'FreezeQty': 5001, 'LastUpdateTime': 0, 'FiftyTwoWeekHigh': 0, 'FiftyTwoWeekLow': 0, 'Bhavcopy': {'Open': 486.05, 'High': 502.1, 'Low': 265.75, 'Close': 281.35, 'TotTrdQty': 1073925, 'TotTrdVal': 422856986108625, 'TimeStamp': '0001-01-01T00:00:00', 'TotalTrades': 14319, 'OpenInterest': 14095, 'SettlementPrice': 281.35}, 'AdditionalPreExpiryMarginPerc': 0, 'AdditionalMarginPercLong': 0, 'AdditionalMarginPercShort': 0, 'DeliveryMarginPerc': 0, 'SpecialMarginPercBuy': 0, 'SpecialMarginPercSell': 0, 'TenderMargin': 0, 'ELMLongMargin': 0, 'ELMShortMargin': 0, 'InitialMarginPerc': 0, 'ExposureMarginPerc': 2, 'CallAuctionIndicator': 0, 'MarketType': 1, 'CurrentEligibleMarketType': 1, 'Industry': 0}]}
 
+pd.DataFrame({43423: [43423, 10036037, 70.1, 10036038], 43422: [43422, 10036036, 63.9, 10036039]})
+ocd = {43422: 'CE', 43423: 'PE'}
+za=0
+zz=pd.DataFrame(ocd,index=[0])
+za=zz.reset_index(level=0, inplace=True)
+aa=za.columns([1,2])
 
+
+df = pd.DataFrame({'CE': [43422, 10036036, 63.9, 10036039], 'PE': [43423, 10036037, 70.1, 10036038]},index=['symbol','orderID','tp','qty'])
+dft=df.T
+
+dft['symbol']
+dft.reset_index(level=0, inplace=True)
+dict(dft.iloc[0])
 
 pnl1 = [symbol,orderID,tp,qty,ltp]
 pnl2 = [symbol,orderID,tp,qty,ltp]
@@ -898,10 +963,13 @@ import pandas as pd
 orderID_dict=None
 orderID_dictR = {}
 
-orderID=11117
-orderID2=22227
-tradedPrice=777
-symbol="L7"
+otype='CE'
+orderID=11
+orderID2=21
+tradedPrice=211
+symbol="LL"
+qty=75
+
 
 orderID_dict={}
 orderID_dict[symbol] = []
@@ -915,10 +983,12 @@ orderID_dictR.update(orderID_dict)
 ordersEid = {'L7': 'CE', 'A7': 'PE'}
 
 j = {}
-j.update({'symbol':symbol})
-j.update({'orderID':orderID})
-j.update({'orderID2':orderID2})
-j.update({'tradedPrice':tradedPrice})
+j["symbol"]=[]
+j["symbol"].append(symbol)
+
+j["symbol"].append({'orderID':orderID})
+j["symbol"].append({'orderID2':orderID2})
+j["symbol"].append({'tradedPrice':tradedPrice})
 orderID_dict={}
 orderID_dict[symbol] = []
 orderID_dict[symbol].append(j)
@@ -942,6 +1012,12 @@ oIDs['CE'][0]['symbol']
 df = pd.DataFrame({'Date':['10/2/2011', '11/2/2011', '12/2/2011', '13/2/2011'], 
                     'Event':['Music', 'Poetry', 'Theatre', 'Comedy'], 
                     'Cost':[10000, 5000, 15000, 2000]}) 
+
+j ={'orderID':[1234, 11111], 
+ 'tradedProce':[90, 20], 
+ 'symbol':['CE', 'PE']}
+
+pd.DataFrame(j)
 
 
 

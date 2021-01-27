@@ -117,3 +117,45 @@ en or New Status, Hence retrying..2
 2021-01-27 14:57:50,594:root:Placed order 10036039 might be in Open or New Status, Hence retrying..2
 2021-01-27 14:57:53,595:root:orderDictionary from placeOrderWithSL {43423: [43423, 10036037, 70.1, 10036038]}
 2021-01-27 14:57:53,595:root:orderDictionary from placeOrderWithSL {43422: [43422, 10036036, 63.9, 10036039]}
+2021-01-28 00:20:53,572:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 00:21:01,169:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
+2021-01-28 00:21:01,176:root:Main Login Successful
+2021-01-28 00:21:01,176:root:Calculating everything before executing orders..
+2021-01-28 00:21:01,177:root:Calculating weekly and monthly expiry dates..
+2021-01-28 00:21:01,178:root:weekly expiry is : 28Jan2021, monthly expiry is: 28Jan2021
+2021-01-28 00:21:01,342:root:Unable to reterive info like margin,strikePrice,nfty_ltp,bnknfty_ltp  to place order
+Traceback (most recent call last):
+  File "D:\Python\First_Choice_Git\xts\strategy\Strategy_1.py", line 291, in prepareVars
+    nfty_ltp = nse.get_index_quote("nifty 50")['lastPrice']
+  File "D:\Users\lmahendran\Anaconda3\lib\site-packages\nsetools\nse.py", line 335, in get_index_quote
+    resp = self.opener.open(req)
+  File "D:\Users\lmahendran\Anaconda3\lib\urllib\request.py", line 531, in open
+    response = meth(req, response)
+  File "D:\Users\lmahendran\Anaconda3\lib\urllib\request.py", line 641, in http_response
+    'http', request, response, code, msg, hdrs)
+  File "D:\Users\lmahendran\Anaconda3\lib\urllib\request.py", line 563, in error
+    result = self._call_chain(*args)
+  File "D:\Users\lmahendran\Anaconda3\lib\urllib\request.py", line 503, in _call_chain
+    result = func(*args)
+  File "D:\Users\lmahendran\Anaconda3\lib\urllib\request.py", line 755, in http_error_302
+    return self.parent.open(new, timeout=req.timeout)
+  File "D:\Users\lmahendran\Anaconda3\lib\urllib\request.py", line 525, in open
+    response = self._open(req, data)
+  File "D:\Users\lmahendran\Anaconda3\lib\urllib\request.py", line 543, in _open
+    '_open', req)
+  File "D:\Users\lmahendran\Anaconda3\lib\urllib\request.py", line 503, in _call_chain
+    result = func(*args)
+  File "D:\Users\lmahendran\Anaconda3\lib\urllib\request.py", line 1362, in https_open
+    context=self._context, check_hostname=self._check_hostname)
+  File "D:\Users\lmahendran\Anaconda3\lib\urllib\request.py", line 1287, in do_open
+    h = http_class(host, timeout=req.timeout, **http_conn_args)
+  File "D:\Users\lmahendran\Anaconda3\lib\http\client.py", line 1391, in __init__
+    context = ssl._create_default_https_context()
+  File "D:\Users\lmahendran\Anaconda3\lib\ssl.py", line 589, in create_default_context
+    context.load_default_certs(purpose)
+  File "D:\Users\lmahendran\Anaconda3\lib\ssl.py", line 490, in load_default_certs
+    self._load_windows_store_certs(storename, purpose)
+  File "D:\Users\lmahendran\Anaconda3\lib\ssl.py", line 474, in _load_windows_store_certs
+    for cert, encoding, trust in enum_certificates(storename):
+KeyboardInterrupt
+2021-01-28 01:17:55,203:numexpr.utils:NumExpr defaulting to 8 threads.

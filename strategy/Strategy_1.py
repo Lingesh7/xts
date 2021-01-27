@@ -15,6 +15,7 @@ import time
 import pandas as pd
 import concurrent.futures
 from threading import Timer
+import json
 # import traceback
 import logging
 # from itertools import repeat
@@ -206,9 +207,25 @@ def get_global_PnL():
     else:
         return totalMTMdf
 
-def printPNL():
-    logging.info('Time,PnL printing below')
-    logging.info((time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL))
+def printPNL(j):
+    df=pd.DataFrame(j)
+    instruments=[]
+    for i in range(len(df)):
+        instruments.append({'exchangeSegment': 2, 'exchangeInstrumentID': df['symbol'].values[i]})
+        # print(instruments)
+    subs_resp = xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
+    # subs_resp = {"type":"success","code":"s-quotes-0001","description":"Get quotes successfully!","result":{"mdp":1502,"quotesList":[{"exchangeSegment":2,"exchangeInstrumentID":"43423"},{"exchangeSegment":2,"exchangeInstrumentID":"43422"}],"listQuotes":["{\"MessageCode\":1502,\"MessageVersion\":4,\"ApplicationType\":0,\"TokenID\":0,\"ExchangeSegment\":2,\"ExchangeInstrumentID\":43423,\"ExchangeTimeStamp\":1296226865,\"Bids\":[{\"Size\":600,\"Price\":76.45,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":300,\"Price\":76.3,\"TotalOrders\":3,\"BuyBackMarketMaker\":0},{\"Size\":150,\"Price\":76.25,\"TotalOrders\":2,\"BuyBackMarketMaker\":0},{\"Size\":450,\"Price\":76.2,\"TotalOrders\":2,\"BuyBackMarketMaker\":0},{\"Size\":150,\"Price\":76.15,\"TotalOrders\":2,\"BuyBackMarketMaker\":0}],\"Asks\":[{\"Size\":75,\"Price\":76.65,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":450,\"Price\":76.7,\"TotalOrders\":2,\"BuyBackMarketMaker\":0},{\"Size\":75,\"Price\":76.75,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":1200,\"Price\":76.8,\"TotalOrders\":4,\"BuyBackMarketMaker\":0},{\"Size\":1050,\"Price\":76.85,\"TotalOrders\":6,\"BuyBackMarketMaker\":0}],\"Touchline\":{\"BidInfo\":{\"Size\":600,\"Price\":76.45,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},\"AskInfo\":{\"Size\":75,\"Price\":76.65,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},\"LastTradedPrice\":99.9,\"LastTradedQunatity\":75,\"TotalBuyQuantity\":707700,\"TotalSellQuantity\":390825,\"TotalTradedQuantity\":91123350,\"AverageTradedPrice\":53.44,\"LastTradedTime\":1296226865,\"LastUpdateTime\":1296226865,\"PercentChange\":174.55197132616487,\"Open\":22.95,\"High\":107.55,\"Low\":21.35,\"Close\":27.9,\"TotalValueTraded\":null,\"BuyBackTotalBuy\":0,\"BuyBackTotalSell\":0},\"BookType\":1,\"XMarketType\":1,\"SequenceNumber\":338944086942332}","{\"MessageCode\":1502,\"MessageVersion\":4,\"ApplicationType\":0,\"TokenID\":0,\"ExchangeSegment\":2,\"ExchangeInstrumentID\":43422,\"ExchangeTimeStamp\":1296226865,\"Bids\":[{\"Size\":75,\"Price\":56.85,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":1200,\"Price\":56.8,\"TotalOrders\":4,\"BuyBackMarketMaker\":0},{\"Size\":1050,\"Price\":56.7,\"TotalOrders\":3,\"BuyBackMarketMaker\":0},{\"Size\":975,\"Price\":56.65,\"TotalOrders\":3,\"BuyBackMarketMaker\":0},{\"Size\":1575,\"Price\":56.6,\"TotalOrders\":4,\"BuyBackMarketMaker\":0}],\"Asks\":[{\"Size\":75,\"Price\":57.1,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":300,\"Price\":57.15,\"TotalOrders\":3,\"BuyBackMarketMaker\":0},{\"Size\":150,\"Price\":57.2,\"TotalOrders\":2,\"BuyBackMarketMaker\":0},{\"Size\":150,\"Price\":57.25,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":1275,\"Price\":57.3,\"TotalOrders\":6,\"BuyBackMarketMaker\":0}],\"Touchline\":{\"BidInfo\":{\"Size\":75,\"Price\":56.85,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},\"AskInfo\":{\"Size\":75,\"Price\":57.1,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},\"LastTradedPrice\":66.6,\"LastTradedQunatity\":75,\"TotalBuyQuantity\":651225,\"TotalSellQuantity\":452775,\"TotalTradedQuantity\":34126875,\"AverageTradedPrice\":85.86,\"LastTradedTime\":1296226865,\"LastUpdateTime\":1296226865,\"PercentChange\":-79.70499377998934,\"Open\":222,\"High\":233.4,\"Low\":39.1,\"Close\":281.35,\"TotalValueTraded\":null,\"BuyBackTotalBuy\":0,\"BuyBackTotalSell\":0},\"BookType\":1,\"XMarketType\":1,\"SequenceNumber\":338944086942324}"]}}
+    if subs_resp['type'] == 'success':
+        ltp=[]
+        for i in range(len(df)):
+            listQuotes = json.loads(subs_resp['result']['listQuotes'][i])
+            ltp.append(listQuotes['Touchline']['LastTradedPrice'])
+        df['ltp']=ltp
+        df['pnl']=(df['ltp']-df['tradedPrice'])*df['qty'] 
+        cur_PnL=df['pnl'].sum() 
+        logging.info('Time,PnL printing below')
+        logging.info((time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL))
+        print(time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL)
     
 def squareOff(eid,symbol):
     ab = 0
@@ -315,6 +332,7 @@ def prepareVars(ticker):
     except:
         logging.exception("Unable to reterive info like margin,strikePrice,nfty_ltp,bnknfty_ltp  to place order")
         return False
+
 
 def placeOrder(symbol,buy_sell,quantity,t_type,sl=0):
     # Place an intraday stop loss order on NSE

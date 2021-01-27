@@ -28,7 +28,7 @@ logging.basicConfig(filename='../logs/Strategy_1_log.txt',level=logging.DEBUG,
 global ordersEid
 ordersEid = {}
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-kickTime = "14:37:30"
+kickTime = "14:57:30"
 wrapTime = "15:05:00"
 globalSL = -1500
 globalTarget = 3000

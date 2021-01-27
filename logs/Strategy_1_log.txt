@@ -1,92 +1,119 @@
-2021-01-25 16:37:22,954:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
-2021-01-25 16:37:24,112:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
-2021-01-25 16:37:24,114:root:Main Login Successful
-2021-01-25 16:37:24,114:root:Calculating everything before executing orders..
-2021-01-25 16:37:24,114:root:Calculating weekly and monthly expiry dates..
-2021-01-25 16:37:24,115:root:weekly expiry is : 28Jan2021, monthly expiry is: 28Jan2021
-2021-01-25 16:37:24,285:root:('StrikePrice computed as : ', 14250)
-2021-01-25 16:37:24,285:root:Input of get_eID fn : NIFTY, ce,28Jan2021,14250
-2021-01-25 16:37:24,292:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
-2021-01-25 16:37:25,097:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /marketdata/instruments/instrument/optionsymbol?exchangeSegment=2&series=OPTIDX&symbol=NIFTY&expiryDate=28Jan2021&optionType=CE&strikePrice=14250 HTTP/1.1" 200 None
-2021-01-25 16:37:25,099:root:Exchange Instrument ID : 45402, {45402: 'CE'}
-2021-01-25 16:37:25,100:root:Input of get_eID fn : NIFTY, pe,28Jan2021,14250
-2021-01-25 16:37:25,104:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
-2021-01-25 16:37:26,292:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /marketdata/instruments/instrument/optionsymbol?exchangeSegment=2&series=OPTIDX&symbol=NIFTY&expiryDate=28Jan2021&optionType=PE&strikePrice=14250 HTTP/1.1" 200 None
-2021-01-25 16:37:26,293:root:Exchange Instrument ID : 45406, {45402: 'CE', 45406: 'PE'}
-2021-01-25 16:37:26,293:root:Checking margin from user..
-2021-01-25 16:37:26,293:root:Checking balance..
-2021-01-25 16:37:26,294:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
-2021-01-25 16:37:29,403:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /interactive/user/balance HTTP/1.1" 200 None
-2021-01-25 16:37:29,405:root:Balance retreived success, available cash : 1000000000
-2021-01-25 16:37:29,405:root: 
+2021-01-27 14:57:15,236:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-27 14:57:16,631:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
+2021-01-27 14:57:16,632:root:Main Login Successful
+2021-01-27 14:57:16,632:root:Calculating everything before executing orders..
+2021-01-27 14:57:16,632:root:Calculating weekly and monthly expiry dates..
+2021-01-27 14:57:16,633:root:weekly expiry is : 28Jan2021, monthly expiry is: 28Jan2021
+2021-01-27 14:57:17,172:root:('StrikePrice computed as : ', 14000)
+2021-01-27 14:57:17,177:root:Input of get_eID fn : NIFTY, ce,28Jan2021,14000
+2021-01-27 14:57:17,179:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-27 14:57:18,597:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /marketdata/instruments/instrument/optionsymbol?exchangeSegment=2&series=OPTIDX&symbol=NIFTY&expiryDate=28Jan2021&optionType=CE&strikePrice=14000 HTTP/1.1" 200 None
+2021-01-27 14:57:18,598:root:Exchange Instrument ID : 43422, {43422: 'CE'}
+2021-01-27 14:57:18,598:root:Input of get_eID fn : NIFTY, pe,28Jan2021,14000
+2021-01-27 14:57:18,600:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-27 14:57:20,000:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /marketdata/instruments/instrument/optionsymbol?exchangeSegment=2&series=OPTIDX&symbol=NIFTY&expiryDate=28Jan2021&optionType=PE&strikePrice=14000 HTTP/1.1" 200 None
+2021-01-27 14:57:20,001:root:Exchange Instrument ID : 43423, {43422: 'CE', 43423: 'PE'}
+2021-01-27 14:57:20,001:root:Checking margin from user..
+2021-01-27 14:57:20,001:root:Checking balance..
+2021-01-27 14:57:20,003:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-27 14:57:23,098:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /interactive/user/balance HTTP/1.1" 200 None
+2021-01-27 14:57:23,101:root:Balance retreived success, available cash : 1000000000
+2021-01-27 14:57:23,101:root: 
               net_cash - 1000000000,
-              strikePrice - 14250,
-              Nifty LTP - 14238.9,
+              strikePrice - 14000,
+              Nifty LTP - 13978.6,
               BankNiftyLTP - None
-              exchangeInstrumentID - [45402, 45406]
+              exchangeInstrumentID - [43422, 43423]
               
-2021-01-25 16:37:29,406:root:All set from prepareVars func.. Giving a go for orders..
-2021-01-25 16:37:29,406:root:required variables set-- ready to trigger orders at desired time
-2021-01-25 16:37:29,407:root:Required Margin Available.. Taking positions...
-2021-01-25 16:37:31,415:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
-2021-01-25 16:37:31,428:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
-2021-01-25 16:37:31,431:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
-2021-01-25 16:37:31,505:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
-2021-01-25 16:37:32,323:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
-2021-01-25 16:37:32,325:root:Main Login Successful
-2021-01-25 16:37:32,328:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
-2021-01-25 16:37:32,329:root:Main Login Successful
-2021-01-25 16:37:32,332:root:Placing Orders with StopLoss..
-2021-01-25 16:37:32,332:root:placing order for --, 45402
-2021-01-25 16:37:32,334:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
-2021-01-25 16:37:32,336:root:Placing Orders with StopLoss..
-2021-01-25 16:37:32,337:root:placing order for --, 45406
-2021-01-25 16:37:32,340:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
-2021-01-25 16:37:32,375:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
-2021-01-25 16:37:32,376:root:Main Login Successful
-2021-01-25 16:37:32,380:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
-2021-01-25 16:37:32,382:root:Main Login Successful
-2021-01-25 16:37:33,332:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/orders HTTP/1.1" 200 None
-2021-01-25 16:37:33,334:root:Order ID for SELL 45402 is: 10026113
-2021-01-25 16:37:33,334:root:Retreiving OrderBook..
-2021-01-25 16:37:33,337:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
-2021-01-25 16:37:33,344:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/orders HTTP/1.1" 200 None
-2021-01-25 16:37:33,346:root:Order ID for SELL 45406 is: 10026114
-2021-01-25 16:37:33,346:root:Retreiving OrderBook..
-2021-01-25 16:37:33,348:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
-2021-01-25 16:37:34,392:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /interactive/orders HTTP/1.1" 200 None
-2021-01-25 16:37:34,396:root:OrderBook result retreived success
-2021-01-25 16:37:34,396:root:Placed order 10026114 might be in Open or New Status, Hence retrying..0
-2021-01-25 16:37:34,397:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /interactive/orders HTTP/1.1" 200 None
-2021-01-25 16:37:34,401:root:OrderBook result retreived success
-2021-01-25 16:37:34,401:root:Placed order 10026113 might be in Open or New Status, Hence retrying..0
-2021-01-25 16:37:37,405:root:Retreiving OrderBook..
-2021-01-25 16:37:37,405:root:Retreiving OrderBook..
-2021-01-25 16:37:37,405:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
-2021-01-25 16:37:37,405:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
-2021-01-25 16:37:39,295:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /interactive/orders HTTP/1.1" 200 None
-2021-01-25 16:37:39,311:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /interactive/orders HTTP/1.1" 200 None
-2021-01-25 16:37:39,311:root:OrderBook result retreived success
-2021-01-25 16:37:39,311:root:Placed order 10026114 might be in Open or New Status, Hence retrying..1
-2021-01-25 16:37:39,311:root:traded price is calculated as Zero, place SL order Manually
-2021-01-25 16:37:39,311:root:OrderBook result retreived success
-2021-01-25 16:37:39,311:root:Placed order 10026113 might be in Open or New Status, Hence retrying..1
-2021-01-25 16:37:39,311:root:traded price is calculated as Zero, place SL order Manually
-2021-01-25 16:37:42,312:root:Retreiving OrderBook..
-2021-01-25 16:37:42,312:root:Retreiving OrderBook..
-2021-01-25 16:37:42,312:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
-2021-01-25 16:37:42,312:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
-2021-01-25 16:37:42,812:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /interactive/orders HTTP/1.1" 200 None
-2021-01-25 16:37:42,812:root:OrderBook result retreived success
-2021-01-25 16:37:42,812:root:Placed order 10026114 might be in Open or New Status, Hence retrying..2
-2021-01-25 16:37:42,828:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /interactive/orders HTTP/1.1" 200 None
-2021-01-25 16:37:42,828:root:OrderBook result retreived success
-2021-01-25 16:37:42,828:root:Placed order 10026113 might be in Open or New Status, Hence retrying..2
-2021-01-25 16:37:45,812:root:orderId and Traded price in try block of placeOrderWithSL: 10026114 and 0
-2021-01-25 16:37:45,812:root:placing SL order for -- {symbol}
-2021-01-25 16:37:45,812:root:TradedPice is not available, Hence not placing SL order, TRY MANUALLY..
-2021-01-25 16:37:45,812:root:orderDictionary from placeOrderWithSL {45406: [10026114, 0]}
-2021-01-25 16:37:45,828:root:orderId and Traded price in try block of placeOrderWithSL: 10026113 and 0
-2021-01-25 16:37:45,828:root:placing SL order for -- {symbol}
-2021-01-25 16:37:45,828:root:TradedPice is not available, Hence not placing SL order, TRY MANUALLY..
-2021-01-25 16:37:45,828:root:orderDictionary from placeOrderWithSL {45402: [10026113, 0]}
+2021-01-27 14:57:23,101:root:All set from prepareVars func.. Giving a go for orders..
+2021-01-27 14:57:23,102:root:required variables set-- ready to trigger orders at desired time
+2021-01-27 14:57:30,116:root:Required Margin Available.. Taking positions...
+2021-01-27 14:57:31,796:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-27 14:57:31,978:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-27 14:57:31,982:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-27 14:57:32,001:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-27 14:57:32,049:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-27 14:57:32,058:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-27 14:57:32,058:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-27 14:57:32,059:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-27 14:57:33,230:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
+2021-01-27 14:57:33,231:root:Main Login Successful
+2021-01-27 14:57:33,236:root:Placing Orders with StopLoss..
+2021-01-27 14:57:33,236:root:placing order for --, 43422
+2021-01-27 14:57:33,237:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-27 14:57:33,281:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
+2021-01-27 14:57:33,282:root:Main Login Successful
+2021-01-27 14:57:33,286:root:Placing Orders with StopLoss..
+2021-01-27 14:57:33,286:root:placing order for --, 43423
+2021-01-27 14:57:33,288:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-27 14:57:33,291:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
+2021-01-27 14:57:33,292:root:Main Login Successful
+2021-01-27 14:57:33,300:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
+2021-01-27 14:57:33,301:root:Main Login Successful
+2021-01-27 14:57:33,338:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
+2021-01-27 14:57:33,339:root:Main Login Successful
+2021-01-27 14:57:33,351:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
+2021-01-27 14:57:33,352:root:Main Login Successful
+2021-01-27 14:57:33,358:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
+2021-01-27 14:57:33,359:root:Main Login Successful
+2021-01-27 14:57:33,387:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
+2021-01-27 14:57:33,390:root:Main Login Successful
+2021-01-27 14:57:35,948:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/orders HTTP/1.1" 200 None
+2021-01-27 14:57:35,948:root:Order ID for SELL 43423 is: 10036037
+2021-01-27 14:57:35,948:root:Order ID for SELL 43422 is: 10036036
+2021-01-27 14:57:35,948:root:Retreiving OrderBook..
+2021-01-27 14:57:35,948:root:Retreiving OrderBook..
+2021-01-27 14:57:35,950:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-27 14:57:35,950:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-27 14:57:37,249:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /interactive/orders HTTP/1.1" 200 None
+2021-01-27 14:57:37,251:root:OrderBook result retreived success
+2021-01-27 14:57:37,251:root:orderId and Traded price in try block of placeOrderWithSL: 10036037 and 70.1
+2021-01-27 14:57:37,251:root:placing SL order for -- {symbol}
+2021-01-27 14:57:37,251:root:stopLoss price fixed as: 85.1
+2021-01-27 14:57:37,251:root:placing order for --, 43423
+2021-01-27 14:57:37,253:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-27 14:57:37,257:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /interactive/orders HTTP/1.1" 200 None
+2021-01-27 14:57:37,258:root:OrderBook result retreived success
+2021-01-27 14:57:37,258:root:orderId and Traded price in try block of placeOrderWithSL: 10036036 and 63.9
+2021-01-27 14:57:37,259:root:placing SL order for -- {symbol}
+2021-01-27 14:57:37,259:root:stopLoss price fixed as: 78.9
+2021-01-27 14:57:37,259:root:placing order for --, 43422
+2021-01-27 14:57:37,261:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-27 14:57:39,535:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/orders HTTP/1.1" 200 None
+2021-01-27 14:57:39,536:root:Order ID for BUY 43423 is: 10036038
+2021-01-27 14:57:39,536:root:Retreiving OrderBook..
+2021-01-27 14:57:39,538:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-27 14:57:39,542:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/orders HTTP/1.1" 200 None
+2021-01-27 14:57:39,543:root:Order ID for BUY 43422 is: 10036039
+2021-01-27 14:57:39,543:root:Retreiving OrderBook..
+2021-01-27 14:57:39,544:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-27 14:57:41,876:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /interactive/orders HTTP/1.1" 200 None
+2021-01-27 14:57:41,877:root:OrderBook result retreived success
+2021-01-27 14:57:41,877:root:Placed order 10036038 might be in Open or New Status, Hence retrying..0
+2021-01-27 14:57:41,894:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /interactive/orders HTTP/1.1" 200 None
+2021-01-27 14:57:41,895:root:OrderBook result retreived success
+2021-01-27 14:57:41,895:root:Placed order 10036039 might be in Open or New Status, Hence retrying..0
+2021-01-27 14:57:44,877:root:Retreiving OrderBook..
+2021-01-27 14:57:44,879:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-27 14:57:44,896:root:Retreiving OrderBook..
+2021-01-27 14:57:44,897:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-27 14:57:46,334:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /interactive/orders HTTP/1.1" 200 None
+2021-01-27 14:57:46,335:root:OrderBook result retreived success
+2021-01-27 14:57:46,335:root:Placed order 10036038 might be in Open or New Status, Hence retrying..1
+2021-01-27 14:57:46,335:root:traded price is calculated as Zero, place SL order Manually
+2021-01-27 14:57:46,336:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /interactive/orders HTTP/1.1" 200 None
+2021-01-27 14:57:46,337:root:OrderBook result retreived success
+2021-01-27 14:57:46,337:root:Placed order 10036039 might be in Open or New Status, Hence retrying..1
+2021-01-27 14:57:46,337:root:traded price is calculated as Zero, place SL order Manually
+2021-01-27 14:57:49,336:root:Retreiving OrderBook..
+2021-01-27 14:57:49,338:root:Retreiving OrderBook..
+2021-01-27 14:57:49,339:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-27 14:57:49,340:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-27 14:57:50,592:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /interactive/orders HTTP/1.1" 200 None
+2021-01-27 14:57:50,592:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /interactive/orders HTTP/1.1" 200 None
+2021-01-27 14:57:50,594:root:OrderBook result retreived success
+2021-01-27 14:57:50,594:root:OrderBook result retreived success
+en or New Status, Hence retrying..2
+2021-01-27 14:57:50,594:root:Placed order 10036039 might be in Open or New Status, Hence retrying..2
+2021-01-27 14:57:53,595:root:orderDictionary from placeOrderWithSL {43423: [43423, 10036037, 70.1, 10036038]}
+2021-01-27 14:57:53,595:root:orderDictionary from placeOrderWithSL {43422: [43422, 10036036, 63.9, 10036039]}

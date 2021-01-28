@@ -466,6 +466,7 @@ def get_eID(symbol,ce_pe,expiry,strikePrice):
     #print('Option Symbol:', str(response))
     # print("ExchangeInstrumentID is:",eID_resp)# (int(response["result"][0]["ExchangeInstrumentID"])))
     eid = int(eID_resp["result"][0]["ExchangeInstrumentID"])
+    
     # ordersEid[eid]=(oType)
     # return int(eID_resp["result"][0]["ExchangeInstrumentID"])
     return eid
@@ -668,7 +669,7 @@ logging.basicConfig(filename='../logs/Strategy_1_log.txt',level=logging.DEBUG,
 
 def login():
     global xt
-    logging.debug('login initializing..')
+    # logging.debug('login initializing..')
     # Trading Interactive Creds
     API_KEY = "ebaa4a8cf2de358e53c942"
     API_SECRET = "Ojre664@S9"
@@ -680,9 +681,11 @@ def login():
     xt = XTSConnect(API_KEY, API_SECRET, source)
     login_resp = xt.interactive_login()
     if login_resp['type'] != 'error':
-        logging.info("Login Successful")
+        print('Login Successful')
+        # logging.info("Login Successful")
     else:
-        logging.error("Not able to login..")
+         print('Login NOT Successful')
+        # logging.error("Not able to login..")
 
 
 eid=58346
@@ -834,6 +837,7 @@ if subs_resp['type'] == 'success':
     for i in range(len(dff)):
         listQuotes = json.loads(subs_resp['result']['listQuotes'][i])
         ltp.append(listQuotes['Touchline']['LastTradedPrice'])
+        
 dff['ltp']=ltp
 dff['pnl']=(dff['ltp']-dff['tradedProce'])*dff['qty']        
 cur_PnL=round(dff['pnl'].sum(),2)   
@@ -860,13 +864,7 @@ Out[153]:
         # pnl.append(eid['PE'])
         # pd=pd.DataFrame(pnl,columns=('symbol','orderID','tp','qty'))
     
-    
-    
-    
-    
-    
-    
-    
+
 instruments = [
     {'exchangeSegment': 2, 'exchangeInstrumentID': 43422}]
 
@@ -964,7 +962,8 @@ orderID_dict=None
 orderID_dictR = {}
 
 otype='CE'
-orderID=11
+orderID=[11,11]
+
 orderID2=21
 tradedPrice=211
 symbol="LL"
@@ -983,8 +982,8 @@ orderID_dictR.update(orderID_dict)
 ordersEid = {'L7': 'CE', 'A7': 'PE'}
 
 j = {}
-j["symbol"]=[]
-j["symbol"].append(symbol)
+j["orderID"]=[]
+j["orderID"].append(orderID)
 
 j["symbol"].append({'orderID':orderID})
 j["symbol"].append({'orderID2':orderID2})
@@ -1044,3 +1043,103 @@ oIDs['CE'][0]
 gg={'A7': [{'symbol': 'A7', 'orderID': 11117, 'orderID2': 22227, 'tradedPrice': 777}], 'L7': [{'symbol': 'L7', 'orderID': 11117, 'orderID2': 22227, 'tradedPrice': 777}]}
 hh={'L7': 'CE', 'A7': 'PE'}
 ii={**gg,**hh}
+# ==============================================
+new_dict = {k:[] for k in ['oo','tt','qq','ss','sl']}
+
+import pandas as pd
+import json,time
+
+
+# instruments=[{'exchangeSegment': 2, 'exchangeInstrumentID': '41438'} ,
+#              {'exchangeSegment': 2, 'exchangeInstrumentID': '41439'}]
+# subs_resp = xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
+
+j ={'orderID':[10036036, 10036037], 
+ 'tradedPrice':[52.65, 43.05], 
+ 'symbol':['41438', '41439'],
+ 'qty':[75,75]
+ }
+dc =[{'ss': '41410', 'qq': 75, 'oo': 10029379, 'tt': 19.95, 'sl': 10029381}, 
+     {'ss': '41411', 'qq': 75, 'oo': 10029380, 'tt': 0.45, 'sl': 10029382}]
+
+def printPNL(dc):
+    try:
+        odf = pd.DataFrame(dc)
+        eid_df =pd.DataFrame(ordersEid)
+        df = odf.merge(eid_df, how='left')
+        # login()
+        instruments=[]
+        for i in range(len(df)):
+            instruments.append({'exchangeSegment': 2, 'exchangeInstrumentID': df['ss'].values[i]})
+            # print(instruments)
+        xt.send_unsubscription(Instruments=instruments,xtsMessageCode=1502)    
+        subs_resp = xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
+                
+        if subs_resp['type'] == 'success':
+            ltp=[]
+            for i in range(len(df)):
+                listQuotes = json.loads(subs_resp['result']['listQuotes'][i])
+                ltp.append(listQuotes['Touchline']['LastTradedPrice'])
+            df['ltp']=ltp
+            df['pnl']=(df['ltp']-df['tt'])*df['qq'] 
+            cur_PnL=df['pnl'].sum() 
+            print(f'df is : \n {df} \n')
+            # logging.info('Time,PnL printing below')
+            # logging.info((time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL))
+            print(time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL)
+    except Exception as e:
+        print('Exception:',e)
+
+#=============================
+
+d1 = {'oo': 10028744, 'tt': 32.0, 'qq': 75, 'ss': 40021, 'sl': 10028745}
+d2 = {'oo': 10028746, 'tt': 66.0, 'qq': 75, 'ss': 40026, 'sl': 10028746}
+from collections import defaultdict
+
+a = {'ss': 41410, 'qq': 75, 'oo': 10029379, 'tt': 19.95, 'sl': 10029381}
+
+for k,v in a.items():
+    print(k,v)
+    d = {}
+    d[k]=(v)
+
+res = df.merge(dp1, how='left')
+
+res.
+
+dc =[{'ss': 41410, 'qq': 75, 'oo': 10029379, 'tt': 19.95, 'sl': 10029381}, 
+     {'ss': 41411, 'qq': 75, 'oo': 10029380, 'tt': 0.45, 'sl': 10029382}]
+df =pd.DataFrame(dc)
+
+ordersEid = {'oty': ['PE', 'CE'], 'ss': ['41410', '41411']}
+# ordersEid = { 'CE' :41410, 'PE': 41777}
+dp1 =pd.DataFrame(ordersEid)
+
+
+
+dp1['CE']
+
+for i in range(len(df)):
+    print(df['ss'].values[i])
+
+
+xt.get_option_symbol(
+                exchangeSegment=2,
+                series='OPTIDX',
+                symbol="NIFTY",
+                expiryDate='28Jan2021',
+                optionType="CE",
+                strikePrice=13800)
+
+instruments = [
+    {'exchangeSegment': 1, 'exchangeInstrumentID': 'NIFTY 50'}]
+
+response = xt.get_quote(
+    Instruments=instruments,
+    xtsMessageCode=1504,
+    publishFormat='JSON')
+print('Quote :', response)
+
+
+
+

@@ -22,22 +22,22 @@ import logging
 # import multiprocessing
 # import schedule
 
-logging.basicConfig(filename='../logs/Strategy_1_log.txt',level=logging.DEBUG,
+logging.basicConfig(filename='../logs/New_Strategy_1_log.txt',level=logging.DEBUG,
                     format='%(asctime)s:%(name)s:%(message)s')
 
 
-global ordersEid,new_dict
-new_dict = dict.fromkeys(('oo','tt','qq','ss','sl'), []) 
-
-# oo,tt,qq,ss,sl=[],[],[],[],[]
-
+global ordersEid
+global new_dict
+new_dict={}
+# new_dict = {k:[] for k in ['oo','tt','qq','ss','sl']}
 ordersEid = {}
+ordersEid= {k:[] for k in ['oty','ss']}
+
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-kickTime = "11:47:00"
+kickTime = "15:18:00"
 wrapTime = "15:05:00"
 globalSL = -1500
 globalTarget = 3000
-
 
 API_KEY = "ebaa4a8cf2de358e53c942"
 API_SECRET = "Ojre664@S9"
@@ -148,7 +148,9 @@ def get_eID(symbol,ce_pe,expiry,strikePrice):
     # print("ExchangeInstrumentID is:",eID_resp)# (int(response["result"][0]["ExchangeInstrumentID"])))
     if eID_resp['type'] != 'error':
         eid = int(eID_resp["result"][0]["ExchangeInstrumentID"])
-        ordersEid[eid]=(oType)
+        ordersEid['oty'].append(oType)
+        ordersEid['ss'].append(eid)
+        # ordersEid[eid]=(oType)
         logging.info(f'Exchange Instrument ID : {eid}, {ordersEid}')
         return eid
     else:
@@ -210,36 +212,10 @@ def get_global_PnL():
         return totalMTMdf
     else:
         return totalMTMdf
-
-def printPNL(j):
-    try:
-        login()
-        df=pd.DataFrame(j)
-        instruments=[]
-        for i in range(len(df)):
-            instruments.append({'exchangeSegment': 2, 'exchangeInstrumentID': df['symbol'].values[i]})
-            # print(instruments)
-        subs_resp = xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
-        # subs_resp = {"type":"success","code":"s-quotes-0001","description":"Get quotes successfully!","result":{"mdp":1502,"quotesList":[{"exchangeSegment":2,"exchangeInstrumentID":"43423"},{"exchangeSegment":2,"exchangeInstrumentID":"43422"}],"listQuotes":["{\"MessageCode\":1502,\"MessageVersion\":4,\"ApplicationType\":0,\"TokenID\":0,\"ExchangeSegment\":2,\"ExchangeInstrumentID\":43423,\"ExchangeTimeStamp\":1296226865,\"Bids\":[{\"Size\":600,\"Price\":76.45,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":300,\"Price\":76.3,\"TotalOrders\":3,\"BuyBackMarketMaker\":0},{\"Size\":150,\"Price\":76.25,\"TotalOrders\":2,\"BuyBackMarketMaker\":0},{\"Size\":450,\"Price\":76.2,\"TotalOrders\":2,\"BuyBackMarketMaker\":0},{\"Size\":150,\"Price\":76.15,\"TotalOrders\":2,\"BuyBackMarketMaker\":0}],\"Asks\":[{\"Size\":75,\"Price\":76.65,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":450,\"Price\":76.7,\"TotalOrders\":2,\"BuyBackMarketMaker\":0},{\"Size\":75,\"Price\":76.75,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":1200,\"Price\":76.8,\"TotalOrders\":4,\"BuyBackMarketMaker\":0},{\"Size\":1050,\"Price\":76.85,\"TotalOrders\":6,\"BuyBackMarketMaker\":0}],\"Touchline\":{\"BidInfo\":{\"Size\":600,\"Price\":76.45,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},\"AskInfo\":{\"Size\":75,\"Price\":76.65,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},\"LastTradedPrice\":99.9,\"LastTradedQunatity\":75,\"TotalBuyQuantity\":707700,\"TotalSellQuantity\":390825,\"TotalTradedQuantity\":91123350,\"AverageTradedPrice\":53.44,\"LastTradedTime\":1296226865,\"LastUpdateTime\":1296226865,\"PercentChange\":174.55197132616487,\"Open\":22.95,\"High\":107.55,\"Low\":21.35,\"Close\":27.9,\"TotalValueTraded\":null,\"BuyBackTotalBuy\":0,\"BuyBackTotalSell\":0},\"BookType\":1,\"XMarketType\":1,\"SequenceNumber\":338944086942332}","{\"MessageCode\":1502,\"MessageVersion\":4,\"ApplicationType\":0,\"TokenID\":0,\"ExchangeSegment\":2,\"ExchangeInstrumentID\":43422,\"ExchangeTimeStamp\":1296226865,\"Bids\":[{\"Size\":75,\"Price\":56.85,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":1200,\"Price\":56.8,\"TotalOrders\":4,\"BuyBackMarketMaker\":0},{\"Size\":1050,\"Price\":56.7,\"TotalOrders\":3,\"BuyBackMarketMaker\":0},{\"Size\":975,\"Price\":56.65,\"TotalOrders\":3,\"BuyBackMarketMaker\":0},{\"Size\":1575,\"Price\":56.6,\"TotalOrders\":4,\"BuyBackMarketMaker\":0}],\"Asks\":[{\"Size\":75,\"Price\":57.1,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":300,\"Price\":57.15,\"TotalOrders\":3,\"BuyBackMarketMaker\":0},{\"Size\":150,\"Price\":57.2,\"TotalOrders\":2,\"BuyBackMarketMaker\":0},{\"Size\":150,\"Price\":57.25,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":1275,\"Price\":57.3,\"TotalOrders\":6,\"BuyBackMarketMaker\":0}],\"Touchline\":{\"BidInfo\":{\"Size\":75,\"Price\":56.85,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},\"AskInfo\":{\"Size\":75,\"Price\":57.1,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},\"LastTradedPrice\":66.6,\"LastTradedQunatity\":75,\"TotalBuyQuantity\":651225,\"TotalSellQuantity\":452775,\"TotalTradedQuantity\":34126875,\"AverageTradedPrice\":85.86,\"LastTradedTime\":1296226865,\"LastUpdateTime\":1296226865,\"PercentChange\":-79.70499377998934,\"Open\":222,\"High\":233.4,\"Low\":39.1,\"Close\":281.35,\"TotalValueTraded\":null,\"BuyBackTotalBuy\":0,\"BuyBackTotalSell\":0},\"BookType\":1,\"XMarketType\":1,\"SequenceNumber\":338944086942324}"]}}
-        if subs_resp['type'] == 'success':
-            ltp=[]
-            for i in range(len(df)):
-                listQuotes = json.loads(subs_resp['result']['listQuotes'][i])
-                ltp.append(listQuotes['Touchline']['LastTradedPrice'])
-            df['ltp']=ltp
-            df['pnl']=(df['ltp']-df['tradedPrice'])*df['qty'] 
-            cur_PnL=round(df['pnl'].sum(),2) 
-            logging.info(f'df is : \n {df} \n')
-            logging.info('Time,PnL printing below')
-            logging.info((time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL))
-            print(time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL)
-    except Exception:
-        logging.exception('Failed in PNL')
         
-    
-def squareOff(eid,symbol):
+def squareOff(eid,symb):
     ab = 0
-    logging.info(f'squaring-off for :, {symbol} , {eid}')
+    logging.info(f'squaring-off for :, {symb} , {eid}')
     while ab < 5:
         try:
            sq_off_resp = xt.squareoff_position(
@@ -252,7 +228,7 @@ def squareOff(eid,symbol):
                 blockOrderSending=True,
                 cancelOrders=True)
            if sq_off_resp['type'] != "error":
-               logging.info(f"Squared-off for symbol {symbol} | {eid}")
+               logging.info(f"Squared-off for symbol {symb} | {eid}")
                break
            if sq_off_resp['type'] == "error":
                auth_issue_fix(sq_off_resp)
@@ -343,74 +319,16 @@ def prepareVars(ticker):
         logging.exception("Unable to reterive info like margin,strikePrice,nfty_ltp,bnknfty_ltp  to place order")
         return False
 
-def placeOrder(symbol,buy_sell,quantity,t_type,sl=0):
+def placeOrder(symbol,buy_sell,quantity):
+    logging.info(' \n Placing Orders with StopLoss.. \n')
+    orderID_dict = {}
+    orderID_dict[symbol] = []
     # Place an intraday stop loss order on NSE
     orderID = 0
     tradedPrice = 0
-    new_dict['ss'].append(symbol)
-    new_dict['qq'].append(quantity)
-    # if buy_sell == "buy":
-    #     t_type=xt.TRANSACTION_TYPE_BUY
-    # elif buy_sell == "sell":
-    #     t_type=xt.TRANSACTION_TYPE_SELL
-    #     # quantity = mul*nifty_lot_size
-    if sl == 0:
-        o_type=xt.ORDER_TYPE_MARKET
-    else:
-        o_type="StopMarket"
-        
-    logging.info(f'placing order for --, {symbol}')
-    order_resp = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
-                         exchangeInstrumentID= symbol ,
-                         productType=xt.PRODUCT_MIS, 
-                         orderType=o_type,                   
-                         orderSide=t_type,
-                         timeInForce=xt.VALIDITY_DAY,
-                         disclosedQuantity=0,
-                         orderQuantity=quantity,
-                         limitPrice=0,
-                         stopPrice=sl,
-                         orderUniqueIdentifier="FC_MarketOrder"
-                         )
-    if order_resp['type'] != 'error' and sl==0:
-        orderID = order_resp['result']['AppOrderID']            #extracting the order id from response
-        new_dict['oo'].append(orderID)
-        logging.info(f'Order ID for {t_type} {symbol} is: {orderID}')
-        # return orderID
-        # loop = True
-        a=0
-        while a<3:
-            orderLists = getOrderList()
-            if orderLists:
-                new_orders = [ol for ol in orderLists if ol['AppOrderID'] == orderID and ol['OrderStatus'] != 'Filled']  
-                if not new_orders:
-                    tradedPrice = float(next((orderList['OrderAverageTradedPrice'] for orderList in orderLists if orderList['AppOrderID'] == orderID and orderList['OrderStatus'] == 'Filled'),None))
-                    new_dict['tt'].append(tradedPrice)
-                    print("traded price is: ", tradedPrice)
-                    break
-                    # loop = False
-                else:
-                    logging.info(f'Placed order {orderID} might be in Open or New Status, Hence retrying..{a}')
-                    a+=1
-                    if a==2:
-                        logging.info('traded price is calculated as Zero, place SL order Manually')
-                    time.sleep(3)
-            else:
-                logging.info('Unable to get OrderList inside place order function..')
-                logging.info('..Hence traded price will retun as None')
-                # return orderID, tradedPrice
-    elif order_resp['type'] != 'error' and sl!=0:
-        orderID = order_resp['result']['AppOrderID']            #extracting the order id from response
-        new_dict['sl'].append(orderID)
-        logging.info(f'StopLoss Order ID for {t_type} {symbol} is: {orderID}')
-    return orderID, tradedPrice
-            
-def placeOrderWithSL(symbol,buy_sell,quantity):
-    # Place an intraday stop loss order on NSE
-    # global orderID_dict
-    logging.info('Placing Orders with StopLoss..')
-    orderID_dict = {}
-    orderID_dict[symbol] = []
+    
+    new_dict['ss']=str(symbol)
+    new_dict['qq']=(quantity)
     
     if buy_sell == "buy":
         t_type=xt.TRANSACTION_TYPE_BUY
@@ -420,41 +338,87 @@ def placeOrderWithSL(symbol,buy_sell,quantity):
         t_type=xt.TRANSACTION_TYPE_SELL
         t_type_sl=xt.TRANSACTION_TYPE_BUY
         slPoints = +15
-    # tradedPrice = 0
-    # quantity = mul*nifty_lot_size
-    # bb = 0
-    # while bb < 3:
     try:
-        orderID,tradedPrice = placeOrder(symbol,buy_sell,quantity,t_type)
-        logging.info(f'orderId and Traded price in try block of placeOrderWithSL: {orderID} and {tradedPrice}')
-        print("orderId and Traded price in try block of placeOrderWithSL", orderID, tradedPrice)
+        order_resp = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
+                         exchangeInstrumentID= symbol ,
+                         productType=xt.PRODUCT_MIS, 
+                         orderType=xt.ORDER_TYPE_MARKET,                   
+                         orderSide=t_type,
+                         timeInForce=xt.VALIDITY_DAY,
+                         disclosedQuantity=0,
+                         orderQuantity=quantity,
+                         limitPrice=0,
+                         stopPrice=0,
+                         orderUniqueIdentifier="FC_MarketOrder"
+                         )
+        if order_resp['type'] != 'error':
+            orderID = order_resp['result']['AppOrderID']            #extracting the order id from response
+            new_dict['oo']=(orderID)
+            logging.info(f' \n Order ID for {t_type} {symbol} is: {orderID} \n')
+            # return orderID
+            # loop = True
+            a=0
+            while a<3:
+                orderLists = getOrderList()
+                if orderLists:
+                    new_orders = [ol for ol in orderLists if ol['AppOrderID'] == orderID and ol['OrderStatus'] != 'Filled']  
+                    if not new_orders:
+                        tradedPrice = float(next((orderList['OrderAverageTradedPrice'] for orderList in orderLists if orderList['AppOrderID'] == orderID and orderList['OrderStatus'] == 'Filled'),None))
+                        new_dict['tt']=(tradedPrice)
+                        logging.info(f"traded price is: {tradedPrice}")
+                        break
+                        # loop = False
+                    else:
+                        logging.info(f'\n Placed order {orderID} might be in Open or New Status, Hence retrying..{a}')
+                        a+=1
+                        if a==2:
+                            logging.info('\n traded price is calculated as Zero, place SL order Manually')
+                        time.sleep(3)
+                else:
+                    logging.info('\n  Unable to get OrderList inside place order function..')
+                    logging.info('..Hence traded price will retun as None \n ')
+                    
         orderID_dict[symbol].append(symbol)
         orderID_dict[symbol].append(orderID)
         orderID_dict[symbol].append(tradedPrice)
-
-    except:
-        logging.debug('Unable to place order in placeOrderWithSL func...')
-        time.sleep(1)
-        # bb+=1
+    except Exception():
+        logging.exception('Unable to place order in placeOrderWithSL func...')
+        time.sleep(1)        
     else:
-        # get trade price of the last order processed from orderList
-        logging.info('placing SL order for -- {symbol}')
         if tradedPrice != 0:
+            logging.info(f'\n Placing StopLoss order for {symbol}')
             stopPrice = round((tradedPrice+slPoints),2)
             logging.info(f'stopLoss price fixed as: {stopPrice}')
-            orderID,tradedPrice = placeOrder(symbol,buy_sell,quantity,t_type_sl,sl=stopPrice)
-            orderID_dict[symbol].append(orderID)
+            sl_order_resp = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
+                         exchangeInstrumentID= symbol ,
+                         productType=xt.PRODUCT_MIS, 
+                         orderType="StopMarket",                   
+                         orderSide=t_type_sl,
+                         timeInForce=xt.VALIDITY_DAY,
+                         disclosedQuantity=0,
+                         orderQuantity=quantity,
+                         limitPrice=0,
+                         stopPrice=stopPrice,
+                         orderUniqueIdentifier="FC_MarketOrder"
+                         )
+            if sl_order_resp['type'] != 'error':
+                orderID = sl_order_resp['result']['AppOrderID']            #extracting the order id from response
+                new_dict['sl']=(orderID)
+                orderID_dict[symbol].append(orderID)
+                logging.info(f'\n  StopLoss Order ID for {t_type_sl} {symbol} is: {orderID} \n')
         else:
-            logging.info('TradedPice is not available, Hence not placing SL order, TRY MANUALLY..')
+            logging.info(' \n TradedPice is not available, Hence not placing SL order, TRY MANUALLY.. \n')
             
-    logging.info(f'orderDictionary from placeOrderWithSL {orderID_dict}')
-    print("orderDictionary from placeOrderWithSL ", orderID_dict)
-    return orderID_dict
-
-
+    # logging.info(f'orderDictionary from placeOrderWithSL {orderID_dict}')
+    logging.info(f"orderDictionary from new place order func (orderID_dict)  {orderID_dict}")
+    logging.info(f" \n new DICT  from new place order func (new_dict)  {new_dict} \n")
+    # return orderID_dict, new_dict
+    return new_dict
+                    
 def runOrders():
-    global monitor,orderID_dictR
+    global monitor,orderID_dictR,new_dictR
     orderID_dictR = {}
+    new_dictR=[]
     monitor=False
     if margin_ok:
         logging.info('Required Margin Available.. Taking positions...')
@@ -462,17 +426,14 @@ def runOrders():
         with concurrent.futures.ProcessPoolExecutor() as executor:
             try:
                 # orderID_dict = executor.map(placeOrderWithSL,eID,repeat('sell'),repeat(quantity))
-                results = [executor.submit(placeOrderWithSL,i,'sell',quantity) for i in eID]
-                print(results)
+                results = [executor.submit(placeOrder,i,'sell',quantity) for i in eID]
                 for f in concurrent.futures.as_completed(results):
-                    print('printiing f.results')
-                    print(f.result())
-                    orderID_dictR.update(f.result())
-                    print('printiing orderID Dict value')
-                    print(orderID_dictR)
+                    # print('printiing f.results')
+                    # print(f.result())
+                    # orderID_dictR.update(f.result())
+                    new_dictR.append(f.result())
+                logging.info(f'printing new_dictR value : {new_dictR}')
                 monitor = True
-                logging.info(f'new dict values :  {new_dict}')
-                print(f'new dict values :  {new_dict}')
             except Exception:
                 logging.exception('got exception - Something wrong with placing order:')
                 # traceback.print_exc()
@@ -482,52 +443,85 @@ def runOrders():
              But cash available is: {net_cash}
              Exiting without placing any orders.. 
                   ''')     
- 
+
+def getPnL():
+    try:
+        # print(j)
+        logging.info('Checking CurPnL for this strategy..')
+        login()
+        odf=pd.DataFrame(new_dictR)
+        eid_df =pd.DataFrame(ordersEid)
+        df = odf.merge(eid_df, how='left')
+        instruments=[]
+        for i in range(len(df)):
+            instruments.append({'exchangeSegment': 2, 'exchangeInstrumentID': df['symbol'].values[i]})
+            # print(instruments)
+        logging.info('sending subscription for : {instruments}')    
+        unsubs_resp=xt.send_unsubscription(Instruments=instruments,xtsMessageCode=1502)
+        logging.info(unsubs_resp['description'])
+        subs_resp = xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
+        # subs_resp = {"type":"success","code":"s-quotes-0001","description":"Get quotes successfully!","result":{"mdp":1502,"quotesList":[{"exchangeSegment":2,"exchangeInstrumentID":"43423"},{"exchangeSegment":2,"exchangeInstrumentID":"43422"}],"listQuotes":["{\"MessageCode\":1502,\"MessageVersion\":4,\"ApplicationType\":0,\"TokenID\":0,\"ExchangeSegment\":2,\"ExchangeInstrumentID\":43423,\"ExchangeTimeStamp\":1296226865,\"Bids\":[{\"Size\":600,\"Price\":76.45,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":300,\"Price\":76.3,\"TotalOrders\":3,\"BuyBackMarketMaker\":0},{\"Size\":150,\"Price\":76.25,\"TotalOrders\":2,\"BuyBackMarketMaker\":0},{\"Size\":450,\"Price\":76.2,\"TotalOrders\":2,\"BuyBackMarketMaker\":0},{\"Size\":150,\"Price\":76.15,\"TotalOrders\":2,\"BuyBackMarketMaker\":0}],\"Asks\":[{\"Size\":75,\"Price\":76.65,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":450,\"Price\":76.7,\"TotalOrders\":2,\"BuyBackMarketMaker\":0},{\"Size\":75,\"Price\":76.75,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":1200,\"Price\":76.8,\"TotalOrders\":4,\"BuyBackMarketMaker\":0},{\"Size\":1050,\"Price\":76.85,\"TotalOrders\":6,\"BuyBackMarketMaker\":0}],\"Touchline\":{\"BidInfo\":{\"Size\":600,\"Price\":76.45,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},\"AskInfo\":{\"Size\":75,\"Price\":76.65,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},\"LastTradedPrice\":99.9,\"LastTradedQunatity\":75,\"TotalBuyQuantity\":707700,\"TotalSellQuantity\":390825,\"TotalTradedQuantity\":91123350,\"AverageTradedPrice\":53.44,\"LastTradedTime\":1296226865,\"LastUpdateTime\":1296226865,\"PercentChange\":174.55197132616487,\"Open\":22.95,\"High\":107.55,\"Low\":21.35,\"Close\":27.9,\"TotalValueTraded\":null,\"BuyBackTotalBuy\":0,\"BuyBackTotalSell\":0},\"BookType\":1,\"XMarketType\":1,\"SequenceNumber\":338944086942332}","{\"MessageCode\":1502,\"MessageVersion\":4,\"ApplicationType\":0,\"TokenID\":0,\"ExchangeSegment\":2,\"ExchangeInstrumentID\":43422,\"ExchangeTimeStamp\":1296226865,\"Bids\":[{\"Size\":75,\"Price\":56.85,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":1200,\"Price\":56.8,\"TotalOrders\":4,\"BuyBackMarketMaker\":0},{\"Size\":1050,\"Price\":56.7,\"TotalOrders\":3,\"BuyBackMarketMaker\":0},{\"Size\":975,\"Price\":56.65,\"TotalOrders\":3,\"BuyBackMarketMaker\":0},{\"Size\":1575,\"Price\":56.6,\"TotalOrders\":4,\"BuyBackMarketMaker\":0}],\"Asks\":[{\"Size\":75,\"Price\":57.1,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":300,\"Price\":57.15,\"TotalOrders\":3,\"BuyBackMarketMaker\":0},{\"Size\":150,\"Price\":57.2,\"TotalOrders\":2,\"BuyBackMarketMaker\":0},{\"Size\":150,\"Price\":57.25,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":1275,\"Price\":57.3,\"TotalOrders\":6,\"BuyBackMarketMaker\":0}],\"Touchline\":{\"BidInfo\":{\"Size\":75,\"Price\":56.85,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},\"AskInfo\":{\"Size\":75,\"Price\":57.1,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},\"LastTradedPrice\":66.6,\"LastTradedQunatity\":75,\"TotalBuyQuantity\":651225,\"TotalSellQuantity\":452775,\"TotalTradedQuantity\":34126875,\"AverageTradedPrice\":85.86,\"LastTradedTime\":1296226865,\"LastUpdateTime\":1296226865,\"PercentChange\":-79.70499377998934,\"Open\":222,\"High\":233.4,\"Low\":39.1,\"Close\":281.35,\"TotalValueTraded\":null,\"BuyBackTotalBuy\":0,\"BuyBackTotalSell\":0},\"BookType\":1,\"XMarketType\":1,\"SequenceNumber\":338944086942324}"]}}
+        if subs_resp['type'] == 'success':
+            ltp=[]
+            for i in range(len(df)):
+                listQuotes = json.loads(subs_resp['result']['listQuotes'][i])
+                ltp.append(listQuotes['Touchline']['LastTradedPrice'])
+                logging.info('\n LastTradedPrice fetched as : {ltp}')
+            df['ltp']=ltp
+            df['pnl']=(df['ltp']-df['tt'])*df['qty'] 
+            cur_PnL=round(df['pnl'].sum(),2) 
+            logging.info(f'df is : \n {df} \n')
+            logging.info('\n Time    ,    PnL')
+            logging.info((time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL))
+            # logging.info(time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL)
+        return cur_PnL    
+    except Exception:
+        logging.exception('Failed to get PNL')
+        
 def runSqOffLogics():
     login()
-    # if monitor:
-    global cur_PnL
-    print("--- ---\n")
-    print('''Entering runSqOffLogics func,\n \t This logic runs till the end of the script and 
+    logging.info('''\n Entering runSqOffLogics func,\n \t This logic runs till the end of the script and 
               checks SL/TARGET/TIMEings \n''')
-    # cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
     check=True
     while check:
         # print("--- getting cur_PnL ---")
-        cur_PnL = get_global_PnL()
+        cur_PnL = getPnL()
         if (cur_PnL < globalSL) or (cur_PnL >= globalTarget) or (datetime.now() >= datetime.strptime(cdate + " " + wrapTime, "%d-%m-%Y %H:%M:%S")):
             logging.info('SquareOff Logic met...')
             print("/n SquareOff Logic met...")
+            
             # closing all open positions             # not taking getPositionList() bcoz
-            # positionList = getPositionList()      # get_global_PnL() has the latest pos_df
-            # pos_df = pd.DataFrame(positionList)   # also runs every 2 secs so no need to get again
-            for i in range(len(pos_df)):
-                if int(pos_df["Quantity"].values[i]) != 0:
-                    symbol=pos_df['TradingSymbol'].values[i]
-                    eid = pos_df["ExchangeInstrumentId"].values[i]
-                    squareOff(eid,symbol)
-            print("Position Squareoff Completed ")
+            positionList = getPositionList()      # get_global_PnL() has the latest pos_df
+            if positionList:
+                pos_df = pd.DataFrame(positionList)   # also runs every 2 secs so no need to get again
+                for i in range(len(pos_df)):
+                    if int(pos_df["Quantity"].values[i]) != 0:
+                        symb=pos_df['TradingSymbol'].values[i]
+                        eid = pos_df["ExchangeInstrumentId"].values[i]
+                        squareOff(eid,symb)
+                print("Position Squareoff Completed ")
+            else:
+                logging.info('Unable to get positionList to square-off. Try manually..')
             
             #closing all pending orders
-            # orderBook = getOrderBook()
-            # orderList=xt.get_order_book()['result']
             orderList = getOrderList()
-            ord_df = pd.DataFrame(orderList)
-            pending = ord_df[ord_df['OrderStatus'].isin(["New","Open","Partially Filled"])]["AppOrderID"].tolist()
-            drop = []
-            attempt = 0
-            while len(pending)>0 and attempt<5:
-                pending = [j for j in pending if j not in drop]
-                for order in pending:
-                    try:
-                        cancelOrder(order)
-                        drop.append(order)
-                    except:
-                        print("unable to delete order id : ",order)
-                        attempt+=1
+            if orderList:
+                ord_df = pd.DataFrame(orderList)
+                pending = ord_df[ord_df['OrderStatus'].isin(["New","Open","Partially Filled"])]["AppOrderID"].tolist()
+                drop = []
+                attempt = 0
+                while len(pending)>0 and attempt<5:
+                    pending = [j for j in pending if j not in drop]
+                    for order in pending:
+                        try:
+                            cancelOrder(order)
+                            drop.append(order)
+                        except:
+                            print("unable to delete order id : ",order)
+                            attempt+=1
             else:
-                print("No Open orders to Cancel")
-                    
+                logging.info('Unable to get orderList to square-off. Try manually..')
+    
             check=False # exit this long run main loop
         else:
             # print("Sq-off logic running parallelly")
@@ -550,23 +544,20 @@ if __name__ == '__main__':
                 nstart = False
             else:
                 time.sleep(0.5)
-        printPNL(new_dict)
-        
-        # print("starting multi funcs with threaded timer...")
-        # if monitor:
-        #     try:
-        #         print("--- Entering SquareOffLogic Function after placing orders ---")
-        #         runSqOffLogics()
-        #         print("--- Sq-off Func Exit ---")
-        #     except Exception as e:
-        #         print("Something went wrong.. try closing the orders manually..", e)
-        #     finally:
-        #         print("-- Script Ended --")
-                
-
-        # else:
-        #     print("No Orders Placed")
-        #     print(" not started any multi funcs threaded timer")
+         
+        print("starting multi funcs with threaded timer...")
+        if monitor:
+            try:
+                print("--- Entering SquareOffLogic Function after placing orders ---")
+                runSqOffLogics()
+                print("--- Sq-off Func Exit ---")
+            except Exception as e:
+                print("Something went wrong.. try closing the orders manually..", e)
+            finally:
+                print("-- Script Ended --")
+        else:
+            print("No Orders Placed")
+            print(" not started any multi funcs threaded timer")
     else:
         print("Vars not set properly...")
 

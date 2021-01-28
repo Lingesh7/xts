@@ -1,0 +1,228 @@
+2021-01-28 15:16:19,109:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 15:17:25,970:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 15:17:34,436:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
+2021-01-28 15:17:34,440:root:Main Login Successful
+2021-01-28 15:17:34,440:root:Calculating everything before executing orders..
+2021-01-28 15:17:34,440:root:Calculating weekly and monthly expiry dates..
+2021-01-28 15:17:34,441:root:weekly expiry is : 28Jan2021, monthly expiry is: 28Jan2021
+2021-01-28 15:17:34,572:root:('StrikePrice computed as : ', 13800)
+2021-01-28 15:17:34,573:root:Input of get_eID fn : NIFTY, ce,28Jan2021,13800
+2021-01-28 15:17:34,575:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 15:17:36,073:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /marketdata/instruments/instrument/optionsymbol?exchangeSegment=2&series=OPTIDX&symbol=NIFTY&expiryDate=28Jan2021&optionType=CE&strikePrice=13800 HTTP/1.1" 200 None
+2021-01-28 15:17:36,076:root:Exchange Instrument ID : 41410, {41410: 'CE'}
+2021-01-28 15:17:36,076:root:Input of get_eID fn : NIFTY, pe,28Jan2021,13800
+2021-01-28 15:17:36,081:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 15:17:37,674:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /marketdata/instruments/instrument/optionsymbol?exchangeSegment=2&series=OPTIDX&symbol=NIFTY&expiryDate=28Jan2021&optionType=PE&strikePrice=13800 HTTP/1.1" 200 None
+2021-01-28 15:17:37,677:root:Exchange Instrument ID : 41411, {41410: 'CE', 41411: 'PE'}
+2021-01-28 15:17:37,677:root:Checking margin from user..
+2021-01-28 15:17:37,678:root:Checking balance..
+2021-01-28 15:17:37,682:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 15:17:48,777:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /interactive/user/balance HTTP/1.1" 200 None
+2021-01-28 15:17:48,777:root:Balance retreived success, available cash : 1000000000
+2021-01-28 15:17:48,777:root: 
+              net_cash - 1000000000,
+              strikePrice - 13800,
+              Nifty LTP - 13823.6,
+              BankNiftyLTP - None
+              exchangeInstrumentID - [41410, 41411]
+              
+2021-01-28 15:17:48,777:root:All set from prepareVars func.. Giving a go for orders..
+2021-01-28 15:17:48,777:root:required variables set-- ready to trigger orders at desired time
+2021-01-28 15:18:00,357:root:Required Margin Available.. Taking positions...
+2021-01-28 15:18:01,322:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 15:18:01,342:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 15:18:01,350:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 15:18:01,370:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 15:18:02,636:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
+2021-01-28 15:18:02,636:root:Main Login Successful
+2021-01-28 15:18:02,652:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
+2021-01-28 15:18:02,652:root: 
+ Placing Orders with StopLoss.. 
+
+2021-01-28 15:18:02,652:root:Main Login Successful
+2021-01-28 15:18:02,652:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 15:18:02,652:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
+2021-01-28 15:18:02,667:root:Main Login Successful
+2021-01-28 15:18:02,667:root: 
+ Placing Orders with StopLoss.. 
+
+2021-01-28 15:18:02,674:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 15:18:02,674:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
+2021-01-28 15:18:02,674:root:Main Login Successful
+2021-01-28 15:18:04,557:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/orders HTTP/1.1" 200 None
+2021-01-28 15:18:04,573:root: 
+ Order ID for SELL 41410 is: 10029379 
+
+2021-01-28 15:18:04,573:root:Retreiving OrderBook..
+2021-01-28 15:18:04,573:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 15:18:04,579:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/orders HTTP/1.1" 200 None
+2021-01-28 15:18:04,579:root: 
+ Order ID for SELL 41411 is: 10029380 
+
+2021-01-28 15:18:04,579:root:Retreiving OrderBook..
+2021-01-28 15:18:04,579:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 15:18:05,961:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /interactive/orders HTTP/1.1" 200 None
+2021-01-28 15:18:05,961:root:OrderBook result retreived success
+2021-01-28 15:18:05,961:root:
+ Placing StopLoss order for 41410
+2021-01-28 15:18:05,961:root:stopLoss price fixed as: 34.95
+2021-01-28 15:18:05,961:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 15:18:05,976:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /interactive/orders HTTP/1.1" 200 None
+2021-01-28 15:18:05,976:root:OrderBook result retreived success
+2021-01-28 15:18:05,976:root:
+ Placing StopLoss order for 41411
+2021-01-28 15:18:05,976:root:stopLoss price fixed as: 15.45
+2021-01-28 15:18:05,983:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 15:18:07,133:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/orders HTTP/1.1" 200 None
+2021-01-28 15:18:07,133:root:
+  StopLoss Order ID for BUY 41410 is: 10029381 
+
+2021-01-28 15:18:07,133:root:orderDictionary from new place order func (orderID_dict)  {41410: [41410, 10029379, 19.95, 10029381]}
+2021-01-28 15:18:07,133:root: 
+ new DICT  from new place order func (new_dict)  {'ss': 41410, 'qq': 75, 'oo': 10029379, 'tt': 19.95, 'sl': 10029381} 
+
+2021-01-28 15:18:07,133:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/orders HTTP/1.1" 200 None
+2021-01-28 15:18:07,148:root:
+  StopLoss Order ID for BUY 41411 is: 10029382 
+
+2021-01-28 15:18:07,148:root:orderDictionary from new place order func (orderID_dict)  {41411: [41411, 10029380, 0.45, 10029382]}
+2021-01-28 15:18:07,148:root: 
+ new DICT  from new place order func (new_dict)  {'ss': 41411, 'qq': 75, 'oo': 10029380, 'tt': 0.45, 'sl': 10029382} 
+
+2021-01-28 16:02:08,814:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 16:02:09,749:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
+2021-01-28 16:02:09,764:root:Main Login Successful
+2021-01-28 16:02:09,764:root:Calculating everything before executing orders..
+2021-01-28 16:02:09,764:root:Calculating weekly and monthly expiry dates..
+2021-01-28 16:02:09,764:root:weekly expiry is : 28Jan2021, monthly expiry is: 28Jan2021
+2021-01-28 16:02:09,865:root:('StrikePrice computed as : ', 13800)
+2021-01-28 16:02:09,865:root:Input of get_eID fn : NIFTY, ce,28Jan2021,13800
+2021-01-28 16:02:09,880:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 16:02:10,814:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /marketdata/instruments/instrument/optionsymbol?exchangeSegment=2&series=OPTIDX&symbol=NIFTY&expiryDate=28Jan2021&optionType=CE&strikePrice=13800 HTTP/1.1" 200 None
+2021-01-28 16:02:10,814:root:Exchange Instrument ID : 41410, {'ot': 'CE', 'oo': 'NIFTY'}
+2021-01-28 16:02:10,814:root:Input of get_eID fn : NIFTY, pe,28Jan2021,13800
+2021-01-28 16:02:10,821:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 16:02:11,701:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /marketdata/instruments/instrument/optionsymbol?exchangeSegment=2&series=OPTIDX&symbol=NIFTY&expiryDate=28Jan2021&optionType=PE&strikePrice=13800 HTTP/1.1" 200 None
+2021-01-28 16:02:11,701:root:Exchange Instrument ID : 41411, {'ot': 'PE', 'oo': 'NIFTY'}
+2021-01-28 16:02:11,701:root:Checking margin from user..
+2021-01-28 16:02:11,701:root:Checking balance..
+2021-01-28 16:02:11,701:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 16:02:14,694:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /interactive/user/balance HTTP/1.1" 200 None
+2021-01-28 16:02:14,694:root:Balance retreived success, available cash : 1000000000
+2021-01-28 16:02:14,694:root: 
+              net_cash - 1000000000,
+              strikePrice - 13800,
+              Nifty LTP - 13817.55,
+              BankNiftyLTP - None
+              exchangeInstrumentID - [41410, 41411]
+              
+2021-01-28 16:02:14,694:root:All set from prepareVars func.. Giving a go for orders..
+2021-01-28 16:03:49,432:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 16:03:50,335:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
+2021-01-28 16:03:50,351:root:Main Login Successful
+2021-01-28 16:03:50,351:root:Calculating everything before executing orders..
+2021-01-28 16:03:50,351:root:Calculating weekly and monthly expiry dates..
+2021-01-28 16:03:50,351:root:weekly expiry is : 28Jan2021, monthly expiry is: 28Jan2021
+2021-01-28 16:03:50,482:root:('StrikePrice computed as : ', 13800)
+2021-01-28 16:03:50,482:root:Input of get_eID fn : NIFTY, ce,28Jan2021,13800
+2021-01-28 16:03:50,482:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 16:03:51,307:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /marketdata/instruments/instrument/optionsymbol?exchangeSegment=2&series=OPTIDX&symbol=NIFTY&expiryDate=28Jan2021&optionType=CE&strikePrice=13800 HTTP/1.1" 200 None
+2021-01-28 16:03:51,307:root:Exchange Instrument ID : 41410, {'ot': 'CE', 'oo': 41410}
+2021-01-28 16:03:51,307:root:Input of get_eID fn : NIFTY, pe,28Jan2021,13800
+2021-01-28 16:03:51,322:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 16:03:52,256:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /marketdata/instruments/instrument/optionsymbol?exchangeSegment=2&series=OPTIDX&symbol=NIFTY&expiryDate=28Jan2021&optionType=PE&strikePrice=13800 HTTP/1.1" 200 None
+2021-01-28 16:03:52,272:root:Exchange Instrument ID : 41411, {'ot': 'PE', 'oo': 41411}
+2021-01-28 16:03:52,272:root:Checking margin from user..
+2021-01-28 16:03:52,272:root:Checking balance..
+2021-01-28 16:03:52,272:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 16:03:54,431:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /interactive/user/balance HTTP/1.1" 200 None
+2021-01-28 16:03:54,431:root:Balance retreived success, available cash : 1000000000
+2021-01-28 16:03:54,431:root: 
+              net_cash - 1000000000,
+              strikePrice - 13800,
+              Nifty LTP - 13817.55,
+              BankNiftyLTP - None
+              exchangeInstrumentID - [41410, 41411]
+              
+2021-01-28 16:03:54,431:root:All set from prepareVars func.. Giving a go for orders..
+2021-01-28 16:04:37,863:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 16:04:38,851:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
+2021-01-28 16:04:38,851:root:Main Login Successful
+2021-01-28 16:04:38,851:root:Calculating everything before executing orders..
+2021-01-28 16:04:38,851:root:Calculating weekly and monthly expiry dates..
+2021-01-28 16:04:38,851:root:weekly expiry is : 28Jan2021, monthly expiry is: 28Jan2021
+2021-01-28 16:04:38,951:root:('StrikePrice computed as : ', 13800)
+2021-01-28 16:04:38,967:root:Input of get_eID fn : NIFTY, ce,28Jan2021,13800
+2021-01-28 16:04:38,967:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 16:04:39,816:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /marketdata/instruments/instrument/optionsymbol?exchangeSegment=2&series=OPTIDX&symbol=NIFTY&expiryDate=28Jan2021&optionType=CE&strikePrice=13800 HTTP/1.1" 200 None
+2021-01-28 16:04:39,816:root:Unable to reterive info like margin,strikePrice,nfty_ltp,bnknfty_ltp  to place order
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\Strategy_1_MDF.py", line 332, in prepareVars
+    eID = [ (get_eID(ticker,i,weekly_exp,strikePrice)) for i in ['ce','pe'] ]
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\Strategy_1_MDF.py", line 332, in <listcomp>
+    eID = [ (get_eID(ticker,i,weekly_exp,strikePrice)) for i in ['ce','pe'] ]
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\Strategy_1_MDF.py", line 150, in get_eID
+    ordersEid['ot'].update(oType)
+KeyError: 'ot'
+2021-01-28 16:14:52,328:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 16:14:53,547:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
+2021-01-28 16:14:53,547:root:Main Login Successful
+2021-01-28 16:14:53,547:root:Calculating everything before executing orders..
+2021-01-28 16:14:53,547:root:Calculating weekly and monthly expiry dates..
+2021-01-28 16:14:53,547:root:weekly expiry is : 28Jan2021, monthly expiry is: 28Jan2021
+2021-01-28 16:14:53,663:root:('StrikePrice computed as : ', 13800)
+2021-01-28 16:14:53,663:root:Input of get_eID fn : NIFTY, ce,28Jan2021,13800
+2021-01-28 16:14:53,663:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 16:14:54,766:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /marketdata/instruments/instrument/optionsymbol?exchangeSegment=2&series=OPTIDX&symbol=NIFTY&expiryDate=28Jan2021&optionType=CE&strikePrice=13800 HTTP/1.1" 200 None
+2021-01-28 16:14:54,766:root:Exchange Instrument ID : 41410, {'oty': ['CE'], 'eid': [41410]}
+2021-01-28 16:14:54,766:root:Input of get_eID fn : NIFTY, pe,28Jan2021,13800
+2021-01-28 16:14:54,766:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 16:14:55,884:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /marketdata/instruments/instrument/optionsymbol?exchangeSegment=2&series=OPTIDX&symbol=NIFTY&expiryDate=28Jan2021&optionType=PE&strikePrice=13800 HTTP/1.1" 200 None
+2021-01-28 16:14:55,884:root:Exchange Instrument ID : 41411, {'oty': ['CE', 'PE'], 'eid': [41410, 41411]}
+2021-01-28 16:14:55,884:root:Checking margin from user..
+2021-01-28 16:14:55,884:root:Checking balance..
+2021-01-28 16:14:55,884:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 16:14:58,545:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /interactive/user/balance HTTP/1.1" 200 None
+2021-01-28 16:14:58,545:root:Balance retreived success, available cash : 1000000000
+2021-01-28 16:14:58,545:root: 
+              net_cash - 1000000000,
+              strikePrice - 13800,
+              Nifty LTP - 13817.55,
+              BankNiftyLTP - None
+              exchangeInstrumentID - [41410, 41411]
+              
+2021-01-28 16:14:58,545:root:All set from prepareVars func.. Giving a go for orders..
+2021-01-28 19:12:05,037:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 19:12:06,272:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
+2021-01-28 19:12:06,272:root:Login Successful
+2021-01-28 19:15:36,722:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 19:15:37,594:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /marketdata/instruments/instrument/optionsymbol?exchangeSegment=2&series=OPTIDX&symbol=NIFTY&expiryDate=28Jan2021&optionType=CE&strikePrice=13800 HTTP/1.1" 200 None
+2021-01-28 19:52:49,703:root:login initializing..
+2021-01-28 19:52:49,718:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 19:52:51,443:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
+2021-01-28 19:52:51,447:root:Login Successful
+2021-01-28 19:53:30,626:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 19:53:32,111:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
+2021-01-28 19:55:28,599:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 19:55:29,834:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "PUT /marketdata/instruments/subscription HTTP/1.1" 200 None
+2021-01-28 19:55:39,377:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 19:55:40,760:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /marketdata/instruments/subscription HTTP/1.1" 200 None
+2021-01-28 19:57:29,342:numexpr.utils:NumExpr defaulting to 4 threads.
+2021-01-28 20:04:51,954:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 20:04:52,798:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "PUT /marketdata/instruments/subscription HTTP/1.1" 200 None
+2021-01-28 20:04:52,798:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 20:04:53,532:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /marketdata/instruments/subscription HTTP/1.1" 200 None
+2021-01-28 23:26:34,372:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 23:26:36,091:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "PUT /marketdata/instruments/subscription HTTP/1.1" 200 None
+2021-01-28 23:27:26,541:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 23:27:30,652:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "GET /interactive/user/balance HTTP/1.1" 200 None
+2021-01-28 23:29:54,201:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 23:30:33,839:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 23:30:35,945:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /interactive/user/session HTTP/1.1" 200 None
+2021-01-28 23:30:35,945:root:Login Successful
+2021-01-28 23:32:39,175:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 23:32:40,425:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /marketdata/instruments/quotes HTTP/1.1" 200 None
+2021-01-28 23:32:54,922:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-28 23:32:56,137:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /marketdata/instruments/quotes HTTP/1.1" 200 None
+2021-01-29 00:57:07,519:urllib3.connectionpool:Starting new HTTPS connection (1): developers.symphonyfintech.in:443
+2021-01-29 00:57:08,863:urllib3.connectionpool:https://developers.symphonyfintech.in:443 "POST /marketdata/instruments/subscription HTTP/1.1" 200 None

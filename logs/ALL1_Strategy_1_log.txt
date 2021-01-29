@@ -1,0 +1,888 @@
+2021-01-29 14:14:46,298:root:Main Login Successful
+2021-01-29 14:14:46,298:root:Calculating everything before executing orders..
+2021-01-29 14:14:46,298:root:Calculating weekly and monthly expiry dates..
+2021-01-29 14:14:46,298:root:weekly expiry is : 04Feb2021, monthly expiry is: 25Feb2021
+2021-01-29 14:14:47,704:root:
+ Spot price fetched as : [13798.25]
+2021-01-29 14:14:47,704:root:
+ Spot price fetched as : [13798.25, 30704.45]
+2021-01-29 14:14:47,704:root:('StrikePrice computed as : ', 13800)
+2021-01-29 14:14:49,048:root:Exchange Instrument ID : 39539, {'oty': ['CE'], 'ss': ['39539']}
+2021-01-29 14:14:50,423:root:Exchange Instrument ID : 39541, {'oty': ['CE', 'PE'], 'ss': ['39539', '39541']}
+2021-01-29 14:14:50,423:root:Checking margin from user..
+2021-01-29 14:14:50,423:root:Checking balance..
+2021-01-29 14:14:54,830:root:Balance retreived success, available cash : 1000000000
+2021-01-29 14:14:54,830:root: 
+              net_cash - 1000000000,
+              strikePrice - 13800,
+              Nifty LTP - 13798.25,
+              BankNiftyLTP - 30704.45
+              exchangeInstrumentID - [39539, 39541]
+              
+2021-01-29 14:14:54,830:root:All set from prepareVars func.. Giving a go for orders..
+2021-01-29 14:14:54,830:root:required variables set-- ready to trigger orders at desired time
+2021-01-29 14:15:00,427:root:Required Margin Available.. Taking positions...
+2021-01-29 14:15:02,802:root:Main Login Successful
+2021-01-29 14:15:02,802:root:Main Login Successful
+2021-01-29 14:15:02,818:root: 
+ Placing Orders with StopLoss.. 
+
+2021-01-29 14:15:02,818:root: 
+ Placing Orders with StopLoss.. 
+
+2021-01-29 14:15:02,818:root:Main Login Successful
+2021-01-29 14:15:02,865:root:Main Login Successful
+2021-01-29 14:15:04,193:root: 
+ Order ID for SELL 39539 is: 10025895 
+
+2021-01-29 14:15:04,193:root:Retreiving OrderBook..
+2021-01-29 14:15:04,224:root: 
+ Order ID for SELL 39541 is: 10025896 
+
+2021-01-29 14:15:04,224:root:Retreiving OrderBook..
+2021-01-29 14:15:06,284:root:OrderBook result retreived success
+2021-01-29 14:15:06,284:root:traded price is: 232.65
+2021-01-29 14:15:06,284:root:
+ Placing StopLoss order for 39539
+2021-01-29 14:15:06,284:root:stopLoss price fixed as: 247.65
+2021-01-29 14:15:06,300:root:OrderBook result retreived success
+2021-01-29 14:15:06,300:root:traded price is: 211.9
+2021-01-29 14:15:06,300:root:
+ Placing StopLoss order for 39541
+2021-01-29 14:15:06,300:root:stopLoss price fixed as: 226.9
+2021-01-29 14:15:08,150:root:
+  StopLoss Order ID for BUY 39539 is: 10025898 
+
+2021-01-29 14:15:08,150:root:orderDictionary from new place order func (orderID_dict)  {39539: [39539, 10025895, 232.65, 10025898]}
+2021-01-29 14:15:08,150:root:
+  StopLoss Order ID for BUY 39541 is: 10025899 
+
+2021-01-29 14:15:08,150:root: 
+ new DICT  from new place order func (new_dict)  {'ss': '39539', 'qq': 75, 'oo': 10025895, 'tt': 232.65, 'sl': 10025898} 
+
+2021-01-29 14:15:08,150:root:orderDictionary from new place order func (orderID_dict)  {39541: [39541, 10025896, 211.9, 10025899]}
+2021-01-29 14:15:08,150:root: 
+ new DICT  from new place order func (new_dict)  {'ss': '39541', 'qq': 75, 'oo': 10025896, 'tt': 211.9, 'sl': 10025899} 
+
+2021-01-29 14:15:08,150:root:printing new_dictR value : [{'ss': '39539', 'qq': 75, 'oo': 10025895, 'tt': 232.65, 'sl': 10025898}, {'ss': '39541', 'qq': 75, 'oo': 10025896, 'tt': 211.9, 'sl': 10025899}]
+2021-01-29 14:15:09,752:root:Login Successful
+2021-01-29 14:15:09,753:root:
+ Entering runSqOffLogics func,
+ 	 This logic runs till the end of the script and 
+              checks SL/TARGET/TIMEings 
+
+2021-01-29 14:15:09,753:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:15:11,098:root:Login Successful
+2021-01-29 14:15:11,113:root:sending subscription for : {instruments}
+2021-01-29 14:15:12,457:root:Instrument subscription deleted!
+2021-01-29 14:15:13,708:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:15:13,708:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:15:13,817:numexpr.utils:NumExpr defaulting to 4 threads.
+2021-01-29 14:15:13,833:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  234.45  135.00
+1  39541  75  10025896  211.90  10025899  PE  211.25  -48.75 
+
+2021-01-29 14:15:13,833:root:
+ Time    ,    PnL
+2021-01-29 14:15:13,833:root:('29-01-2021 14:15:13', 86.25)
+2021-01-29 14:15:15,833:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:15:17,302:root:Login Successful
+2021-01-29 14:15:17,302:root:sending subscription for : {instruments}
+2021-01-29 14:15:18,724:root:Instrument subscription deleted!
+2021-01-29 14:15:20,087:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:15:20,087:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:15:20,104:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  238.70  453.75
+1  39541  75  10025896  211.90  10025899  PE  202.35 -716.25 
+
+2021-01-29 14:15:20,104:root:
+ Time    ,    PnL
+2021-01-29 14:15:20,104:root:('29-01-2021 14:15:20', -262.5)
+2021-01-29 14:15:22,111:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:15:23,530:root:Login Successful
+2021-01-29 14:15:23,530:root:sending subscription for : {instruments}
+2021-01-29 14:15:25,015:root:Instrument subscription deleted!
+2021-01-29 14:15:26,515:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:15:26,515:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:15:26,531:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  239.00  476.25
+1  39541  75  10025896  211.90  10025899  PE  203.95 -596.25 
+
+2021-01-29 14:15:26,531:root:
+ Time    ,    PnL
+2021-01-29 14:15:26,531:root:('29-01-2021 14:15:26', -120.0)
+2021-01-29 14:15:28,531:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:15:29,854:root:Login Successful
+2021-01-29 14:15:29,870:root:sending subscription for : {instruments}
+2021-01-29 14:15:31,278:root:Instrument subscription deleted!
+2021-01-29 14:15:32,771:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:15:32,771:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:15:32,787:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  244.05   855.0
+1  39541  75  10025896  211.90  10025899  PE  195.10 -1260.0 
+
+2021-01-29 14:15:32,787:root:
+ Time    ,    PnL
+2021-01-29 14:15:32,787:root:('29-01-2021 14:15:32', -405.0)
+2021-01-29 14:15:34,787:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:15:36,194:root:Login Successful
+2021-01-29 14:15:36,209:root:sending subscription for : {instruments}
+2021-01-29 14:15:37,616:root:Instrument subscription deleted!
+2021-01-29 14:15:39,007:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:15:39,007:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:15:39,038:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  241.80  686.25
+1  39541  75  10025896  211.90  10025899  PE  202.65 -693.75 
+
+2021-01-29 14:15:39,038:root:
+ Time    ,    PnL
+2021-01-29 14:15:39,038:root:('29-01-2021 14:15:39', -7.5)
+2021-01-29 14:15:41,038:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:15:42,507:root:Login Successful
+2021-01-29 14:15:42,522:root:sending subscription for : {instruments}
+2021-01-29 14:15:43,929:root:Instrument subscription deleted!
+2021-01-29 14:15:45,320:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:15:45,320:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:15:45,351:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  239.75  532.50
+1  39541  75  10025896  211.90  10025899  PE  201.35 -791.25 
+
+2021-01-29 14:15:45,351:root:
+ Time    ,    PnL
+2021-01-29 14:15:45,351:root:('29-01-2021 14:15:45', -258.75)
+2021-01-29 14:15:47,351:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:15:48,726:root:Login Successful
+2021-01-29 14:15:48,742:root:sending subscription for : {instruments}
+2021-01-29 14:15:50,164:root:Instrument subscription deleted!
+2021-01-29 14:15:51,539:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:15:51,539:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:15:51,555:root:df is : 
+       ss  qq        oo      tt        sl oty    ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  239.3  498.75
+1  39541  75  10025896  211.90  10025899  PE  203.0 -667.50 
+
+2021-01-29 14:15:51,555:root:
+ Time    ,    PnL
+2021-01-29 14:15:51,555:root:('29-01-2021 14:15:51', -168.75)
+2021-01-29 14:15:53,555:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:15:54,915:root:Login Successful
+2021-01-29 14:15:54,930:root:sending subscription for : {instruments}
+2021-01-29 14:15:56,227:root:Instrument subscription deleted!
+2021-01-29 14:15:57,712:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:15:57,712:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:15:57,743:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  239.00  476.25
+1  39541  75  10025896  211.90  10025899  PE  204.35 -566.25 
+
+2021-01-29 14:15:57,743:root:
+ Time    ,    PnL
+2021-01-29 14:15:57,743:root:('29-01-2021 14:15:57', -90.0)
+2021-01-29 14:15:59,743:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:16:01,228:root:Login Successful
+2021-01-29 14:16:01,228:root:sending subscription for : {instruments}
+2021-01-29 14:16:02,615:root:Instrument subscription deleted!
+2021-01-29 14:16:03,975:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:16:03,975:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:16:03,991:root:df is : 
+       ss  qq        oo      tt        sl oty  ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  241  626.25
+1  39541  75  10025896  211.90  10025899  PE  202 -742.50 
+
+2021-01-29 14:16:03,991:root:
+ Time    ,    PnL
+2021-01-29 14:16:03,991:root:('29-01-2021 14:16:03', -116.25)
+2021-01-29 14:16:05,991:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:16:07,335:root:Login Successful
+2021-01-29 14:16:07,335:root:sending subscription for : {instruments}
+2021-01-29 14:16:08,767:root:Instrument subscription deleted!
+2021-01-29 14:16:10,050:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:16:10,050:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:16:10,066:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp    pnl
+0  39539  75  10025895  232.65  10025898  CE  243.05  780.0
+1  39541  75  10025896  211.90  10025899  PE  199.90 -900.0 
+
+2021-01-29 14:16:10,066:root:
+ Time    ,    PnL
+2021-01-29 14:16:10,066:root:('29-01-2021 14:16:10', -120.0)
+2021-01-29 14:16:12,078:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:16:13,808:root:Login Successful
+2021-01-29 14:16:13,808:root:sending subscription for : {instruments}
+2021-01-29 14:16:15,141:root:Instrument subscription deleted!
+2021-01-29 14:16:16,523:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:16:16,523:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:16:16,554:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp    pnl
+0  39539  75  10025895  232.65  10025898  CE  241.85  690.0
+1  39541  75  10025896  211.90  10025899  PE  201.50 -780.0 
+
+2021-01-29 14:16:16,554:root:
+ Time    ,    PnL
+2021-01-29 14:16:16,554:root:('29-01-2021 14:16:16', -90.0)
+2021-01-29 14:16:18,562:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:16:19,934:root:Login Successful
+2021-01-29 14:16:19,950:root:sending subscription for : {instruments}
+2021-01-29 14:16:21,350:root:Instrument subscription deleted!
+2021-01-29 14:16:22,658:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:16:22,658:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:16:22,674:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp    pnl
+0  39539  75  10025895  232.65  10025898  CE  242.45  735.0
+1  39541  75  10025896  211.90  10025899  PE  200.00 -892.5 
+
+2021-01-29 14:16:22,674:root:
+ Time    ,    PnL
+2021-01-29 14:16:22,674:root:('29-01-2021 14:16:22', -157.5)
+2021-01-29 14:16:24,674:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:16:26,002:root:Login Successful
+2021-01-29 14:16:26,018:root:sending subscription for : {instruments}
+2021-01-29 14:16:27,338:root:Instrument subscription deleted!
+2021-01-29 14:16:28,744:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:16:28,744:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:16:28,760:root:df is : 
+       ss  qq        oo      tt        sl oty    ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  241.7  678.75
+1  39541  75  10025896  211.90  10025899  PE  203.3 -645.00 
+
+2021-01-29 14:16:28,760:root:
+ Time    ,    PnL
+2021-01-29 14:16:28,760:root:('29-01-2021 14:16:28', 33.75)
+2021-01-29 14:16:30,768:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:16:32,147:root:Login Successful
+2021-01-29 14:16:32,147:root:sending subscription for : {instruments}
+2021-01-29 14:16:33,507:root:Instrument subscription deleted!
+2021-01-29 14:16:34,897:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:16:34,897:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:16:34,929:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  239.35  502.50
+1  39541  75  10025896  211.90  10025899  PE  205.85 -453.75 
+
+2021-01-29 14:16:34,929:root:
+ Time    ,    PnL
+2021-01-29 14:16:34,929:root:('29-01-2021 14:16:34', 48.75)
+2021-01-29 14:16:36,941:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:16:38,269:root:Login Successful
+2021-01-29 14:16:38,285:root:sending subscription for : {instruments}
+2021-01-29 14:16:39,676:root:Instrument subscription deleted!
+2021-01-29 14:16:41,051:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:16:41,051:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:16:41,066:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  240.00  551.25
+1  39541  75  10025896  211.90  10025899  PE  205.75 -461.25 
+
+2021-01-29 14:16:41,066:root:
+ Time    ,    PnL
+2021-01-29 14:16:41,066:root:('29-01-2021 14:16:41', 90.0)
+2021-01-29 14:16:43,071:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:16:44,415:root:Login Successful
+2021-01-29 14:16:44,415:root:sending subscription for : {instruments}
+2021-01-29 14:16:45,751:root:Instrument subscription deleted!
+2021-01-29 14:16:47,036:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:16:47,036:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:16:47,052:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  240.00  551.25
+1  39541  75  10025896  211.90  10025899  PE  205.65 -468.75 
+
+2021-01-29 14:16:47,052:root:
+ Time    ,    PnL
+2021-01-29 14:16:47,052:root:('29-01-2021 14:16:47', 82.5)
+2021-01-29 14:16:49,055:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:16:50,414:root:Login Successful
+2021-01-29 14:16:50,430:root:sending subscription for : {instruments}
+2021-01-29 14:16:51,803:root:Instrument subscription deleted!
+2021-01-29 14:16:53,131:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:16:53,131:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:16:53,162:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  236.90  318.75
+1  39541  75  10025896  211.90  10025899  PE  207.55 -326.25 
+
+2021-01-29 14:16:53,162:root:
+ Time    ,    PnL
+2021-01-29 14:16:53,162:root:('29-01-2021 14:16:53', -7.5)
+2021-01-29 14:16:55,163:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:16:56,553:root:Login Successful
+2021-01-29 14:16:56,553:root:sending subscription for : {instruments}
+2021-01-29 14:16:57,882:root:Instrument subscription deleted!
+2021-01-29 14:16:59,272:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:16:59,272:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:16:59,304:root:df is : 
+       ss  qq        oo      tt        sl oty  ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  236  251.25
+1  39541  75  10025896  211.90  10025899  PE  208 -292.50 
+
+2021-01-29 14:16:59,304:root:
+ Time    ,    PnL
+2021-01-29 14:16:59,304:root:('29-01-2021 14:16:59', -41.25)
+2021-01-29 14:17:01,304:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:17:02,632:root:Login Successful
+2021-01-29 14:17:02,632:root:sending subscription for : {instruments}
+2021-01-29 14:17:04,007:root:Instrument subscription deleted!
+2021-01-29 14:17:05,429:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:17:05,429:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:17:05,445:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  239.20  491.25
+1  39541  75  10025896  211.90  10025899  PE  207.35 -341.25 
+
+2021-01-29 14:17:05,445:root:
+ Time    ,    PnL
+2021-01-29 14:17:05,445:root:('29-01-2021 14:17:05', 150.0)
+2021-01-29 14:17:07,461:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:17:08,836:root:Login Successful
+2021-01-29 14:17:08,836:root:sending subscription for : {instruments}
+2021-01-29 14:17:10,289:root:Instrument subscription deleted!
+2021-01-29 14:17:11,649:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:17:11,649:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:17:11,680:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  239.00  476.25
+1  39541  75  10025896  211.90  10025899  PE  207.55 -326.25 
+
+2021-01-29 14:17:11,680:root:
+ Time    ,    PnL
+2021-01-29 14:17:11,680:root:('29-01-2021 14:17:11', 150.0)
+2021-01-29 14:17:13,680:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:17:15,196:root:Login Successful
+2021-01-29 14:17:15,196:root:sending subscription for : {instruments}
+2021-01-29 14:17:16,728:root:Instrument subscription deleted!
+2021-01-29 14:17:18,181:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:17:18,181:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:17:18,197:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp    pnl
+0  39539  75  10025895  232.65  10025898  CE  238.05  405.0
+1  39541  75  10025896  211.90  10025899  PE  207.20 -352.5 
+
+2021-01-29 14:17:18,197:root:
+ Time    ,    PnL
+2021-01-29 14:17:18,197:root:('29-01-2021 14:17:18', 52.5)
+2021-01-29 14:17:20,197:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:17:21,635:root:Login Successful
+2021-01-29 14:17:21,635:root:sending subscription for : {instruments}
+2021-01-29 14:17:23,057:root:Instrument subscription deleted!
+2021-01-29 14:17:24,479:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:17:24,479:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:17:24,494:root:df is : 
+       ss  qq        oo      tt        sl oty    ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  238.0  401.25
+1  39541  75  10025896  211.90  10025899  PE  208.6 -247.50 
+
+2021-01-29 14:17:24,494:root:
+ Time    ,    PnL
+2021-01-29 14:17:24,494:root:('29-01-2021 14:17:24', 153.75)
+2021-01-29 14:17:26,495:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:17:27,948:root:Login Successful
+2021-01-29 14:17:27,948:root:sending subscription for : {instruments}
+2021-01-29 14:17:29,479:root:Instrument subscription deleted!
+2021-01-29 14:17:30,917:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:17:30,917:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:17:30,948:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  236.45  285.00
+1  39541  75  10025896  211.90  10025899  PE  210.75  -86.25 
+
+2021-01-29 14:17:30,948:root:
+ Time    ,    PnL
+2021-01-29 14:17:30,948:root:('29-01-2021 14:17:30', 198.75)
+2021-01-29 14:17:32,959:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:17:34,288:root:Login Successful
+2021-01-29 14:17:34,303:root:sending subscription for : {instruments}
+2021-01-29 14:17:35,631:root:Instrument subscription deleted!
+2021-01-29 14:17:36,996:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:17:36,996:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:17:37,027:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  237.75  382.50
+1  39541  75  10025896  211.90  10025899  PE  209.15 -206.25 
+
+2021-01-29 14:17:37,027:root:
+ Time    ,    PnL
+2021-01-29 14:17:37,027:root:('29-01-2021 14:17:37', 176.25)
+2021-01-29 14:17:39,028:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:17:40,450:root:Login Successful
+2021-01-29 14:17:40,465:root:sending subscription for : {instruments}
+2021-01-29 14:17:41,872:root:Instrument subscription deleted!
+2021-01-29 14:17:43,263:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:17:43,263:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:17:43,278:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp    pnl
+0  39539  75  10025895  232.65  10025898  CE  235.55  217.5
+1  39541  75  10025896  211.90  10025899  PE  212.00    7.5 
+
+2021-01-29 14:17:43,278:root:
+ Time    ,    PnL
+2021-01-29 14:17:43,278:root:('29-01-2021 14:17:43', 225.0)
+2021-01-29 14:17:45,278:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:17:46,622:root:Login Successful
+2021-01-29 14:17:46,622:root:sending subscription for : {instruments}
+2021-01-29 14:17:47,982:root:Instrument subscription deleted!
+2021-01-29 14:17:49,451:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:17:49,451:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:17:49,466:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  234.45  135.00
+1  39541  75  10025896  211.90  10025899  PE  213.25  101.25 
+
+2021-01-29 14:17:49,466:root:
+ Time    ,    PnL
+2021-01-29 14:17:49,466:root:('29-01-2021 14:17:49', 236.25)
+2021-01-29 14:17:51,467:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:17:52,795:root:Login Successful
+2021-01-29 14:17:52,811:root:sending subscription for : {instruments}
+2021-01-29 14:17:54,217:root:Instrument subscription deleted!
+2021-01-29 14:17:55,608:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:17:55,608:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:17:55,623:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  233.10   33.75
+1  39541  75  10025896  211.90  10025899  PE  213.85  146.25 
+
+2021-01-29 14:17:55,623:root:
+ Time    ,    PnL
+2021-01-29 14:17:55,623:root:('29-01-2021 14:17:55', 180.0)
+2021-01-29 14:17:57,639:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:17:59,046:root:Login Successful
+2021-01-29 14:17:59,046:root:sending subscription for : {instruments}
+2021-01-29 14:18:00,374:root:Instrument subscription deleted!
+2021-01-29 14:18:01,830:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:18:01,830:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:18:01,846:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  236.40  281.25
+1  39541  75  10025896  211.90  10025899  PE  211.95    3.75 
+
+2021-01-29 14:18:01,846:root:
+ Time    ,    PnL
+2021-01-29 14:18:01,846:root:('29-01-2021 14:18:01', 285.0)
+2021-01-29 14:18:03,857:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:18:05,247:root:Login Successful
+2021-01-29 14:18:05,262:root:sending subscription for : {instruments}
+2021-01-29 14:18:06,647:root:Instrument subscription deleted!
+2021-01-29 14:18:08,008:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:18:08,008:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:18:08,024:root:df is : 
+       ss  qq        oo      tt        sl oty    ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  237.7  378.75
+1  39541  75  10025896  211.90  10025899  PE  209.2 -202.50 
+
+2021-01-29 14:18:08,024:root:
+ Time    ,    PnL
+2021-01-29 14:18:08,024:root:('29-01-2021 14:18:08', 176.25)
+2021-01-29 14:18:10,032:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:18:11,441:root:Login Successful
+2021-01-29 14:18:11,457:root:sending subscription for : {instruments}
+2021-01-29 14:18:12,884:root:Instrument subscription deleted!
+2021-01-29 14:18:14,263:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:18:14,263:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:18:14,287:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp    pnl
+0  39539  75  10025895  232.65  10025898  CE  237.35  352.5
+1  39541  75  10025896  211.90  10025899  PE  211.90    0.0 
+
+2021-01-29 14:18:14,287:root:
+ Time    ,    PnL
+2021-01-29 14:18:14,288:root:('29-01-2021 14:18:14', 352.5)
+2021-01-29 14:18:16,293:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:18:17,745:root:Login Successful
+2021-01-29 14:18:17,760:root:sending subscription for : {instruments}
+2021-01-29 14:18:19,120:root:Instrument subscription deleted!
+2021-01-29 14:18:20,479:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:18:20,480:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:18:20,494:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  240.00  551.25
+1  39541  75  10025896  211.90  10025899  PE  209.35 -191.25 
+
+2021-01-29 14:18:20,494:root:
+ Time    ,    PnL
+2021-01-29 14:18:20,494:root:('29-01-2021 14:18:20', 360.0)
+2021-01-29 14:18:22,503:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:18:23,878:root:Login Successful
+2021-01-29 14:18:23,893:root:sending subscription for : {instruments}
+2021-01-29 14:18:25,284:root:Instrument subscription deleted!
+2021-01-29 14:18:26,722:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:18:26,722:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:18:26,754:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  237.00  326.25
+1  39541  75  10025896  211.90  10025899  PE  211.55  -26.25 
+
+2021-01-29 14:18:26,754:root:
+ Time    ,    PnL
+2021-01-29 14:18:26,754:root:('29-01-2021 14:18:26', 300.0)
+2021-01-29 14:18:28,757:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:18:30,192:root:Login Successful
+2021-01-29 14:18:30,202:root:sending subscription for : {instruments}
+2021-01-29 14:18:31,637:root:Instrument subscription deleted!
+2021-01-29 14:18:33,080:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:18:33,080:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:18:33,096:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  238.05  405.00
+1  39541  75  10025896  211.90  10025899  PE  210.15 -131.25 
+
+2021-01-29 14:18:33,096:root:
+ Time    ,    PnL
+2021-01-29 14:18:33,096:root:('29-01-2021 14:18:33', 273.75)
+2021-01-29 14:18:35,112:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:18:36,492:root:Login Successful
+2021-01-29 14:18:36,492:root:sending subscription for : {instruments}
+2021-01-29 14:18:37,919:root:Instrument subscription deleted!
+2021-01-29 14:18:39,367:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:18:39,367:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:18:39,383:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp    pnl
+0  39539  75  10025895  232.65  10025898  CE  238.45  435.0
+1  39541  75  10025896  211.90  10025899  PE  210.40 -112.5 
+
+2021-01-29 14:18:39,383:root:
+ Time    ,    PnL
+2021-01-29 14:18:39,383:root:('29-01-2021 14:18:39', 322.5)
+2021-01-29 14:18:41,398:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:18:42,852:root:Login Successful
+2021-01-29 14:18:42,852:root:sending subscription for : {instruments}
+2021-01-29 14:18:44,274:root:Instrument subscription deleted!
+2021-01-29 14:18:45,680:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:18:45,680:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:18:45,680:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  237.30  348.75
+1  39541  75  10025896  211.90  10025899  PE  211.05  -63.75 
+
+2021-01-29 14:18:45,680:root:
+ Time    ,    PnL
+2021-01-29 14:18:45,680:root:('29-01-2021 14:18:45', 285.0)
+2021-01-29 14:18:47,685:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:18:49,169:root:Login Successful
+2021-01-29 14:18:49,169:root:sending subscription for : {instruments}
+2021-01-29 14:18:50,625:root:Instrument subscription deleted!
+2021-01-29 14:18:52,094:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:18:52,094:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:18:52,125:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp    pnl
+0  39539  75  10025895  232.65  10025898  CE  235.65  225.0
+1  39541  75  10025896  211.90  10025899  PE  213.00   82.5 
+
+2021-01-29 14:18:52,125:root:
+ Time    ,    PnL
+2021-01-29 14:18:52,125:root:('29-01-2021 14:18:52', 307.5)
+2021-01-29 14:18:54,126:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:18:55,642:root:Login Successful
+2021-01-29 14:18:55,642:root:sending subscription for : {instruments}
+2021-01-29 14:18:57,110:root:Instrument subscription deleted!
+2021-01-29 14:18:58,580:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:18:58,580:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:18:58,580:root:df is : 
+       ss  qq        oo      tt        sl oty    ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  235.0  176.25
+1  39541  75  10025896  211.90  10025899  PE  213.7  135.00 
+
+2021-01-29 14:18:58,580:root:
+ Time    ,    PnL
+2021-01-29 14:18:58,580:root:('29-01-2021 14:18:58', 311.25)
+2021-01-29 14:19:00,580:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:19:02,008:root:Login Successful
+2021-01-29 14:19:02,023:root:sending subscription for : {instruments}
+2021-01-29 14:19:03,440:root:Instrument subscription deleted!
+2021-01-29 14:19:04,816:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:19:04,816:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:19:04,847:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp    pnl
+0  39539  75  10025895  232.65  10025898  CE  236.55  292.5
+1  39541  75  10025896  211.90  10025899  PE  211.40  -37.5 
+
+2021-01-29 14:19:04,847:root:
+ Time    ,    PnL
+2021-01-29 14:19:04,847:root:('29-01-2021 14:19:04', 255.0)
+2021-01-29 14:19:06,847:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:19:08,285:root:Login Successful
+2021-01-29 14:19:08,285:root:sending subscription for : {instruments}
+2021-01-29 14:19:09,738:root:Instrument subscription deleted!
+2021-01-29 14:19:11,197:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:19:11,198:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:19:11,208:root:df is : 
+       ss  qq        oo      tt        sl oty    ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  236.6  296.25
+1  39541  75  10025896  211.90  10025899  PE  212.9   75.00 
+
+2021-01-29 14:19:11,209:root:
+ Time    ,    PnL
+2021-01-29 14:19:11,209:root:('29-01-2021 14:19:11', 371.25)
+2021-01-29 14:19:13,217:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:19:14,633:root:Login Successful
+2021-01-29 14:19:14,633:root:sending subscription for : {instruments}
+2021-01-29 14:19:16,054:root:Instrument subscription deleted!
+2021-01-29 14:19:17,393:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:19:17,393:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:19:17,408:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  237.15  337.50
+1  39541  75  10025896  211.90  10025899  PE  212.35   33.75 
+
+2021-01-29 14:19:17,408:root:
+ Time    ,    PnL
+2021-01-29 14:19:17,408:root:('29-01-2021 14:19:17', 371.25)
+2021-01-29 14:19:19,408:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:19:20,909:root:Login Successful
+2021-01-29 14:19:20,924:root:sending subscription for : {instruments}
+2021-01-29 14:19:22,268:root:Instrument subscription deleted!
+2021-01-29 14:19:23,659:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:19:23,659:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:19:23,674:root:df is : 
+       ss  qq        oo      tt        sl oty    ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  238.0  401.25
+1  39541  75  10025896  211.90  10025899  PE  211.1  -60.00 
+
+2021-01-29 14:19:23,674:root:
+ Time    ,    PnL
+2021-01-29 14:19:23,674:root:('29-01-2021 14:19:23', 341.25)
+2021-01-29 14:19:25,680:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:19:27,162:root:Login Successful
+2021-01-29 14:19:27,162:root:sending subscription for : {instruments}
+2021-01-29 14:19:28,585:root:Instrument subscription deleted!
+2021-01-29 14:19:30,069:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:19:30,069:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:19:30,085:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp    pnl
+0  39539  75  10025895  232.65  10025898  CE  237.25  345.0
+1  39541  75  10025896  211.90  10025899  PE  212.70   60.0 
+
+2021-01-29 14:19:30,085:root:
+ Time    ,    PnL
+2021-01-29 14:19:30,085:root:('29-01-2021 14:19:30', 405.0)
+2021-01-29 14:19:32,085:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:19:33,564:root:Login Successful
+2021-01-29 14:19:33,579:root:sending subscription for : {instruments}
+2021-01-29 14:19:35,111:root:Instrument subscription deleted!
+2021-01-29 14:19:36,524:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:19:36,524:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:19:36,555:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp    pnl
+0  39539  75  10025895  232.65  10025898  CE  238.65  450.0
+1  39541  75  10025896  211.90  10025899  PE  210.20 -127.5 
+
+2021-01-29 14:19:36,555:root:
+ Time    ,    PnL
+2021-01-29 14:19:36,555:root:('29-01-2021 14:19:36', 322.5)
+2021-01-29 14:19:38,558:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:19:39,985:root:Login Successful
+2021-01-29 14:19:40,002:root:sending subscription for : {instruments}
+2021-01-29 14:19:41,576:root:Instrument subscription deleted!
+2021-01-29 14:19:43,061:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:19:43,061:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:19:43,076:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  242.00  701.25
+1  39541  75  10025896  211.90  10025899  PE  206.05 -438.75 
+
+2021-01-29 14:19:43,076:root:
+ Time    ,    PnL
+2021-01-29 14:19:43,076:root:('29-01-2021 14:19:43', 262.5)
+2021-01-29 14:19:45,077:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:19:46,499:root:Login Successful
+2021-01-29 14:19:46,499:root:sending subscription for : {instruments}
+2021-01-29 14:19:47,921:root:Instrument subscription deleted!
+2021-01-29 14:19:49,357:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:19:49,357:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:19:49,388:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp    pnl
+0  39539  75  10025895  232.65  10025898  CE  242.25  720.0
+1  39541  75  10025896  211.90  10025899  PE  205.10 -510.0 
+
+2021-01-29 14:19:49,388:root:
+ Time    ,    PnL
+2021-01-29 14:19:49,388:root:('29-01-2021 14:19:49', 210.0)
+2021-01-29 14:19:51,388:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:19:52,936:root:Login Successful
+2021-01-29 14:19:52,936:root:sending subscription for : {instruments}
+2021-01-29 14:19:54,390:root:Instrument subscription deleted!
+2021-01-29 14:19:55,796:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:19:55,796:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:19:55,810:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39539  75  10025895  232.65  10025898  CE  243.20  791.25
+1  39541  75  10025896  211.90  10025899  PE  203.55 -626.25 
+
+2021-01-29 14:19:55,810:root:
+ Time    ,    PnL
+2021-01-29 14:19:55,810:root:('29-01-2021 14:19:55', 165.0)
+2021-01-29 14:19:57,820:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:19:59,335:root:Login Successful
+2021-01-29 14:19:59,335:root:sending subscription for : {instruments}
+2021-01-29 14:20:00,898:root:Instrument subscription deleted!
+2021-01-29 14:20:02,351:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:20:02,351:root:
+ LastTradedPrice fetched as : {ltp}
+2021-01-29 14:20:02,367:root:df is : 
+       ss  qq        oo      tt        sl oty     ltp    pnl
+0  39539  75  10025895  232.65  10025898  CE  243.45  810.0
+1  39541  75  10025896  211.90  10025899  PE  205.50 -480.0 
+
+2021-01-29 14:20:02,367:root:
+ Time    ,    PnL
+2021-01-29 14:20:02,367:root:('29-01-2021 14:20:02', 330.0)
+2021-01-29 14:20:02,367:root:SquareOff Logic met...
+2021-01-29 14:20:02,367:root:Retreiving position page..
+2021-01-29 14:20:04,451:root:Position page result retreived success, [{'AccountID': 'IIFL24', 'TradingSymbol': 'NIFTY 04FEB2021 PE 13750', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentId': '39532', 'ProductType': 'MIS', 'Marketlot': '75', 'Multiplier': '1', 'BuyAveragePrice': '224.00', 'SellAveragePrice': '225.00', 'OpenBuyQuantity': '75', 'OpenSellQuantity': '150', 'Quantity': '-75', 'BuyAmount': '16,800.00', 'SellAmount': '33,750.00', 'NetAmount': '16,950.00', 'UnrealizedMTM': '3,097.50', 'RealizedMTM': '75.00', 'MTM': '3,172.50', 'BEP': '226.00', 'SumOfTradedQuantityAndPriceBuy': '16,800.00', 'SumOfTradedQuantityAndPriceSell': '33,750.00', 'MessageCode': 9002, 'MessageVersion': 1, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 340741617144601}, {'AccountID': 'IIFL24', 'TradingSymbol': 'NIFTY 04FEB2021 PE 13800', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentId': '39541', 'ProductType': 'MIS', 'Marketlot': '75', 'Multiplier': '1', 'BuyAveragePrice': '0.00', 'SellAveragePrice': '211.90', 'OpenBuyQuantity': '0', 'OpenSellQuantity': '75', 'Quantity': '-75', 'BuyAmount': '0.00', 'SellAmount': '15,892.50', 'NetAmount': '15,892.50', 'UnrealizedMTM': '423.75', 'RealizedMTM': '0.00', 'MTM': '423.75', 'BEP': '211.90', 'SumOfTradedQuantityAndPriceBuy': '0.00', 'SumOfTradedQuantityAndPriceSell': '15,892.50', 'MessageCode': 9002, 'MessageVersion': 1, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 340741617144602}, {'AccountID': 'IIFL24', 'TradingSymbol': 'NIFTY 04FEB2021 CE 13800', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentId': '39539', 'ProductType': 'MIS', 'Marketlot': '75', 'Multiplier': '1', 'BuyAveragePrice': '0.00', 'SellAveragePrice': '232.65', 'OpenBuyQuantity': '0', 'OpenSellQuantity': '75', 'Quantity': '-75', 'BuyAmount': '0.00', 'SellAmount': '17,448.75', 'NetAmount': '17,448.75', 'UnrealizedMTM': '-776.25', 'RealizedMTM': '0.00', 'MTM': '-776.25', 'BEP': '232.65', 'SumOfTradedQuantityAndPriceBuy': '0.00', 'SumOfTradedQuantityAndPriceSell': '17,448.75', 'MessageCode': 9002, 'MessageVersion': 1, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 340741617144603}, {'AccountID': 'IIFL24', 'TradingSymbol': 'NIFTY 04FEB2021 CE 13750', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentId': '39530', 'ProductType': 'MIS', 'Marketlot': '75', 'Multiplier': '1', 'BuyAveragePrice': '250.78', 'SellAveragePrice': '234.80', 'OpenBuyQuantity': '150', 'OpenSellQuantity': '150', 'Quantity': '0', 'BuyAmount': '37,616.25', 'SellAmount': '35,220.00', 'NetAmount': '-2,396.25', 'UnrealizedMTM': '0.00', 'RealizedMTM': '-2,396.25', 'MTM': '-2,396.25', 'BEP': '0.00', 'SumOfTradedQuantityAndPriceBuy': '37,616.25', 'SumOfTradedQuantityAndPriceSell': '35,220.00', 'MessageCode': 9002, 'MessageVersion': 1, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 340741617144604}]
+2021-01-29 14:20:04,467:root:squaring-off for :, NIFTY 04FEB2021 PE 13750 , 39532
+2021-01-29 14:20:06,249:root:Squared-off for symbol NIFTY 04FEB2021 PE 13750 | 39532
+2021-01-29 14:20:06,249:root:squaring-off for :, NIFTY 04FEB2021 PE 13800 , 39541
+2021-01-29 14:20:07,735:root:Squared-off for symbol NIFTY 04FEB2021 PE 13800 | 39541
+2021-01-29 14:20:07,735:root:squaring-off for :, NIFTY 04FEB2021 CE 13800 , 39539
+2021-01-29 14:20:10,215:root:Squared-off for symbol NIFTY 04FEB2021 CE 13800 | 39539
+2021-01-29 14:20:10,216:root:Retreiving OrderBook..
+2021-01-29 14:20:12,032:root:OrderBook result retreived success
+2021-01-29 14:20:12,064:root:Cancelling order: 10025899 
+2021-01-29 14:20:13,539:root:Cancelled SL order id : 10025899
+2021-01-29 14:20:13,539:root:Cancelling order: 10025898 
+2021-01-29 14:20:15,925:root:Cancelled SL order id : 10025898

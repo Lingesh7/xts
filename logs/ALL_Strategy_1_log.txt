@@ -1,0 +1,125 @@
+2021-01-29 14:09:19,978:root:Main Login Successful
+2021-01-29 14:09:19,978:root:Calculating everything before executing orders..
+2021-01-29 14:09:19,978:root:Calculating weekly and monthly expiry dates..
+2021-01-29 14:09:19,978:root:weekly expiry is : 04Feb2021, monthly expiry is: 25Feb2021
+2021-01-29 14:09:21,311:root:
+ Spot price fetched as : [13747.55]
+2021-01-29 14:09:21,311:root:
+ Spot price fetched as : [13747.55, 30508.1]
+2021-01-29 14:09:21,311:root:('StrikePrice computed as : ', 13750)
+2021-01-29 14:09:22,734:root:Exchange Instrument ID : 39530, {'oty': ['CE'], 'ss': ['39530']}
+2021-01-29 14:09:24,093:root:Exchange Instrument ID : 39532, {'oty': ['CE', 'PE'], 'ss': ['39530', '39532']}
+2021-01-29 14:09:24,093:root:Checking margin from user..
+2021-01-29 14:09:24,093:root:Checking balance..
+2021-01-29 14:09:26,484:root:Balance retreived success, available cash : 1000000000
+2021-01-29 14:09:26,484:root: 
+              net_cash - 1000000000,
+              strikePrice - 13750,
+              Nifty LTP - 13747.55,
+              BankNiftyLTP - 30508.1
+              exchangeInstrumentID - [39530, 39532]
+              
+2021-01-29 14:09:26,484:root:All set from prepareVars func.. Giving a go for orders..
+2021-01-29 14:09:26,500:root:required variables set-- ready to trigger orders at desired time
+2021-01-29 14:10:00,058:root:Required Margin Available.. Taking positions...
+2021-01-29 14:10:02,341:root:Main Login Successful
+2021-01-29 14:10:02,357:root:Main Login Successful
+2021-01-29 14:10:02,357:root: 
+ Placing Orders with StopLoss.. 
+
+2021-01-29 14:10:02,373:root:Main Login Successful
+2021-01-29 14:10:02,373:root: 
+ Placing Orders with StopLoss.. 
+
+2021-01-29 14:10:02,373:root:Main Login Successful
+2021-01-29 14:10:03,857:root: 
+ Order ID for SELL 39532 is: 10025870 
+
+2021-01-29 14:10:03,857:root:Retreiving OrderBook..
+2021-01-29 14:10:03,857:root: 
+ Order ID for SELL 39530 is: 10025871 
+
+2021-01-29 14:10:03,857:root:Retreiving OrderBook..
+2021-01-29 14:10:05,814:root:OrderBook result retreived success
+2021-01-29 14:10:05,814:root:traded price is: 217.0
+2021-01-29 14:10:05,814:root:
+ Placing StopLoss order for 39532
+2021-01-29 14:10:05,814:root:stopLoss price fixed as: 232.0
+2021-01-29 14:10:05,814:root:OrderBook result retreived success
+2021-01-29 14:10:05,814:root:traded price is: 238.0
+2021-01-29 14:10:05,814:root:
+ Placing StopLoss order for 39530
+2021-01-29 14:10:05,814:root:stopLoss price fixed as: 253.0
+2021-01-29 14:10:07,189:root:
+  StopLoss Order ID for BUY 39530 is: 10025872 
+
+2021-01-29 14:10:07,189:root:orderDictionary from new place order func (orderID_dict)  {39530: [39530, 10025871, 238.0, 10025872]}
+2021-01-29 14:10:07,189:root: 
+ new DICT  from new place order func (new_dict)  {'ss': '39530', 'qq': 75, 'oo': 10025871, 'tt': 238.0, 'sl': 10025872} 
+
+2021-01-29 14:10:07,220:root:
+  StopLoss Order ID for BUY 39532 is: 10025873 
+
+2021-01-29 14:10:07,220:root:orderDictionary from new place order func (orderID_dict)  {39532: [39532, 10025870, 217.0, 10025873]}
+2021-01-29 14:10:07,220:root: 
+ new DICT  from new place order func (new_dict)  {'ss': '39532', 'qq': 75, 'oo': 10025870, 'tt': 217.0, 'sl': 10025873} 
+
+2021-01-29 14:10:07,220:root:printing new_dictR value : [{'ss': '39530', 'qq': 75, 'oo': 10025871, 'tt': 238.0, 'sl': 10025872}, {'ss': '39532', 'qq': 75, 'oo': 10025870, 'tt': 217.0, 'sl': 10025873}]
+2021-01-29 14:10:08,766:root:Login Successful
+2021-01-29 14:10:08,766:root:
+ Entering runSqOffLogics func,
+ 	 This logic runs till the end of the script and 
+              checks SL/TARGET/TIMEings 
+
+2021-01-29 14:10:08,766:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:10:10,066:root:Login Successful
+2021-01-29 14:10:10,113:root:Failed to get PNL
+Traceback (most recent call last):
+  File "C:\Users\mling\anaconda3\lib\site-packages\pandas\core\indexes\base.py", line 2895, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas\_libs\index.pyx", line 70, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas\_libs\index.pyx", line 101, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas\_libs\hashtable_class_helper.pxi", line 1675, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas\_libs\hashtable_class_helper.pxi", line 1683, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'symbol'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\Strategy_1_MDF.py", line 476, in getPnL
+    instruments.append({'exchangeSegment': 2, 'exchangeInstrumentID': df['symbol'].values[i]})
+  File "C:\Users\mling\anaconda3\lib\site-packages\pandas\core\frame.py", line 2902, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "C:\Users\mling\anaconda3\lib\site-packages\pandas\core\indexes\base.py", line 2897, in get_loc
+    raise KeyError(key) from err
+KeyError: 'symbol'
+2021-01-29 14:12:49,117:root:Login Successful
+2021-01-29 14:12:49,117:root:
+ Entering runSqOffLogics func,
+ 	 This logic runs till the end of the script and 
+              checks SL/TARGET/TIMEings 
+
+2021-01-29 14:12:49,117:root:
+ Checking CurPnL for this strategy..
+2021-01-29 14:12:50,468:root:Login Successful
+2021-01-29 14:12:50,468:root:Failed to get PNL
+Traceback (most recent call last):
+  File "C:\Users\mling\anaconda3\lib\site-packages\pandas\core\indexes\base.py", line 2895, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas\_libs\index.pyx", line 70, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas\_libs\index.pyx", line 101, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas\_libs\hashtable_class_helper.pxi", line 1675, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas\_libs\hashtable_class_helper.pxi", line 1683, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'symbol'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\Strategy_1_MDF.py", line 476, in getPnL
+    instruments.append({'exchangeSegment': 2, 'exchangeInstrumentID': df['ss'].values[i]})
+  File "C:\Users\mling\anaconda3\lib\site-packages\pandas\core\frame.py", line 2902, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "C:\Users\mling\anaconda3\lib\site-packages\pandas\core\indexes\base.py", line 2897, in get_loc
+    raise KeyError(key) from err
+KeyError: 'symbol'

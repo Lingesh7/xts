@@ -1115,7 +1115,7 @@ ordersEid = {'oty': ['PE', 'CE'], 'ss': ['41410', '41411']}
 # ordersEid = { 'CE' :41410, 'PE': 41777}
 dp1 =pd.DataFrame(ordersEid)
 
-
+import json
 
 dp1['CE']
 
@@ -1131,15 +1131,21 @@ xt.get_option_symbol(
                 optionType="CE",
                 strikePrice=13800)
 
-instruments = [
-    {'exchangeSegment': 1, 'exchangeInstrumentID': 'NIFTY 50'}]
-
-response = xt.get_quote(
-    Instruments=instruments,
-    xtsMessageCode=1504,
-    publishFormat='JSON')
-print('Quote :', response)
-
+def getSpot():
+    idx_instruments = [{'exchangeSegment': 1, 'exchangeInstrumentID': 'NIFTY 50'},
+                   {'exchangeSegment': 1, 'exchangeInstrumentID': 'NIFTY BANK'}]
+    spot_resp = xt.get_quote(
+                Instruments=idx_instruments,
+                xtsMessageCode=1504,
+                publishFormat='JSON')
+    spot=[]
+    for i in range(len(idx_instruments)):
+        listQuotes = json.loads(spot_resp['result']['listQuotes'][i])
+        spot.append(listQuotes['IndexValue'])
+        print(f'\n Spot price fetched as : {spot}') 
+        spot=[13780.3, 30519.65]
+    nfty50,nftyBank = [spot[i] for i in [0,1]]
+    tr
 
 
 

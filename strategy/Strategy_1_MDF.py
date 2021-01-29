@@ -9,8 +9,8 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta, TH
 from XTConnect.Connect import XTSConnect
 # from sys import exit
-from nsetools import Nse
-nse = Nse()
+# from nsetools import Nse
+# nse = Nse()
 import time
 import pandas as pd
 import concurrent.futures
@@ -22,8 +22,8 @@ import logging
 # import multiprocessing
 # import schedule
 
-logging.basicConfig(filename='../logs/New_Strategy_1_log.txt',level=logging.DEBUG,
-                    format='%(asctime)s:%(name)s:%(message)s')
+logging.basicConfig(filename='../logs/A1_Strategy_1_log.txt',level=logging.INFO,
+                    format='%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 
 
 global ordersEid
@@ -34,8 +34,8 @@ ordersEid = {}
 ordersEid= {k:[] for k in ['oty','ss']}
 
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-kickTime = "15:18:00"
-wrapTime = "15:05:00"
+kickTime = "15:22:00"
+wrapTime = "15:24:00"
 globalSL = -1500
 globalTarget = 3000
 
@@ -125,21 +125,28 @@ def nextThu_and_lastThu_expiry_date ():
     weekly_exp=str((next_thursday_expiry.strftime("%d")))+next_thursday_expiry.strftime("%b").capitalize()+next_thursday_expiry.strftime("%Y")
     logging.info(f'weekly expiry is : {weekly_exp}, monthly expiry is: {monthly_exp}')
 
-def getSpot(ticker):
-    instruments = [{'exchangeSegment': 1, 'exchangeInstrumentID': 'NIFTY 50'}]
-    spot_resp = xt.get_quote(
-                Instruments=instruments,
-                xtsMessageCode=1504,
-                publishFormat='JSON')
-    listQuotes = json.loads(spot_resp['result']['listQuotes'][0])
-    spot=listQuotes['IndexValue']
-    logging.info(f'\n Spot price fetched as : {spot}')    
-    
-    
-    
+def getSpot():
+    try:
+        idx_instruments = [{'exchangeSegment': 1, 'exchangeInstrumentID': 'NIFTY 50'},
+                       {'exchangeSegment': 1, 'exchangeInstrumentID': 'NIFTY BANK'}]
+        spot_resp = xt.get_quote(
+                    Instruments=idx_instruments,
+                    xtsMessageCode=1504,
+                    publishFormat='JSON')
+        spot=[]
+        for i in range(len(idx_instruments)):
+            listQuotes = json.loads(spot_resp['result']['listQuotes'][i])
+            spot.append(listQuotes['IndexValue'])
+        logging.info(f'\n Spot price fetched as : {spot}') 
+        nfty50,nftyBank = [spot[i] for i in [0,1]]
+    except Exception:
+        logging.exception('Unable to getSpot from index')
+    else:
+        return nfty50,nftyBank
+        
 def strkPrcCalc(spot,base):
     strikePrice = base * round(spot/base) 
-    logging.info(('StrikePrice computed as : ', strikePrice))
+    logging.info(f'StrikePrice computed as : {strikePrice}')
     return strikePrice
 
 def get_eID(symbol,ce_pe,expiry,strikePrice):
@@ -161,7 +168,7 @@ def get_eID(symbol,ce_pe,expiry,strikePrice):
     if eID_resp['type'] != 'error':
         eid = int(eID_resp["result"][0]["ExchangeInstrumentID"])
         ordersEid['oty'].append(oType)
-        ordersEid['ss'].append(eid)
+        ordersEid['ss'].append(str(eid))
         # ordersEid[eid]=(oType)
         logging.info(f'Exchange Instrument ID : {eid}, {ordersEid}')
         return eid
@@ -198,7 +205,7 @@ def getPositionList():
            pos_resp = xt.get_position_daywise()
            if pos_resp['type'] != "error":
                positionList = pos_resp['result']['positionList']
-               logging.info(f'Position page result retreived success, {positionList}')
+               # logging.info(f'Position page result retreived success, {positionList}')
                return positionList
                break
            elif pos_resp['type'] == "error":
@@ -227,7 +234,7 @@ def get_global_PnL():
         
 def squareOff(eid,symb):
     ab = 0
-    logging.info(f'squaring-off for :, {symb} , {eid}')
+    logging.info(f'squaring-off for : {symb} - {eid}')
     while ab < 5:
         try:
            sq_off_resp = xt.squareoff_position(
@@ -240,7 +247,7 @@ def squareOff(eid,symb):
                 blockOrderSending=True,
                 cancelOrders=True)
            if sq_off_resp['type'] != "error":
-               logging.info(f"Squared-off for symbol {symb} | {eid}")
+               logging.info(f'Squared-off for symbol {symb} - {eid}')
                break
            if sq_off_resp['type'] == "error":
                auth_issue_fix(sq_off_resp)
@@ -297,18 +304,18 @@ def prepareVars(ticker):
     try:
         # for ticker in tickers:
         global net_cash,margin_ok, quantity,eID,strikePrice,nfty_ltp,bnknfty_ltp
-        nfty_ltp=None
-        bnknfty_ltp=None
+        nfty_ltp,bnknfty_ltp=None,None
         nextThu_and_lastThu_expiry_date ()
+        nfty_ltp,bnknfty_ltp=getSpot()
         # try:
         if ticker == "NIFTY":
              quantity = 75
-             nfty_ltp = nse.get_index_quote("nifty 50")['lastPrice']
+             # nfty_ltp = nse.get_index_quote("nifty 50")['lastPrice']
              strikePrice = strkPrcCalc(nfty_ltp,50)
              # margin_ok = int(checkBalance()) >= 1000000001  
         elif ticker == "BANKNIFTY":
             quantity = 25
-            bnknfty_ltp = nse.get_index_quote("nifty bank")['lastPrice']
+            # bnknfty_ltp = nse.get_index_quote("nifty bank")['lastPrice']
             strikePrice = strkPrcCalc(bnknfty_ltp,100)
             # margin_ok = int(checkBalance()) >= 1000000001 
         else:
@@ -331,7 +338,7 @@ def prepareVars(ticker):
         logging.exception("Unable to reterive info like margin,strikePrice,nfty_ltp,bnknfty_ltp  to place order")
         return False
 
-def placeOrder(symbol,buy_sell,quantity):
+def placeOrderwithSL(symbol,buy_sell,quantity):
     logging.info(' \n Placing Orders with StopLoss.. \n')
     orderID_dict = {}
     orderID_dict[symbol] = []
@@ -438,7 +445,7 @@ def runOrders():
         with concurrent.futures.ProcessPoolExecutor() as executor:
             try:
                 # orderID_dict = executor.map(placeOrderWithSL,eID,repeat('sell'),repeat(quantity))
-                results = [executor.submit(placeOrder,i,'sell',quantity) for i in eID]
+                results = [executor.submit(placeOrderwithSL,i,'sell',quantity) for i in eID]
                 for f in concurrent.futures.as_completed(results):
                     # print('printiing f.results')
                     # print(f.result())
@@ -457,39 +464,45 @@ def runOrders():
                   ''')     
 
 def getPnL():
-    try:
-        # print(j)
-        logging.info('Checking CurPnL for this strategy..')
-        login()
-        odf=pd.DataFrame(new_dictR)
-        eid_df =pd.DataFrame(ordersEid)
-        df = odf.merge(eid_df, how='left')
-        instruments=[]
-        for i in range(len(df)):
-            instruments.append({'exchangeSegment': 2, 'exchangeInstrumentID': df['symbol'].values[i]})
-            # print(instruments)
-        logging.info('sending subscription for : {instruments}')    
-        unsubs_resp=xt.send_unsubscription(Instruments=instruments,xtsMessageCode=1502)
-        logging.info(unsubs_resp['description'])
-        subs_resp = xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
-        # subs_resp = {"type":"success","code":"s-quotes-0001","description":"Get quotes successfully!","result":{"mdp":1502,"quotesList":[{"exchangeSegment":2,"exchangeInstrumentID":"43423"},{"exchangeSegment":2,"exchangeInstrumentID":"43422"}],"listQuotes":["{\"MessageCode\":1502,\"MessageVersion\":4,\"ApplicationType\":0,\"TokenID\":0,\"ExchangeSegment\":2,\"ExchangeInstrumentID\":43423,\"ExchangeTimeStamp\":1296226865,\"Bids\":[{\"Size\":600,\"Price\":76.45,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":300,\"Price\":76.3,\"TotalOrders\":3,\"BuyBackMarketMaker\":0},{\"Size\":150,\"Price\":76.25,\"TotalOrders\":2,\"BuyBackMarketMaker\":0},{\"Size\":450,\"Price\":76.2,\"TotalOrders\":2,\"BuyBackMarketMaker\":0},{\"Size\":150,\"Price\":76.15,\"TotalOrders\":2,\"BuyBackMarketMaker\":0}],\"Asks\":[{\"Size\":75,\"Price\":76.65,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":450,\"Price\":76.7,\"TotalOrders\":2,\"BuyBackMarketMaker\":0},{\"Size\":75,\"Price\":76.75,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":1200,\"Price\":76.8,\"TotalOrders\":4,\"BuyBackMarketMaker\":0},{\"Size\":1050,\"Price\":76.85,\"TotalOrders\":6,\"BuyBackMarketMaker\":0}],\"Touchline\":{\"BidInfo\":{\"Size\":600,\"Price\":76.45,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},\"AskInfo\":{\"Size\":75,\"Price\":76.65,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},\"LastTradedPrice\":99.9,\"LastTradedQunatity\":75,\"TotalBuyQuantity\":707700,\"TotalSellQuantity\":390825,\"TotalTradedQuantity\":91123350,\"AverageTradedPrice\":53.44,\"LastTradedTime\":1296226865,\"LastUpdateTime\":1296226865,\"PercentChange\":174.55197132616487,\"Open\":22.95,\"High\":107.55,\"Low\":21.35,\"Close\":27.9,\"TotalValueTraded\":null,\"BuyBackTotalBuy\":0,\"BuyBackTotalSell\":0},\"BookType\":1,\"XMarketType\":1,\"SequenceNumber\":338944086942332}","{\"MessageCode\":1502,\"MessageVersion\":4,\"ApplicationType\":0,\"TokenID\":0,\"ExchangeSegment\":2,\"ExchangeInstrumentID\":43422,\"ExchangeTimeStamp\":1296226865,\"Bids\":[{\"Size\":75,\"Price\":56.85,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":1200,\"Price\":56.8,\"TotalOrders\":4,\"BuyBackMarketMaker\":0},{\"Size\":1050,\"Price\":56.7,\"TotalOrders\":3,\"BuyBackMarketMaker\":0},{\"Size\":975,\"Price\":56.65,\"TotalOrders\":3,\"BuyBackMarketMaker\":0},{\"Size\":1575,\"Price\":56.6,\"TotalOrders\":4,\"BuyBackMarketMaker\":0}],\"Asks\":[{\"Size\":75,\"Price\":57.1,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":300,\"Price\":57.15,\"TotalOrders\":3,\"BuyBackMarketMaker\":0},{\"Size\":150,\"Price\":57.2,\"TotalOrders\":2,\"BuyBackMarketMaker\":0},{\"Size\":150,\"Price\":57.25,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},{\"Size\":1275,\"Price\":57.3,\"TotalOrders\":6,\"BuyBackMarketMaker\":0}],\"Touchline\":{\"BidInfo\":{\"Size\":75,\"Price\":56.85,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},\"AskInfo\":{\"Size\":75,\"Price\":57.1,\"TotalOrders\":1,\"BuyBackMarketMaker\":0},\"LastTradedPrice\":66.6,\"LastTradedQunatity\":75,\"TotalBuyQuantity\":651225,\"TotalSellQuantity\":452775,\"TotalTradedQuantity\":34126875,\"AverageTradedPrice\":85.86,\"LastTradedTime\":1296226865,\"LastUpdateTime\":1296226865,\"PercentChange\":-79.70499377998934,\"Open\":222,\"High\":233.4,\"Low\":39.1,\"Close\":281.35,\"TotalValueTraded\":null,\"BuyBackTotalBuy\":0,\"BuyBackTotalSell\":0},\"BookType\":1,\"XMarketType\":1,\"SequenceNumber\":338944086942324}"]}}
-        if subs_resp['type'] == 'success':
-            ltp=[]
+    k=0
+    logging.info('Checking CurPnL for this strategy..')
+    while k<2:
+        try:
+            # print(j)
+            # logging.info('Checking CurPnL for this strategy..')
+            # login()
+            odf=pd.DataFrame(new_dictR)
+            eid_df =pd.DataFrame(ordersEid)
+            df = odf.merge(eid_df, how='left')
+            instruments=[]
             for i in range(len(df)):
-                listQuotes = json.loads(subs_resp['result']['listQuotes'][i])
-                ltp.append(listQuotes['Touchline']['LastTradedPrice'])
-                logging.info('\n LastTradedPrice fetched as : {ltp}')
-            df['ltp']=ltp
-            df['pnl']=(df['ltp']-df['tt'])*df['qty'] 
-            cur_PnL=round(df['pnl'].sum(),2) 
-            logging.info(f'df is : \n {df} \n')
-            logging.info('\n Time    ,    PnL')
-            logging.info((time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL))
-            # logging.info(time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL)
-        return cur_PnL    
-    except Exception:
-        logging.exception('Failed to get PNL')
-        
+                instruments.append({'exchangeSegment': 2, 'exchangeInstrumentID': df['ss'].values[i]})
+                # print(instruments)
+            # logging.info(f'sending subscription for : {instruments}')    
+            unsubs_resp=xt.send_unsubscription(Instruments=instruments,xtsMessageCode=1502)
+            logging.info(unsubs_resp['description'])
+            subs_resp = xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
+            if subs_resp['type'] == 'success':
+                logging.info(subs_resp['description'])
+                ltp=[]
+                for i in range(len(df)):
+                    listQuotes = json.loads(subs_resp['result']['listQuotes'][i])
+                    ltp.append(listQuotes['Touchline']['LastTradedPrice'])
+                # logging.info(f'LastTradedPrice fetched as : {ltp}')
+                df['ltp']=ltp
+                df['pnl']=(df['ltp']-df['tt'])*df['qq'] 
+                cur_PnL=round(df['pnl'].sum(),2) 
+                logging.info(f' DF is : \n {df} \n')
+                logging.info(' Time    ,    PnL')
+                logging.info((time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL))
+                # logging.info(time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL)
+            return cur_PnL    
+            break
+        except Exception:
+            logging.exception('Failed to get PNL')
+            login()
+            k+=1
+            
 def runSqOffLogics():
     login()
     logging.info('''\n Entering runSqOffLogics func,\n \t This logic runs till the end of the script and 
@@ -500,7 +513,7 @@ def runSqOffLogics():
         cur_PnL = getPnL()
         if (cur_PnL < globalSL) or (cur_PnL >= globalTarget) or (datetime.now() >= datetime.strptime(cdate + " " + wrapTime, "%d-%m-%Y %H:%M:%S")):
             logging.info('SquareOff Logic met...')
-            print("/n SquareOff Logic met...")
+            print("\n SquareOff Logic met...")
             
             # closing all open positions             # not taking getPositionList() bcoz
             positionList = getPositionList()      # get_global_PnL() has the latest pos_df
@@ -511,7 +524,7 @@ def runSqOffLogics():
                         symb=pos_df['TradingSymbol'].values[i]
                         eid = pos_df["ExchangeInstrumentId"].values[i]
                         squareOff(eid,symb)
-                print("Position Squareoff Completed ")
+                # logging.info("Position Squareoff Completed ")
             else:
                 logging.info('Unable to get positionList to square-off. Try manually..')
             

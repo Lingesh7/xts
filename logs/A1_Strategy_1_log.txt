@@ -1,0 +1,131 @@
+2021-01-29 15:21:50,003:root:INFO:Main Login Successful
+2021-01-29 15:21:50,003:root:INFO:Calculating everything before executing orders..
+2021-01-29 15:21:50,003:root:INFO:Calculating weekly and monthly expiry dates..
+2021-01-29 15:21:50,003:root:INFO:weekly expiry is : 04Feb2021, monthly expiry is: 25Feb2021
+2021-01-29 15:21:51,356:root:INFO:
+ Spot price fetched as : [13621, 30575.8]
+2021-01-29 15:21:51,356:root:INFO:StrikePrice computed as : 13600
+2021-01-29 15:21:52,341:root:INFO:Exchange Instrument ID : 39517, {'oty': ['CE'], 'ss': ['39517']}
+2021-01-29 15:21:53,325:root:INFO:Exchange Instrument ID : 39518, {'oty': ['CE', 'PE'], 'ss': ['39517', '39518']}
+2021-01-29 15:21:53,325:root:INFO:Checking margin from user..
+2021-01-29 15:21:53,356:root:INFO:Checking balance..
+2021-01-29 15:21:56,388:root:INFO:Balance retreived success, available cash : 1000000000
+2021-01-29 15:21:56,388:root:INFO: 
+              net_cash - 1000000000,
+              strikePrice - 13600,
+              Nifty LTP - 13621,
+              BankNiftyLTP - 30575.8
+              exchangeInstrumentID - [39517, 39518]
+              
+2021-01-29 15:21:56,388:root:INFO:All set from prepareVars func.. Giving a go for orders..
+2021-01-29 15:21:56,388:root:INFO:required variables set-- ready to trigger orders at desired time
+2021-01-29 15:22:00,451:root:INFO:Required Margin Available.. Taking positions...
+2021-01-29 15:22:02,420:root:INFO:Main Login Successful
+2021-01-29 15:22:02,420:root:INFO:Main Login Successful
+2021-01-29 15:22:02,436:root:INFO: 
+ Placing Orders with StopLoss.. 
+
+2021-01-29 15:22:02,436:root:INFO: 
+ Placing Orders with StopLoss.. 
+
+2021-01-29 15:22:02,451:root:INFO:Main Login Successful
+2021-01-29 15:22:02,467:root:INFO:Main Login Successful
+2021-01-29 15:22:04,952:root:INFO: 
+ Order ID for SELL 39518 is: 10025970 
+
+2021-01-29 15:22:04,952:root:INFO:Retreiving OrderBook..
+2021-01-29 15:22:04,952:root:INFO: 
+ Order ID for SELL 39517 is: 10025971 
+
+2021-01-29 15:22:04,952:root:INFO:Retreiving OrderBook..
+2021-01-29 15:22:06,892:root:INFO:OrderBook result retreived success
+2021-01-29 15:22:06,892:root:INFO:traded price is: 255.0
+2021-01-29 15:22:06,892:root:INFO:
+ Placing StopLoss order for 39517
+2021-01-29 15:22:06,892:root:INFO:stopLoss price fixed as: 270.0
+2021-01-29 15:22:06,892:root:INFO:OrderBook result retreived success
+2021-01-29 15:22:06,892:root:INFO:traded price is: 190.2
+2021-01-29 15:22:06,892:root:INFO:
+ Placing StopLoss order for 39518
+2021-01-29 15:22:06,892:root:INFO:stopLoss price fixed as: 205.2
+2021-01-29 15:22:08,059:root:INFO:
+  StopLoss Order ID for BUY 39518 is: 10025972 
+
+2021-01-29 15:22:08,059:root:INFO:orderDictionary from new place order func (orderID_dict)  {39518: [39518, 10025970, 190.2, 10025972]}
+2021-01-29 15:22:08,059:root:INFO: 
+ new DICT  from new place order func (new_dict)  {'ss': '39518', 'qq': 75, 'oo': 10025970, 'tt': 190.2, 'sl': 10025972} 
+
+2021-01-29 15:22:08,059:root:INFO:
+  StopLoss Order ID for BUY 39517 is: 10025973 
+
+2021-01-29 15:22:08,059:root:INFO:orderDictionary from new place order func (orderID_dict)  {39517: [39517, 10025971, 255.0, 10025973]}
+2021-01-29 15:22:08,059:root:INFO: 
+ new DICT  from new place order func (new_dict)  {'ss': '39517', 'qq': 75, 'oo': 10025971, 'tt': 255.0, 'sl': 10025973} 
+
+2021-01-29 15:22:08,059:root:INFO:printing new_dictR value : [{'ss': '39518', 'qq': 75, 'oo': 10025970, 'tt': 190.2, 'sl': 10025972}, {'ss': '39517', 'qq': 75, 'oo': 10025971, 'tt': 255.0, 'sl': 10025973}]
+2021-01-29 15:22:09,260:root:INFO:Login Successful
+2021-01-29 15:22:09,260:root:INFO:
+ Entering runSqOffLogics func,
+ 	 This logic runs till the end of the script and 
+              checks SL/TARGET/TIMEings 
+
+2021-01-29 15:22:09,260:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:22:10,338:root:INFO:Instrument subscription deleted!
+2021-01-29 15:22:11,425:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:22:11,440:numexpr.utils:INFO:NumExpr defaulting to 4 threads.
+2021-01-29 15:22:11,456:root:INFO: DF is : 
+       ss  qq        oo     tt        sl oty     ltp     pnl
+0  39518  75  10025970  190.2  10025972  PE  187.65 -191.25
+1  39517  75  10025971  255.0  10025973  CE  256.45  108.75 
+
+2021-01-29 15:22:11,456:root:INFO: Time    ,    PnL
+2021-01-29 15:22:11,456:root:INFO:('29-01-2021 15:22:11', -82.5)
+2021-01-29 15:22:13,456:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:22:14,503:root:INFO:Instrument subscription deleted!
+2021-01-29 15:22:15,628:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:22:15,659:root:INFO: DF is : 
+       ss  qq        oo     tt        sl oty     ltp    pnl
+0  39518  75  10025970  190.2  10025972  PE  189.70 -37.50
+1  39517  75  10025971  255.0  10025973  CE  256.15  86.25 
+
+2021-01-29 15:22:15,659:root:INFO: Time    ,    PnL
+2021-01-29 15:22:15,659:root:INFO:('29-01-2021 15:22:15', 48.75)
+2021-01-29 15:22:17,659:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:22:18,706:root:INFO:Instrument subscription deleted!
+2021-01-29 15:22:20,035:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:22:20,050:root:INFO: DF is : 
+       ss  qq        oo     tt        sl oty    ltp   pnl
+0  39518  75  10025970  190.2  10025972  PE  190.4  15.0
+1  39517  75  10025971  255.0  10025973  CE  254.0 -75.0 
+
+2021-01-29 15:22:20,050:root:INFO: Time    ,    PnL
+2021-01-29 15:22:20,050:root:INFO:('29-01-2021 15:22:20', -60.0)
+2021-01-29 15:22:22,051:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:22:23,113:root:INFO:Instrument subscription deleted!
+2021-01-29 15:22:24,223:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:22:24,254:root:INFO: DF is : 
+       ss  qq        oo     tt        sl oty     ltp     pnl
+0  39518  75  10025970  190.2  10025972  PE  188.45 -131.25
+1  39517  75  10025971  255.0  10025973  CE  252.10 -217.50 
+
+2021-01-29 15:22:24,254:root:INFO: Time    ,    PnL
+2021-01-29 15:22:24,254:root:INFO:('29-01-2021 15:22:24', -348.75)
+2021-01-29 15:22:26,254:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:22:27,317:root:ERROR:Failed to get PNL
+Traceback (most recent call last):
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 521, in send_unsubscription
+    response = self._put('market.instruments.unsubscription', json.dumps(params))
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 643, in _put
+    return self._request(route, "PUT", params)
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 688, in _request
+    raise ex.XTSTokenException(data["description"])
+XTConnect.Exception.XTSTokenException: Invalid Token
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\Strategy_1_MDF.py", line 479, in getPnL
+    unsubs_resp=xt.send_unsubscription(Instruments=instruments,xtsMessageCode=1502)
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 524, in send_unsubscription
+    return response['description']
+UnboundLocalError: local variable 'response' referenced before assignment

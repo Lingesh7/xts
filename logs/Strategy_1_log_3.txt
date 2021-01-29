@@ -1,0 +1,497 @@
+2021-01-29 15:03:01,096:root:INFO:Main Login Successful
+2021-01-29 15:03:01,112:root:INFO:Calculating everything before executing orders..
+2021-01-29 15:03:01,112:root:INFO:Calculating weekly and monthly expiry dates..
+2021-01-29 15:03:01,112:root:INFO:weekly expiry is : 04Feb2021, monthly expiry is: 25Feb2021
+2021-01-29 15:03:02,253:root:INFO:
+ Spot price fetched as : [13645.95, 30541.15]
+2021-01-29 15:03:02,253:root:INFO:('StrikePrice computed as : ', 13650)
+2021-01-29 15:03:03,500:root:INFO:Exchange Instrument ID : 39526, {'oty': ['CE'], 'ss': ['39526']}
+2021-01-29 15:03:04,582:root:INFO:Exchange Instrument ID : 39527, {'oty': ['CE', 'PE'], 'ss': ['39526', '39527']}
+2021-01-29 15:03:04,582:root:INFO:Checking margin from user..
+2021-01-29 15:03:04,613:root:INFO:Checking balance..
+2021-01-29 15:03:06,801:root:INFO:Balance retreived success, available cash : 1000000000
+2021-01-29 15:03:06,801:root:INFO: 
+              net_cash - 1000000000,
+              strikePrice - 13650,
+              Nifty LTP - 13645.95,
+              BankNiftyLTP - 30541.15
+              exchangeInstrumentID - [39526, 39527]
+              
+2021-01-29 15:03:06,801:root:INFO:All set from prepareVars func.. Giving a go for orders..
+2021-01-29 15:03:06,801:root:INFO:required variables set-- ready to trigger orders at desired time
+2021-01-29 15:03:06,801:root:INFO:Required Margin Available.. Taking positions...
+2021-01-29 15:03:08,957:root:INFO:Main Login Successful
+2021-01-29 15:03:08,957:root:INFO:Main Login Successful
+2021-01-29 15:03:08,973:root:INFO:Main Login Successful
+2021-01-29 15:03:08,973:root:INFO: 
+ Placing Orders with StopLoss.. 
+
+2021-01-29 15:03:08,973:root:INFO: 
+ Placing Orders with StopLoss.. 
+
+2021-01-29 15:03:08,988:root:INFO:Main Login Successful
+2021-01-29 15:03:10,238:root:INFO: 
+ Order ID for SELL 39527 is: 10025962 
+
+2021-01-29 15:03:10,238:root:INFO:Retreiving OrderBook..
+2021-01-29 15:03:10,238:root:INFO: 
+ Order ID for SELL 39526 is: 10025963 
+
+2021-01-29 15:03:10,238:root:INFO:Retreiving OrderBook..
+2021-01-29 15:03:11,415:root:INFO:OrderBook result retreived success
+2021-01-29 15:03:11,415:root:INFO:traded price is: 229.35
+2021-01-29 15:03:11,415:root:INFO:
+ Placing StopLoss order for 39526
+2021-01-29 15:03:11,415:root:INFO:stopLoss price fixed as: 244.35
+2021-01-29 15:03:11,446:root:INFO:OrderBook result retreived success
+2021-01-29 15:03:11,446:root:INFO:traded price is: 190.8
+2021-01-29 15:03:11,446:root:INFO:
+ Placing StopLoss order for 39527
+2021-01-29 15:03:11,446:root:INFO:stopLoss price fixed as: 205.8
+2021-01-29 15:03:12,568:root:INFO:
+  StopLoss Order ID for BUY 39526 is: 10025964 
+
+2021-01-29 15:03:12,568:root:INFO:orderDictionary from new place order func (orderID_dict)  {39526: [39526, 10025963, 229.35, 10025964]}
+2021-01-29 15:03:12,568:root:INFO: 
+ new DICT  from new place order func (new_dict)  {'ss': '39526', 'qq': 75, 'oo': 10025963, 'tt': 229.35, 'sl': 10025964} 
+
+2021-01-29 15:03:12,631:root:INFO:
+  StopLoss Order ID for BUY 39527 is: 10025965 
+
+2021-01-29 15:03:12,631:root:INFO:orderDictionary from new place order func (orderID_dict)  {39527: [39527, 10025962, 190.8, 10025965]}
+2021-01-29 15:03:12,631:root:INFO: 
+ new DICT  from new place order func (new_dict)  {'ss': '39527', 'qq': 75, 'oo': 10025962, 'tt': 190.8, 'sl': 10025965} 
+
+2021-01-29 15:03:12,631:root:INFO:printing new_dictR value : [{'ss': '39526', 'qq': 75, 'oo': 10025963, 'tt': 229.35, 'sl': 10025964}, {'ss': '39527', 'qq': 75, 'oo': 10025962, 'tt': 190.8, 'sl': 10025965}]
+2021-01-29 15:03:13,898:root:INFO:Login Successful
+2021-01-29 15:03:13,898:root:INFO:
+ Entering runSqOffLogics func,
+ 	 This logic runs till the end of the script and 
+              checks SL/TARGET/TIMEings 
+
+2021-01-29 15:03:13,898:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:03:15,189:root:INFO:Instrument subscription deleted!
+2021-01-29 15:03:16,298:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:03:16,314:numexpr.utils:INFO:NumExpr defaulting to 4 threads.
+2021-01-29 15:03:16,329:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty    ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  234.3  371.25
+1  39527  75  10025962  190.80  10025965  PE  187.8 -225.00 
+
+2021-01-29 15:03:16,329:root:INFO: Time    ,    PnL
+2021-01-29 15:03:16,329:root:INFO:('29-01-2021 15:03:16', 146.25)
+2021-01-29 15:03:18,329:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:03:19,470:root:INFO:Instrument subscription deleted!
+2021-01-29 15:03:20,658:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:03:20,689:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  232.85  262.50
+1  39527  75  10025962  190.80  10025965  PE  193.55  206.25 
+
+2021-01-29 15:03:20,689:root:INFO: Time    ,    PnL
+2021-01-29 15:03:20,689:root:INFO:('29-01-2021 15:03:20', 468.75)
+2021-01-29 15:03:22,691:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:03:23,920:root:INFO:Instrument subscription deleted!
+2021-01-29 15:03:25,082:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:03:25,097:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  233.05  277.50
+1  39527  75  10025962  190.80  10025965  PE  196.75  446.25 
+
+2021-01-29 15:03:25,097:root:INFO: Time    ,    PnL
+2021-01-29 15:03:25,097:root:INFO:('29-01-2021 15:03:25', 723.75)
+2021-01-29 15:03:27,105:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:03:28,207:root:INFO:Instrument subscription deleted!
+2021-01-29 15:03:29,363:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:03:29,394:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty     ltp    pnl
+0  39526  75  10025963  229.35  10025964  CE  233.05  277.5
+1  39527  75  10025962  190.80  10025965  PE  199.00  615.0 
+
+2021-01-29 15:03:29,394:root:INFO: Time    ,    PnL
+2021-01-29 15:03:29,394:root:INFO:('29-01-2021 15:03:29', 892.5)
+2021-01-29 15:03:31,395:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:03:32,612:root:INFO:Instrument subscription deleted!
+2021-01-29 15:03:33,817:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:03:33,849:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  230.65   97.50
+1  39527  75  10025962  190.80  10025965  PE  194.65  288.75 
+
+2021-01-29 15:03:33,849:root:INFO: Time    ,    PnL
+2021-01-29 15:03:33,849:root:INFO:('29-01-2021 15:03:33', 386.25)
+2021-01-29 15:03:35,858:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:03:37,014:root:INFO:Instrument subscription deleted!
+2021-01-29 15:03:38,142:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:03:38,142:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty     ltp    pnl
+0  39526  75  10025963  229.35  10025964  CE  229.45    7.5
+1  39527  75  10025962  190.80  10025965  PE  194.30  262.5 
+
+2021-01-29 15:03:38,142:root:INFO: Time    ,    PnL
+2021-01-29 15:03:38,142:root:INFO:('29-01-2021 15:03:38', 270.0)
+2021-01-29 15:03:40,149:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:03:41,494:root:INFO:Instrument subscription deleted!
+2021-01-29 15:03:43,088:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:03:43,119:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty     ltp    pnl
+0  39526  75  10025963  229.35  10025964  CE  228.85  -37.5
+1  39527  75  10025962  190.80  10025965  PE  196.50  427.5 
+
+2021-01-29 15:03:43,119:root:INFO: Time    ,    PnL
+2021-01-29 15:03:43,119:root:INFO:('29-01-2021 15:03:43', 390.0)
+2021-01-29 15:03:45,119:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:03:46,222:root:INFO:Instrument subscription deleted!
+2021-01-29 15:03:47,384:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:03:47,416:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty    ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  228.9  -33.75
+1  39527  75  10025962  190.80  10025965  PE  200.6  735.00 
+
+2021-01-29 15:03:47,416:root:INFO: Time    ,    PnL
+2021-01-29 15:03:47,416:root:INFO:('29-01-2021 15:03:47', 701.25)
+2021-01-29 15:03:49,431:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:03:50,580:root:INFO:Instrument subscription deleted!
+2021-01-29 15:03:51,716:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:03:51,732:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty     ltp      pnl
+0  39526  75  10025963  229.35  10025964  CE  228.90   -33.75
+1  39527  75  10025962  190.80  10025965  PE  204.95  1061.25 
+
+2021-01-29 15:03:51,732:root:INFO: Time    ,    PnL
+2021-01-29 15:03:51,732:root:INFO:('29-01-2021 15:03:51', 1027.5)
+2021-01-29 15:03:53,741:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:03:54,954:root:INFO:Instrument subscription deleted!
+2021-01-29 15:03:56,101:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:03:56,135:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty     ltp      pnl
+0  39526  75  10025963  229.35  10025964  CE  218.05  -847.50
+1  39527  75  10025962  190.80  10025965  PE  208.25  1308.75 
+
+2021-01-29 15:03:56,136:root:INFO: Time    ,    PnL
+2021-01-29 15:03:56,136:root:INFO:('29-01-2021 15:03:56', 461.25)
+2021-01-29 15:03:58,148:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:03:59,305:root:INFO:Instrument subscription deleted!
+2021-01-29 15:04:00,599:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:04:00,610:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty     ltp      pnl
+0  39526  75  10025963  229.35  10025964  CE  215.90 -1008.75
+1  39527  75  10025962  190.80  10025965  PE  209.45  1398.75 
+
+2021-01-29 15:04:00,610:root:INFO: Time    ,    PnL
+2021-01-29 15:04:00,611:root:INFO:('29-01-2021 15:04:00', 390.0)
+2021-01-29 15:04:02,613:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:04:03,828:root:INFO:Instrument subscription deleted!
+2021-01-29 15:04:06,483:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:04:06,491:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  209.25 -1507.5
+1  39527  75  10025962  190.80  10025965  PE  211.30  1537.5 
+
+2021-01-29 15:04:06,491:root:INFO: Time    ,    PnL
+2021-01-29 15:04:06,491:root:INFO:('29-01-2021 15:04:06', 30.0)
+2021-01-29 15:04:08,501:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:04:10,091:root:INFO:Instrument subscription deleted!
+2021-01-29 15:04:11,666:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:04:11,682:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty    ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  217.8 -866.25
+1  39527  75  10025962  190.80  10025965  PE  199.8  675.00 
+
+2021-01-29 15:04:11,682:root:INFO: Time    ,    PnL
+2021-01-29 15:04:11,682:root:INFO:('29-01-2021 15:04:11', -191.25)
+2021-01-29 15:04:13,694:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:04:15,318:root:INFO:Instrument subscription deleted!
+2021-01-29 15:04:17,741:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:04:17,772:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty    ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  221.7 -573.75
+1  39527  75  10025962  190.80  10025965  PE  201.7  817.50 
+
+2021-01-29 15:04:17,772:root:INFO: Time    ,    PnL
+2021-01-29 15:04:17,772:root:INFO:('29-01-2021 15:04:17', 243.75)
+2021-01-29 15:04:19,781:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:04:21,018:root:INFO:Instrument subscription deleted!
+2021-01-29 15:04:23,936:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:04:23,951:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  220.95 -630.00
+1  39527  75  10025962  190.80  10025965  PE  203.65  963.75 
+
+2021-01-29 15:04:23,951:root:INFO: Time    ,    PnL
+2021-01-29 15:04:23,951:root:INFO:('29-01-2021 15:04:23', 333.75)
+2021-01-29 15:04:25,952:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:04:26,765:root:INFO:Instrument subscription deleted!
+2021-01-29 15:04:27,597:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:04:27,608:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  225.65 -277.50
+1  39527  75  10025962  190.80  10025965  PE  197.85  528.75 
+
+2021-01-29 15:04:27,608:root:INFO: Time    ,    PnL
+2021-01-29 15:04:27,609:root:INFO:('29-01-2021 15:04:27', 251.25)
+2021-01-29 15:04:29,612:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:04:30,361:root:INFO:Instrument subscription deleted!
+2021-01-29 15:04:31,134:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:04:31,134:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty     ltp    pnl
+0  39526  75  10025963  229.35  10025964  CE  227.45 -142.5
+1  39527  75  10025962  190.80  10025965  PE  197.80  525.0 
+
+2021-01-29 15:04:31,134:root:INFO: Time    ,    PnL
+2021-01-29 15:04:31,150:root:INFO:('29-01-2021 15:04:31', 382.5)
+2021-01-29 15:04:33,162:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:04:33,952:root:INFO:Instrument subscription deleted!
+2021-01-29 15:04:34,780:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:04:34,796:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty    ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  227.7 -123.75
+1  39527  75  10025962  190.80  10025965  PE  199.9  682.50 
+
+2021-01-29 15:04:34,796:root:INFO: Time    ,    PnL
+2021-01-29 15:04:34,796:root:INFO:('29-01-2021 15:04:34', 558.75)
+2021-01-29 15:04:36,802:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:04:37,583:root:INFO:Instrument subscription deleted!
+2021-01-29 15:04:38,347:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:04:38,362:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  230.70  101.25
+1  39527  75  10025962  190.80  10025965  PE  198.45  573.75 
+
+2021-01-29 15:04:38,362:root:INFO: Time    ,    PnL
+2021-01-29 15:04:38,362:root:INFO:('29-01-2021 15:04:38', 675.0)
+2021-01-29 15:04:40,394:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:04:41,194:root:INFO:Instrument subscription deleted!
+2021-01-29 15:04:42,076:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:04:42,091:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  229.30   -3.75
+1  39527  75  10025962  190.80  10025965  PE  198.95  611.25 
+
+2021-01-29 15:04:42,091:root:INFO: Time    ,    PnL
+2021-01-29 15:04:42,091:root:INFO:('29-01-2021 15:04:42', 607.5)
+2021-01-29 15:04:44,092:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:04:44,906:root:INFO:Instrument subscription deleted!
+2021-01-29 15:04:45,702:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:04:45,717:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty    ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  229.4    3.75
+1  39527  75  10025962  190.80  10025965  PE  202.1  847.50 
+
+2021-01-29 15:04:45,717:root:INFO: Time    ,    PnL
+2021-01-29 15:04:45,717:root:INFO:('29-01-2021 15:04:45', 851.25)
+2021-01-29 15:04:47,722:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:04:48,550:root:INFO:Instrument subscription deleted!
+2021-01-29 15:04:49,363:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:04:49,378:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty     ltp    pnl
+0  39526  75  10025963  229.35  10025964  CE  232.75  255.0
+1  39527  75  10025962  190.80  10025965  PE  198.70  592.5 
+
+2021-01-29 15:04:49,378:root:INFO: Time    ,    PnL
+2021-01-29 15:04:49,378:root:INFO:('29-01-2021 15:04:49', 847.5)
+2021-01-29 15:04:51,393:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:04:52,107:root:INFO:Instrument subscription deleted!
+2021-01-29 15:04:52,975:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:04:52,990:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  232.00  198.75
+1  39527  75  10025962  190.80  10025965  PE  203.15  926.25 
+
+2021-01-29 15:04:52,990:root:INFO: Time    ,    PnL
+2021-01-29 15:04:52,990:root:INFO:('29-01-2021 15:04:52', 1125.0)
+2021-01-29 15:04:54,998:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:04:55,771:root:INFO:Instrument subscription deleted!
+2021-01-29 15:04:56,611:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:04:56,626:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty    ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  234.0  348.75
+1  39527  75  10025962  190.80  10025965  PE  199.6  660.00 
+
+2021-01-29 15:04:56,626:root:INFO: Time    ,    PnL
+2021-01-29 15:04:56,626:root:INFO:('29-01-2021 15:04:56', 1008.75)
+2021-01-29 15:04:58,627:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:04:59,377:root:INFO:Instrument subscription deleted!
+2021-01-29 15:05:00,221:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:05:00,253:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  234.25  367.50
+1  39527  75  10025962  190.80  10025965  PE  198.15  551.25 
+
+2021-01-29 15:05:00,253:root:INFO: Time    ,    PnL
+2021-01-29 15:05:00,253:root:INFO:('29-01-2021 15:05:00', 918.75)
+2021-01-29 15:05:02,267:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:05:03,064:root:INFO:Instrument subscription deleted!
+2021-01-29 15:05:03,873:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:05:03,889:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty    ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  237.2  588.75
+1  39527  75  10025962  190.80  10025965  PE  195.0  315.00 
+
+2021-01-29 15:05:03,889:root:INFO: Time    ,    PnL
+2021-01-29 15:05:03,889:root:INFO:('29-01-2021 15:05:03', 903.75)
+2021-01-29 15:05:05,899:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:05:06,690:root:INFO:Instrument subscription deleted!
+2021-01-29 15:05:07,521:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:05:07,536:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty    ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  238.0  648.75
+1  39527  75  10025962  190.80  10025965  PE  192.8  150.00 
+
+2021-01-29 15:05:07,536:root:INFO: Time    ,    PnL
+2021-01-29 15:05:07,536:root:INFO:('29-01-2021 15:05:07', 798.75)
+2021-01-29 15:05:09,540:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:05:10,314:root:INFO:Instrument subscription deleted!
+2021-01-29 15:05:11,146:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:05:11,161:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  242.35  975.00
+1  39527  75  10025962  190.80  10025965  PE  189.95  -63.75 
+
+2021-01-29 15:05:11,161:root:INFO: Time    ,    PnL
+2021-01-29 15:05:11,161:root:INFO:('29-01-2021 15:05:11', 911.25)
+2021-01-29 15:05:13,169:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:05:13,980:root:INFO:Instrument subscription deleted!
+2021-01-29 15:05:14,786:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:05:14,802:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty     ltp      pnl
+0  39526  75  10025963  229.35  10025964  CE  244.15  1110.00
+1  39527  75  10025962  190.80  10025965  PE  187.15  -273.75 
+
+2021-01-29 15:05:14,802:root:INFO: Time    ,    PnL
+2021-01-29 15:05:14,802:root:INFO:('29-01-2021 15:05:14', 836.25)
+2021-01-29 15:05:16,806:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:05:17,610:root:INFO:Instrument subscription deleted!
+2021-01-29 15:05:18,524:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:05:18,546:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  246.85  1312.5
+1  39527  75  10025962  190.80  10025965  PE  188.00  -210.0 
+
+2021-01-29 15:05:18,546:root:INFO: Time    ,    PnL
+2021-01-29 15:05:18,546:root:INFO:('29-01-2021 15:05:18', 1102.5)
+2021-01-29 15:05:20,551:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:05:21,357:root:INFO:Instrument subscription deleted!
+2021-01-29 15:05:22,122:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:05:22,134:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  239.65  772.50
+1  39527  75  10025962  190.80  10025965  PE  194.95  311.25 
+
+2021-01-29 15:05:22,134:root:INFO: Time    ,    PnL
+2021-01-29 15:05:22,134:root:INFO:('29-01-2021 15:05:22', 1083.75)
+2021-01-29 15:05:24,143:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:05:24,938:root:INFO:Instrument subscription deleted!
+2021-01-29 15:05:25,704:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:05:25,720:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty  ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  235  423.75
+1  39527  75  10025962  190.80  10025965  PE  198  540.00 
+
+2021-01-29 15:05:25,720:root:INFO: Time    ,    PnL
+2021-01-29 15:05:25,720:root:INFO:('29-01-2021 15:05:25', 963.75)
+2021-01-29 15:05:27,727:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:05:28,502:root:INFO:Instrument subscription deleted!
+2021-01-29 15:05:29,275:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:05:29,299:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty     ltp    pnl
+0  39526  75  10025963  229.35  10025964  CE  237.65  622.5
+1  39527  75  10025962  190.80  10025965  PE  198.10  547.5 
+
+2021-01-29 15:05:29,299:root:INFO: Time    ,    PnL
+2021-01-29 15:05:29,299:root:INFO:('29-01-2021 15:05:29', 1170.0)
+2021-01-29 15:05:31,313:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:05:32,110:root:INFO:Instrument subscription deleted!
+2021-01-29 15:05:32,965:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:05:32,981:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty    ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  239.4  753.75
+1  39527  75  10025962  190.80  10025965  PE  196.8  450.00 
+
+2021-01-29 15:05:32,981:root:INFO: Time    ,    PnL
+2021-01-29 15:05:32,981:root:INFO:('29-01-2021 15:05:32', 1203.75)
+2021-01-29 15:05:34,986:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:05:35,852:root:INFO:Instrument subscription deleted!
+2021-01-29 15:05:36,674:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:05:36,689:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty  ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  239  723.75
+1  39527  75  10025962  190.80  10025965  PE  199  615.00 
+
+2021-01-29 15:05:36,689:root:INFO: Time    ,    PnL
+2021-01-29 15:05:36,689:root:INFO:('29-01-2021 15:05:36', 1338.75)
+2021-01-29 15:05:38,702:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:05:39,514:root:INFO:Instrument subscription deleted!
+2021-01-29 15:05:40,299:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:05:40,330:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  239.10  731.25
+1  39527  75  10025962  190.80  10025965  PE  199.45  648.75 
+
+2021-01-29 15:05:40,330:root:INFO: Time    ,    PnL
+2021-01-29 15:05:40,330:root:INFO:('29-01-2021 15:05:40', 1380.0)
+2021-01-29 15:05:42,330:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:05:43,127:root:INFO:Instrument subscription deleted!
+2021-01-29 15:05:43,994:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:05:44,009:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty     ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  236.10  506.25
+1  39527  75  10025962  190.80  10025965  PE  201.35  791.25 
+
+2021-01-29 15:05:44,009:root:INFO: Time    ,    PnL
+2021-01-29 15:05:44,009:root:INFO:('29-01-2021 15:05:44', 1297.5)
+2021-01-29 15:05:46,014:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:05:47,087:root:INFO:Instrument subscription deleted!
+2021-01-29 15:05:47,981:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:05:47,997:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty    ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  239.5  761.25
+1  39527  75  10025962  190.80  10025965  PE  200.7  742.50 
+
+2021-01-29 15:05:47,997:root:INFO: Time    ,    PnL
+2021-01-29 15:05:47,997:root:INFO:('29-01-2021 15:05:47', 1503.75)
+2021-01-29 15:05:50,008:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:05:50,835:root:INFO:Instrument subscription deleted!
+2021-01-29 15:05:51,701:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:05:51,717:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty    ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  238.7  701.25
+1  39527  75  10025962  190.80  10025965  PE  200.0  690.00 
+
+2021-01-29 15:05:51,717:root:INFO: Time    ,    PnL
+2021-01-29 15:05:51,717:root:INFO:('29-01-2021 15:05:51', 1391.25)
+2021-01-29 15:05:53,731:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:05:54,632:root:INFO:Instrument subscription deleted!
+2021-01-29 15:05:55,504:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:05:55,535:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty  ltp     pnl
+0  39526  75  10025963  229.35  10025964  CE  242  948.75
+1  39527  75  10025962  190.80  10025965  PE  196  390.00 
+
+2021-01-29 15:05:55,535:root:INFO: Time    ,    PnL
+2021-01-29 15:05:55,535:root:INFO:('29-01-2021 15:05:55', 1338.75)
+2021-01-29 15:05:57,539:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:05:58,383:root:INFO:Instrument subscription deleted!
+2021-01-29 15:05:59,227:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:05:59,258:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty     ltp    pnl
+0  39526  75  10025963  229.35  10025964  CE  242.25  967.5
+1  39527  75  10025962  190.80  10025965  PE  192.60  135.0 
+
+2021-01-29 15:05:59,258:root:INFO: Time    ,    PnL
+2021-01-29 15:05:59,258:root:INFO:('29-01-2021 15:05:59', 1102.5)
+2021-01-29 15:06:01,270:root:INFO:Checking CurPnL for this strategy..
+2021-01-29 15:06:02,083:root:INFO:Instrument subscription deleted!
+2021-01-29 15:06:02,842:root:INFO:Instrument subscribed successfully!
+2021-01-29 15:06:02,854:root:INFO: DF is : 
+       ss  qq        oo      tt        sl oty     ltp      pnl
+0  39526  75  10025963  229.35  10025964  CE  243.30  1046.25
+1  39527  75  10025962  190.80  10025965  PE  200.55   731.25 
+
+2021-01-29 15:06:02,854:root:INFO: Time    ,    PnL
+2021-01-29 15:06:02,854:root:INFO:('29-01-2021 15:06:02', 1777.5)
+2021-01-29 15:06:02,854:root:INFO:
+ SquareOff Logic met...
+2021-01-29 15:06:02,855:root:INFO:Retreiving position page..
+2021-01-29 15:06:03,663:root:INFO:Retreiving OrderBook..
+2021-01-29 15:06:05,424:root:INFO:OrderBook result retreived success

@@ -392,7 +392,7 @@ def placeOrderwithSL(symbol,buy_sell,quantity):
                         a+=1
                         if a==2:
                             logging.info('\n traded price is calculated as Zero, place SL order Manually')
-                        time.sleep(3)
+                        time.sleep(1)
                 else:
                     logging.info('\n  Unable to get OrderList inside place order function..')
                     logging.info('..Hence traded price will retun as None \n ')
@@ -464,44 +464,46 @@ def runOrders():
                   ''')     
 
 def getPnL():
-    k=0
+    # k=0
     logging.info('Checking CurPnL for this strategy..')
-    while k<2:
-        try:
-            # print(j)
-            # logging.info('Checking CurPnL for this strategy..')
-            # login()
-            odf=pd.DataFrame(new_dictR)
-            eid_df =pd.DataFrame(ordersEid)
-            df = odf.merge(eid_df, how='left')
-            instruments=[]
+    # while k<2:
+    try:
+        # print(j)
+        # logging.info('Checking CurPnL for this strategy..')
+        # login()
+        odf=pd.DataFrame(new_dictR)
+        eid_df =pd.DataFrame(ordersEid)
+        df = odf.merge(eid_df, how='left')
+        instruments=[]
+        for i in range(len(df)):
+            instruments.append({'exchangeSegment': 2, 'exchangeInstrumentID': df['ss'].values[i]})
+            # print(instruments)
+        # logging.info(f'sending subscription for : {instruments}')    
+        unsubs_resp=xt.send_unsubscription(Instruments=instruments,xtsMessageCode=1502)
+        # if (unsubs_resp['type'] == 'error') and (unsubs_resp['description'] == 'Invalid Token'):
+        #     login() 
+        logging.info(unsubs_resp['description'])
+        subs_resp = xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
+        if subs_resp['type'] == 'success':
+            logging.info(subs_resp['description'])
+            ltp=[]
             for i in range(len(df)):
-                instruments.append({'exchangeSegment': 2, 'exchangeInstrumentID': df['ss'].values[i]})
-                # print(instruments)
-            # logging.info(f'sending subscription for : {instruments}')    
-            unsubs_resp=xt.send_unsubscription(Instruments=instruments,xtsMessageCode=1502)
-            logging.info(unsubs_resp['description'])
-            subs_resp = xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
-            if subs_resp['type'] == 'success':
-                logging.info(subs_resp['description'])
-                ltp=[]
-                for i in range(len(df)):
-                    listQuotes = json.loads(subs_resp['result']['listQuotes'][i])
-                    ltp.append(listQuotes['Touchline']['LastTradedPrice'])
-                # logging.info(f'LastTradedPrice fetched as : {ltp}')
-                df['ltp']=ltp
-                df['pnl']=(df['ltp']-df['tt'])*df['qq'] 
-                cur_PnL=round(df['pnl'].sum(),2) 
-                logging.info(f' DF is : \n {df} \n')
-                logging.info(' Time    ,    PnL')
-                logging.info((time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL))
-                # logging.info(time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL)
-            return cur_PnL    
-            break
-        except Exception:
-            logging.exception('Failed to get PNL')
-            login()
-            k+=1
+                listQuotes = json.loads(subs_resp['result']['listQuotes'][i])
+                ltp.append(listQuotes['Touchline']['LastTradedPrice'])
+            # logging.info(f'LastTradedPrice fetched as : {ltp}')
+            df['ltp']=ltp
+            df['pnl']=(df['ltp']-df['tt'])*df['qq'] 
+            cur_PnL=round(df['pnl'].sum(),2) 
+            logging.info(f' DF is : \n {df} \n')
+            logging.info(' Time    ,    PnL')
+            logging.info((time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL))
+            # logging.info(time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL)
+        return cur_PnL    
+        # break
+    except Exception:
+        logging.exception('Failed to get PNL')
+        login()
+        # k+=1
             
 def runSqOffLogics():
     login()
@@ -511,46 +513,47 @@ def runSqOffLogics():
     while check:
         # print("--- getting cur_PnL ---")
         cur_PnL = getPnL()
-        if (cur_PnL < globalSL) or (cur_PnL >= globalTarget) or (datetime.now() >= datetime.strptime(cdate + " " + wrapTime, "%d-%m-%Y %H:%M:%S")):
-            logging.info('SquareOff Logic met...')
-            print("\n SquareOff Logic met...")
-            
-            # closing all open positions             # not taking getPositionList() bcoz
-            positionList = getPositionList()      # get_global_PnL() has the latest pos_df
-            if positionList:
-                pos_df = pd.DataFrame(positionList)   # also runs every 2 secs so no need to get again
-                for i in range(len(pos_df)):
-                    if int(pos_df["Quantity"].values[i]) != 0:
-                        symb=pos_df['TradingSymbol'].values[i]
-                        eid = pos_df["ExchangeInstrumentId"].values[i]
-                        squareOff(eid,symb)
-                # logging.info("Position Squareoff Completed ")
+        if cur_PnL:
+            if (cur_PnL < globalSL) or (cur_PnL >= globalTarget) or (datetime.now() >= datetime.strptime(cdate + " " + wrapTime, "%d-%m-%Y %H:%M:%S")):
+                logging.info('SquareOff Logic met...')
+                print("\n SquareOff Logic met...")
+                
+                # closing all open positions             # not taking getPositionList() bcoz
+                positionList = getPositionList()      # get_global_PnL() has the latest pos_df
+                if positionList:
+                    pos_df = pd.DataFrame(positionList)   # also runs every 2 secs so no need to get again
+                    for i in range(len(pos_df)):
+                        if int(pos_df["Quantity"].values[i]) != 0:
+                            symb=pos_df['TradingSymbol'].values[i]
+                            eid = pos_df["ExchangeInstrumentId"].values[i]
+                            squareOff(eid,symb)
+                    # logging.info("Position Squareoff Completed ")
+                else:
+                    logging.info('Unable to get positionList to square-off. Try manually..')
+                
+                #closing all pending orders
+                orderList = getOrderList()
+                if orderList:
+                    ord_df = pd.DataFrame(orderList)
+                    pending = ord_df[ord_df['OrderStatus'].isin(["New","Open","Partially Filled"])]["AppOrderID"].tolist()
+                    drop = []
+                    attempt = 0
+                    while len(pending)>0 and attempt<5:
+                        pending = [j for j in pending if j not in drop]
+                        for order in pending:
+                            try:
+                                cancelOrder(order)
+                                drop.append(order)
+                            except:
+                                print("unable to delete order id : ",order)
+                                attempt+=1
+                else:
+                    logging.info('Unable to get orderList to square-off. Try manually..')
+        
+                check=False # exit this long run main loop
             else:
-                logging.info('Unable to get positionList to square-off. Try manually..')
-            
-            #closing all pending orders
-            orderList = getOrderList()
-            if orderList:
-                ord_df = pd.DataFrame(orderList)
-                pending = ord_df[ord_df['OrderStatus'].isin(["New","Open","Partially Filled"])]["AppOrderID"].tolist()
-                drop = []
-                attempt = 0
-                while len(pending)>0 and attempt<5:
-                    pending = [j for j in pending if j not in drop]
-                    for order in pending:
-                        try:
-                            cancelOrder(order)
-                            drop.append(order)
-                        except:
-                            print("unable to delete order id : ",order)
-                            attempt+=1
-            else:
-                logging.info('Unable to get orderList to square-off. Try manually..')
-    
-            check=False # exit this long run main loop
-        else:
-            # print("Sq-off logic running parallelly")
-            time.sleep(2)
+                # print("Sq-off logic running parallelly")
+                time.sleep(2)
 
 
 #maybe main()
@@ -577,7 +580,7 @@ if __name__ == '__main__':
                 runSqOffLogics()
                 print("--- Sq-off Func Exit ---")
             except Exception as e:
-                print("Something went wrong.. try closing the orders manually..", e)
+                print("Something wrong with SquareoffLogic func..", e)
             finally:
                 print("-- Script Ended --")
         else:

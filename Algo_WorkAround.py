@@ -117,3 +117,4 @@ future = executor.submit(f, vars) followed by print(f'{future.result()}') worked
 logging-vs-performance:
 https://stackoverflow.com/questions/33715344/python-logging-vs-performance
 
+Get-Content .\A1_Strategy_1_log.txt  -Wait -Tail 10

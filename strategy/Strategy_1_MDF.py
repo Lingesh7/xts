@@ -124,9 +124,21 @@ def nextThu_and_lastThu_expiry_date ():
     monthly_exp=str((month_last_thu_expiry.strftime("%d")))+month_last_thu_expiry.strftime("%b").capitalize()+month_last_thu_expiry.strftime("%Y")
     weekly_exp=str((next_thursday_expiry.strftime("%d")))+next_thursday_expiry.strftime("%b").capitalize()+next_thursday_expiry.strftime("%Y")
     logging.info(f'weekly expiry is : {weekly_exp}, monthly expiry is: {monthly_exp}')
- 
-def strkPrcCalc(ltp,base):
-    strikePrice = base * round(ltp/base) 
+
+def getSpot(ticker):
+    instruments = [{'exchangeSegment': 1, 'exchangeInstrumentID': 'NIFTY 50'}]
+    spot_resp = xt.get_quote(
+                Instruments=instruments,
+                xtsMessageCode=1504,
+                publishFormat='JSON')
+    listQuotes = json.loads(spot_resp['result']['listQuotes'][0])
+    spot=listQuotes['IndexValue']
+    logging.info(f'\n Spot price fetched as : {spot}')    
+    
+    
+    
+def strkPrcCalc(spot,base):
+    strikePrice = base * round(spot/base) 
     logging.info(('StrikePrice computed as : ', strikePrice))
     return strikePrice
 

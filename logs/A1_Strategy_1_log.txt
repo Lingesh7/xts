@@ -129,3 +129,57 @@ Traceback (most recent call last):
   File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 524, in send_unsubscription
     return response['description']
 UnboundLocalError: local variable 'response' referenced before assignment
+2021-01-30 14:42:57,173:root:INFO:Main Login Successful
+2021-01-30 14:42:57,195:root:INFO:Calculating everything before executing orders..
+2021-01-30 14:42:57,195:root:INFO:Calculating weekly and monthly expiry dates..
+2021-01-30 14:42:57,196:root:INFO:weekly expiry is : 04Feb2021, monthly expiry is: 25Feb2021
+2021-01-30 14:43:58,232:root:ERROR:Unable to getSpot from index
+Traceback (most recent call last):
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 505, in get_quote
+    response = self._post('market.instruments.quotes', json.dumps(params))
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 639, in _post
+    return self._request(route, "POST", params)
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 696, in _request
+    raise ex.XTSDataException("Unknown Content-Type ({content_type}) with response: ({content})".format(
+XTConnect.Exception.XTSDataException: Unknown Content-Type (text/html) with response: (b'<html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n')
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\Strategy_1_MDF.py", line 132, in getSpot
+    spot_resp = xt.get_quote(
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 508, in get_quote
+    return response['description']
+UnboundLocalError: local variable 'response' referenced before assignment
+2021-01-30 14:43:58,232:root:ERROR:Unable to reterive info like margin,strikePrice,nfty_ltp,bnknfty_ltp  to place order
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\Strategy_1_MDF.py", line 309, in prepareVars
+    nfty_ltp,bnknfty_ltp=getSpot()
+TypeError: cannot unpack non-iterable NoneType object
+2021-01-30 14:50:31,470:root:INFO:Main Login Successful
+2021-01-30 14:50:31,470:root:INFO:Calculating everything before executing orders..
+2021-01-30 14:50:31,470:root:INFO:Calculating weekly and monthly expiry dates..
+2021-01-30 14:50:31,470:root:INFO:weekly expiry is : 04Feb2021, monthly expiry is: 25Feb2021
+2021-01-30 14:51:32,500:root:ERROR:Unable to getSpot from index
+Traceback (most recent call last):
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 505, in get_quote
+    response = self._post('market.instruments.quotes', json.dumps(params))
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 639, in _post
+    return self._request(route, "POST", params)
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 696, in _request
+    raise ex.XTSDataException("Unknown Content-Type ({content_type}) with response: ({content})".format(
+XTConnect.Exception.XTSDataException: Unknown Content-Type (text/html) with response: (b'<html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n')
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\Strategy_1_MDF.py", line 132, in getSpot
+    spot_resp = xt.get_quote(
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 508, in get_quote
+    return response['description']
+UnboundLocalError: local variable 'response' referenced before assignment
+2021-01-30 14:51:32,501:root:ERROR:Unable to reterive info like margin,strikePrice,nfty_ltp,bnknfty_ltp  to place order
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\Strategy_1_MDF.py", line 309, in prepareVars
+    nfty_ltp,bnknfty_ltp=getSpot()
+TypeError: cannot unpack non-iterable NoneType object

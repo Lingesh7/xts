@@ -8,19 +8,19 @@ Created on Thu Jan 21 21:44:33 2021
 from datetime import datetime
 from dateutil.relativedelta import relativedelta, TH
 from XTConnect.Connect import XTSConnect
-# from sys import exit
-# from nsetools import Nse
-# nse = Nse()
+from threading import Timer
 import time
+import json
+import logging
 import pandas as pd
 import concurrent.futures
-from threading import Timer
-import json
-# import traceback
-import logging
+
+
 # from itertools import repeat
 # import multiprocessing
 # import schedule
+# from sys import exit
+# import traceback
 
 logging.basicConfig(filename='../logs/A1_Strategy_1_log.txt',level=logging.INFO,
                     format='%(asctime)s:%(name)s:%(levelname)s:%(message)s')
@@ -34,7 +34,7 @@ ordersEid = {}
 ordersEid= {k:[] for k in ['oty','ss']}
 
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-kickTime = "15:22:00"
+kickTime = "14:51:00"
 wrapTime = "15:24:00"
 globalSL = -1500
 globalTarget = 3000
@@ -507,6 +507,7 @@ def getPnL():
             
 def runSqOffLogics():
     login()
+    pnl_dump=[]
     logging.info('''\n Entering runSqOffLogics func,\n \t This logic runs till the end of the script and 
               checks SL/TARGET/TIMEings \n''')
     check=True
@@ -552,9 +553,9 @@ def runSqOffLogics():
         
                 check=False # exit this long run main loop
             else:
-                # print("Sq-off logic running parallelly")
+                pnl_dump.append([time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL])
                 time.sleep(2)
-
+    return pnl_dump
 
 #maybe main()
 if __name__ == '__main__':
@@ -577,10 +578,17 @@ if __name__ == '__main__':
         if monitor:
             try:
                 print("--- Entering SquareOffLogic Function after placing orders ---")
-                runSqOffLogics()
+                pnl_dump=runSqOffLogics()
                 print("--- Sq-off Func Exit ---")
             except Exception as e:
                 print("Something wrong with SquareoffLogic func..", e)
+            else:
+                pnl_df= pd.DataFrame(pnl_dump,columns=['date','pl'])
+                pnl_df=pnl_df.set_index(['date'])
+                pnl_df.index=pd.to_datetime(pnl_df.index)
+                # txtf.loc[:,['pl']]
+                df=pnl_df['pl'].resample('1min').ohlc()
+                df.to_excel('PnL_1min_data_'+kickTime)
             finally:
                 print("-- Script Ended --")
         else:

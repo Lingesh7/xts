@@ -1132,8 +1132,8 @@ xt.get_option_symbol(
                 strikePrice=13800)
 
 def getSpot():
-    idx_instruments = [{'exchangeSegment': 1, 'exchangeInstrumentID': 'NIFTY 50'},
-                   {'exchangeSegment': 1, 'exchangeInstrumentID': 'NIFTY BANK'}]
+    idx_instruments = [{'exchangeSegment': 2, 'exchangeInstrumentID': 39539},
+                   {'exchangeSegment': 2, 'exchangeInstrumentID': 39541}]
     spot_resp = xt.get_quote(
                 Instruments=idx_instruments,
                 xtsMessageCode=1504,
@@ -1148,4 +1148,50 @@ def getSpot():
     tr
 
 
+data=[]
+for i in range(20):
+    cur_pnl=i
+    data.append([time.strftime("%d-%m-%Y %H:%M:%S"),cur_pnl])
+    time.sleep(1)
+    
+    
+txtf= pd.DataFrame(data,columns=['date','pl'])
+txtf=txtf.set_index(['date'])
+txtf.index=pd.to_datetime(txtf.index)
+# txtf.loc[:,['pl']]
+df=txtf['pl'].resample('1min').ohlc()
 
+df.to_excel('data.xlsx')
+
+
+txt = [('29-01-2021 14:15:39', -8.5),
+         ('29-01-2021 14:15:49', -9.5),
+         ('29-01-2021 14:15:59', -12.5),
+         ('29-01-2021 14:16:09', -124.5),
+         ('29-01-2021 14:16:19', -67.5),
+         ('29-01-2021 14:16:29', -77.5),
+         ('29-01-2021 14:16:39', -7.85),
+         ('29-01-2021 14:16:49', -7.555),
+         ('29-01-2021 14:16:59', -87.54),
+         ('29-01-2021 14:17:09', -37.5),
+         ('29-01-2021 14:17:19', -97.5),
+         ('29-01-2021 14:17:29', 07.5),
+         ('29-01-2021 14:17:39', 37.5),
+         ('29-01-2021 14:17:39', 27.5),
+         ('29-01-2021 14:17:49', 997.5),
+         ('29-01-2021 14:18:09', 6547.5),
+         ('29-01-2021 14:18:19', 3457.5),
+         ('29-01-2021 14:18:29', 3457.5),
+         ('29-01-2021 14:18:39', 687.5),
+         ('29-01-2021 14:18:49', 23457.5),
+         ('29-01-2021 14:18:59', 55467.5),
+         ]
+
+
+txtf= pd.DataFrame(txt,columns=['date','pl'])
+txtf=txtf.set_index(['date'])
+txtf.index=pd.to_datetime(txtf.index)
+# txtf.loc[:,['pl']]
+df=txtf['pl'].resample('1min').ohlc()
+
+df.to_excel('data.xlsx')

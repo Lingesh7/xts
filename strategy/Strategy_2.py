@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Feb 01 2021 21:44:33 2021
-Strategy_1 - With all the logic checks in place. 
+Strategy_2 
 @author: mling
 """
 
@@ -26,7 +26,7 @@ logger.setLevel(logging.INFO)
 
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 
-file_handler = logging.FileHandler('../logs/Strategy1_log.txt')
+file_handler = logging.FileHandler('../logs/Strategy2_log.txt')
 file_handler.setLevel(logging.INFO)
 file_handler.setFormatter(formatter)
 
@@ -153,11 +153,12 @@ def getSpot():
             listQuotes = json.loads(spot_resp['result']['listQuotes'][i])
             spot.append(listQuotes['IndexValue'])
         logger.info(f'Spot price fetched as : {spot}') 
-        nfty50,nftyBank = [spot[i] for i in [0,1]]
+        # nfty50,nftyBank = [spot[i] for i in [0,1]]
     except Exception:
         logger.exception('Unable to getSpot from index')
     else:
-        return nfty50,nftyBank
+        # return nfty50,nftyBank
+        return spot
         
 def strkPrcCalc(spot,base):
     strikePrice = base * round(spot/base) 
@@ -165,7 +166,7 @@ def strkPrcCalc(spot,base):
     return strikePrice
 
 def get_eID(symbol,ce_pe,expiry,strikePrice):
-    logger.debug(f'Input of get_eID fn : {symbol}, {ce_pe},{expiry},{strikePrice}')
+    logger.info(f'Input of get_eID fn : {symbol}, {ce_pe},{expiry},{strikePrice}')
     if ce_pe == "ce":
         oType="CE"
     elif ce_pe == "pe":
@@ -179,8 +180,8 @@ def get_eID(symbol,ce_pe,expiry,strikePrice):
                 optionType=oType,
                 strikePrice=strikePrice)
     # print('Option Symbol:', str(response))
-    # print("ExchangeInstrumentID is:",eID_resp)# (int(response["result"][0]["ExchangeInstrumentID"])))
-    if eID_resp['type'] != 'error':
+    logger.info(f'{eID_resp}')
+    if (eID_resp['type'] != 'error') and (eID_resp["result"]):
         eid = int(eID_resp["result"][0]["ExchangeInstrumentID"])
         ordersEid['oty'].append(oType)
         ordersEid['ss'].append(str(eid))
@@ -189,6 +190,7 @@ def get_eID(symbol,ce_pe,expiry,strikePrice):
         return eid
     else:
         logger.error('Not able to get ExchangeInstrument ID')
+        raise Exception('Not able to get ExchangeInstrument ID')
 
 def getOrderList():
     aa = 0
@@ -317,16 +319,18 @@ def prepareVars(ticker):
         global net_cash,margin_ok, quantity,eID,strikePrice,nfty_ltp,bnknfty_ltp
         nfty_ltp,bnknfty_ltp=None,None
         nextThu_and_lastThu_expiry_date ()
-        nfty_ltp,bnknfty_ltp=getSpot()
+        spotList=getSpot()
         # try:
         if ticker == "NIFTY":
              quantity = 75
              # nfty_ltp = nse.get_index_quote("nifty 50")['lastPrice']
+             nfty_ltp=spotList[0]
              strikePrice = strkPrcCalc(nfty_ltp,50)
              # margin_ok = int(checkBalance()) >= 1000000001  
         elif ticker == "BANKNIFTY":
             quantity = 25
             # bnknfty_ltp = nse.get_index_quote("nifty bank")['lastPrice']
+            bnknfty_ltp=spotList[1]
             strikePrice = strkPrcCalc(bnknfty_ltp,100)
             # margin_ok = int(checkBalance()) >= 1000000001 
         else:
@@ -346,13 +350,11 @@ def prepareVars(ticker):
         logger.info("All set from prepareVars func.. Giving a go for orders..")      
         return True
     except:
-        logger.exception("Unable to reterive info like margin,strikePrice,nfty_ltp,bnknfty_ltp  to place order")
+        logger.exception("Unable to reterive info like margin,strikePrice,nfty_ltp,bnknfty_ltp to place order")
         return False
 
-def placeOrderwithSL(symbol,buy_sell,quantity):
-    logger.info(' \n Placing Orders with StopLoss.. \n')
-    orderID_dict = {}
-    orderID_dict[symbol] = []
+def placeOrder(symbol,buy_sell,quantity):
+    logger.info('Placing Orders.. \n')
     # Place an intraday stop loss order on NSE
     orderID = 0
     tradedPrice = 0
@@ -362,12 +364,8 @@ def placeOrderwithSL(symbol,buy_sell,quantity):
     
     if buy_sell == "buy":
         t_type=xt.TRANSACTION_TYPE_BUY
-        t_type_sl=xt.TRANSACTION_TYPE_SELL
-        slPoints = -15
     elif buy_sell == "sell":
         t_type=xt.TRANSACTION_TYPE_SELL
-        t_type_sl=xt.TRANSACTION_TYPE_BUY
-        slPoints = +15
     try:
         order_resp = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
                          exchangeInstrumentID= symbol ,
@@ -401,48 +399,13 @@ def placeOrderwithSL(symbol,buy_sell,quantity):
                     else:
                         logger.info(f'\n Placed order {orderID} might be in Open or New Status, Hence retrying..{a}')
                         a+=1
-                        if a==2:
-                            logger.info('\n traded price is calculated as Zero, place SL order Manually')
                         time.sleep(1)
                 else:
                     logger.info('\n  Unable to get OrderList inside place order function..')
                     logger.info('..Hence traded price will retun as None \n ')
-                    
-        orderID_dict[symbol].append(symbol)
-        orderID_dict[symbol].append(orderID)
-        orderID_dict[symbol].append(tradedPrice)
     except Exception():
-        logger.exception('Unable to place order in placeOrderWithSL func...')
+        logger.exception('Unable to place order in placeOrder func...')
         time.sleep(1)        
-    else:
-        if tradedPrice != 0:
-            logger.info(f'\n Placing StopLoss order for {symbol}')
-            stopPrice = round((tradedPrice+slPoints),2)
-            logger.info(f'stopLoss price fixed as: {stopPrice}')
-            sl_order_resp = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
-                         exchangeInstrumentID= symbol ,
-                         productType=xt.PRODUCT_MIS, 
-                         orderType="StopMarket",                   
-                         orderSide=t_type_sl,
-                         timeInForce=xt.VALIDITY_DAY,
-                         disclosedQuantity=0,
-                         orderQuantity=quantity,
-                         limitPrice=0,
-                         stopPrice=stopPrice,
-                         orderUniqueIdentifier="FC_MarketOrder"
-                         )
-            if sl_order_resp['type'] != 'error':
-                orderID = sl_order_resp['result']['AppOrderID']            #extracting the order id from response
-                new_dict['sl']=(orderID)
-                orderID_dict[symbol].append(orderID)
-                logger.info(f'\n  StopLoss Order ID for {t_type_sl} {symbol} is: {orderID} \n')
-        else:
-            logger.info(' \n TradedPice is not available, Hence not placing SL order, TRY MANUALLY.. \n')
-            
-    # logger.info(f'orderDictionary from placeOrderWithSL {orderID_dict}')
-    logger.info(f"orderDictionary from new place order func (orderID_dict)  {orderID_dict}")
-    logger.info(f" \n new DICT  from new place order func (new_dict)  {new_dict} \n")
-    # return orderID_dict, new_dict
     return new_dict
                     
 def runOrders():
@@ -456,7 +419,7 @@ def runOrders():
         with concurrent.futures.ProcessPoolExecutor() as executor:
             try:
                 # orderID_dict = executor.map(placeOrderWithSL,eID,repeat('sell'),repeat(quantity))
-                results = [executor.submit(placeOrderwithSL,i,'sell',quantity) for i in eID]
+                results = [executor.submit(placeOrder,i,'sell',quantity) for i in eID]
                 for f in concurrent.futures.as_completed(results):
                     # #print('printiing f.results')
                     # #print(f.result())
@@ -476,9 +439,7 @@ def runOrders():
                   ''')     
 
 def getPnL():
-    # k=0
     logger.info('Checking CurPnL for this strategy..')
-    # while k<2:
     try:
         # #print(j)
         # logger.info('Checking CurPnL for this strategy..')
@@ -513,14 +474,60 @@ def getPnL():
     except Exception:
         logger.exception('Failed to get PNL')
         login()
-        # k+=1
+        
 def isSLHit():
     odf=pd.DataFrame(new_dictR)
     orderList=getOrderList()
     ordr_df=pd.DataFrame(orderList)
     pdm =pd.merge(odf,ordr_df, left_on=('sl'),right_on=('AppOrderID'))
     return pdm['OrderStatus'].isin(['Trigger Pending']).tolist()
-    
+
+def repairStrategy(ticker):
+    spotList=getSpot()
+    if ticker=='NIFTY':
+        cur_prc=spotList[0]
+    elif ticker=='BANKNIFTY':
+        cur_prc=spotList[1]
+    logger.info(f'Cur price of NIFTY is: {cur_prc}')
+    try:
+        if cur_prc > nfty_ltp+40:
+            logger.info(f'{ticker} hits +40')
+            logger.info('SquaringOff CE position..')
+            pos=pd.DataFrame(new_dictR)
+            eid_df=pd.DataFrame(ordersEid)
+            ce_df=pos.merge(eid_df, how='left')
+            ids=ce_df[ce_df['oty']=='CE']['oo'].tolist()
+            for i_d in ids:
+                squareOff(i_d, 'Sell Call Option')
+            logger.info('Placing another order for CE')        
+            eid1 = get_eID(ticker, 'CE', weekly_exp, (strikePrice+50))
+            logger.info(f'New order eid is: {eid1}')
+            frsh=placeOrder(eid1, 'sell', quantity)
+            new_dictR.append(frsh)
+            logger.info("----Stopping repeatedTimer------")
+            rt1.stop()
+        elif cur_prc < nfty_ltp-40:
+            logger.info(f'{ticker} hits -40')
+            logger.info('SquaringOff PE position..')
+            pos=pd.DataFrame(new_dictR)
+            eid_df=pd.DataFrame(ordersEid)
+            pe_df=pos.merge(eid_df, how='left')
+            ids=pe_df[pe_df['oty']=='PE']['oo'].tolist()
+            for i_d in ids:
+                squareOff(i_d, 'Sell Put Option')
+            logger.info('Placing another order for CE')        
+            eid2 = get_eID(ticker, 'PE', weekly_exp, (strikePrice-50))
+            logger.info(f'New order eid is: {eid2}')
+            frsh=placeOrder(eid2, 'sell', quantity)
+            new_dictR.append(frsh)
+            logger.info("----Stopping repeatedTimer------")
+            rt1.stop()
+            # runRepairActions('CE')
+        else:
+            logger.info('repair running...')
+    except Exception:
+        logger.exception('Repair Strategy Failed')
+
 def runSqOffLogics():
     login()
     pnl_dump=[]
@@ -592,15 +599,14 @@ if __name__ == '__main__':
                 nstart = False
             else:
                 time.sleep(0.5)
-         
-        #print("starting multi funcs with threaded timer...")
         if monitor:
+            logger.info("starting multi funcs with threaded timer...")
+            rt1 = RepeatedTimer(10, repairStrategy, ticker)
             try:
                 logger.info("--- Entering SquareOffLogic Function after placing orders ---")
                 #print("--- Entering SquareOffLogic Function after placing orders ---")
                 pnl_dump=runSqOffLogics()
                 logger.info("--- Sq-off Func Exit ---")
-                #print("--- Sq-off Func Exit ---")
             except Exception:
                 logger.exception("Something wrong with SquareoffLogic func..")
                 #print("Something wrong with SquareoffLogic func..", e)
@@ -609,24 +615,18 @@ if __name__ == '__main__':
                 pnl_df= pd.DataFrame(pnl_dump,columns=['date','pl'])
                 pnl_df=pnl_df.set_index(['date'])
                 pnl_df.index=pd.to_datetime(pnl_df.index)
-                # txtf.loc[:,['pl']]
                 df=pnl_df['pl'].resample('1min').ohlc()
-                # filename='PnL_1min_data_'+kickTime+'.xlsx'
-                # df.to_excel('PnL_1min_data.xlsx')
-                writer = pd.ExcelWriter(r'F:\Downloads\Python\First_Choice_Git\xts\strategy\Strategy1_PnL.xls')
+                writer = pd.ExcelWriter(r'F:\Downloads\Python\First_Choice_Git\xts\strategy\Strategy2_PnL.xls')
                 df.to_excel(writer, sheet_name=(cdate+'_'+kickTime.replace(':','_')), index=True)
                 writer.save()
             finally:
+                logger.info('in finally block.. Closing multi threaded func if running..')
+                rt1.stop()
                 logger.info('-- Script Ended --')
                 logger.info('-- --------------------------------------------- --')
-                #print("-- Script Ended --")
         else:
             logger.info("No Orders Placed")
             logger.info("Not started any multi funcs threaded timer")
-            #print("No Orders Placed")
-            #print(" not started any multi funcs threaded timer")
     else:
         logger.info("Vars not set properly...")
-        #print("Vars not set properly...")
 
-#################################

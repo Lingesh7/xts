@@ -118,3 +118,20 @@ logging-vs-performance:
 https://stackoverflow.com/questions/33715344/python-logging-vs-performance
 
 Get-Content .\A1_Strategy_1_log.txt  -Wait -Tail 10
+
+import glob
+
+for file in glob.glob('D:/Python/fc-page*.json'):
+    data=json.load(open(file))
+    df=pd.DataFrame(data['data'])
+    print(df[['id','sum_of_pnl']])
+
+
+dfs=[]
+for line in open('D:/Python/fc-page1.json', 'r'):
+    data=json.loads(line)
+    df=pd.DataFrame(data['data'])
+    dfs.append(df[['id','sum_of_pnl']])
+final_df = pd.concat(dfs)
+final_df.to_excel(r'C:/Users/Welcome/Desktop/pnl_data.xlsx')
+

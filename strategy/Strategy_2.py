@@ -9,7 +9,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta, TH
 from XTConnect.Connect import XTSConnect
 from threading import Timer
-import time
+import time,os
 import json
 import logging
 import pandas as pd
@@ -23,10 +23,15 @@ import concurrent.futures
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
-
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 
-file_handler = logging.FileHandler('../logs/Strategy2_log.txt')
+filename='Strategy2_log.txt'
+# should_roll_over = os.path.isfile(filename)
+file_handler = logging.handlers.RotatingFileHandler(filename)
+file_handler.doRollover()
+# file_handler = logging.FileHandler(filename)
+# if should_roll_over:  # log already exists, roll over!
+#     file_handler.doRollover()
 file_handler.setLevel(logging.INFO)
 file_handler.setFormatter(formatter)
 
@@ -49,8 +54,8 @@ ordersEid = {}
 ordersEid= {k:[] for k in ['oty','ss']}
 
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-kickTime = "10:32:00"
-wrapTime = "10:52:00"
+kickTime = "15:20:00"
+wrapTime = "15:30:00"
 globalSL = -1500
 globalTarget = 3000
 
@@ -152,7 +157,7 @@ def getSpot():
         for i in range(len(idx_instruments)):
             listQuotes = json.loads(spot_resp['result']['listQuotes'][i])
             spot.append(listQuotes['IndexValue'])
-        logger.info(f'Spot price fetched as : {spot}') 
+        # logger.info(f'Spot price fetched as : {spot}') 
         # nfty50,nftyBank = [spot[i] for i in [0,1]]
     except Exception:
         logger.exception('Unable to getSpot from index')
@@ -339,7 +344,7 @@ def prepareVars(ticker):
         # #print("EID is :", eID)
         logger.info("Checking margin from user..")
         net_cash = checkBalance()
-        margin_ok = int(net_cash) >= 1000000001
+        margin_ok = int(net_cash) >= 55000
         logger.info(f''' 
               net_cash - {net_cash},
               strikePrice - {strikePrice},
@@ -403,10 +408,14 @@ def placeOrder(symbol,buy_sell,quantity):
                 else:
                     logger.info('\n  Unable to get OrderList inside place order function..')
                     logger.info('..Hence traded price will retun as None \n ')
+        elif order_resp['type'] == 'error':
+            logger.info(f'Order not placed for - {symbol} ')
+            raise Exception('Order not placed')
     except Exception():
         logger.exception('Unable to place order in placeOrder func...')
-        time.sleep(1)        
-    return new_dict
+        time.sleep(1)
+    else:
+        return new_dict
                     
 def runOrders():
     global monitor,orderID_dictR,new_dictR
@@ -421,9 +430,6 @@ def runOrders():
                 # orderID_dict = executor.map(placeOrderWithSL,eID,repeat('sell'),repeat(quantity))
                 results = [executor.submit(placeOrder,i,'sell',quantity) for i in eID]
                 for f in concurrent.futures.as_completed(results):
-                    # #print('printiing f.results')
-                    # #print(f.result())
-                    # orderID_dictR.update(f.result())
                     new_dictR.append(f.result())
                 logger.info(f'printing new_dictR value : {new_dictR}')
                 monitor = True
@@ -452,11 +458,11 @@ def getPnL():
             instruments.append({'exchangeSegment': 2, 'exchangeInstrumentID': df['ss'].values[i]})
             # #print(instruments)
         # logger.info(f'sending subscription for : {instruments}')    
-        # unsubs_resp=xt.send_unsubscription(Instruments=instruments,xtsMessageCode=1502)
+        xt.send_unsubscription(Instruments=instruments,xtsMessageCode=1502)
         # logger.info(unsubs_resp['description'])
-        subs_resp = xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
+        subs_resp=xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
         if subs_resp['type'] == 'success':
-            logger.info(subs_resp['description'])
+            # logger.info(subs_resp['description'])
             ltp=[]
             for i in range(len(df)):
                 listQuotes = json.loads(subs_resp['result']['listQuotes'][i])
@@ -466,7 +472,7 @@ def getPnL():
             df['pnl']=(df['ltp']-df['tt'])*df['qq'] 
             cur_PnL=round(df['pnl'].sum(),2) 
             logger.info(f' DF is : \n {df} \n')
-            logger.info(' Time    ,    PnL')
+            # logger.info(' Time    ,    PnL')
             logger.info((time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL))
             # logger.info(time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL)
         return cur_PnL    
@@ -489,6 +495,7 @@ def repairStrategy(ticker):
     elif ticker=='BANKNIFTY':
         cur_prc=spotList[1]
     logger.info(f'Cur price of NIFTY is: {cur_prc}')
+    logger.info(f'Points changed: {cur_prc-nfty_ltp}')
     try:
         if cur_prc > nfty_ltp+40:
             logger.info(f'{ticker} hits +40')
@@ -575,9 +582,9 @@ def runSqOffLogics():
                     logger.info('Unable to get orderList to square-off. Try manually..')
         
                 check=False # exit this long run main loop
-            elif not True in isSLHit():
-                logger.info('both the order"s Sl hit - Hence winding up..')
-                check=False
+            # elif not True in isSLHit():
+            #     logger.info('both the order"s Sl hit - Hence winding up..')
+            #     check=False
             else:
                 pnl_dump.append([time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL])
                 time.sleep(2)
@@ -588,45 +595,45 @@ if __name__ == '__main__':
     # login()
     ticker='NIFTY'
     go = prepareVars(ticker)
-    if go:
-        logger.info('required variables set-- ready to trigger orders at desired time')
-        #print("required variables set-- ready to trigger orders at desired time")
-        nstart=True
-        # ndate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-        while nstart:
-            if (datetime.now() >= datetime.strptime(cdate + " " + kickTime, "%d-%m-%Y %H:%M:%S")):
-                runOrders()
-                nstart = False
-            else:
-                time.sleep(0.5)
-        if monitor:
-            logger.info("starting multi funcs with threaded timer...")
-            rt1 = RepeatedTimer(10, repairStrategy, ticker)
-            try:
-                logger.info("--- Entering SquareOffLogic Function after placing orders ---")
-                #print("--- Entering SquareOffLogic Function after placing orders ---")
-                pnl_dump=runSqOffLogics()
-                logger.info("--- Sq-off Func Exit ---")
-            except Exception:
-                logger.exception("Something wrong with SquareoffLogic func..")
-                #print("Something wrong with SquareoffLogic func..", e)
-            else:
-                logger.info('Dumping the PnL list to excel sheet..')
-                pnl_df= pd.DataFrame(pnl_dump,columns=['date','pl'])
-                pnl_df=pnl_df.set_index(['date'])
-                pnl_df.index=pd.to_datetime(pnl_df.index)
-                df=pnl_df['pl'].resample('1min').ohlc()
-                writer = pd.ExcelWriter(r'F:\Downloads\Python\First_Choice_Git\xts\strategy\Strategy2_PnL.xls')
-                df.to_excel(writer, sheet_name=(cdate+'_'+kickTime.replace(':','_')), index=True)
-                writer.save()
-            finally:
-                logger.info('in finally block.. Closing multi threaded func if running..')
-                rt1.stop()
-                logger.info('-- Script Ended --')
-                logger.info('-- --------------------------------------------- --')
-        else:
-            logger.info("No Orders Placed")
-            logger.info("Not started any multi funcs threaded timer")
-    else:
-        logger.info("Vars not set properly...")
+    # if go:
+    #     logger.info('required variables set-- ready to trigger orders at desired time')
+    #     #print("required variables set-- ready to trigger orders at desired time")
+    #     nstart=True
+    #     # ndate = datetime.strftime(datetime.now(), "%d-%m-%Y")
+    #     while nstart:
+    #         if (datetime.now() >= datetime.strptime(cdate + " " + kickTime, "%d-%m-%Y %H:%M:%S")):
+    #             runOrders()
+    #             nstart = False
+    #         else:
+    #             time.sleep(0.5)
+    #     if monitor:
+    #         logger.info("starting multi funcs with threaded timer...")
+    #         rt1 = RepeatedTimer(10, repairStrategy, ticker)
+    #         try:
+    #             logger.info("--- Entering SquareOffLogic Function after placing orders ---")
+    #             #print("--- Entering SquareOffLogic Function after placing orders ---")
+    #             pnl_dump=runSqOffLogics()
+    #             logger.info("--- Sq-off Func ended ---")
+    #         except Exception:
+    #             logger.exception("Something wrong with SquareoffLogic func..")
+    #             #print("Something wrong with SquareoffLogic func..", e)
+    #         else:
+    #             logger.info('Dumping the PnL list to excel sheet..')
+    #             pnl_df= pd.DataFrame(pnl_dump,columns=['date','pl'])
+    #             pnl_df=pnl_df.set_index(['date'])
+    #             pnl_df.index=pd.to_datetime(pnl_df.index)
+    #             df=pnl_df['pl'].resample('1min').ohlc()
+    #             writer = pd.ExcelWriter(r'D:\Python\First_Choice_Git\xts\strategy\Strategy2_PnL.xls')
+    #             df.to_excel(writer, sheet_name=(cdate+'_'+kickTime.replace(':','_')), index=True)
+    #             writer.save()
+    #         finally:
+    #             logger.info('in finally block.. Closing multi threaded func if running..')
+    #             rt1.stop()
+    #             logger.info('-- Script Ended --')
+    #             logger.info('-- --------------------------------------------- --')
+    #     else:
+    #         logger.info("No Orders Placed")
+    #         logger.info("Not started any multi funcs threaded timer")
+    # else:
+    #     logger.info("Vars not set properly...")
 

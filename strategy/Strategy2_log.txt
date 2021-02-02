@@ -1,0 +1,44 @@
+2021-02-02 16:24:17,882:__main__:INFO:Main Login Successful
+2021-02-02 16:24:17,898:__main__:INFO:Calculating everything before executing orders..
+2021-02-02 16:24:17,898:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-02 16:24:17,898:__main__:INFO:weekly expiry is : 04Feb2021, monthly expiry is: 25Feb2021
+2021-02-02 16:24:18,710:__main__:INFO:StrikePrice computed as : 14650
+2021-02-02 16:24:18,710:__main__:INFO:Input of get_eID fn : NIFTY, ce,04Feb2021,14650
+2021-02-02 16:24:19,476:__main__:INFO:{'type': 'success', 'code': 's-rds-0', 'description': 'ok', 'result': [{'ExchangeSegment': 2, 'ExchangeInstrumentID': 39648, 'InstrumentType': 2, 'Name': 'NIFTY', 'DisplayName': 'NIFTY 04FEB2021 CE 14650', 'Description': 'NIFTY2120414650CE', 'Series': 'OPTIDX', 'InstrumentID': 2103500039648, 'PriceBand': {'High': 419.6, 'Low': 0.05, 'HighString': '419.60', 'LowString': '0.05', 'CreditRating': '0.05-419.60'}, 'FreezeQty': 5001, 'TickSize': 0.05, 'LotSize': 75, 'UnderlyingInstrumentId': -1, 'UnderlyingIndexName': 'Nifty 50', 'ContractExpiration': '2021-02-04T14:30:00', 'ContractExpirationString': '04Feb2021', 'RemainingExpiryDays': 3, 'StrikePrice': 14650, 'OptionType': 3}]}
+2021-02-02 16:24:19,476:__main__:INFO:Exchange Instrument ID : 39648, {'oty': ['CE'], 'ss': ['39648']}
+2021-02-02 16:24:19,476:__main__:INFO:Input of get_eID fn : NIFTY, pe,04Feb2021,14650
+2021-02-02 16:24:20,312:__main__:INFO:{'type': 'success', 'code': 's-rds-0', 'description': 'ok', 'result': [{'ExchangeSegment': 2, 'ExchangeInstrumentID': 39649, 'InstrumentType': 2, 'Name': 'NIFTY', 'DisplayName': 'NIFTY 04FEB2021 PE 14650', 'Description': 'NIFTY2120414650PE', 'Series': 'OPTIDX', 'InstrumentID': 2103500039649, 'PriceBand': {'High': 1281.75, 'Low': 0.05, 'HighString': '1281.75', 'LowString': '0.05', 'CreditRating': '0.05-1281.75'}, 'FreezeQty': 5001, 'TickSize': 0.05, 'LotSize': 75, 'UnderlyingInstrumentId': -1, 'UnderlyingIndexName': 'Nifty 50', 'ContractExpiration': '2021-02-04T14:30:00', 'ContractExpirationString': '04Feb2021', 'RemainingExpiryDays': 3, 'StrikePrice': 14650, 'OptionType': 4}]}
+2021-02-02 16:24:20,312:__main__:INFO:Exchange Instrument ID : 39649, {'oty': ['CE', 'PE'], 'ss': ['39648', '39649']}
+2021-02-02 16:24:20,312:__main__:INFO:Checking margin from user..
+2021-02-02 16:24:20,312:__main__:INFO:Checking balance..
+2021-02-02 16:24:23,970:__main__:INFO:Balance retreived success, available cash : 1000000000
+2021-02-02 16:24:23,986:__main__:INFO: 
+              net_cash - 1000000000,
+              strikePrice - 14650,
+              Nifty Spot - 14647.85,
+              BankNifty Spot - None
+              exchangeInstrumentID - [39648, 39649]
+              
+2021-02-02 16:24:23,986:__main__:INFO:All set from prepareVars func.. Giving a go for orders..
+2021-02-02 16:24:37,040:__main__:INFO:Main Login Successful
+2021-02-02 16:24:37,056:__main__:INFO:Calculating everything before executing orders..
+2021-02-02 16:24:37,056:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-02 16:24:37,056:__main__:INFO:weekly expiry is : 04Feb2021, monthly expiry is: 25Feb2021
+2021-02-02 16:24:38,535:__main__:INFO:StrikePrice computed as : 14650
+2021-02-02 16:24:38,535:__main__:INFO:Input of get_eID fn : NIFTY, ce,04Feb2021,14650
+2021-02-02 16:24:39,597:__main__:INFO:{'type': 'success', 'code': 's-rds-0', 'description': 'ok', 'result': [{'ExchangeSegment': 2, 'ExchangeInstrumentID': 39648, 'InstrumentType': 2, 'Name': 'NIFTY', 'DisplayName': 'NIFTY 04FEB2021 CE 14650', 'Description': 'NIFTY2120414650CE', 'Series': 'OPTIDX', 'InstrumentID': 2103500039648, 'PriceBand': {'High': 419.6, 'Low': 0.05, 'HighString': '419.60', 'LowString': '0.05', 'CreditRating': '0.05-419.60'}, 'FreezeQty': 5001, 'TickSize': 0.05, 'LotSize': 75, 'UnderlyingInstrumentId': -1, 'UnderlyingIndexName': 'Nifty 50', 'ContractExpiration': '2021-02-04T14:30:00', 'ContractExpirationString': '04Feb2021', 'RemainingExpiryDays': 3, 'StrikePrice': 14650, 'OptionType': 3}]}
+2021-02-02 16:24:39,597:__main__:INFO:Exchange Instrument ID : 39648, {'oty': ['CE'], 'ss': ['39648']}
+2021-02-02 16:24:39,597:__main__:INFO:Input of get_eID fn : NIFTY, pe,04Feb2021,14650
+2021-02-02 16:24:41,303:__main__:INFO:{'type': 'success', 'code': 's-rds-0', 'description': 'ok', 'result': [{'ExchangeSegment': 2, 'ExchangeInstrumentID': 39649, 'InstrumentType': 2, 'Name': 'NIFTY', 'DisplayName': 'NIFTY 04FEB2021 PE 14650', 'Description': 'NIFTY2120414650PE', 'Series': 'OPTIDX', 'InstrumentID': 2103500039649, 'PriceBand': {'High': 1281.75, 'Low': 0.05, 'HighString': '1281.75', 'LowString': '0.05', 'CreditRating': '0.05-1281.75'}, 'FreezeQty': 5001, 'TickSize': 0.05, 'LotSize': 75, 'UnderlyingInstrumentId': -1, 'UnderlyingIndexName': 'Nifty 50', 'ContractExpiration': '2021-02-04T14:30:00', 'ContractExpirationString': '04Feb2021', 'RemainingExpiryDays': 3, 'StrikePrice': 14650, 'OptionType': 4}]}
+2021-02-02 16:24:41,303:__main__:INFO:Exchange Instrument ID : 39649, {'oty': ['CE', 'PE'], 'ss': ['39648', '39649']}
+2021-02-02 16:24:41,303:__main__:INFO:Checking margin from user..
+2021-02-02 16:24:41,303:__main__:INFO:Checking balance..
+2021-02-02 16:24:43,366:__main__:INFO:Balance retreived success, available cash : 1000000000
+2021-02-02 16:24:43,366:__main__:INFO: 
+              net_cash - 1000000000,
+              strikePrice - 14650,
+              Nifty Spot - 14647.85,
+              BankNifty Spot - None
+              exchangeInstrumentID - [39648, 39649]
+              
+2021-02-02 16:24:43,366:__main__:INFO:All set from prepareVars func.. Giving a go for orders..

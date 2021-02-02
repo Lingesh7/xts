@@ -1,0 +1,842 @@
+2021-02-02 14:04:55,247:__main__:INFO:Main Login Successful
+2021-02-02 14:04:55,247:__main__:INFO:Calculating everything before executing orders..
+2021-02-02 14:04:55,263:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-02 14:04:55,263:__main__:INFO:weekly expiry is : 04Feb2021, monthly expiry is: 25Feb2021
+2021-02-02 14:04:56,497:__main__:INFO:Spot price fetched as : [14626.7, 34157.55]
+2021-02-02 14:04:56,497:__main__:INFO:StrikePrice computed as : 14650
+2021-02-02 14:04:56,497:__main__:INFO:Input of get_eID fn : NIFTY, ce,04Feb2021,14650
+2021-02-02 14:04:57,747:__main__:INFO:{'type': 'success', 'code': 's-rds-0', 'description': 'ok', 'result': [{'ExchangeSegment': 2, 'ExchangeInstrumentID': 39648, 'InstrumentType': 2, 'Name': 'NIFTY', 'DisplayName': 'NIFTY 04FEB2021 CE 14650', 'Description': 'NIFTY2120414650CE', 'Series': 'OPTIDX', 'InstrumentID': 2103500039648, 'PriceBand': {'High': 419.6, 'Low': 0.05, 'HighString': '419.60', 'LowString': '0.05', 'CreditRating': '0.05-419.60'}, 'FreezeQty': 5001, 'TickSize': 0.05, 'LotSize': 75, 'UnderlyingInstrumentId': -1, 'UnderlyingIndexName': 'Nifty 50', 'ContractExpiration': '2021-02-04T14:30:00', 'ContractExpirationString': '04Feb2021', 'RemainingExpiryDays': 3, 'StrikePrice': 14650, 'OptionType': 3}]}
+2021-02-02 14:04:57,763:__main__:INFO:Exchange Instrument ID : 39648, {'oty': ['CE'], 'ss': ['39648']}
+2021-02-02 14:04:57,763:__main__:INFO:Input of get_eID fn : NIFTY, pe,04Feb2021,14650
+2021-02-02 14:04:59,107:__main__:INFO:{'type': 'success', 'code': 's-rds-0', 'description': 'ok', 'result': [{'ExchangeSegment': 2, 'ExchangeInstrumentID': 39649, 'InstrumentType': 2, 'Name': 'NIFTY', 'DisplayName': 'NIFTY 04FEB2021 PE 14650', 'Description': 'NIFTY2120414650PE', 'Series': 'OPTIDX', 'InstrumentID': 2103500039649, 'PriceBand': {'High': 1281.75, 'Low': 0.05, 'HighString': '1281.75', 'LowString': '0.05', 'CreditRating': '0.05-1281.75'}, 'FreezeQty': 5001, 'TickSize': 0.05, 'LotSize': 75, 'UnderlyingInstrumentId': -1, 'UnderlyingIndexName': 'Nifty 50', 'ContractExpiration': '2021-02-04T14:30:00', 'ContractExpirationString': '04Feb2021', 'RemainingExpiryDays': 3, 'StrikePrice': 14650, 'OptionType': 4}]}
+2021-02-02 14:04:59,107:__main__:INFO:Exchange Instrument ID : 39649, {'oty': ['CE', 'PE'], 'ss': ['39648', '39649']}
+2021-02-02 14:04:59,107:__main__:INFO:Checking margin from user..
+2021-02-02 14:04:59,107:__main__:INFO:Checking balance..
+2021-02-02 14:05:02,466:__main__:INFO:Balance retreived success, available cash : 1000000000
+2021-02-02 14:05:02,466:__main__:INFO: 
+              net_cash - 1000000000,
+              strikePrice - 14650,
+              Nifty Spot - 14626.7,
+              BankNifty Spot - None
+              exchangeInstrumentID - [39648, 39649]
+              
+2021-02-02 14:05:02,466:__main__:INFO:All set from prepareVars func.. Giving a go for orders..
+2021-02-02 14:05:02,466:__main__:INFO:required variables set-- ready to trigger orders at desired time
+2021-02-02 14:05:10,031:__main__:INFO:Required Margin Available.. Taking positions...
+2021-02-02 14:05:12,719:__mp_main__:INFO:Main Login Successful
+2021-02-02 14:05:12,719:__mp_main__:INFO:Main Login Successful
+2021-02-02 14:05:12,734:__mp_main__:INFO:Placing Orders.. 
+
+2021-02-02 14:05:12,750:__mp_main__:INFO:Placing Orders.. 
+
+2021-02-02 14:05:12,750:__mp_main__:INFO:Main Login Successful
+2021-02-02 14:05:12,875:__mp_main__:INFO:Main Login Successful
+2021-02-02 14:05:13,953:__mp_main__:INFO: 
+ Order ID for SELL 39648 is: 10025923 
+
+2021-02-02 14:05:13,953:__mp_main__:INFO:Retreiving OrderBook..
+2021-02-02 14:05:14,234:__mp_main__:INFO: 
+ Order ID for SELL 39649 is: 10025924 
+
+2021-02-02 14:05:14,234:__mp_main__:INFO:Retreiving OrderBook..
+2021-02-02 14:05:15,851:__mp_main__:INFO:OrderBook result retreived success
+2021-02-02 14:05:15,867:__mp_main__:INFO:traded price is: 98.25
+2021-02-02 14:05:15,867:__mp_main__:INFO:OrderBook result retreived success
+2021-02-02 14:05:15,867:__mp_main__:INFO:traded price is: 110.65
+2021-02-02 14:05:15,867:__main__:INFO:printing new_dictR value : [{'ss': '39648', 'qq': 75, 'oo': 10025923, 'tt': 98.25}, {'ss': '39649', 'qq': 75, 'oo': 10025924, 'tt': 110.65}]
+2021-02-02 14:05:16,070:__main__:INFO:starting multi funcs with threaded timer...
+2021-02-02 14:05:16,070:__main__:INFO:--- Entering SquareOffLogic Function after placing orders ---
+2021-02-02 14:05:17,277:__main__:INFO:Login Successful
+2021-02-02 14:05:17,277:__main__:INFO:
+ Entering runSqOffLogics func,
+ 	 This logic runs till the end of the script and 
+              checks SL/TARGET/TIMEings 
+
+2021-02-02 14:05:17,277:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:05:18,527:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:05:18,637:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp     pnl
+0  39648  75  10025923   98.25  CE   97.20  -78.75
+1  39649  75  10025924  110.65  PE  112.95  172.50 
+
+2021-02-02 14:05:18,637:__main__:INFO: Time    ,    PnL
+2021-02-02 14:05:18,637:__main__:INFO:('02-02-2021 14:05:18', 93.75)
+2021-02-02 14:05:20,643:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:05:21,908:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:05:21,955:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp     pnl
+0  39648  75  10025923   98.25  CE   95.45 -210.00
+1  39649  75  10025924  110.65  PE  114.60  296.25 
+
+2021-02-02 14:05:21,955:__main__:INFO: Time    ,    PnL
+2021-02-02 14:05:21,955:__main__:INFO:('02-02-2021 14:05:21', 86.25)
+2021-02-02 14:05:23,971:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:05:25,393:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:05:25,440:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp     pnl
+0  39648  75  10025923   98.25  CE   93.30 -371.25
+1  39649  75  10025924  110.65  PE  116.35  427.50 
+
+2021-02-02 14:05:25,440:__main__:INFO: Time    ,    PnL
+2021-02-02 14:05:25,440:__main__:INFO:('02-02-2021 14:05:25', 56.25)
+2021-02-02 14:05:27,408:__main__:INFO:Spot price fetched as : [14614.35, 34119.8]
+2021-02-02 14:05:27,424:__main__:INFO:Cur price of NIFTY is: 14614.35
+2021-02-02 14:05:27,424:__main__:INFO:repair running...
+2021-02-02 14:05:27,455:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:05:28,752:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:05:28,783:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp     pnl
+0  39648  75  10025923   98.25  CE   91.65 -495.00
+1  39649  75  10025924  110.65  PE  117.20  491.25 
+
+2021-02-02 14:05:28,783:__main__:INFO: Time    ,    PnL
+2021-02-02 14:05:28,783:__main__:INFO:('02-02-2021 14:05:28', -3.75)
+2021-02-02 14:05:30,783:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:05:32,056:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:05:32,103:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty    ltp     pnl
+0  39648  75  10025923   98.25  CE   90.5 -581.25
+1  39649  75  10025924  110.65  PE  118.5  588.75 
+
+2021-02-02 14:05:32,103:__main__:INFO: Time    ,    PnL
+2021-02-02 14:05:32,103:__main__:INFO:('02-02-2021 14:05:32', 7.5)
+2021-02-02 14:05:34,103:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:05:35,504:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:05:35,535:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty    ltp     pnl
+0  39648  75  10025923   98.25  CE   91.5 -506.25
+1  39649  75  10025924  110.65  PE  118.4  581.25 
+
+2021-02-02 14:05:35,550:__main__:INFO: Time    ,    PnL
+2021-02-02 14:05:35,550:__main__:INFO:('02-02-2021 14:05:35', 75.0)
+2021-02-02 14:05:37,300:__main__:INFO:Spot price fetched as : [14614.55, 34130.15]
+2021-02-02 14:05:37,300:__main__:INFO:Cur price of NIFTY is: 14614.55
+2021-02-02 14:05:37,300:__main__:INFO:repair running...
+2021-02-02 14:05:37,550:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:05:38,785:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:05:38,816:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty    ltp     pnl
+0  39648  75  10025923   98.25  CE   91.9 -476.25
+1  39649  75  10025924  110.65  PE  118.8  611.25 
+
+2021-02-02 14:05:38,832:__main__:INFO: Time    ,    PnL
+2021-02-02 14:05:38,832:__main__:INFO:('02-02-2021 14:05:38', 135.0)
+2021-02-02 14:05:40,832:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:05:42,082:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:05:42,129:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp    pnl
+0  39648  75  10025923   98.25  CE   93.85 -330.0
+1  39649  75  10025924  110.65  PE  117.95  547.5 
+
+2021-02-02 14:05:42,129:__main__:INFO: Time    ,    PnL
+2021-02-02 14:05:42,129:__main__:INFO:('02-02-2021 14:05:42', 217.5)
+2021-02-02 14:05:44,129:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:05:45,457:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:05:45,488:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp    pnl
+0  39648  75  10025923   98.25  CE   94.75 -262.5
+1  39649  75  10025924  110.65  PE  116.65  450.0 
+
+2021-02-02 14:05:45,504:__main__:INFO: Time    ,    PnL
+2021-02-02 14:05:45,504:__main__:INFO:('02-02-2021 14:05:45', 187.5)
+2021-02-02 14:05:47,385:__main__:INFO:Spot price fetched as : [14617.05, 34137.3]
+2021-02-02 14:05:47,401:__main__:INFO:Cur price of NIFTY is: 14617.05
+2021-02-02 14:05:47,401:__main__:INFO:repair running...
+2021-02-02 14:05:47,510:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:05:48,854:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:05:48,885:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp     pnl
+0  39648  75  10025923   98.25  CE   93.30 -371.25
+1  39649  75  10025924  110.65  PE  117.95  547.50 
+
+2021-02-02 14:05:48,901:__main__:INFO: Time    ,    PnL
+2021-02-02 14:05:48,901:__main__:INFO:('02-02-2021 14:05:48', 176.25)
+2021-02-02 14:05:50,916:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:05:52,306:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:05:52,338:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp     pnl
+0  39648  75  10025923   98.25  CE   91.75 -487.50
+1  39649  75  10025924  110.65  PE  120.10  708.75 
+
+2021-02-02 14:05:52,338:__main__:INFO: Time    ,    PnL
+2021-02-02 14:05:52,338:__main__:INFO:('02-02-2021 14:05:52', 221.25)
+2021-02-02 14:05:54,338:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:05:55,635:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:05:55,681:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp     pnl
+0  39648  75  10025923   98.25  CE   92.30 -446.25
+1  39649  75  10025924  110.65  PE  120.75  757.50 
+
+2021-02-02 14:05:55,681:__main__:INFO: Time    ,    PnL
+2021-02-02 14:05:55,681:__main__:INFO:('02-02-2021 14:05:55', 311.25)
+2021-02-02 14:05:57,348:__main__:INFO:Spot price fetched as : [14617.25, 34142.65]
+2021-02-02 14:05:57,348:__main__:INFO:Cur price of NIFTY is: 14617.25
+2021-02-02 14:05:57,348:__main__:INFO:repair running...
+2021-02-02 14:05:57,692:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:05:59,004:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:05:59,035:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp     pnl
+0  39648  75  10025923   98.25  CE   93.80 -333.75
+1  39649  75  10025924  110.65  PE  118.45  585.00 
+
+2021-02-02 14:05:59,035:__main__:INFO: Time    ,    PnL
+2021-02-02 14:05:59,051:__main__:INFO:('02-02-2021 14:05:59', 251.25)
+2021-02-02 14:06:01,051:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:06:02,192:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:06:02,223:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp     pnl
+0  39648  75  10025923   98.25  CE   94.35 -292.50
+1  39649  75  10025924  110.65  PE  116.90  468.75 
+
+2021-02-02 14:06:02,223:__main__:INFO: Time    ,    PnL
+2021-02-02 14:06:02,223:__main__:INFO:('02-02-2021 14:06:02', 176.25)
+2021-02-02 14:06:04,223:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:06:05,424:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:06:05,455:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp     pnl
+0  39648  75  10025923   98.25  CE   94.00 -318.75
+1  39649  75  10025924  110.65  PE  117.15  487.50 
+
+2021-02-02 14:06:05,455:__main__:INFO: Time    ,    PnL
+2021-02-02 14:06:05,471:__main__:INFO:('02-02-2021 14:06:05', 168.75)
+2021-02-02 14:06:07,330:__main__:INFO:Spot price fetched as : [14622.15, 34160.8]
+2021-02-02 14:06:07,346:__main__:INFO:Cur price of NIFTY is: 14622.15
+2021-02-02 14:06:07,346:__main__:INFO:repair running...
+2021-02-02 14:06:07,471:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:06:08,643:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:06:08,674:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp     pnl
+0  39648  75  10025923   98.25  CE   96.30 -146.25
+1  39649  75  10025924  110.65  PE  113.85  240.00 
+
+2021-02-02 14:06:08,674:__main__:INFO: Time    ,    PnL
+2021-02-02 14:06:08,674:__main__:INFO:('02-02-2021 14:06:08', 93.75)
+2021-02-02 14:06:10,677:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:06:11,943:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:06:11,974:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp     pnl
+0  39648  75  10025923   98.25  CE   96.35 -142.50
+1  39649  75  10025924  110.65  PE  113.70  228.75 
+
+2021-02-02 14:06:11,974:__main__:INFO: Time    ,    PnL
+2021-02-02 14:06:11,974:__main__:INFO:('02-02-2021 14:06:11', 86.25)
+2021-02-02 14:06:13,974:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:06:15,333:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:06:15,364:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty    ltp     pnl
+0  39648  75  10025923   98.25  CE   96.5 -131.25
+1  39649  75  10025924  110.65  PE  114.1  258.75 
+
+2021-02-02 14:06:15,364:__main__:INFO: Time    ,    PnL
+2021-02-02 14:06:15,364:__main__:INFO:('02-02-2021 14:06:15', 127.5)
+2021-02-02 14:06:17,369:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:06:17,776:__main__:INFO:Spot price fetched as : [14630.75, 34184.85]
+2021-02-02 14:06:17,791:__main__:INFO:Cur price of NIFTY is: 14630.75
+2021-02-02 14:06:17,791:__main__:INFO:repair running...
+2021-02-02 14:06:19,338:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:06:19,385:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp     pnl
+0  39648  75  10025923   98.25  CE   97.60  -48.75
+1  39649  75  10025924  110.65  PE  112.25  120.00 
+
+2021-02-02 14:06:19,385:__main__:INFO: Time    ,    PnL
+2021-02-02 14:06:19,385:__main__:INFO:('02-02-2021 14:06:19', 71.25)
+2021-02-02 14:06:21,385:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:06:47,307:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:06:47,353:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp    pnl
+0  39648  75  10025923   98.25  CE   98.15  -7.50
+1  39649  75  10025924  110.65  PE  110.00 -48.75 
+
+2021-02-02 14:06:47,353:__main__:INFO: Time    ,    PnL
+2021-02-02 14:06:47,353:__main__:INFO:('02-02-2021 14:06:47', -56.25)
+2021-02-02 14:06:47,900:__main__:INFO:Spot price fetched as : [14634.5, 34202]
+2021-02-02 14:06:47,916:__main__:INFO:Cur price of NIFTY is: 14634.5
+2021-02-02 14:06:47,916:__main__:INFO:repair running...
+2021-02-02 14:06:47,932:__main__:INFO:Spot price fetched as : [14634.5, 34202]
+2021-02-02 14:06:47,947:__main__:INFO:Cur price of NIFTY is: 14634.5
+2021-02-02 14:06:47,947:__main__:INFO:repair running...
+2021-02-02 14:06:49,353:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:06:50,557:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:06:50,588:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp    pnl
+0  39648  75  10025923   98.25  CE   97.85 -30.00
+1  39649  75  10025924  110.65  PE  111.00  26.25 
+
+2021-02-02 14:06:50,588:__main__:INFO: Time    ,    PnL
+2021-02-02 14:06:50,588:__main__:INFO:('02-02-2021 14:06:50', -3.75)
+2021-02-02 14:06:52,588:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:06:53,752:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:06:53,768:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty    ltp    pnl
+0  39648  75  10025923   98.25  CE   99.0  56.25
+1  39649  75  10025924  110.65  PE  110.1 -41.25 
+
+2021-02-02 14:06:53,768:__main__:INFO: Time    ,    PnL
+2021-02-02 14:06:53,768:__main__:INFO:('02-02-2021 14:06:53', 15.0)
+2021-02-02 14:06:55,783:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:06:57,111:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:06:57,158:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp    pnl
+0  39648  75  10025923   98.25  CE   97.95  -22.5
+1  39649  75  10025924  110.65  PE  108.95 -127.5 
+
+2021-02-02 14:06:57,158:__main__:INFO: Time    ,    PnL
+2021-02-02 14:06:57,158:__main__:INFO:('02-02-2021 14:06:57', -150.0)
+2021-02-02 14:06:57,205:__main__:INFO:Spot price fetched as : [14632.65, 34192.5]
+2021-02-02 14:06:57,205:__main__:INFO:Cur price of NIFTY is: 14632.65
+2021-02-02 14:06:57,221:__main__:INFO:repair running...
+2021-02-02 14:06:57,455:__main__:INFO:Spot price fetched as : [14632.65, 34192.5]
+2021-02-02 14:06:57,455:__main__:INFO:Cur price of NIFTY is: 14632.65
+2021-02-02 14:06:57,455:__main__:INFO:repair running...
+2021-02-02 14:06:59,158:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:07:00,346:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:07:00,377:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp    pnl
+0  39648  75  10025923   98.25  CE   97.95 -22.50
+1  39649  75  10025924  110.65  PE  110.00 -48.75 
+
+2021-02-02 14:07:00,377:__main__:INFO: Time    ,    PnL
+2021-02-02 14:07:00,393:__main__:INFO:('02-02-2021 14:07:00', -71.25)
+2021-02-02 14:07:02,394:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:07:03,610:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:07:03,657:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp     pnl
+0  39648  75  10025923   98.25  CE   99.00   56.25
+1  39649  75  10025924  110.65  PE  108.35 -172.50 
+
+2021-02-02 14:07:03,657:__main__:INFO: Time    ,    PnL
+2021-02-02 14:07:03,672:__main__:INFO:('02-02-2021 14:07:03', -116.25)
+2021-02-02 14:07:05,682:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:07:07,034:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:07:07,065:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp     pnl
+0  39648  75  10025923   98.25  CE  100.20  146.25
+1  39649  75  10025924  110.65  PE  107.75 -217.50 
+
+2021-02-02 14:07:07,065:__main__:INFO: Time    ,    PnL
+2021-02-02 14:07:07,065:__main__:INFO:('02-02-2021 14:07:07', -71.25)
+2021-02-02 14:07:07,690:__main__:INFO:Spot price fetched as : [14635.1, 34202.3]
+2021-02-02 14:07:07,690:__main__:INFO:Cur price of NIFTY is: 14635.1
+2021-02-02 14:07:07,690:__main__:INFO:repair running...
+2021-02-02 14:07:09,065:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:07:10,471:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:07:10,503:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty    ltp     pnl
+0  39648  75  10025923   98.25  CE   98.9   48.75
+1  39649  75  10025924  110.65  PE  108.0 -198.75 
+
+2021-02-02 14:07:10,503:__main__:INFO: Time    ,    PnL
+2021-02-02 14:07:10,503:__main__:INFO:('02-02-2021 14:07:10', -150.0)
+2021-02-02 14:07:12,503:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:07:13,863:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:07:13,864:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp     pnl
+0  39648  75  10025923   98.25  CE  100.45  165.00
+1  39649  75  10025924  110.65  PE  105.70 -371.25 
+
+2021-02-02 14:07:13,864:__main__:INFO: Time    ,    PnL
+2021-02-02 14:07:13,864:__main__:INFO:('02-02-2021 14:07:13', -206.25)
+2021-02-02 14:07:15,865:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:07:17,132:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:07:17,145:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp    pnl
+0  39648  75  10025923   98.25  CE  100.15  142.5
+1  39649  75  10025924  110.65  PE  105.85 -360.0 
+
+2021-02-02 14:07:17,147:__main__:INFO: Time    ,    PnL
+2021-02-02 14:07:17,148:__main__:INFO:('02-02-2021 14:07:17', -217.5)
+2021-02-02 14:07:17,557:__main__:INFO:Spot price fetched as : [14636.6, 34213.7]
+2021-02-02 14:07:17,562:__main__:INFO:Cur price of NIFTY is: 14636.6
+2021-02-02 14:07:17,563:__main__:INFO:repair running...
+2021-02-02 14:07:19,151:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:07:20,832:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:07:20,879:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty    ltp     pnl
+0  39648  75  10025923   98.25  CE   98.9   48.75
+1  39649  75  10025924  110.65  PE  106.8 -288.75 
+
+2021-02-02 14:07:20,879:__main__:INFO: Time    ,    PnL
+2021-02-02 14:07:20,879:__main__:INFO:('02-02-2021 14:07:20', -240.0)
+2021-02-02 14:07:22,879:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:07:24,785:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:07:24,816:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty    ltp     pnl
+0  39648  75  10025923   98.25  CE   99.0   56.25
+1  39649  75  10025924  110.65  PE  108.1 -191.25 
+
+2021-02-02 14:07:24,816:__main__:INFO: Time    ,    PnL
+2021-02-02 14:07:24,832:__main__:INFO:('02-02-2021 14:07:24', -135.0)
+2021-02-02 14:07:26,839:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:07:27,354:__main__:INFO:Spot price fetched as : [14632.35, 34194.05]
+2021-02-02 14:07:27,354:__main__:INFO:Cur price of NIFTY is: 14632.35
+2021-02-02 14:07:27,370:__main__:INFO:repair running...
+2021-02-02 14:07:28,167:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:07:28,214:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty    ltp     pnl
+0  39648  75  10025923   98.25  CE   99.5   93.75
+1  39649  75  10025924  110.65  PE  107.6 -228.75 
+
+2021-02-02 14:07:28,214:__main__:INFO: Time    ,    PnL
+2021-02-02 14:07:28,214:__main__:INFO:('02-02-2021 14:07:28', -135.0)
+2021-02-02 14:07:30,223:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:07:31,489:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:07:31,520:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp     pnl
+0  39648  75  10025923   98.25  CE   99.75  112.50
+1  39649  75  10025924  110.65  PE  107.20 -258.75 
+
+2021-02-02 14:07:31,520:__main__:INFO: Time    ,    PnL
+2021-02-02 14:07:31,520:__main__:INFO:('02-02-2021 14:07:31', -146.25)
+2021-02-02 14:07:33,520:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:07:34,880:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:07:34,926:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp    pnl
+0  39648  75  10025923   98.25  CE   99.55   97.5
+1  39649  75  10025924  110.65  PE  107.35 -247.5 
+
+2021-02-02 14:07:34,926:__main__:INFO: Time    ,    PnL
+2021-02-02 14:07:34,926:__main__:INFO:('02-02-2021 14:07:34', -150.0)
+2021-02-02 14:07:36,926:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:07:37,645:__main__:INFO:Spot price fetched as : [14634.1, 34202.05]
+2021-02-02 14:07:37,661:__main__:INFO:Cur price of NIFTY is: 14634.1
+2021-02-02 14:07:37,661:__main__:INFO:repair running...
+2021-02-02 14:07:38,321:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:07:38,352:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp   pnl
+0  39648  75  10025923   98.25  CE   98.35   7.5
+1  39649  75  10025924  110.65  PE  109.55 -82.5 
+
+2021-02-02 14:07:38,352:__main__:INFO: Time    ,    PnL
+2021-02-02 14:07:38,352:__main__:INFO:('02-02-2021 14:07:38', -75.0)
+2021-02-02 14:07:40,367:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:07:41,649:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:07:41,680:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty    ltp    pnl
+0  39648  75  10025923   98.25  CE   98.8  41.25
+1  39649  75  10025924  110.65  PE  109.5 -86.25 
+
+2021-02-02 14:07:41,680:__main__:INFO: Time    ,    PnL
+2021-02-02 14:07:41,696:__main__:INFO:('02-02-2021 14:07:41', -45.0)
+2021-02-02 14:07:43,696:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:07:45,133:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:07:45,180:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp    pnl
+0  39648  75  10025923   98.25  CE   97.90 -26.25
+1  39649  75  10025924  110.65  PE  110.65   0.00 
+
+2021-02-02 14:07:45,180:__main__:INFO: Time    ,    PnL
+2021-02-02 14:07:45,180:__main__:INFO:('02-02-2021 14:07:45', -26.25)
+2021-02-02 14:07:47,181:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:07:47,478:__main__:INFO:Spot price fetched as : [14630.75, 34185.1]
+2021-02-02 14:07:47,494:__main__:INFO:Cur price of NIFTY is: 14630.75
+2021-02-02 14:07:47,494:__main__:INFO:repair running...
+2021-02-02 14:07:48,588:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:07:48,603:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp    pnl
+0  39648  75  10025923   98.25  CE   99.00  56.25
+1  39649  75  10025924  110.65  PE  109.75 -67.50 
+
+2021-02-02 14:07:48,603:__main__:INFO: Time    ,    PnL
+2021-02-02 14:07:48,603:__main__:INFO:('02-02-2021 14:07:48', -11.25)
+2021-02-02 14:07:50,603:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:07:51,890:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:07:51,937:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp   pnl
+0  39648  75  10025923   98.25  CE   98.45  15.0
+1  39649  75  10025924  110.65  PE  110.15 -37.5 
+
+2021-02-02 14:07:51,937:__main__:INFO: Time    ,    PnL
+2021-02-02 14:07:51,937:__main__:INFO:('02-02-2021 14:07:51', -22.5)
+2021-02-02 14:07:53,937:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:07:55,203:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:07:55,218:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty    ltp    pnl
+0  39648  75  10025923   98.25  CE   98.5  18.75
+1  39649  75  10025924  110.65  PE  111.0  26.25 
+
+2021-02-02 14:07:55,218:__main__:INFO: Time    ,    PnL
+2021-02-02 14:07:55,234:__main__:INFO:('02-02-2021 14:07:55', 45.0)
+2021-02-02 14:07:57,234:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:07:57,687:__main__:INFO:Spot price fetched as : [14630.45, 34184.35]
+2021-02-02 14:07:57,703:__main__:INFO:Cur price of NIFTY is: 14630.45
+2021-02-02 14:07:57,703:__main__:INFO:repair running...
+2021-02-02 14:07:58,703:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:07:58,750:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp   pnl
+0  39648  75  10025923   98.25  CE   98.05 -15.0
+1  39649  75  10025924  110.65  PE  111.45  60.0 
+
+2021-02-02 14:07:58,750:__main__:INFO: Time    ,    PnL
+2021-02-02 14:07:58,750:__main__:INFO:('02-02-2021 14:07:58', 45.0)
+2021-02-02 14:08:00,750:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:08:02,187:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:08:02,234:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp   pnl
+0  39648  75  10025923   98.25  CE   98.25   0.0
+1  39649  75  10025924  110.65  PE  109.65 -75.0 
+
+2021-02-02 14:08:02,234:__main__:INFO: Time    ,    PnL
+2021-02-02 14:08:02,234:__main__:INFO:('02-02-2021 14:08:02', -75.0)
+2021-02-02 14:08:04,234:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:08:05,625:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:08:05,656:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty    ltp     pnl
+0  39648  75  10025923   98.25  CE   99.5   93.75
+1  39649  75  10025924  110.65  PE  108.8 -138.75 
+
+2021-02-02 14:08:05,656:__main__:INFO: Time    ,    PnL
+2021-02-02 14:08:05,656:__main__:INFO:('02-02-2021 14:08:05', -45.0)
+2021-02-02 14:08:07,656:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:08:07,672:__main__:INFO:Spot price fetched as : [14634.35, 34201.5]
+2021-02-02 14:08:07,687:__main__:INFO:Cur price of NIFTY is: 14634.35
+2021-02-02 14:08:07,687:__main__:INFO:repair running...
+2021-02-02 14:08:09,075:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:08:09,106:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp     pnl
+0  39648  75  10025923   98.25  CE   99.65  105.00
+1  39649  75  10025924  110.65  PE  108.60 -153.75 
+
+2021-02-02 14:08:09,106:__main__:INFO: Time    ,    PnL
+2021-02-02 14:08:09,106:__main__:INFO:('02-02-2021 14:08:09', -48.75)
+2021-02-02 14:08:11,118:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:08:12,446:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:08:12,477:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty    ltp     pnl
+0  39648  75  10025923   98.25  CE   99.4   86.25
+1  39649  75  10025924  110.65  PE  109.3 -101.25 
+
+2021-02-02 14:08:12,493:__main__:INFO: Time    ,    PnL
+2021-02-02 14:08:12,493:__main__:INFO:('02-02-2021 14:08:12', -15.0)
+2021-02-02 14:08:14,493:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:08:15,821:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:08:15,852:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp    pnl
+0  39648  75  10025923   98.25  CE   96.45 -135.0
+1  39649  75  10025924  110.65  PE  112.05  105.0 
+
+2021-02-02 14:08:15,852:__main__:INFO: Time    ,    PnL
+2021-02-02 14:08:15,852:__main__:INFO:('02-02-2021 14:08:15', -30.0)
+2021-02-02 14:08:17,453:__main__:INFO:Spot price fetched as : [14629.9, 34188.05]
+2021-02-02 14:08:17,453:__main__:INFO:Cur price of NIFTY is: 14629.9
+2021-02-02 14:08:17,469:__main__:INFO:repair running...
+2021-02-02 14:08:17,860:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:08:19,156:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:08:19,203:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp    pnl
+0  39648  75  10025923   98.25  CE   96.95 -97.50
+1  39649  75  10025924  110.65  PE  111.00  26.25 
+
+2021-02-02 14:08:19,203:__main__:INFO: Time    ,    PnL
+2021-02-02 14:08:19,203:__main__:INFO:('02-02-2021 14:08:19', -71.25)
+2021-02-02 14:08:21,203:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:08:22,532:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:08:22,563:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp   pnl
+0  39648  75  10025923   98.25  CE   97.55 -52.5
+1  39649  75  10025924  110.65  PE  111.65  75.0 
+
+2021-02-02 14:08:22,563:__main__:INFO: Time    ,    PnL
+2021-02-02 14:08:22,563:__main__:INFO:('02-02-2021 14:08:22', 22.5)
+2021-02-02 14:08:24,563:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:08:26,033:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:08:26,078:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp    pnl
+0  39648  75  10025923   98.25  CE   97.55  -52.5
+1  39649  75  10025924  110.65  PE  112.25  120.0 
+
+2021-02-02 14:08:26,080:__main__:INFO: Time    ,    PnL
+2021-02-02 14:08:26,081:__main__:INFO:('02-02-2021 14:08:26', 67.5)
+2021-02-02 14:08:27,770:__main__:INFO:Spot price fetched as : [14631.05, 34187.05]
+2021-02-02 14:08:27,785:__main__:INFO:Cur price of NIFTY is: 14631.05
+2021-02-02 14:08:27,785:__main__:INFO:repair running...
+2021-02-02 14:08:28,086:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:08:29,398:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:08:29,445:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp     pnl
+0  39648  75  10025923   98.25  CE   96.80 -108.75
+1  39649  75  10025924  110.65  PE  113.05  180.00 
+
+2021-02-02 14:08:29,445:__main__:INFO: Time    ,    PnL
+2021-02-02 14:08:29,445:__main__:INFO:('02-02-2021 14:08:29', 71.25)
+2021-02-02 14:08:31,445:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:08:32,789:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:08:32,836:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp    pnl
+0  39648  75  10025923   98.25  CE   98.15  -7.50
+1  39649  75  10025924  110.65  PE  111.60  71.25 
+
+2021-02-02 14:08:32,836:__main__:INFO: Time    ,    PnL
+2021-02-02 14:08:32,836:__main__:INFO:('02-02-2021 14:08:32', 63.75)
+2021-02-02 14:08:34,852:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:08:36,180:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:08:36,227:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp    pnl
+0  39648  75  10025923   98.25  CE   98.80  41.25
+1  39649  75  10025924  110.65  PE  110.45 -15.00 
+
+2021-02-02 14:08:36,227:__main__:INFO: Time    ,    PnL
+2021-02-02 14:08:36,227:__main__:INFO:('02-02-2021 14:08:36', 26.25)
+2021-02-02 14:08:37,633:__main__:INFO:Spot price fetched as : [14631.95, 34196.4]
+2021-02-02 14:08:37,648:__main__:INFO:Cur price of NIFTY is: 14631.95
+2021-02-02 14:08:37,648:__main__:INFO:repair running...
+2021-02-02 14:08:38,242:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:08:39,625:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:08:39,672:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp     pnl
+0  39648  75  10025923   98.25  CE   99.35   82.50
+1  39649  75  10025924  110.65  PE  109.30 -101.25 
+
+2021-02-02 14:08:39,672:__main__:INFO: Time    ,    PnL
+2021-02-02 14:08:39,672:__main__:INFO:('02-02-2021 14:08:39', -18.75)
+2021-02-02 14:08:41,683:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:08:43,137:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:08:43,168:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp    pnl
+0  39648  75  10025923   98.25  CE   99.25  75.00
+1  39649  75  10025924  110.65  PE  109.90 -56.25 
+
+2021-02-02 14:08:43,183:__main__:INFO: Time    ,    PnL
+2021-02-02 14:08:43,183:__main__:INFO:('02-02-2021 14:08:43', 18.75)
+2021-02-02 14:08:45,192:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:08:46,754:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:08:46,801:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp   pnl
+0  39648  75  10025923   98.25  CE   99.45  90.0
+1  39649  75  10025924  110.65  PE  110.45 -15.0 
+
+2021-02-02 14:08:46,801:__main__:INFO: Time    ,    PnL
+2021-02-02 14:08:46,801:__main__:INFO:('02-02-2021 14:08:46', 75.0)
+2021-02-02 14:08:47,726:__main__:INFO:Spot price fetched as : [14633.05, 34200.3]
+2021-02-02 14:08:47,726:__main__:INFO:Cur price of NIFTY is: 14633.05
+2021-02-02 14:08:47,726:__main__:INFO:repair running...
+2021-02-02 14:08:48,819:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:08:50,429:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:08:50,460:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty    ltp     pnl
+0  39648  75  10025923   98.25  CE   99.9  123.75
+1  39649  75  10025924  110.65  PE  110.0  -48.75 
+
+2021-02-02 14:08:50,476:__main__:INFO: Time    ,    PnL
+2021-02-02 14:08:50,476:__main__:INFO:('02-02-2021 14:08:50', 75.0)
+2021-02-02 14:08:52,476:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:08:53,944:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:08:53,976:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty    ltp     pnl
+0  39648  75  10025923   98.25  CE  100.4  161.25
+1  39649  75  10025924  110.65  PE  107.4 -243.75 
+
+2021-02-02 14:08:53,976:__main__:INFO: Time    ,    PnL
+2021-02-02 14:08:53,976:__main__:INFO:('02-02-2021 14:08:53', -82.5)
+2021-02-02 14:08:55,982:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:08:57,420:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:08:57,467:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp     pnl
+0  39648  75  10025923   98.25  CE   99.45   90.00
+1  39649  75  10025924  110.65  PE  109.30 -101.25 
+
+2021-02-02 14:08:57,467:__main__:INFO: Time    ,    PnL
+2021-02-02 14:08:57,467:__main__:INFO:('02-02-2021 14:08:57', -11.25)
+2021-02-02 14:08:57,857:__main__:INFO:Spot price fetched as : [14635.45, 34214]
+2021-02-02 14:08:57,873:__main__:INFO:Cur price of NIFTY is: 14635.45
+2021-02-02 14:08:57,873:__main__:INFO:repair running...
+2021-02-02 14:08:59,467:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:09:00,889:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:09:00,936:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp     pnl
+0  39648  75  10025923   98.25  CE   99.80  116.25
+1  39649  75  10025924  110.65  PE  108.15 -187.50 
+
+2021-02-02 14:09:00,936:__main__:INFO: Time    ,    PnL
+2021-02-02 14:09:00,936:__main__:INFO:('02-02-2021 14:09:00', -71.25)
+2021-02-02 14:09:02,951:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:09:04,420:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:09:04,451:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty    ltp     pnl
+0  39648  75  10025923   98.25  CE  101.0  206.25
+1  39649  75  10025924  110.65  PE  107.7 -221.25 
+
+2021-02-02 14:09:04,451:__main__:INFO: Time    ,    PnL
+2021-02-02 14:09:04,451:__main__:INFO:('02-02-2021 14:09:04', -15.0)
+2021-02-02 14:09:06,453:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:09:07,843:__main__:INFO:Spot price fetched as : [14636.45, 34219.6]
+2021-02-02 14:09:07,859:__main__:INFO:Cur price of NIFTY is: 14636.45
+2021-02-02 14:09:07,859:__main__:INFO:repair running...
+2021-02-02 14:09:08,093:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:09:08,125:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp     pnl
+0  39648  75  10025923   98.25  CE  100.40  161.25
+1  39649  75  10025924  110.65  PE  107.95 -202.50 
+
+2021-02-02 14:09:08,140:__main__:INFO: Time    ,    PnL
+2021-02-02 14:09:08,140:__main__:INFO:('02-02-2021 14:09:08', -41.25)
+2021-02-02 14:09:10,141:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:09:11,705:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:09:11,705:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty    ltp    pnl
+0  39648  75  10025923   98.25  CE   99.5  93.75
+1  39649  75  10025924  110.65  PE  109.5 -86.25 
+
+2021-02-02 14:09:11,705:__main__:INFO: Time    ,    PnL
+2021-02-02 14:09:11,721:__main__:INFO:('02-02-2021 14:09:11', 7.5)
+2021-02-02 14:09:13,721:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:09:15,174:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:09:15,221:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty    ltp    pnl
+0  39648  75  10025923   98.25  CE   99.0  56.25
+1  39649  75  10025924  110.65  PE  109.7 -71.25 
+
+2021-02-02 14:09:15,221:__main__:INFO: Time    ,    PnL
+2021-02-02 14:09:15,221:__main__:INFO:('02-02-2021 14:09:15', -15.0)
+2021-02-02 14:09:17,221:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:09:17,740:__main__:INFO:Spot price fetched as : [14634.3, 34214.9]
+2021-02-02 14:09:17,755:__main__:INFO:Cur price of NIFTY is: 14634.3
+2021-02-02 14:09:17,755:__main__:INFO:repair running...
+2021-02-02 14:09:18,693:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:09:18,724:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty    ltp     pnl
+0  39648  75  10025923   98.25  CE   99.7  108.75
+1  39649  75  10025924  110.65  PE  109.7  -71.25 
+
+2021-02-02 14:09:18,724:__main__:INFO: Time    ,    PnL
+2021-02-02 14:09:18,724:__main__:INFO:('02-02-2021 14:09:18', 37.5)
+2021-02-02 14:09:20,724:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:09:22,115:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:09:22,115:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp    pnl
+0  39648  75  10025923   98.25  CE   99.10  63.75
+1  39649  75  10025924  110.65  PE  109.35 -97.50 
+
+2021-02-02 14:09:22,115:__main__:INFO: Time    ,    PnL
+2021-02-02 14:09:22,130:__main__:INFO:('02-02-2021 14:09:22', -33.75)
+2021-02-02 14:09:24,130:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:09:25,615:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:09:25,661:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp   pnl
+0  39648  75  10025923   98.25  CE   99.25  75.0
+1  39649  75  10025924  110.65  PE  109.85 -60.0 
+
+2021-02-02 14:09:25,661:__main__:INFO: Time    ,    PnL
+2021-02-02 14:09:25,661:__main__:INFO:('02-02-2021 14:09:25', 15.0)
+2021-02-02 14:09:27,630:__main__:INFO:Spot price fetched as : [14633.45, 34216.5]
+2021-02-02 14:09:27,630:__main__:INFO:Cur price of NIFTY is: 14633.45
+2021-02-02 14:09:27,630:__main__:INFO:repair running...
+2021-02-02 14:09:27,662:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:09:29,037:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:09:29,083:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp    pnl
+0  39648  75  10025923   98.25  CE   98.30   3.75
+1  39649  75  10025924  110.65  PE  111.05  30.00 
+
+2021-02-02 14:09:29,083:__main__:INFO: Time    ,    PnL
+2021-02-02 14:09:29,083:__main__:INFO:('02-02-2021 14:09:29', 33.75)
+2021-02-02 14:09:31,092:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:09:33,295:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:09:33,342:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty    ltp     pnl
+0  39648  75  10025923   98.25  CE   96.5 -131.25
+1  39649  75  10025924  110.65  PE  112.7  153.75 
+
+2021-02-02 14:09:33,342:__main__:INFO: Time    ,    PnL
+2021-02-02 14:09:33,342:__main__:INFO:('02-02-2021 14:09:33', 22.5)
+2021-02-02 14:09:35,344:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:09:36,766:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:09:36,797:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty    ltp    pnl
+0  39648  75  10025923   98.25  CE   97.1 -86.25
+1  39649  75  10025924  110.65  PE  111.5  63.75 
+
+2021-02-02 14:09:36,797:__main__:INFO: Time    ,    PnL
+2021-02-02 14:09:36,797:__main__:INFO:('02-02-2021 14:09:36', -22.5)
+2021-02-02 14:09:37,688:__main__:INFO:Spot price fetched as : [14632, 34213.95]
+2021-02-02 14:09:37,688:__main__:INFO:Cur price of NIFTY is: 14632
+2021-02-02 14:09:37,703:__main__:INFO:repair running...
+2021-02-02 14:09:38,797:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:09:40,344:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:09:40,391:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp    pnl
+0  39648  75  10025923   98.25  CE   97.55 -52.50
+1  39649  75  10025924  110.65  PE  111.00  26.25 
+
+2021-02-02 14:09:40,391:__main__:INFO: Time    ,    PnL
+2021-02-02 14:09:40,391:__main__:INFO:('02-02-2021 14:09:40', -26.25)
+2021-02-02 14:09:42,393:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:09:44,065:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:09:44,096:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp   pnl
+0  39648  75  10025923   98.25  CE   97.45 -60.0
+1  39649  75  10025924  110.65  PE  111.95  97.5 
+
+2021-02-02 14:09:44,096:__main__:INFO: Time    ,    PnL
+2021-02-02 14:09:44,096:__main__:INFO:('02-02-2021 14:09:44', 37.5)
+2021-02-02 14:09:46,112:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:09:47,534:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:09:47,565:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp     pnl
+0  39648  75  10025923   98.25  CE   97.55  -52.50
+1  39649  75  10025924  110.65  PE  112.00  101.25 
+
+2021-02-02 14:09:47,565:__main__:INFO: Time    ,    PnL
+2021-02-02 14:09:47,565:__main__:INFO:('02-02-2021 14:09:47', 48.75)
+2021-02-02 14:09:47,768:__main__:INFO:Spot price fetched as : [14630.75, 34211.45]
+2021-02-02 14:09:47,768:__main__:INFO:Cur price of NIFTY is: 14630.75
+2021-02-02 14:09:47,784:__main__:INFO:repair running...
+2021-02-02 14:09:49,581:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:09:51,846:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:09:51,877:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp     pnl
+0  39648  75  10025923   98.25  CE   95.35 -217.50
+1  39649  75  10025924  110.65  PE  113.20  191.25 
+
+2021-02-02 14:09:51,877:__main__:INFO: Time    ,    PnL
+2021-02-02 14:09:51,877:__main__:INFO:('02-02-2021 14:09:51', -26.25)
+2021-02-02 14:09:53,878:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:09:55,299:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:09:55,331:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp    pnl
+0  39648  75  10025923   98.25  CE   96.05 -165.0
+1  39649  75  10025924  110.65  PE  113.25  195.0 
+
+2021-02-02 14:09:55,331:__main__:INFO: Time    ,    PnL
+2021-02-02 14:09:55,346:__main__:INFO:('02-02-2021 14:09:55', 30.0)
+2021-02-02 14:09:57,346:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:09:57,674:__main__:INFO:Spot price fetched as : [14628.6, 34193.4]
+2021-02-02 14:09:57,674:__main__:INFO:Cur price of NIFTY is: 14628.6
+2021-02-02 14:09:57,690:__main__:INFO:repair running...
+2021-02-02 14:09:58,768:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:09:58,799:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp    pnl
+0  39648  75  10025923   98.25  CE   96.05 -165.0
+1  39649  75  10025924  110.65  PE  111.45   60.0 
+
+2021-02-02 14:09:58,815:__main__:INFO: Time    ,    PnL
+2021-02-02 14:09:58,815:__main__:INFO:('02-02-2021 14:09:58', -105.0)
+2021-02-02 14:10:00,817:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-02 14:10:02,183:__main__:INFO:Instrument subscribed successfully!
+2021-02-02 14:10:02,230:__main__:INFO: DF is : 
+       ss  qq        oo      tt oty     ltp    pnl
+0  39648  75  10025923   98.25  CE   97.95 -22.50
+1  39649  75  10025924  110.65  PE  110.50 -11.25 
+
+2021-02-02 14:10:02,230:__main__:INFO: Time    ,    PnL
+2021-02-02 14:10:02,230:__main__:INFO:('02-02-2021 14:10:02', -33.75)
+2021-02-02 14:10:02,230:__main__:INFO:SquareOff Logic met...
+2021-02-02 14:10:02,230:__main__:INFO:Retreiving position page..
+2021-02-02 14:10:03,730:__main__:INFO:squaring-off for : NIFTY 04FEB2021 PE 14550 - 39635
+2021-02-02 14:10:05,879:__main__:INFO:Squared-off for symbol NIFTY 04FEB2021 PE 14550 - 39635
+2021-02-02 14:10:05,879:__main__:INFO:squaring-off for : NIFTY 04FEB2021 CE 14550 - 39634
+2021-02-02 14:10:07,394:__main__:INFO:Squared-off for symbol NIFTY 04FEB2021 CE 14550 - 39634
+2021-02-02 14:10:07,410:__main__:INFO:squaring-off for : NIFTY 04FEB2021 CE 14650 - 39648
+2021-02-02 14:10:07,869:__main__:INFO:Spot price fetched as : [14633.75, 34215.55]
+2021-02-02 14:10:07,869:__main__:INFO:Cur price of NIFTY is: 14633.75
+2021-02-02 14:10:07,869:__main__:INFO:repair running...
+2021-02-02 14:10:09,243:__main__:INFO:Squared-off for symbol NIFTY 04FEB2021 CE 14650 - 39648
+2021-02-02 14:10:09,243:__main__:INFO:squaring-off for : NIFTY 04FEB2021 PE 14650 - 39649
+2021-02-02 14:10:11,578:__main__:INFO:Squared-off for symbol NIFTY 04FEB2021 PE 14650 - 39649
+2021-02-02 14:10:11,593:__main__:INFO:Retreiving OrderBook..
+2021-02-02 14:10:14,350:__main__:INFO:OrderBook result retreived success
+2021-02-02 14:10:14,381:__main__:INFO:--- Sq-off Func Exit ---
+2021-02-02 14:10:14,381:__main__:INFO:Dumping the PnL list to excel sheet..
+2021-02-02 14:10:15,585:__main__:INFO:in finally block.. Closing multi threaded func if running..
+2021-02-02 14:10:15,585:__main__:INFO:-- Script Ended --
+2021-02-02 14:10:15,585:__main__:INFO:-- --------------------------------------------- --

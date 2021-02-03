@@ -1227,6 +1227,51 @@ if (eid_resp['type'] != 'error') and (eid_resp["result"]):
     print('OK')
 
 
+########################
+newvalue=111
+my_list = [{'k1':'v1','k2':'v2'}, {'k1':'v3', 'k3':'v4'}, {'k1':'v5','k2':'v6'},{'k3':'v7'}]
+
+for my_dict in my_list:
+    if all (k in my_dict for k in ("k1", "k2")):
+        if (my_dict['k1']):
+            my_dict['k2'] = newvalue
+
+
+
+dR=[{'ss': '41849', 'qq': 75, 'oo': 10025730, 'tt': 65.6}, {'ss': '41850', 'qq': 75, 'oo': 10025731, 'tt': 91.0}]
+ordersEid = {'oty': ['CE', 'PE', 'CE'], 'ss': ['41849', '41850', '43015']}
+
+slr='41850'
+ltp=[7,77]
+ltp=[9,99,999]
+dR.append({'ss': '43015', 'qq': 75, 'oo': 10025733, 'tt': 48.7})
+for item2 in dR:
+    if item2['ss'] == slr:
+        item2.update({'qq':0})
+
+dRdf=pd.DataFrame(dR)
+eiddf=pd.DataFrame(ordersEid)
+mdf=pd.DataFrame(columns=['ss','qq','oo','tt','ltp','pnl'])
+
+df=dRdf.merge(eiddf, how='left')
+df['ltp']=ltp
+df['pnl']=(df['tt']-df['ltp'])*df['qq'] 
+
+# tmp_df=df.query('qq != 0')
+# mdf.set_index('ss', inplace=True)
+# mdf.update(tmp_df.set_index('ss'))
+# mdf.reset_index()
+
+mdf=pd.concat([mdf,df.query('qq != 0')]).drop_duplicates(['ss'],keep='last')
+mdf
+cur_PnL=round(mdf['pnl'].sum(),2) 
+cur_PnL
+# mdf.set_index(['ss']).combine_first(tmp_df.set_index(['ss'])).reset_index()
+
+
+
+
+
 
 
 

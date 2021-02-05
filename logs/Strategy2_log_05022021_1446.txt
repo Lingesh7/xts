@@ -1,0 +1,20 @@
+2021-02-05 14:46:02,438:__mp_main__:INFO:Main Login Successful
+2021-02-05 14:46:02,438:__mp_main__:INFO:Placing Orders.. 
+
+2021-02-05 14:46:02,438:__mp_main__:INFO:Main Login Successful
+2021-02-05 14:46:02,454:__mp_main__:INFO:Placing Orders.. 
+
+2021-02-05 14:46:02,454:__mp_main__:INFO:Main Login Successful
+2021-02-05 14:46:02,470:__mp_main__:INFO:Main Login Successful
+2021-02-05 14:46:03,584:__mp_main__:INFO: 
+ Order ID for SELL 45167 is: 10026306 
+
+2021-02-05 14:46:03,584:__mp_main__:INFO:Retreiving OrderBook..
+2021-02-05 14:46:03,584:__mp_main__:INFO: 
+ Order ID for SELL 45180 is: 10026307 
+
+2021-02-05 14:46:03,584:__mp_main__:INFO:Retreiving OrderBook..
+2021-02-05 14:46:04,428:__mp_main__:INFO:OrderBook result retreived success
+2021-02-05 14:46:04,428:__mp_main__:INFO:traded price is: 146.0
+2021-02-05 14:46:04,459:__mp_main__:INFO:OrderBook result retreived success
+2021-02-05 14:46:04,459:__mp_main__:INFO:traded price is: 117.0

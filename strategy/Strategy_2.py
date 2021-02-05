@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 
-filename='../logs/Strategy2_log_'+datetime.strftime(datetime.now(), "%d%m%Y_%H%M%S")+'.txt'
+filename='../logs/Strategy2_log_'+datetime.strftime(datetime.now(), "%d%m%Y_%H%M")+'.txt'
 
 file_handler = logging.FileHandler(filename)
 # file_handler=logging.handlers.TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=5)
@@ -46,13 +46,13 @@ global mdf
 ordersEid= {k:[] for k in ['oty','ss']}
 new_dict={}
 pnl_dump=[]
-mdf=pd.DataFrame(columns=['ss','qq','oo','tt','ltp','pnl'])
+mdf=pd.DataFrame(columns=['ordrtyp','ss','qq','oo','tt','ltp','pnl'])
 # ordersEid = {}
 # new_dict = {k:[] for k in ['oo','tt','qq','ss','sl']}
 
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-kickTime = "15:20:00"
-wrapTime = "15:30:00"
+kickTime = "14:46:00"
+wrapTime = "15:00:00"
 globalSL = -1500
 globalTarget = 3000
 
@@ -163,16 +163,23 @@ def getSpot():
         return spot
         
 def strkPrcCalc(spot,base):
-    strikePrice = base * round(spot/base) 
+    strikePrice = base * round(spot/base)
     logger.info(f'StrikePrice computed as : {strikePrice}')
     return strikePrice
 
 def get_eID(symbol,ce_pe,expiry,strikePrice):
     logger.info(f'Input of get_eID fn : {symbol}, {ce_pe},{expiry},{strikePrice}')
+    weekday = datetime.today().weekday()
     if ce_pe == "ce":
         oType="CE"
+        if weekday != 3:
+            logger.info('Today is not Thursday. Hence straddle')
+            strikePrice=strikePrice+50
     elif ce_pe == "pe":
         oType="PE"
+        if weekday != 3:
+            logger.info('Today is not Thursday. Hence straddle')
+            strikePrice=strikePrice-50
     # print("expiry date caluclated as :", expiry)
     eID_resp = xt.get_option_symbol(
                 exchangeSegment=2,
@@ -251,7 +258,7 @@ def get_global_PnL():
     else:
         return totalMTMdf
         
-def squareOff(eid,symb):
+def squareOff(eid,symb,qty):
     ab = 0
     logger.info(f'squaring-off for : {symb} - {eid}')
     while ab < 5:
@@ -261,8 +268,9 @@ def squareOff(eid,symb):
                 exchangeInstrumentID=eid,
                 productType=xt.PRODUCT_MIS,
                 squareoffMode=xt.SQUAREOFF_DAYWISE,
-                positionSquareOffQuantityType=xt.SQUAREOFFQUANTITY_PERCENTAGE,
-                squareOffQtyValue=100,
+                # positionSquareOffQuantityType=xt.SQUAREOFFQUANTITY_PERCENTAGE,
+                positionSquareOffQuantityType=xt.SQUAREOFFQUANTITY_EXACTQUANTITY,
+                squareOffQtyValue=qty,
                 blockOrderSending=True,
                 cancelOrders=True)
            if sq_off_resp['type'] != "error":
@@ -355,12 +363,12 @@ def prepareVars(ticker):
         logger.exception("Unable to reterive info like margin,strikePrice,nfty_ltp,bnknfty_ltp to place order")
         return False
 
-def placeOrder(symbol,buy_sell,quantity):
+def placeOrder(symbol,buy_sell,quantity,ordrtyp):
     logger.info('Placing Orders.. \n')
     # Place an intraday stop loss order on NSE
     orderID = 0
     tradedPrice = 0
-    
+    new_dict['ordrtyp']=ordrtyp
     new_dict['ss']=str(symbol)
     new_dict['qq']=(quantity)
     
@@ -425,7 +433,7 @@ def runOrders():
         with concurrent.futures.ProcessPoolExecutor() as executor:
             try:
                 # orderID_dict = executor.map(placeOrderWithSL,eID,repeat('sell'),repeat(quantity))
-                results = [executor.submit(placeOrder,i,'sell',quantity) for i in eID]
+                results = [executor.submit(placeOrder,i,'sell',quantity,'Entry') for i in eID]
                 for f in concurrent.futures.as_completed(results):
                     new_dictR.append(f.result())
                 logger.info(f'printing new_dictR value : {new_dictR}')
@@ -450,10 +458,10 @@ def getPnL():
         # login()
         odf=pd.DataFrame(new_dictR)
         eid_df =pd.DataFrame(ordersEid)
-        df = odf.merge(eid_df, how='left')
+        fdf = odf.merge(eid_df, how='left')
         instruments=[]
-        for i in range(len(df)):
-            instruments.append({'exchangeSegment': 2, 'exchangeInstrumentID': df['ss'].values[i]})
+        for i in range(len(fdf)):
+            instruments.append({'exchangeSegment': 2, 'exchangeInstrumentID': fdf['ss'].values[i]})
             # #print(instruments)
         # logger.info(f'sending subscription for : {instruments}')    
         xt.send_unsubscription(Instruments=instruments,xtsMessageCode=1502)
@@ -462,13 +470,13 @@ def getPnL():
         if subs_resp['type'] == 'success':
             # logger.info(subs_resp['description'])
             ltp=[]
-            for i in range(len(df)):
+            for i in range(len(fdf)):
                 listQuotes = json.loads(subs_resp['result']['listQuotes'][i])
                 ltp.append(listQuotes['Touchline']['LastTradedPrice'])
             # logger.info(f'LastTradedPrice fetched as : {ltp}')
-            df['ltp']=ltp
-            df['pnl']=(df['tt']-df['ltp'])*df['qq']
-            mdf=pd.concat([mdf,df.query('qq != 0')]).drop_duplicates(['ss'],keep='last')
+            fdf['ltp']=ltp
+            fdf['pnl']=(fdf['tt']-fdf['ltp'])*fdf['qq']
+            mdf=pd.concat([mdf,fdf.query('qq != 0')]).drop_duplicates(['ss'],keep='last')
             cur_PnL=round(mdf['pnl'].sum(),2) 
             logger.info(f' DF is : \n {mdf} \n')
             # logger.info(' Time    ,    PnL')
@@ -503,20 +511,21 @@ def repairStrategy(ticker):
             eid_df=pd.DataFrame(ordersEid)
             ce_df=pos.merge(eid_df, how='left')
             ids=ce_df[ce_df['oty']=='CE']['ss'].tolist()
-            for i_d in ids:
-                logger.info(f'valid repair sq-off id {i_d}')
-                squareOff(i_d, 'Repair sq-off')
+            qt_y=ce_df[ce_df['oty']=='CE']['qq'].tolist()
+            idqty = zip(ids,qt_y)
+            for i_d,qty in idqty:
+                # logger.info(f'valid repair sq-off id {i_d}')
+                squareOff(i_d, 'Repair CE',qty)
                 # logger.info('this is after sqoff and below code to change qty to 0')
                 logger.info('Changing the qty of to 0 in new_dictR')
                 for dtc in new_dictR:
                     if dtc['ss'] == i_d:
                         dtc.update({'qq':0})
             logger.info('Placing another order..')        
-            eid1 = get_eID(ticker, 'ce', weekly_exp, (strikePrice+50))
+            eid1 = get_eID(ticker,'ce',weekly_exp,(strikePrice+50))
             logger.info(f'Repair order eid is: {eid1}')
-            frsh=placeOrder(eid1, 'sell', quantity)
+            frsh=placeOrder(eid1,'sell',quantity,'RepairOnce')
             new_dictR.append(frsh)
-            
             logger.info("----Stopping repeatedTimer------")
             rt1.stop()
         elif cur_prc < nfty_ltp-15:
@@ -525,13 +534,19 @@ def repairStrategy(ticker):
             pos=pd.DataFrame(new_dictR)
             eid_df=pd.DataFrame(ordersEid)
             pe_df=pos.merge(eid_df, how='left')
-            ids=pe_df[pe_df['oty']=='PE']['oo'].tolist()
-            for i_d in ids:
-                squareOff(i_d, 'Sell Put Option')
-            logger.info('Placing another order for CE')        
-            eid2 = get_eID(ticker, 'pe', weekly_exp, (strikePrice-50))
+            ids=pe_df[pe_df['oty']=='PE']['ss'].tolist()
+            qt_y=ce_df[ce_df['oty']=='PE']['qq'].tolist()
+            idqty = zip(ids,qt_y)
+            for i_d,qty in idqty:
+                squareOff(i_d, 'Repair PE',qty)
+                logger.info('Changing the qty of to 0 in new_dictR')
+                for dtc in new_dictR:
+                    if dtc['ss'] == i_d:
+                        dtc.update({'qq':0})
+            logger.info('Placing another order for PE')        
+            eid2 = get_eID(ticker,'pe',weekly_exp,(strikePrice-50))
             logger.info(f'Repair order eid is: {eid2}')
-            frsh=placeOrder(eid2, 'sell', quantity)
+            frsh=placeOrder(eid2,'sell',quantity,'RepairOnce')
             new_dictR.append(frsh)
             logger.info("----Stopping repeatedTimer------")
             rt1.stop()
@@ -540,6 +555,7 @@ def repairStrategy(ticker):
             logger.info('repair running...')
     except Exception:
         logger.exception('Repair Strategy Failed')
+        rt1.stop()
 
 def runSqOffLogics():
     login()
@@ -553,20 +569,25 @@ def runSqOffLogics():
         if cur_PnL:
             if (cur_PnL < globalSL) or (cur_PnL >= globalTarget) or (datetime.now() >= datetime.strptime(cdate + " " + wrapTime, "%d-%m-%Y %H:%M:%S")):
                 logger.info('SquareOff Logic met...')
-                #print("\n SquareOff Logic met...")
                 
-                # closing all open positions             # not taking getPositionList() bcoz
-                positionList = getPositionList()      # get_global_PnL() has the latest pos_df
-                if positionList:
-                    pos_df = pd.DataFrame(positionList)   # also runs every 2 secs so no need to get again
-                    for i in range(len(pos_df)):
-                        if int(pos_df["Quantity"].values[i]) != 0:
-                            symb=pos_df['TradingSymbol'].values[i]
-                            eid = pos_df["ExchangeInstrumentId"].values[i]
-                            squareOff(eid,symb)
-                    # logger.info("Position Squareoff Completed ")
-                else:
-                    logger.info('Unable to get positionList to square-off. Try manually..')
+                # closing all open positions   
+                for i in range(len(mdf)):
+                    eid=int(mdf['ss'].values[i])
+                    symb=mdf['ordrtyp'].values[i]
+                    qty=mdf['qq'].values[i]
+                    squareOff(eid,symb,qty)
+                # positionList = getPositionList()      
+                # if positionList:
+                #     pos_df = pd.DataFrame(positionList)
+                    
+                #     for i in range(len(pos_df)):
+                #         if int(pos_df["Quantity"].values[i]) != 0:
+                #             symb=pos_df['TradingSymbol'].values[i]
+                #             eid = pos_df["ExchangeInstrumentId"].values[i]
+                #             squareOff(eid,symb)
+                #     # logger.info("Position Squareoff Completed ")
+                # else:
+                #     logger.info('Unable to get positionList to square-off. Try manually..')
                 
                 #closing all pending orders
                 orderList = getOrderList()
@@ -625,10 +646,10 @@ if __name__ == '__main__':
                 if pnl_dump:
                     pnl_df= pd.DataFrame(pnl_dump,columns=['date','pl'])
                     pnl_df=pnl_df.set_index(['date'])
-                    pnl_df.index=pd.to_datetime(pnl_df.index)
-                    df=pnl_df['pl'].resample('1min').ohlc()
-                    writer = pd.ExcelWriter(r'F:\Downloads\Python\First_Choice_Git\xts\logs\Strategy2_PnL.xls')
-                    df.to_excel(writer, sheet_name=(cdate+'_'+kickTime.replace(':','_')), index=True)
+                    pnl_df.index=pd.to_datetime(pnl_df.index, format='%d-%m-%Y %H:%M:%S')
+                    xdf=pnl_df['pl'].resample('1min').ohlc()
+                    writer = pd.ExcelWriter(r'..\logs\Strategy2_PnL.xls')
+                    xdf.to_excel(writer, sheet_name=(cdate+'_'+kickTime.replace(':','_')), index=True)
                     writer.save()
                 else:
                     logger.info('Nothing to write in excel..')

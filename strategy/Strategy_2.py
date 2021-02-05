@@ -51,8 +51,8 @@ mdf=pd.DataFrame(columns=['ss','qq','oo','tt','ltp','pnl'])
 # new_dict = {k:[] for k in ['oo','tt','qq','ss','sl']}
 
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-kickTime = "20:12:30"
-wrapTime = "23:06:00"
+kickTime = "15:20:00"
+wrapTime = "15:30:00"
 globalSL = -1500
 globalTarget = 3000
 
@@ -441,8 +441,9 @@ def runOrders():
              Exiting without placing any orders.. 
                   ''')     
 
-def getPnL(mdf):
+def getPnL():
     logger.info('Checking CurPnL for this strategy..')
+    global mdf
     try:
         # #print(j)
         # logger.info('Checking CurPnL for this strategy..')
@@ -495,7 +496,7 @@ def repairStrategy(ticker):
     logger.info(f'Cur price of NIFTY is: {cur_prc}')
     logger.info(f'Points changed: {round(cur_prc-nfty_ltp,2)}')
     try:
-        if cur_prc > nfty_ltp+5:
+        if cur_prc > nfty_ltp+15:
             logger.info(f'{ticker} hits +40')
             logger.info('SquaringOff CE position..')
             pos=pd.DataFrame(new_dictR)
@@ -503,12 +504,14 @@ def repairStrategy(ticker):
             ce_df=pos.merge(eid_df, how='left')
             ids=ce_df[ce_df['oty']=='CE']['ss'].tolist()
             for i_d in ids:
-                squareOff(i_d, 'Sell Call Option')
-                logger.info(f'Changing the qty of {i_d} to 0 in new_dictR')
+                logger.info(f'valid repair sq-off id {i_d}')
+                squareOff(i_d, 'Repair sq-off')
+                # logger.info('this is after sqoff and below code to change qty to 0')
+                logger.info('Changing the qty of to 0 in new_dictR')
                 for dtc in new_dictR:
                     if dtc['ss'] == i_d:
                         dtc.update({'qq':0})
-            logger.info('Placing another order for CE')        
+            logger.info('Placing another order..')        
             eid1 = get_eID(ticker, 'ce', weekly_exp, (strikePrice+50))
             logger.info(f'Repair order eid is: {eid1}')
             frsh=placeOrder(eid1, 'sell', quantity)
@@ -516,7 +519,7 @@ def repairStrategy(ticker):
             
             logger.info("----Stopping repeatedTimer------")
             rt1.stop()
-        elif cur_prc < nfty_ltp-5:
+        elif cur_prc < nfty_ltp-15:
             logger.info(f'{ticker} hits -40')
             logger.info('SquaringOff PE position..')
             pos=pd.DataFrame(new_dictR)
@@ -540,13 +543,13 @@ def repairStrategy(ticker):
 
 def runSqOffLogics():
     login()
-    # pnl_dump=[]
+    global pnl_dump
     logger.info('''\n Entering runSqOffLogics func,\n \t This logic runs till the end of the script and 
               checks SL/TARGET/TIMEings \n''')
     check=True
     while check:
         # #print("--- getting cur_PnL ---")
-        cur_PnL = getPnL(mdf)
+        cur_PnL = getPnL()
         if cur_PnL:
             if (cur_PnL < globalSL) or (cur_PnL >= globalTarget) or (datetime.now() >= datetime.strptime(cdate + " " + wrapTime, "%d-%m-%Y %H:%M:%S")):
                 logger.info('SquareOff Logic met...')
@@ -600,9 +603,7 @@ if __name__ == '__main__':
     go = prepareVars(ticker)
     if go:
         logger.info('required variables set-- ready to trigger orders at desired time')
-        #print("required variables set-- ready to trigger orders at desired time")
         nstart=True
-        # ndate = datetime.strftime(datetime.now(), "%d-%m-%Y")
         while nstart:
             if (datetime.now() >= datetime.strptime(cdate + " " + kickTime, "%d-%m-%Y %H:%M:%S")):
                 runOrders()
@@ -614,13 +615,12 @@ if __name__ == '__main__':
             rt1 = RepeatedTimer(10, repairStrategy, ticker)
             try:
                 logger.info("--- Entering SquareOffLogic Function after placing orders ---")
-                #print("--- Entering SquareOffLogic Function after placing orders ---")
-                pnl_dump=runSqOffLogics()
+                runSqOffLogics()
                 logger.info("--- Sq-off Func ended ---")
             except Exception:
                 logger.exception("Something wrong with SquareoffLogic func..")
-                #print("Something wrong with SquareoffLogic func..", e)
-            else:
+            finally:
+                logger.info(f'Strategy2 Summary: \n {mdf}')
                 logger.info('Dumping the PnL list to excel sheet..')
                 if pnl_dump:
                     pnl_df= pd.DataFrame(pnl_dump,columns=['date','pl'])
@@ -632,7 +632,6 @@ if __name__ == '__main__':
                     writer.save()
                 else:
                     logger.info('Nothing to write in excel..')
-            finally:
                 logger.info('in finally block.. Closing multi threaded func if running..')
                 rt1.stop()
                 logger.info('-- Script Ended --')

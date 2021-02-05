@@ -1,0 +1,320 @@
+2021-02-04 10:44:26,836:__main__:INFO:Main Login Successful
+2021-02-04 10:44:26,842:__main__:INFO:Calculating everything before executing orders..
+2021-02-04 10:44:26,843:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-04 10:44:26,846:__main__:INFO:weekly expiry is : 04Feb2021, monthly expiry is: 25Feb2021
+2021-02-04 10:44:27,499:__main__:INFO:StrikePrice computed as : 14750
+2021-02-04 10:44:27,500:__main__:INFO:Input of get_eID fn : NIFTY, ce,04Feb2021,14750
+2021-02-04 10:44:28,178:__main__:INFO:Exchange Instrument ID : 39605, {'oty': ['CE'], 'ss': ['39605']}
+2021-02-04 10:44:28,180:__main__:INFO:Input of get_eID fn : NIFTY, pe,04Feb2021,14750
+2021-02-04 10:44:28,890:__main__:INFO:Exchange Instrument ID : 39606, {'oty': ['CE', 'PE'], 'ss': ['39605', '39606']}
+2021-02-04 10:44:28,892:__main__:INFO:Checking margin from user..
+2021-02-04 10:44:28,894:__main__:INFO:Checking balance..
+2021-02-04 10:44:31,574:__main__:INFO:Balance retreived success, available cash : 1000000000
+2021-02-04 10:44:31,575:__main__:INFO: 
+              net_cash - 1000000000,
+              strikePrice - 14750,
+              Nifty Spot - 14749.8,
+              BankNifty Spot - None
+              exchangeInstrumentID - [39605, 39606]
+              
+2021-02-04 10:44:31,575:__main__:INFO:All set from prepareVars func.. Giving a go for orders..
+2021-02-04 10:44:31,576:__main__:INFO:required variables set-- ready to trigger orders at desired time
+2021-02-04 10:45:00,062:__main__:INFO:Required Margin Available.. Taking positions...
+2021-02-04 10:45:03,806:__main__:INFO:printing new_dictR value : [{'ss': '39605', 'qq': 75, 'oo': 10026298, 'tt': 41.95}, {'ss': '39606', 'qq': 75, 'oo': 10026299, 'tt': 51.7}]
+2021-02-04 10:45:03,942:__main__:INFO:starting multi funcs with threaded timer...
+2021-02-04 10:45:03,943:__main__:INFO:--- Entering SquareOffLogic Function after placing orders ---
+2021-02-04 10:45:04,641:__main__:INFO:Login Successful
+2021-02-04 10:45:04,642:__main__:INFO:
+ Entering runSqOffLogics func,
+ 	 This logic runs till the end of the script and 
+              checks SL/TARGET/TIMEings 
+
+2021-02-04 10:45:04,643:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:45:06,140:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp   pnl oty
+0  39605  75  10026298  41.95  41.95   0.0  CE
+1  39606  75  10026299  51.70  52.20 -37.5  PE 
+
+2021-02-04 10:45:06,141:__main__:INFO:('04-02-2021 10:45:06', -37.5)
+2021-02-04 10:45:08,147:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:45:09,538:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp   pnl oty
+0  39605  75  10026298  41.95  40.85  82.5  CE
+1  39606  75  10026299  51.70  52.70 -75.0  PE 
+
+2021-02-04 10:45:09,540:__main__:INFO:('04-02-2021 10:45:09', 7.5)
+2021-02-04 10:45:11,553:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:45:12,889:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp     pnl oty
+0  39605  75  10026298  41.95  40.60  101.25  CE
+1  39606  75  10026299  51.70  53.85 -161.25  PE 
+
+2021-02-04 10:45:12,890:__main__:INFO:('04-02-2021 10:45:12', -60.0)
+2021-02-04 10:45:14,650:__main__:INFO:Cur price of NIFTY is: 14741.25
+2021-02-04 10:45:14,653:__main__:INFO:Points changed: -8.55
+2021-02-04 10:45:14,654:__main__:INFO:NIFTY hits -40
+2021-02-04 10:45:14,655:__main__:INFO:SquaringOff PE position..
+2021-02-04 10:45:14,680:__main__:INFO:squaring-off for : Sell Put Option - 10026299
+2021-02-04 10:45:14,903:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:45:16,247:__main__:INFO: DF is : 
+       ss  qq        oo     tt   ltp     pnl oty
+0  39605  75  10026298  41.95  40.7   93.75  CE
+1  39606  75  10026299  51.70  54.0 -172.50  PE 
+
+2021-02-04 10:45:16,248:__main__:INFO:('04-02-2021 10:45:16', -78.75)
+2021-02-04 10:45:16,625:__main__:INFO:Squared-off for symbol Sell Put Option - 10026299
+2021-02-04 10:45:16,626:__main__:INFO:Placing another order for CE
+2021-02-04 10:45:16,627:__main__:INFO:Input of get_eID fn : NIFTY, pe,04Feb2021,14700
+2021-02-04 10:45:17,278:__main__:INFO:Exchange Instrument ID : 39604, {'oty': ['CE', 'PE', 'PE'], 'ss': ['39605', '39606', '39604']}
+2021-02-04 10:45:17,280:__main__:INFO:Repair order eid is: 39604
+2021-02-04 10:45:17,281:__main__:INFO:Placing Orders.. 
+
+2021-02-04 10:45:17,935:__main__:INFO: 
+ Order ID for SELL 39604 is: 10026300 
+
+2021-02-04 10:45:17,936:__main__:INFO:Retreiving OrderBook..
+2021-02-04 10:45:18,255:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:45:19,686:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp     pnl oty
+0  39605  75  10026298  41.95  39.90  153.75  CE
+1  39606  75  10026299  51.70  54.85 -236.25  PE 
+
+2021-02-04 10:45:19,688:__main__:INFO:('04-02-2021 10:45:19', -82.5)
+2021-02-04 10:45:19,963:__main__:INFO:OrderBook result retreived success
+2021-02-04 10:45:19,964:__main__:INFO:traded price is: 33.7
+2021-02-04 10:45:19,964:__main__:INFO:----Stopping repeatedTimer------
+2021-02-04 10:45:21,690:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:45:23,034:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp     pnl oty
+0  39605  75  10026298  41.95  38.35  270.00  CE
+1  39606  75  10026299  51.70  55.45 -281.25  PE
+2  39604  75  10026300  33.70  34.35  -48.75  PE 
+
+2021-02-04 10:45:23,035:__main__:INFO:('04-02-2021 10:45:23', -60.0)
+2021-02-04 10:45:25,046:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:45:26,357:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp    pnl oty
+0  39605  75  10026298  41.95  38.55  255.0  CE
+1  39606  75  10026299  51.70  55.40 -277.5  PE
+2  39604  75  10026300  33.70  34.50  -60.0  PE 
+
+2021-02-04 10:45:26,358:__main__:INFO:('04-02-2021 10:45:26', -82.5)
+2021-02-04 10:45:28,370:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:45:29,771:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp     pnl oty
+0  39605  75  10026298  41.95  37.70  318.75  CE
+1  39606  75  10026299  51.70  55.90 -315.00  PE
+2  39604  75  10026300  33.70  34.95  -93.75  PE 
+
+2021-02-04 10:45:29,773:__main__:INFO:('04-02-2021 10:45:29', -90.0)
+2021-02-04 10:45:31,785:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:45:33,080:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp     pnl oty
+0  39605  75  10026298  41.95  37.05  367.50  CE
+1  39606  75  10026299  51.70  57.15 -408.75  PE
+2  39604  75  10026300  33.70  35.50 -135.00  PE 
+
+2021-02-04 10:45:33,081:__main__:INFO:('04-02-2021 10:45:33', -176.25)
+2021-02-04 10:45:35,087:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:45:36,462:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp     pnl oty
+0  39605  75  10026298  41.95  37.15  360.00  CE
+1  39606  75  10026299  51.70  56.45 -356.25  PE
+2  39604  75  10026300  33.70  35.40 -127.50  PE 
+
+2021-02-04 10:45:36,462:__main__:INFO:('04-02-2021 10:45:36', -123.75)
+2021-02-04 10:45:38,471:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:45:39,799:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp     pnl oty
+0  39605  75  10026298  41.95  37.10  363.75  CE
+1  39606  75  10026299  51.70  56.05 -326.25  PE
+2  39604  75  10026300  33.70  35.15 -108.75  PE 
+
+2021-02-04 10:45:39,801:__main__:INFO:('04-02-2021 10:45:39', -71.25)
+2021-02-04 10:45:41,802:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:45:43,160:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp     pnl oty
+0  39605  75  10026298  41.95  37.75  315.00  CE
+1  39606  75  10026299  51.70  55.50 -285.00  PE
+2  39604  75  10026300  33.70  34.55  -63.75  PE 
+
+2021-02-04 10:45:43,161:__main__:INFO:('04-02-2021 10:45:43', -33.75)
+2021-02-04 10:45:45,166:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:45:46,487:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp     pnl oty
+0  39605  75  10026298  41.95  37.75  315.00  CE
+1  39606  75  10026299  51.70  55.95 -318.75  PE
+2  39604  75  10026300  33.70  34.85  -86.25  PE 
+
+2021-02-04 10:45:46,488:__main__:INFO:('04-02-2021 10:45:46', -90.0)
+2021-02-04 10:45:48,497:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:45:49,916:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp     pnl oty
+0  39605  75  10026298  41.95  37.65  322.50  CE
+1  39606  75  10026299  51.70  56.00 -322.50  PE
+2  39604  75  10026300  33.70  34.95  -93.75  PE 
+
+2021-02-04 10:45:49,917:__main__:INFO:('04-02-2021 10:45:49', -93.75)
+2021-02-04 10:45:51,923:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:45:53,288:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp     pnl oty
+0  39605  75  10026298  41.95  37.50  333.75  CE
+1  39606  75  10026299  51.70  56.45 -356.25  PE
+2  39604  75  10026300  33.70  35.00  -97.50  PE 
+
+2021-02-04 10:45:53,290:__main__:INFO:('04-02-2021 10:45:53', -120.0)
+2021-02-04 10:45:55,302:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:45:56,709:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp     pnl oty
+0  39605  75  10026298  41.95  37.40  341.25  CE
+1  39606  75  10026299  51.70  57.50 -435.00  PE
+2  39604  75  10026300  33.70  35.65 -146.25  PE 
+
+2021-02-04 10:45:56,710:__main__:INFO:('04-02-2021 10:45:56', -240.0)
+2021-02-04 10:45:58,714:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:46:00,098:__main__:INFO: DF is : 
+       ss  qq        oo     tt   ltp     pnl oty
+0  39605  75  10026298  41.95  37.4  341.25  CE
+1  39606  75  10026299  51.70  57.2 -412.50  PE
+2  39604  75  10026300  33.70  35.6 -142.50  PE 
+
+2021-02-04 10:46:00,099:__main__:INFO:('04-02-2021 10:46:00', -213.75)
+2021-02-04 10:46:02,103:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:46:03,483:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp     pnl oty
+0  39605  75  10026298  41.95  37.65  322.50  CE
+1  39606  75  10026299  51.70  57.50 -435.00  PE
+2  39604  75  10026300  33.70  35.95 -168.75  PE 
+
+2021-02-04 10:46:03,484:__main__:INFO:('04-02-2021 10:46:03', -281.25)
+2021-02-04 10:46:05,494:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:46:06,996:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp     pnl oty
+0  39605  75  10026298  41.95  36.90  378.75  CE
+1  39606  75  10026299  51.70  57.90 -465.00  PE
+2  39604  75  10026300  33.70  36.15 -183.75  PE 
+
+2021-02-04 10:46:06,997:__main__:INFO:('04-02-2021 10:46:06', -270.0)
+2021-02-04 10:46:09,013:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:46:10,281:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp     pnl oty
+0  39605  75  10026298  41.95  36.80  386.25  CE
+1  39606  75  10026299  51.70  58.25 -491.25  PE
+2  39604  75  10026300  33.70  36.35 -198.75  PE 
+
+2021-02-04 10:46:10,283:__main__:INFO:('04-02-2021 10:46:10', -303.75)
+2021-02-04 10:46:12,286:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:46:13,735:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp     pnl oty
+0  39605  75  10026298  41.95  37.40  341.25  CE
+1  39606  75  10026299  51.70  57.45 -431.25  PE
+2  39604  75  10026300  33.70  35.90 -165.00  PE 
+
+2021-02-04 10:46:13,736:__main__:INFO:('04-02-2021 10:46:13', -255.0)
+2021-02-04 10:46:15,740:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:46:17,051:__main__:INFO: DF is : 
+       ss  qq        oo     tt   ltp     pnl oty
+0  39605  75  10026298  41.95  37.4  341.25  CE
+1  39606  75  10026299  51.70  57.6 -442.50  PE
+2  39604  75  10026300  33.70  36.0 -172.50  PE 
+
+2021-02-04 10:46:17,053:__main__:INFO:('04-02-2021 10:46:17', -273.75)
+2021-02-04 10:46:19,059:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:46:20,348:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp     pnl oty
+0  39605  75  10026298  41.95  38.10  288.75  CE
+1  39606  75  10026299  51.70  56.20 -337.50  PE
+2  39604  75  10026300  33.70  34.95  -93.75  PE 
+
+2021-02-04 10:46:20,349:__main__:INFO:('04-02-2021 10:46:20', -142.5)
+2021-02-04 10:46:22,358:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:46:23,713:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp     pnl oty
+0  39605  75  10026298  41.95  37.95  300.00  CE
+1  39606  75  10026299  51.70  56.35 -348.75  PE
+2  39604  75  10026300  33.70  35.20 -112.50  PE 
+
+2021-02-04 10:46:23,714:__main__:INFO:('04-02-2021 10:46:23', -161.25)
+2021-02-04 10:46:25,722:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:46:27,046:__main__:INFO: DF is : 
+       ss  qq        oo     tt   ltp     pnl oty
+0  39605  75  10026298  41.95  37.9  303.75  CE
+1  39606  75  10026299  51.70  56.8 -382.50  PE
+2  39604  75  10026300  33.70  35.2 -112.50  PE 
+
+2021-02-04 10:46:27,047:__main__:INFO:('04-02-2021 10:46:27', -191.25)
+2021-02-04 10:46:29,059:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:46:31,191:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp     pnl oty
+0  39605  75  10026298  41.95  38.45  262.50  CE
+1  39606  75  10026299  51.70  56.15 -333.75  PE
+2  39604  75  10026300  33.70  35.00  -97.50  PE 
+
+2021-02-04 10:46:31,192:__main__:INFO:('04-02-2021 10:46:31', -168.75)
+2021-02-04 10:46:33,199:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:46:34,609:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp     pnl oty
+0  39605  75  10026298  41.95  38.50  258.75  CE
+1  39606  75  10026299  51.70  56.55 -363.75  PE
+2  39604  75  10026300  33.70  35.20 -112.50  PE 
+
+2021-02-04 10:46:34,610:__main__:INFO:('04-02-2021 10:46:34', -217.5)
+2021-02-04 10:46:36,614:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:46:37,933:__main__:INFO: DF is : 
+       ss  qq        oo     tt   ltp     pnl oty
+0  39605  75  10026298  41.95  38.2  281.25  CE
+1  39606  75  10026299  51.70  57.2 -412.50  PE
+2  39604  75  10026300  33.70  35.6 -142.50  PE 
+
+2021-02-04 10:46:37,933:__main__:INFO:('04-02-2021 10:46:37', -273.75)
+2021-02-04 10:46:39,942:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:46:41,226:__main__:INFO: DF is : 
+       ss  qq        oo     tt   ltp     pnl oty
+0  39605  75  10026298  41.95  37.9  303.75  CE
+1  39606  75  10026299  51.70  57.3 -420.00  PE
+2  39604  75  10026300  33.70  35.7 -150.00  PE 
+
+2021-02-04 10:46:41,227:__main__:INFO:('04-02-2021 10:46:41', -266.25)
+2021-02-04 10:46:43,238:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:46:44,638:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp     pnl oty
+0  39605  75  10026298  41.95  37.55  330.00  CE
+1  39606  75  10026299  51.70  57.45 -431.25  PE
+2  39604  75  10026300  33.70  35.60 -142.50  PE 
+
+2021-02-04 10:46:44,639:__main__:INFO:('04-02-2021 10:46:44', -243.75)
+2021-02-04 10:46:46,653:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:46:47,925:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp     pnl oty
+0  39605  75  10026298  41.95  37.05  367.50  CE
+1  39606  75  10026299  51.70  57.95 -468.75  PE
+2  39604  75  10026300  33.70  35.75 -153.75  PE 
+
+2021-02-04 10:46:47,927:__main__:INFO:('04-02-2021 10:46:47', -255.0)
+2021-02-04 10:46:49,932:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:46:51,286:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp     pnl oty
+0  39605  75  10026298  41.95  37.55  330.00  CE
+1  39606  75  10026299  51.70  57.85 -461.25  PE
+2  39604  75  10026300  33.70  35.95 -168.75  PE 
+
+2021-02-04 10:46:51,287:__main__:INFO:('04-02-2021 10:46:51', -300.0)
+2021-02-04 10:46:53,289:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:46:54,671:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp     pnl oty
+0  39605  75  10026298  41.95  38.00  296.25  CE
+1  39606  75  10026299  51.70  56.95 -393.75  PE
+2  39604  75  10026300  33.70  35.35 -123.75  PE 
+
+2021-02-04 10:46:54,672:__main__:INFO:('04-02-2021 10:46:54', -221.25)
+2021-02-04 10:46:56,682:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-04 10:46:57,943:__main__:INFO: DF is : 
+       ss  qq        oo     tt    ltp     pnl oty
+0  39605  75  10026298  41.95  37.30  348.75  CE
+1  39606  75  10026299  51.70  57.85 -461.25  PE
+2  39604  75  10026300  33.70  36.00 -172.50  PE 
+
+2021-02-04 10:46:57,944:__main__:INFO:('04-02-2021 10:46:57', -285.0)
+2021-02-04 10:46:59,954:__main__:INFO:in finally block.. Closing multi threaded func if running..
+2021-02-04 10:46:59,955:__main__:INFO:-- Script Ended --
+2021-02-04 10:46:59,955:__main__:INFO:-- --------------------------------------------- --

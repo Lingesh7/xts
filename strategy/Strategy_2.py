@@ -51,8 +51,8 @@ mdf=pd.DataFrame(columns=['ordrtyp','ss','qq','oo','tt','ltp','pnl'])
 # new_dict = {k:[] for k in ['oo','tt','qq','ss','sl']}
 
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-kickTime = "14:46:00"
-wrapTime = "15:00:00"
+kickTime = "15:03:00"
+wrapTime = "15:15:00"
 globalSL = -1500
 globalTarget = 3000
 
@@ -303,6 +303,7 @@ def checkBalance():
     logger.info('Checking balance..')
     while a < 5:
         try:
+           login()
            bal_resp = xt.get_balance()
            if bal_resp['type'] != "error":
                balanceList = bal_resp['result']['BalanceList']
@@ -504,7 +505,7 @@ def repairStrategy(ticker):
     logger.info(f'Cur price of NIFTY is: {cur_prc}')
     logger.info(f'Points changed: {round(cur_prc-nfty_ltp,2)}')
     try:
-        if cur_prc > nfty_ltp+15:
+        if cur_prc > nfty_ltp+40:
             logger.info(f'{ticker} hits +40')
             logger.info('SquaringOff CE position..')
             pos=pd.DataFrame(new_dictR)
@@ -514,9 +515,9 @@ def repairStrategy(ticker):
             qt_y=ce_df[ce_df['oty']=='CE']['qq'].tolist()
             idqty = zip(ids,qt_y)
             for i_d,qty in idqty:
-                # logger.info(f'valid repair sq-off id {i_d}')
+                logger.info(f'valid repair sq-off id {i_d}')
                 squareOff(i_d, 'Repair CE',qty)
-                # logger.info('this is after sqoff and below code to change qty to 0')
+                logger.info('this is after sqoff and below code to change qty to 0')
                 logger.info('Changing the qty of to 0 in new_dictR')
                 for dtc in new_dictR:
                     if dtc['ss'] == i_d:
@@ -528,7 +529,7 @@ def repairStrategy(ticker):
             new_dictR.append(frsh)
             logger.info("----Stopping repeatedTimer------")
             rt1.stop()
-        elif cur_prc < nfty_ltp-15:
+        elif cur_prc < nfty_ltp-40:
             logger.info(f'{ticker} hits -40')
             logger.info('SquaringOff PE position..')
             pos=pd.DataFrame(new_dictR)
@@ -555,6 +556,7 @@ def repairStrategy(ticker):
             logger.info('repair running...')
     except Exception:
         logger.exception('Repair Strategy Failed')
+        logger.info("----Stopping repeatedTimer in Exception------")
         rt1.stop()
 
 def runSqOffLogics():

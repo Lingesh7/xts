@@ -1,0 +1,227 @@
+2021-02-08 10:51:08,446:__main__:INFO:Main Login Successful
+2021-02-08 10:51:08,446:__main__:INFO:Calculating everything before executing orders..
+2021-02-08 10:51:08,446:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-08 10:51:08,446:__main__:INFO:weekly expiry is : 11Feb2021, monthly expiry is: 25Feb2021
+2021-02-08 10:51:09,745:__main__:INFO:StrikePrice computed as : 15100
+2021-02-08 10:51:09,745:__main__:INFO:Input of get_eID fn : NIFTY, ce,11Feb2021,15100
+2021-02-08 10:51:09,745:__main__:INFO:Today is not Thursday. Hence straddle
+2021-02-08 10:51:11,130:__main__:INFO:Exchange Instrument ID : 46308, {'oty': ['CE'], 'ss': ['46308']}
+2021-02-08 10:51:11,130:__main__:INFO:Input of get_eID fn : NIFTY, pe,11Feb2021,15100
+2021-02-08 10:51:11,130:__main__:INFO:Today is not Thursday. Hence straddle
+2021-02-08 10:51:12,466:__main__:INFO:Exchange Instrument ID : 42813, {'oty': ['CE', 'PE'], 'ss': ['46308', '42813']}
+2021-02-08 10:51:12,466:__main__:INFO:Checking margin from user..
+2021-02-08 10:51:12,466:__main__:INFO:Checking balance..
+2021-02-08 10:51:14,016:__main__:INFO:Login Successful
+2021-02-08 10:51:17,984:__main__:INFO:Balance retreived success, available cash : 1000000000
+2021-02-08 10:51:17,986:__main__:INFO: 
+              net_cash - 1000000000,
+              strikePrice - 15100,
+              Nifty Spot - 15111.75,
+              BankNifty Spot - None
+              exchangeInstrumentID - [46308, 42813]
+              
+2021-02-08 10:51:17,988:__main__:INFO:All set from prepareVars func.. Giving a go for orders..
+2021-02-08 10:51:17,989:__main__:INFO:required variables set-- ready to trigger orders at desired time
+2021-02-08 10:51:17,992:__main__:INFO:Required Margin Available.. Taking positions...
+2021-02-08 10:51:20,175:__mp_main__:INFO:Main Login Successful
+2021-02-08 10:51:20,191:__mp_main__:INFO:Placing Orders.. 
+
+2021-02-08 10:51:20,266:__mp_main__:INFO:Main Login Successful
+2021-02-08 10:51:20,270:__mp_main__:INFO:Main Login Successful
+2021-02-08 10:51:20,279:__mp_main__:INFO:Placing Orders.. 
+
+2021-02-08 10:51:20,317:__mp_main__:INFO:Main Login Successful
+2021-02-08 10:51:21,509:__mp_main__:INFO: 
+ Order ID for SELL 46308 is: 10025129 
+
+2021-02-08 10:51:21,509:__mp_main__:INFO:Retreiving OrderBook..
+2021-02-08 10:51:21,552:__mp_main__:INFO: 
+ Order ID for SELL 42813 is: 10025130 
+
+2021-02-08 10:51:21,552:__mp_main__:INFO:Retreiving OrderBook..
+2021-02-08 10:51:22,783:__mp_main__:INFO:OrderBook result retreived success
+2021-02-08 10:51:22,783:__mp_main__:INFO:traded price is: 106.05
+2021-02-08 10:51:23,790:__mp_main__:INFO:OrderBook result retreived success
+2021-02-08 10:51:23,790:__mp_main__:INFO:traded price is: 101.5
+2021-02-08 10:51:23,790:__main__:INFO:printing new_dictR value : [{'ordrtyp': 'Entry', 'ss': '46308', 'qq': 75, 'oo': 10025129, 'tt': 106.05}, {'ordrtyp': 'Entry', 'ss': '42813', 'qq': 75, 'oo': 10025130, 'tt': 101.5}]
+2021-02-08 10:51:23,932:__main__:INFO:starting multi funcs with threaded timer...
+2021-02-08 10:51:23,932:__main__:INFO:--- Entering SquareOffLogic Function after placing orders ---
+2021-02-08 10:51:25,200:__main__:INFO:Login Successful
+2021-02-08 10:51:25,200:__main__:INFO:
+ Entering runSqOffLogics func,
+ 	 This logic runs till the end of the script and 
+              checks SL/TARGET/TIMEings 
+
+2021-02-08 10:51:25,200:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-08 10:51:27,878:__main__:ERROR:Failed to get PNL
+Traceback (most recent call last):
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 513, in send_subscription
+    response = self._post('market.instruments.subscription', json.dumps(params))
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 639, in _post
+    return self._request(route, "POST", params)
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 688, in _request
+    raise ex.XTSTokenException(data["description"])
+XTConnect.Exception.XTSTokenException: Invalid Token
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\Strategy_2.py", line 470, in getPnL
+    subs_resp=xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 516, in send_subscription
+    return response['description']
+UnboundLocalError: local variable 'response' referenced before assignment
+2021-02-08 10:51:29,145:__main__:INFO:Login Successful
+2021-02-08 10:51:29,145:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-08 10:51:31,645:__main__:ERROR:Failed to get PNL
+Traceback (most recent call last):
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 513, in send_subscription
+    response = self._post('market.instruments.subscription', json.dumps(params))
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 639, in _post
+    return self._request(route, "POST", params)
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 688, in _request
+    raise ex.XTSTokenException(data["description"])
+XTConnect.Exception.XTSTokenException: Invalid Token
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\Strategy_2.py", line 470, in getPnL
+    subs_resp=xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 516, in send_subscription
+    return response['description']
+UnboundLocalError: local variable 'response' referenced before assignment
+2021-02-08 10:51:32,814:__main__:INFO:Login Successful
+2021-02-08 10:51:32,814:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-08 10:51:35,207:__main__:ERROR:Unable to getSpot from index
+Traceback (most recent call last):
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 505, in get_quote
+    response = self._post('market.instruments.quotes', json.dumps(params))
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 639, in _post
+    return self._request(route, "POST", params)
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 688, in _request
+    raise ex.XTSTokenException(data["description"])
+XTConnect.Exception.XTSTokenException: Invalid Token
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\Strategy_2.py", line 149, in getSpot
+    spot_resp = xt.get_quote(
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 508, in get_quote
+    return response['description']
+UnboundLocalError: local variable 'response' referenced before assignment
+2021-02-08 10:51:35,376:__main__:ERROR:Failed to get PNL
+Traceback (most recent call last):
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 513, in send_subscription
+    response = self._post('market.instruments.subscription', json.dumps(params))
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 639, in _post
+    return self._request(route, "POST", params)
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 688, in _request
+    raise ex.XTSTokenException(data["description"])
+XTConnect.Exception.XTSTokenException: Invalid Token
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\Strategy_2.py", line 470, in getPnL
+    subs_resp=xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 516, in send_subscription
+    return response['description']
+UnboundLocalError: local variable 'response' referenced before assignment
+2021-02-08 10:51:36,674:__main__:INFO:Login Successful
+2021-02-08 10:51:36,676:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-08 10:51:39,116:__main__:ERROR:Failed to get PNL
+Traceback (most recent call last):
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 513, in send_subscription
+    response = self._post('market.instruments.subscription', json.dumps(params))
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 639, in _post
+    return self._request(route, "POST", params)
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 688, in _request
+    raise ex.XTSTokenException(data["description"])
+XTConnect.Exception.XTSTokenException: Invalid Token
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\Strategy_2.py", line 470, in getPnL
+    subs_resp=xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 516, in send_subscription
+    return response['description']
+UnboundLocalError: local variable 'response' referenced before assignment
+2021-02-08 10:51:40,400:__main__:INFO:Login Successful
+2021-02-08 10:51:40,400:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-08 10:51:42,813:__main__:ERROR:Failed to get PNL
+Traceback (most recent call last):
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 513, in send_subscription
+    response = self._post('market.instruments.subscription', json.dumps(params))
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 639, in _post
+    return self._request(route, "POST", params)
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 688, in _request
+    raise ex.XTSTokenException(data["description"])
+XTConnect.Exception.XTSTokenException: Invalid Token
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\Strategy_2.py", line 470, in getPnL
+    subs_resp=xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 516, in send_subscription
+    return response['description']
+UnboundLocalError: local variable 'response' referenced before assignment
+2021-02-08 10:51:44,128:__main__:INFO:Login Successful
+2021-02-08 10:51:44,128:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-08 10:51:45,129:__main__:ERROR:Unable to getSpot from index
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\Strategy_2.py", line 155, in getSpot
+    listQuotes = json.loads(spot_resp['result']['listQuotes'][i])
+KeyError: 'result'
+2021-02-08 10:51:46,595:__main__:ERROR:Failed to get PNL
+Traceback (most recent call last):
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 513, in send_subscription
+    response = self._post('market.instruments.subscription', json.dumps(params))
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 639, in _post
+    return self._request(route, "POST", params)
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 688, in _request
+    raise ex.XTSTokenException(data["description"])
+XTConnect.Exception.XTSTokenException: Invalid Token
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\Strategy_2.py", line 470, in getPnL
+    subs_resp=xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 516, in send_subscription
+    return response['description']
+UnboundLocalError: local variable 'response' referenced before assignment
+2021-02-08 10:51:47,823:__main__:INFO:Login Successful
+2021-02-08 10:51:47,823:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-08 10:51:50,259:__main__:ERROR:Failed to get PNL
+Traceback (most recent call last):
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 513, in send_subscription
+    response = self._post('market.instruments.subscription', json.dumps(params))
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 639, in _post
+    return self._request(route, "POST", params)
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 688, in _request
+    raise ex.XTSTokenException(data["description"])
+XTConnect.Exception.XTSTokenException: Invalid Token
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\Strategy_2.py", line 470, in getPnL
+    subs_resp=xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 516, in send_subscription
+    return response['description']
+UnboundLocalError: local variable 'response' referenced before assignment
+2021-02-08 10:51:51,501:__main__:INFO:Login Successful
+2021-02-08 10:51:51,503:__main__:INFO:Checking CurPnL for this strategy..
+2021-02-08 10:51:53,660:__main__:INFO:Strategy2 Summary: 
+ Empty DataFrame
+Columns: [ordrtyp, ss, qq, oo, tt, ltp, pnl]
+Index: []
+2021-02-08 10:51:53,661:__main__:INFO:Dumping the PnL list to excel sheet..
+2021-02-08 10:51:53,662:__main__:INFO:Nothing to write in excel..
+2021-02-08 10:51:53,663:__main__:INFO:in finally block.. Closing multi threaded func if running..
+2021-02-08 10:51:53,663:__main__:INFO:-- Script Ended --
+2021-02-08 10:51:53,664:__main__:INFO:-- --------------------------------------------- --

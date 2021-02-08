@@ -135,3 +135,14 @@ for line in open('D:/Python/fc-page1.json', 'r'):
 final_df = pd.concat(dfs)
 final_df.to_excel(r'C:/Users/Welcome/Desktop/pnl_data.xlsx')
 
+---------------------------------
+'open an excel and write to separate sheets'
+import pandas as pd
+
+df = pd.read_excel("input.xlsx")
+
+with pd.ExcelWriter("output.xlsx") as writer:
+    for name, group in df.groupby("column_name"):
+        group.to_excel(writer, index=False, sheet_name=name[:31])
+
+--------------------------------

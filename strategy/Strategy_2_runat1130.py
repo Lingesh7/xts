@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Feb 01 2021 21:44:33 2021
-Strategy_2  
+Strategy_2 
 @author: mling
 """
 
@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 
-filename='../logs/Strategy2_log_'+datetime.strftime(datetime.now(), "%d%m%Y_%H%M")+'.txt'
+filename='../logs/Strategy21_log_'+datetime.strftime(datetime.now(), "%d%m%Y_%H%M")+'.txt'
 
 file_handler = logging.FileHandler(filename)
 # file_handler=logging.handlers.TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=5)
@@ -53,7 +53,6 @@ mdf=pd.DataFrame(columns=['ordrtyp','ss','qq','oo','tt','ltp','pnl'])
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
 kickTime = "11:00:00"
 wrapTime = "15:15:00"
-repairTime = "12:40:00"
 globalSL = -1500
 globalTarget = 3000
 
@@ -506,7 +505,7 @@ def repairStrategy(ticker):
     logger.info(f'Cur price of NIFTY is: {cur_prc}')
     logger.info(f'Points changed: {round(cur_prc-nfty_ltp,2)}')
     try:
-        if cur_prc > nfty_ltp+40 and (datetime.now() <= datetime.strptime(cdate + " " + repairTime, "%d-%m-%Y %H:%M:%S")):
+        if cur_prc > nfty_ltp+40:
             logger.info(f'{ticker} hits +40')
             logger.info('SquaringOff CE position..')
             pos=pd.DataFrame(new_dictR)
@@ -530,7 +529,7 @@ def repairStrategy(ticker):
             new_dictR.append(frsh)
             logger.info("----Stopping repeatedTimer------")
             # rt1.stop()
-        elif cur_prc < nfty_ltp-40 and (datetime.now() <= datetime.strptime(cdate + " " + repairTime, "%d-%m-%Y %H:%M:%S")):
+        elif cur_prc < nfty_ltp-40:
             logger.info(f'{ticker} hits -40')
             logger.info('SquaringOff PE position..')
             pos=pd.DataFrame(new_dictR)
@@ -648,18 +647,17 @@ if __name__ == '__main__':
                 logger.exception("Something wrong with SquareoffLogic func..")
             finally:
                 logger.info(f'Strategy2 Summary: \n {mdf}')
+                logger.info('Dumping the PnL list to excel sheet..')
                 if pnl_dump:
-                    logger.info('Dumping the PnL list to excel sheet..')
                     pnl_df= pd.DataFrame(pnl_dump,columns=['date','pl'])
                     pnl_df=pnl_df.set_index(['date'])
                     pnl_df.index=pd.to_datetime(pnl_df.index, format='%d-%m-%Y %H:%M:%S')
                     xdf=pnl_df['pl'].resample('1min').ohlc()
-                    writer = pd.ExcelWriter(r'..\pnl\Strategy21_PnL.xls')
+                    writer = pd.ExcelWriter(r'..\logs\Strategy21_PnL.xls')
                     xdf.to_excel(writer, sheet_name=(cdate+'_'+kickTime.replace(':','_')), index=True)
                     writer.save()
                 else:
                     logger.info('Nothing to write in excel..')
-                    
                 logger.info('in finally block.. Closing multi threaded func if running..')
                 rt1.stop()
                 logger.info('-- Script Ended --')

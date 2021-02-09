@@ -1,0 +1,20 @@
+2021-02-09 11:00:10,277:__mp_main__:INFO:Main Login Successful
+2021-02-09 11:00:10,285:__mp_main__:INFO:Main Login Successful
+2021-02-09 11:00:10,307:__mp_main__:INFO:Main Login Successful
+2021-02-09 11:00:10,321:__mp_main__:INFO:Placing Orders.. 
+
+2021-02-09 11:00:10,321:__mp_main__:INFO:Placing Orders.. 
+
+2021-02-09 11:00:10,683:__mp_main__:INFO: 
+ Order ID for SELL 47595 is: 10025508 
+
+2021-02-09 11:00:10,684:__mp_main__:INFO:Retreiving OrderBook..
+2021-02-09 11:00:10,690:__mp_main__:INFO: 
+ Order ID for SELL 46331 is: 10025509 
+
+2021-02-09 11:00:10,690:__mp_main__:INFO:Retreiving OrderBook..
+2021-02-09 11:00:11,209:__mp_main__:INFO:OrderBook result retreived success
+2021-02-09 11:00:11,209:__mp_main__:INFO:traded price is: 74.3
+2021-02-09 11:00:11,248:__mp_main__:INFO:OrderBook result retreived success
+2021-02-09 11:00:11,248:__mp_main__:INFO:traded price is: 80.0
+2021-02-09 11:00:11,248:__mp_main__:INFO:Main Login Successful

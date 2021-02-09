@@ -2,6 +2,7 @@
 """
 Spyder Editor
 Script to get daily OHLC based on the strike price of Index at 09:20 AM everyday.
+change the variable bankniftyAt920, excelsheet file name
 """
 from datetime import datetime
 import pandas as pd
@@ -23,23 +24,24 @@ def strkPrcCalc(spot,base):
     return strikePrice
 
 cdate = datetime.strftime(datetime.now(), "%b %d %Y")
-niftyAt920 = 15090.15
-strikePrice = strkPrcCalc(niftyAt920, 50)
+bankniftyAt920 = 35771.70
+strikePrice = strkPrcCalc(bankniftyAt920, 100)
 
 if __name__ == '__main__':
-   with pd.ExcelWriter(r'..\logs\08022021.xls',engine='xlsxwriter') as writer:
-        for i in range(strikePrice-250,strikePrice+300,50):
+   with pd.ExcelWriter(r'..\ohlc\BANKNIFTY_09022021.xls',engine='xlsxwriter') as writer:
+        for i in range(strikePrice-500,strikePrice+600,100):
             print(i)
             for j in ['CE','PE']:
                 print(j)
                 resp=xt.get_option_symbol(
                 exchangeSegment=2,
                 series='OPTIDX',
-                symbol='NIFTY',
+                symbol='BANKNIFTY',
                 expiryDate='11Feb2021',
                 optionType=j,
                 strikePrice=i)
                 # alist.append([resp['result'][0]['ExchangeInstrumentID'],resp['result'][0]['DisplayName']])
+                # print(resp)
                 eid=resp['result'][0]['ExchangeInstrumentID']
                 name=resp['result'][0]['Description']
                 print(eid, name)

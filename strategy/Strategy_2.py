@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 
-filename='../logs/Strategy2_log_'+datetime.strftime(datetime.now(), "%d%m%Y_%H%M")+'.txt'
+filename='../logs/Strategy2_log_'+datetime.strftime(datetime.now(), "%d%m%Y_%H")+'.txt'
 
 file_handler = logging.FileHandler(filename)
 # file_handler=logging.handlers.TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=5)
@@ -51,9 +51,9 @@ mdf=pd.DataFrame(columns=['ordrtyp','ss','qq','oo','tt','ltp','pnl'])
 # new_dict = {k:[] for k in ['oo','tt','qq','ss','sl']}
 
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-kickTime = "11:00:00"
-wrapTime = "15:15:00"
-repairTime = "12:40:00"
+kickTime = "12:05:00"
+wrapTime = "15:05:00"
+repairTime = "14:40:00"
 globalSL = -1500
 globalTarget = 3000
 
@@ -416,6 +416,7 @@ def placeOrder(symbol,buy_sell,quantity,ordrtyp):
                     logger.info('\n  Unable to get OrderList inside place order function..')
                     logger.info('..Hence traded price will retun as None \n ')
         elif order_resp['type'] == 'error':
+            logger.error(order_resp['description'])
             logger.info(f'Order not placed for - {symbol} ')
             raise Exception('Order not placed')
     except Exception():

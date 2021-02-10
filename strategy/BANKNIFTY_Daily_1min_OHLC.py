@@ -24,11 +24,11 @@ def strkPrcCalc(spot,base):
     return strikePrice
 
 cdate = datetime.strftime(datetime.now(), "%b %d %Y")
-bankniftyAt920 = 35771.70
+bankniftyAt920 = 35880.60
 strikePrice = strkPrcCalc(bankniftyAt920, 100)
 
 if __name__ == '__main__':
-   with pd.ExcelWriter(r'..\ohlc\BANKNIFTY_09022021.xls',engine='xlsxwriter') as writer:
+   with pd.ExcelWriter(f'..\ohlc\BANKNIFTY_{datetime.strftime(datetime.now(),"%d%b%Y")}.xlsx',engine='xlsxwriter') as writer:
         for i in range(strikePrice-500,strikePrice+600,100):
             print(i)
             for j in ['CE','PE']:

@@ -1,3 +1,48 @@
+class Mammal(object):
+  def __init__(self, mammalName):
+    print(mammalName, 'is a warm-blooded animal.')
+    
+class Dog(Mammal):
+  def __init__(self):
+    print('Dog has four legs.')
+    super().__init__('Dog')
+    
+d1 = Dog()
+
+
+class XTSCommon:
+    def __init__(self, token=None, userID=None, isInvestorClient=None):
+        """Initialize the common variables."""
+        self.token = token
+        self.userID = userID
+        self.isInvestorClient = isInvestorClient
+    def func1(self):
+        print('iam func1 from base class')
+        
+class XTSConnect(XTSCommon):
+    def __init__(self,
+                 apiKey=3,
+                 secretKey=2,
+                 source=1,
+                 root=None,
+                 debug=False,
+                 timeout=None,
+                 pool=None,
+                 disable_ssl='_ssl_flag'):
+        self.debug = debug
+        self.apiKey = apiKey
+        self.secretKey = secretKey
+        self.source = source
+        self.disable_ssl = disable_ssl
+        self.root = root
+        self.timeout = timeout
+        # super().__init__()
+        
+xt=XTSConnect()
+
+xt.apiKey
+xt.token
+xt.func1()
 # -*- coding: utf-8 -*-
 """
 Created on Tue Dec 29 12:46:43 2020
@@ -21,11 +66,16 @@ API_SECRET = "Ojre664@S9"
 XTS_API_BASE_URL = "https://xts-api.trading"
 source = "WEBAPI"
 xt = XTSConnect(API_KEY, API_SECRET, source)
-
+xto = XTSConnect(token,"IIFL",True)
 response = xt.interactive_login()
 # response = xt.marketdata_login()
 print("Login: ", response)
 
+
+token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiJJSUZMMjRfSU5URVJBQ1RJVkUiLCJwdWJsaWNLZXkiOiJlYmFhNGE4Y2YyZGUzNThlNTNjOTQyIiwiaWF0IjoxNjEyOTM0MDc3LCJleHAiOjE2MTMwMjA0Nzd9._-NDIM-FWSlwRBCG9vos15Yv_crwlng-_GQq2ihSJus'
+xto = XTSConnect(token,"IIFL24",True)
+
+xto.get_profile()
 
 
 orderList=xt.get_order_book()['result']
@@ -1269,4 +1319,49 @@ cur_PnL
 # mdf.set_index(['ss']).combine_first(tmp_df.set_index(['ss'])).reset_index()
 
 
+class Mammal(object):
+  def __init__(self, mammalName):
+    print(mammalName, 'is a warm-blooded animal.')
+    
+class Dog(Mammal):
+  def __init__(self):
+    print('Dog has four legs.')
+    super().__init__('Dog')
+    
+d1 = Dog()
+
+
+class XTSCommon:
+    def __init__(self, token=None, userID=None, isInvestorClient=None):
+        """Initialize the common variables."""
+        self.token = token
+        self.userID = userID
+        self.isInvestorClient = isInvestorClient
+    def func1(self):
+        print('iam func1 from base class')
+        
+class XTSConnect(XTSCommon):
+    def __init__(self,
+                 apiKey=3,
+                 secretKey=2,
+                 source=1,
+                 root=None,
+                 debug=False,
+                 timeout=None,
+                 pool=None,
+                 disable_ssl='_ssl_flag'):
+        self.debug = debug
+        self.apiKey = apiKey
+        self.secretKey = secretKey
+        self.source = source
+        self.disable_ssl = disable_ssl
+        self.root = root
+        self.timeout = timeout
+        # super().__init__()
+        
+xt=XTSConnect()
+
+xt.apiKey
+xt.token
+xt.func1()
 

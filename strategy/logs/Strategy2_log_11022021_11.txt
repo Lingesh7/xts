@@ -1,0 +1,80 @@
+2021-02-11 11:56:53,119:__main__:INFO:Calculating everything before executing orders..
+2021-02-11 11:56:53,119:__main__:INFO:Calculating everything before executing orders..
+2021-02-11 11:56:53,119:__main__:INFO:Calculating everything before executing orders..
+2021-02-11 11:56:53,119:__main__:INFO:Calculating everything before executing orders..
+2021-02-11 11:56:53,130:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-11 11:56:53,130:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-11 11:56:53,130:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-11 11:56:53,130:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-11 11:56:53,137:__main__:INFO:weekly expiry is : 11Feb2021, monthly expiry is: 25Feb2021
+2021-02-11 11:56:53,137:__main__:INFO:weekly expiry is : 11Feb2021, monthly expiry is: 25Feb2021
+2021-02-11 11:56:53,137:__main__:INFO:weekly expiry is : 11Feb2021, monthly expiry is: 25Feb2021
+2021-02-11 11:56:53,137:__main__:INFO:weekly expiry is : 11Feb2021, monthly expiry is: 25Feb2021
+2021-02-11 11:56:54,543:__main__:INFO:StrikePrice computed as : 0
+2021-02-11 11:56:54,543:__main__:INFO:StrikePrice computed as : 0
+2021-02-11 11:56:54,543:__main__:INFO:StrikePrice computed as : 0
+2021-02-11 11:56:54,543:__main__:INFO:StrikePrice computed as : 0
+2021-02-11 11:56:54,553:__main__:INFO:Input of get_eID fn : NIFTY, ce,11Feb2021,0
+2021-02-11 11:56:54,553:__main__:INFO:Input of get_eID fn : NIFTY, ce,11Feb2021,0
+2021-02-11 11:56:54,553:__main__:INFO:Input of get_eID fn : NIFTY, ce,11Feb2021,0
+2021-02-11 11:56:54,553:__main__:INFO:Input of get_eID fn : NIFTY, ce,11Feb2021,0
+2021-02-11 11:56:55,963:__main__:ERROR:Not able to get ExchangeInstrument ID
+2021-02-11 11:56:55,963:__main__:ERROR:Not able to get ExchangeInstrument ID
+2021-02-11 11:56:55,963:__main__:ERROR:Not able to get ExchangeInstrument ID
+2021-02-11 11:56:55,963:__main__:ERROR:Not able to get ExchangeInstrument ID
+2021-02-11 11:56:55,974:__main__:ERROR:Unable to reterive info like margin,strikePrice,nfty_ltp,bnknfty_ltp to place order
+Traceback (most recent call last):
+  File "D:\Python\First_Choice_Git\xts\strategy\Strategy_2_token.py", line 358, in prepareVars
+    eID = [ (get_eID(ticker,i,weekly_exp,strikePrice)) for i in ['ce','pe'] ]
+  File "D:\Python\First_Choice_Git\xts\strategy\Strategy_2_token.py", line 358, in <listcomp>
+    eID = [ (get_eID(ticker,i,weekly_exp,strikePrice)) for i in ['ce','pe'] ]
+  File "D:\Python\First_Choice_Git\xts\strategy\Strategy_2_token.py", line 211, in get_eID
+    raise Exception('Not able to get ExchangeInstrument ID')
+Exception: Not able to get ExchangeInstrument ID
+2021-02-11 11:56:55,974:__main__:ERROR:Unable to reterive info like margin,strikePrice,nfty_ltp,bnknfty_ltp to place order
+Traceback (most recent call last):
+  File "D:\Python\First_Choice_Git\xts\strategy\Strategy_2_token.py", line 358, in prepareVars
+    eID = [ (get_eID(ticker,i,weekly_exp,strikePrice)) for i in ['ce','pe'] ]
+  File "D:\Python\First_Choice_Git\xts\strategy\Strategy_2_token.py", line 358, in <listcomp>
+    eID = [ (get_eID(ticker,i,weekly_exp,strikePrice)) for i in ['ce','pe'] ]
+  File "D:\Python\First_Choice_Git\xts\strategy\Strategy_2_token.py", line 211, in get_eID
+    raise Exception('Not able to get ExchangeInstrument ID')
+Exception: Not able to get ExchangeInstrument ID
+2021-02-11 11:56:55,974:__main__:ERROR:Unable to reterive info like margin,strikePrice,nfty_ltp,bnknfty_ltp to place order
+Traceback (most recent call last):
+  File "D:\Python\First_Choice_Git\xts\strategy\Strategy_2_token.py", line 358, in prepareVars
+    eID = [ (get_eID(ticker,i,weekly_exp,strikePrice)) for i in ['ce','pe'] ]
+  File "D:\Python\First_Choice_Git\xts\strategy\Strategy_2_token.py", line 358, in <listcomp>
+    eID = [ (get_eID(ticker,i,weekly_exp,strikePrice)) for i in ['ce','pe'] ]
+  File "D:\Python\First_Choice_Git\xts\strategy\Strategy_2_token.py", line 211, in get_eID
+    raise Exception('Not able to get ExchangeInstrument ID')
+Exception: Not able to get ExchangeInstrument ID
+2021-02-11 11:56:55,974:__main__:ERROR:Unable to reterive info like margin,strikePrice,nfty_ltp,bnknfty_ltp to place order
+Traceback (most recent call last):
+  File "D:\Python\First_Choice_Git\xts\strategy\Strategy_2_token.py", line 358, in prepareVars
+    eID = [ (get_eID(ticker,i,weekly_exp,strikePrice)) for i in ['ce','pe'] ]
+  File "D:\Python\First_Choice_Git\xts\strategy\Strategy_2_token.py", line 358, in <listcomp>
+    eID = [ (get_eID(ticker,i,weekly_exp,strikePrice)) for i in ['ce','pe'] ]
+  File "D:\Python\First_Choice_Git\xts\strategy\Strategy_2_token.py", line 211, in get_eID
+    raise Exception('Not able to get ExchangeInstrument ID')
+Exception: Not able to get ExchangeInstrument ID
+2021-02-11 11:56:55,988:__main__:INFO:Vars not set properly...
+2021-02-11 11:56:55,988:__main__:INFO:Vars not set properly...
+2021-02-11 11:56:55,988:__main__:INFO:Vars not set properly...
+2021-02-11 11:56:55,988:__main__:INFO:Vars not set properly...
+2021-02-11 11:57:27,423:__main__:INFO:Calculating everything before executing orders..
+2021-02-11 11:57:27,427:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-11 11:57:27,428:__main__:INFO:weekly expiry is : 11Feb2021, monthly expiry is: 25Feb2021
+2021-02-11 11:57:28,756:__main__:INFO:StrikePrice computed as : 0
+2021-02-11 11:57:28,757:__main__:INFO:Input of get_eID fn : NIFTY, ce,11Feb2021,0
+2021-02-11 11:57:30,036:__main__:ERROR:Not able to get ExchangeInstrument ID
+2021-02-11 11:57:30,039:__main__:ERROR:Unable to reterive info like margin,strikePrice,nfty_ltp,bnknfty_ltp to place order
+Traceback (most recent call last):
+  File "D:\Python\First_Choice_Git\xts\strategy\Strategy_2_token.py", line 358, in prepareVars
+    eID = [ (get_eID(ticker,i,weekly_exp,strikePrice)) for i in ['ce','pe'] ]
+  File "D:\Python\First_Choice_Git\xts\strategy\Strategy_2_token.py", line 358, in <listcomp>
+    eID = [ (get_eID(ticker,i,weekly_exp,strikePrice)) for i in ['ce','pe'] ]
+  File "D:\Python\First_Choice_Git\xts\strategy\Strategy_2_token.py", line 211, in get_eID
+    raise Exception('Not able to get ExchangeInstrument ID')
+Exception: Not able to get ExchangeInstrument ID
+2021-02-11 11:57:30,043:__main__:INFO:Vars not set properly...

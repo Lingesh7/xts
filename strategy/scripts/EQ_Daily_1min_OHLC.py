@@ -8,16 +8,18 @@ change the variable bankniftyAt920, excelsheet file name
 from datetime import datetime
 import pandas as pd
 from XTConnect import XTSConnect
-# API_KEY = "ebaa4a8cf2de358e53c942"
-# API_SECRET = "Ojre664@S9"
-API_KEY = "1f69e651e541597cedd513"
-API_SECRET = "Dqkv635$Y3"
-XTS_API_BASE_URL = "https://xts-api.trading"
-source = "WEBAPI"
-xt = XTSConnect(API_KEY, API_SECRET, source)
-response = xt.marketdata_login()
-print("Login: ", response)
+import configparser
 
+cfg = configparser.ConfigParser()
+cfg.read('../../XTConnect/config.ini')
+
+source = cfg['user']['source']
+appKey = cfg.get('user', 'marketdata_appkey')
+secretKey = cfg.get('user', 'marketdata_secretkey')
+
+xt = XTSConnect(appKey, secretKey, source)
+response = xt.marketdata_login()
+print("Login: ", response['description'])
 
 cdate = datetime.strftime(datetime.now(), "%b %d %Y")
 
@@ -47,3 +49,5 @@ if __name__ == '__main__':
             # writer = pd.ExcelWriter(r'..\logs\ohlc1.xls',engine='xlsxwriter')
             spl_df.to_excel(writer, sheet_name=(ticker), index=False,)
         print('==========================================')
+        xt.marketdata_logout()
+

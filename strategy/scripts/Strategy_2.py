@@ -59,7 +59,7 @@ globalTarget = 3000
 
 API_KEY = "ebaa4a8cf2de358e53c942"
 API_SECRET = "Ojre664@S9"
-XTS_API_BASE_URL = "https://xts-api.trading"
+# XTS_API_BASE_URL = "https://xts-api.trading"
 source = "WEBAPI"
 xt = XTSConnect(API_KEY, API_SECRET, source)
 login_resp = xt.interactive_login()

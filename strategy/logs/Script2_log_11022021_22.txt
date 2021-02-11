@@ -1,0 +1,20 @@
+2021-02-11 22:43:15,615:__main__:INFO:file created today
+2021-02-11 22:43:15,619:__main__:INFO:Calculating everything before executing orders..
+2021-02-11 22:43:15,620:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-11 22:43:15,622:__main__:INFO:weekly expiry is : 11Feb2021, monthly expiry is: 25Feb2021
+2021-02-11 22:43:17,060:__main__:INFO:StrikePrice computed as : 15150
+2021-02-11 22:43:17,063:__main__:INFO:Input of get_eID fn : NIFTY, ce,11Feb2021,15150
+2021-02-11 22:43:18,533:__main__:INFO:Exchange Instrument ID : 46308, {'oty': ['CE'], 'ss': ['46308']}
+2021-02-11 22:43:18,541:__main__:INFO:Input of get_eID fn : NIFTY, pe,11Feb2021,15150
+2021-02-11 22:43:20,022:__main__:INFO:Exchange Instrument ID : 46331, {'oty': ['CE', 'PE'], 'ss': ['46308', '46331']}
+2021-02-11 22:43:20,025:__main__:INFO:Checking margin from user..
+2021-02-11 22:43:20,027:__main__:INFO:Checking balance..
+2021-02-11 22:43:22,667:__main__:INFO:Balance retreived success, available cash : 1000000000
+2021-02-11 22:43:22,670:__main__:INFO: 
+              net_cash - 1000000000,
+              strikePrice - 15150,
+              Nifty Spot - 15173.3,
+              BankNifty Spot - None
+              exchangeInstrumentID - [46308, 46331]
+              
+2021-02-11 22:43:22,674:__main__:INFO:All set from prepareVars func.. Giving a go for orders..

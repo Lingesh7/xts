@@ -2,21 +2,24 @@
 """
 Spyder Editor
 Script to get daily OHLC based on the strike price of Index at 09:20 AM everyday.
-change the variable niftyAt920, excelsheet file name
+update only the variable niftyAt920 
 
 """
 from datetime import datetime
 import pandas as pd
 from XTConnect import XTSConnect
-# API_KEY = "ebaa4a8cf2de358e53c942"
-# API_SECRET = "Ojre664@S9"
-API_KEY = "1f69e651e541597cedd513"
-API_SECRET = "Dqkv635$Y3"
-XTS_API_BASE_URL = "https://xts-api.trading"
-source = "WEBAPI"
-xt = XTSConnect(API_KEY, API_SECRET, source)
+import configparser
+
+cfg = configparser.ConfigParser()
+cfg.read('../../XTConnect/config.ini')
+
+source = cfg['user']['source']
+appKey = cfg.get('user', 'marketdata_appkey')
+secretKey = cfg.get('user', 'marketdata_secretkey')
+
+xt = XTSConnect(appKey, secretKey, source)
 response = xt.marketdata_login()
-print("Login: ", response)
+print("Login: ", response['description'])
 
 def strkPrcCalc(spot,base):
     strikePrice = base * round(spot/base)
@@ -25,7 +28,7 @@ def strkPrcCalc(spot,base):
     return strikePrice
 
 cdate = datetime.strftime(datetime.now(), "%b %d %Y")
-niftyAt920 = 15083.05
+niftyAt920 = 15098.00
 strikePrice = strkPrcCalc(niftyAt920, 50)
 
 if __name__ == '__main__':
@@ -61,5 +64,6 @@ if __name__ == '__main__':
                 # writer = pd.ExcelWriter(r'..\logs\ohlc1.xls',engine='xlsxwriter')
                 spl_df.to_excel(writer, sheet_name=(name+'_'+j), index=False,)
         print('==========================================')
+        xt.marketdata_logout()
 
     

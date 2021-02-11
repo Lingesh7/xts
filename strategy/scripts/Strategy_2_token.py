@@ -1,20 +1,21 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Feb 01 2021 21:44:33 2021
-Strategy_2 
+Strategy_2  with token auth
 @author: mling
 """
 
-from datetime import datetime
+from datetime import datetime,date
 from dateutil.relativedelta import relativedelta, TH
 from XTConnect.Connect import XTSConnect
-from threading import Timer
+from pathlib import Path
 import time
 import json
 import logging
 import pandas as pd
 import concurrent.futures
-
+import configparser
+import timer
 # from itertools import repeat
 # import multiprocessing
 # import schedule
@@ -25,7 +26,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 
-filename='../logs/Strategy21_log_'+datetime.strftime(datetime.now(), "%d%m%Y_%H%M")+'.txt'
+filename='../logs/Strategy2_log_'+datetime.strftime(datetime.now(), "%d%m%Y_%H")+'.txt'
 
 file_handler = logging.FileHandler(filename)
 # file_handler=logging.handlers.TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=5)
@@ -51,47 +52,41 @@ mdf=pd.DataFrame(columns=['ordrtyp','ss','qq','oo','tt','ltp','pnl'])
 # new_dict = {k:[] for k in ['oo','tt','qq','ss','sl']}
 
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-kickTime = "11:00:00"
-wrapTime = "15:15:00"
+kickTime = "10:30:00"
+wrapTime = "15:20:00"
+repairTime = "14:40:00"
 globalSL = -1500
 globalTarget = 3000
 
-API_KEY = "ebaa4a8cf2de358e53c942"
-API_SECRET = "Ojre664@S9"
-XTS_API_BASE_URL = "https://xts-api.trading"
-source = "WEBAPI"
-xt = XTSConnect(API_KEY, API_SECRET, source)
-login_resp = xt.interactive_login()
-if login_resp['type'] != 'error':
-    logger.info("Main Login Successful")
-    
-class RepeatedTimer(object):
-    def __init__(self, interval, function, *args, **kwargs):
-        self._timer     = None
-        self.interval   = interval
-        self.function   = function
-        self.args       = args
-        self.kwargs     = kwargs
-        self.is_running = False
-        self.start()
+cfg = configparser.ConfigParser()
+cfg.read('../../XTConnect/config.ini')
 
-    def _run(self):
-        self.is_running = False
-        self.start()
-        self.function(*self.args, **self.kwargs)
+source = cfg['user']['source']
+appKey = cfg.get('user', 'interactive_appkey')
+secretKey = cfg.get('user', 'interactive_secretkey')
+xt = XTSConnect(appKey, secretKey, source)
 
-    def start(self):
-        if not self.is_running:
-            self._timer = Timer(self.interval, self._run)
-            self._timer.start()
-            self.is_running = True
 
-    def stop(self):
-        self._timer.cancel()
-        self.is_running = False 
-        
+file = Path('access_token.txt')
+if file.exists() and (date.today() == date.fromtimestamp(file.stat().st_mtime)):
+    logger.info('Token file exists and created today')
+    in_file = open('access_token.txt','r').read().split()
+    access_token = in_file[0]
+    userID=in_file[1]
+    isInvestorClient=in_file[2]
+    logger.info('Initializing session with token..')
+    xt._set_common_variables(access_token, userID, isInvestorClient)
+else:
+    logger.info('Creating token file')   
+    response = xt.interactive_login()
+    logger.info(response['description'])
+    if "token" in response['result']:
+        with open ('access_token.txt','w') as file:
+            file.write('{}\n{}\n{}\n'.format(response['result']['token'], response['result']['userID'],
+                                           response['result']['isInvestorClient']))   
+         
 def login():
-    global xt
+    pass
     logger.debug('login initializing..')
     # Trading Interactive Creds
     API_KEY = "ebaa4a8cf2de358e53c942"
@@ -107,14 +102,14 @@ def login():
         logger.info("Login Successful")
     else:
         logger.error("Not able to login..")
-        
+         
 def auth_issue_fix(resp):
     logger.error(f'{resp["description"]}')
     if (resp['description'] == "Please Provide token to Authenticate") \
                    or (resp["description"] == "Your session has been expired") \
                    or (resp["description"] == "Token/Authorization not found"):
                    logger.debug("Trying to login in again...")
-                   login()
+                   # login()
 
 def nextThu_and_lastThu_expiry_date ():
     global weekly_exp, monthly_exp
@@ -372,7 +367,6 @@ def placeOrder(symbol,buy_sell,quantity,ordrtyp):
     new_dict['ordrtyp']=ordrtyp
     new_dict['ss']=str(symbol)
     new_dict['qq']=(quantity)
-    
     if buy_sell == "buy":
         t_type=xt.TRANSACTION_TYPE_BUY
     elif buy_sell == "sell":
@@ -415,6 +409,7 @@ def placeOrder(symbol,buy_sell,quantity,ordrtyp):
                     logger.info('\n  Unable to get OrderList inside place order function..')
                     logger.info('..Hence traded price will retun as None \n ')
         elif order_resp['type'] == 'error':
+            logger.error(order_resp['description'])
             logger.info(f'Order not placed for - {symbol} ')
             raise Exception('Order not placed')
     except Exception():
@@ -487,7 +482,7 @@ def getPnL():
         # break
     except Exception:
         logger.exception('Failed to get PNL')
-        login()
+        # login()
         
 def isSLHit():
     odf=pd.DataFrame(new_dictR)
@@ -505,65 +500,67 @@ def repairStrategy(ticker):
     logger.info(f'Cur price of NIFTY is: {cur_prc}')
     logger.info(f'Points changed: {round(cur_prc-nfty_ltp,2)}')
     try:
-        if cur_prc > nfty_ltp+40:
-            logger.info(f'{ticker} hits +40')
-            logger.info('SquaringOff CE position..')
-            pos=pd.DataFrame(new_dictR)
-            eid_df=pd.DataFrame(ordersEid)
-            ce_df=pos.merge(eid_df, how='left')
-            ids=ce_df[ce_df['oty']=='CE']['ss'].tolist()
-            qt_y=ce_df[ce_df['oty']=='CE']['qq'].tolist()
-            idqty = zip(ids,qt_y)
-            for i_d,qty in idqty:
-                logger.info(f'valid repair sq-off id {i_d}')
-                squareOff(i_d, 'Repair CE',qty)
-                logger.info('this is after sqoff and below code to change qty to 0')
-                logger.info('Changing the qty of to 0 in new_dictR')
-                for dtc in new_dictR:
-                    if dtc['ss'] == i_d:
-                        dtc.update({'qq':0})
-            logger.info('Placing another order..')        
-            eid1 = get_eID(ticker,'ce',weekly_exp,(strikePrice+50))
-            logger.info(f'Repair order eid is: {eid1}')
-            frsh=placeOrder(eid1,'sell',quantity,'RepairOnce')
-            new_dictR.append(frsh)
-            logger.info("----Stopping repeatedTimer------")
-            # rt1.stop()
-        elif cur_prc < nfty_ltp-40:
-            logger.info(f'{ticker} hits -40')
-            logger.info('SquaringOff PE position..')
-            pos=pd.DataFrame(new_dictR)
-            eid_df=pd.DataFrame(ordersEid)
-            pe_df=pos.merge(eid_df, how='left')
-            ids=pe_df[pe_df['oty']=='PE']['ss'].tolist()
-            qt_y=ce_df[ce_df['oty']=='PE']['qq'].tolist()
-            idqty = zip(ids,qt_y)
-            for i_d,qty in idqty:
-                squareOff(i_d, 'Repair PE',qty)
-                logger.info('Changing the qty of to 0 in new_dictR')
-                for dtc in new_dictR:
-                    if dtc['ss'] == i_d:
-                        dtc.update({'qq':0})
-            logger.info('Placing another order for PE')        
-            eid2 = get_eID(ticker,'pe',weekly_exp,(strikePrice-50))
-            logger.info(f'Repair order eid is: {eid2}')
-            frsh=placeOrder(eid2,'sell',quantity,'RepairOnce')
-            new_dictR.append(frsh)
-            logger.info("----Stopping repeatedTimer------")
-            # rt1.stop()
-            # runRepairActions('CE')
+        if (datetime.now() <= datetime.strptime(cdate + " " + repairTime, "%d-%m-%Y %H:%M:%S")):
+            if cur_prc > nfty_ltp+40:
+                logger.info(f'{ticker} hits +40')
+                logger.info('SquaringOff CE position..')
+                pos=pd.DataFrame(new_dictR)
+                eid_df=pd.DataFrame(ordersEid)
+                ce_df=pos.merge(eid_df, how='left')
+                ids=ce_df[ce_df['oty']=='CE']['ss'].tolist()
+                qt_y=ce_df[ce_df['oty']=='CE']['qq'].tolist()
+                idqty = zip(ids,qt_y)
+                for i_d,qty in idqty:
+                    logger.info(f'valid repair sq-off id {i_d}')
+                    squareOff(i_d, 'Repair CE',qty)
+                    logger.info('this is after sqoff and below code to change qty to 0')
+                    logger.info('Changing the qty of to 0 in new_dictR')
+                    for dtc in new_dictR:
+                        if dtc['ss'] == i_d:
+                            dtc.update({'qq':0})
+                logger.info('Placing another order..')        
+                eid1 = get_eID(ticker,'ce',weekly_exp,(strikePrice+50))
+                logger.info(f'Repair order eid is: {eid1}')
+                frsh=placeOrder(eid1,'sell',quantity,'RepairOnce')
+                new_dictR.append(frsh)
+                logger.info("----Stopping repeatedTimer------")
+                rt1.stop()
+            elif cur_prc < nfty_ltp-40:
+                logger.info(f'{ticker} hits -40')
+                logger.info('SquaringOff PE position..')
+                pos=pd.DataFrame(new_dictR)
+                eid_df=pd.DataFrame(ordersEid)
+                pe_df=pos.merge(eid_df, how='left')
+                ids=pe_df[pe_df['oty']=='PE']['ss'].tolist()
+                qt_y=ce_df[ce_df['oty']=='PE']['qq'].tolist()
+                idqty = zip(ids,qt_y)
+                for i_d,qty in idqty:
+                    squareOff(i_d, 'Repair PE',qty)
+                    logger.info('Changing the qty of to 0 in new_dictR')
+                    for dtc in new_dictR:
+                        if dtc['ss'] == i_d:
+                            dtc.update({'qq':0})
+                logger.info('Placing another order for PE')        
+                eid2 = get_eID(ticker,'pe',weekly_exp,(strikePrice-50))
+                logger.info(f'Repair order eid is: {eid2}')
+                frsh=placeOrder(eid2,'sell',quantity,'RepairOnce')
+                new_dictR.append(frsh)
+                logger.info("----Stopping repeatedTimer------")
+                rt1.stop()
+                # runRepairActions('CE')
+            else:
+                logger.info('repair running...')
         else:
-            logger.info('repair running...')
+            logger.info('Repair time window exceeds..stopping repair flow..')
+            rt1.stop()
     except Exception:
         logger.exception('Repair Strategy Failed')
         # logger.info("----Stopping repeatedTimer in Exception------")
         # rt1.stop()
-    else:
-        logger.info("----Stopping repeatedTimer in else block------")
-        rt1.stop()
+
 
 def runSqOffLogics():
-    login()
+    # login()
     global pnl_dump
     logger.info('''\n Entering runSqOffLogics func,\n \t This logic runs till the end of the script and 
               checks SL/TARGET/TIMEings \n''')
@@ -627,44 +624,45 @@ if __name__ == '__main__':
     # login()
     ticker='NIFTY'
     go = prepareVars(ticker)
-    if go:
-        logger.info('required variables set-- ready to trigger orders at desired time')
-        nstart=True
-        while nstart:
-            if (datetime.now() >= datetime.strptime(cdate + " " + kickTime, "%d-%m-%Y %H:%M:%S")):
-                runOrders()
-                nstart = False
-            else:
-                time.sleep(0.5)
-        if monitor:
-            logger.info("starting multi funcs with threaded timer...")
-            rt1 = RepeatedTimer(10, repairStrategy, ticker)
-            try:
-                logger.info("--- Entering SquareOffLogic Function after placing orders ---")
-                runSqOffLogics()
-                logger.info("--- Sq-off Func ended ---")
-            except Exception:
-                logger.exception("Something wrong with SquareoffLogic func..")
-            finally:
-                logger.info(f'Strategy2 Summary: \n {mdf}')
-                logger.info('Dumping the PnL list to excel sheet..')
-                if pnl_dump:
-                    pnl_df= pd.DataFrame(pnl_dump,columns=['date','pl'])
-                    pnl_df=pnl_df.set_index(['date'])
-                    pnl_df.index=pd.to_datetime(pnl_df.index, format='%d-%m-%Y %H:%M:%S')
-                    xdf=pnl_df['pl'].resample('1min').ohlc()
-                    writer = pd.ExcelWriter(r'..\logs\Strategy21_PnL.xls')
-                    xdf.to_excel(writer, sheet_name=(cdate+'_'+kickTime.replace(':','_')), index=True)
-                    writer.save()
-                else:
-                    logger.info('Nothing to write in excel..')
-                logger.info('in finally block.. Closing multi threaded func if running..')
-                rt1.stop()
-                logger.info('-- Script Ended --')
-                logger.info('-- --------------------------------------------- --')
-        else:
-            logger.info("No Orders Placed")
-            logger.info("Not started any multi funcs threaded timer")
-    else:
-        logger.info("Vars not set properly...")
+    # if go:
+    #     logger.info('required variables set-- ready to trigger orders at desired time')
+    #     nstart=True
+    #     while nstart:
+    #         if (datetime.now() >= datetime.strptime(cdate + " " + kickTime, "%d-%m-%Y %H:%M:%S")):
+    #             runOrders()
+    #             nstart = False
+    #         else:
+    #             time.sleep(0.5)
+    #     if monitor:
+    #         logger.info("starting multi funcs with threaded timer...")
+    #         rt1 = testing.RepeatedTimer(10, repairStrategy, ticker)
+    #         try:
+    #             logger.info("--- Entering SquareOffLogic Function after placing orders ---")
+    #             runSqOffLogics()
+    #             logger.info("--- Sq-off Func ended ---")
+    #         except Exception:
+    #             logger.exception("Something wrong with SquareoffLogic func..")
+    #         finally:
+    #             logger.info(f'Strategy2 Summary: \n {mdf}')
+    #             if pnl_dump:
+    #                 logger.info('Dumping the PnL list to excel sheet..')
+    #                 pnl_df= pd.DataFrame(pnl_dump,columns=['date','pl'])
+    #                 pnl_df=pnl_df.set_index(['date'])
+    #                 pnl_df.index=pd.to_datetime(pnl_df.index, format='%d-%m-%Y %H:%M:%S')
+    #                 xdf=pnl_df['pl'].resample('1min').ohlc()
+    #                 writer = pd.ExcelWriter(r'..\pnl\Strategy21_PnL.xls')
+    #                 xdf.to_excel(writer, sheet_name=(cdate+'_'+kickTime.replace(':','_')), index=True)
+    #                 writer.save()
+    #             else:
+    #                 logger.info('Nothing to write in excel..')
+                    
+    #             logger.info('in finally block.. Closing multi threaded func if running..')
+    #             rt1.stop()
+    #             logger.info('-- Script Ended --')
+    #             logger.info('-- --------------------------------------------- --')
+    #     else:
+    #         logger.info("No Orders Placed")
+    #         logger.info("Not started any multi funcs threaded timer")
+    # else:
+    #     logger.info("Vars not set properly...")
 

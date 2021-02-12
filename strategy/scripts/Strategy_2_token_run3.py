@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Feb 01 2021 21:44:33 2021
-Strategy_2  with token auth
+Strategy_2  with token auth run 3
 @author: mling
 """
 
@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 
-filename='../logs/Strategy2_log1_'+datetime.strftime(datetime.now(), "%d%m%Y_%H")+'.txt'
+filename='../logs/Strategy2_run3_log_'+datetime.strftime(datetime.now(), "%d%m%Y_%H")+'.txt'
 
 file_handler = logging.FileHandler(filename)
 # file_handler=logging.handlers.TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=5)
@@ -52,7 +52,7 @@ mdf=pd.DataFrame(columns=['ordrtyp','ss','qq','oo','tt','ltp','pnl'])
 # new_dict = {k:[] for k in ['oo','tt','qq','ss','sl']}
 
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-kickTime = "22:25:00"
+kickTime = "22:29:00"
 wrapTime = "22:45:00"
 repairTime = "22:40:00"
 globalSL = -1500
@@ -101,7 +101,8 @@ def auth_issue_fix(resp):
     logger.error(f'{resp["description"]}')
     if (resp['description'] == "Please Provide token to Authenticate") \
                    or (resp["description"] == "Your session has been expired") \
-                   or (resp["description"] == "Token/Authorization not found"):
+                   or (resp["description"] == "Token/Authorization not found") \
+                   or (resp["description"] == "Invalid Token"):
                    logger.debug("Trying to login in again...")
                    # login()
 
@@ -477,8 +478,6 @@ def getPnL():
     except Exception:
         logger.exception('Failed to get PNL')
         login()
-        # time.sleep(5)
-        
         
 def isSLHit():
     odf=pd.DataFrame(new_dictR)
@@ -646,7 +645,7 @@ if __name__ == '__main__':
                     pnl_df=pnl_df.set_index(['date'])
                     pnl_df.index=pd.to_datetime(pnl_df.index, format='%d-%m-%Y %H:%M:%S')
                     xdf=pnl_df['pl'].resample('1min').ohlc()
-                    writer = pd.ExcelWriter(r'..\pnl\Strategy21_PnL.xls')
+                    writer = pd.ExcelWriter(r'..\pnl\Strategy2_run3_PnL.xls')
                     xdf.to_excel(writer, sheet_name=(cdate+'_'+kickTime.replace(':','_')), index=True)
                     writer.save()
                 else:

@@ -44,17 +44,17 @@ global new_dict
 global pnl_dump
 global mdf
 
-ordersEid= {k:[] for k in ['oty','ss']}
+ordersEid= {k:[] for k in ['oty','ss','nn']}
 new_dict={}
 pnl_dump=[]
-mdf=pd.DataFrame(columns=['ordrtyp','ss','qq','oo','tt','ltp','pnl'])
+mdf=pd.DataFrame(columns=['ordrtyp','ss','nn','qq','oo','tt','ltp','pnl'])
 # ordersEid = {}
 # new_dict = {k:[] for k in ['oo','tt','qq','ss','sl']}
 
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-kickTime = "22:25:00"
-wrapTime = "22:45:00"
-repairTime = "22:40:00"
+kickTime = "15:28:00"
+wrapTime = "13:30:00"
+repairTime = "15:30:00"
 globalSL = -1500
 globalTarget = 3000
 
@@ -183,6 +183,7 @@ def get_eID(symbol,ce_pe,expiry,strikePrice):
         eid = int(eID_resp["result"][0]["ExchangeInstrumentID"])
         ordersEid['oty'].append(oType)
         ordersEid['ss'].append(str(eid))
+        ordersEid['nn'].append((lambda x: x['result'][0]['DisplayName'] if 'result' in x else None)(eID_resp))
         # ordersEid[eid]=(oType)
         logger.info(f'Exchange Instrument ID : {eid}, {ordersEid}')
         return eid
@@ -385,7 +386,7 @@ def placeOrder(symbol,buy_sell,quantity,ordrtyp):
             # return orderID
             # loop = True
             a=0
-            while a<3:
+            while a<12:
                 orderLists = getOrderList()
                 if orderLists:
                     new_orders = [ol for ol in orderLists if ol['AppOrderID'] == orderID and ol['OrderStatus'] != 'Filled']  
@@ -396,12 +397,15 @@ def placeOrder(symbol,buy_sell,quantity,ordrtyp):
                         break
                         # loop = False
                     else:
-                        logger.info(f'\n Placed order {orderID} might be in Open or New Status, Hence retrying..{a}')
+                        logger.info(f' Placed order {orderID} might be in Open or New Status, Hence retrying..{a}')
                         a+=1
-                        time.sleep(1)
+                        time.sleep(2.5)
+                        if a==11:
+                            logger.info('Placed order is still in New or Open Status..Hence Cancelling the placed order')
+                            cancelOrder(orderID)
                 else:
                     logger.info('\n  Unable to get OrderList inside place order function..')
-                    logger.info('..Hence traded price will retun as None \n ')
+                    logger.info('..Hence traded price will retun as Zero \n ')
         elif order_resp['type'] == 'error':
             logger.error(order_resp['description'])
             logger.info(f'Order not placed for - {symbol} ')

@@ -146,3 +146,11 @@ with pd.ExcelWriter("output.xlsx") as writer:
         group.to_excel(writer, index=False, sheet_name=name[:31])
 
 --------------------------------
+
+Broker Name: SYMPHONY
+User ID: IIFL28
+Password: Xts@123456
+MarketData Key:98a27a5e1b81a59a7df220
+MarketData: secretKey: Naip137#fo
+Trading Key: 8a2c9c2c650b2334c0e432
+Trading :secretKey: Yuis804$IK

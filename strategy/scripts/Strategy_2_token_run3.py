@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Feb 01 2021 21:44:33 2021
-Strategy_2  with token auth
+Strategy_2 run 3  with token auth
 @author: mling
 """
 
@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 
-filename='../logs/Strategy2_log_run3'+datetime.strftime(datetime.now(), "%d%m%Y_%H")+'.txt'
+filename='../logs/Strategy2_run3_log_'+datetime.strftime(datetime.now(), "%d%m%Y_%H")+'.txt'
 
 file_handler = logging.FileHandler(filename)
 # file_handler=logging.handlers.TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=5)
@@ -47,14 +47,14 @@ global mdf
 ordersEid= {k:[] for k in ['oty','ss','nn']}
 new_dict={}
 pnl_dump=[]
-mdf=pd.DataFrame(columns=['ordrtyp','ss','nn''qq','oo','tt','ltp','pnl'])
+mdf=pd.DataFrame(columns=['ordrtyp','ss','nn','qq','oo','tt','ltp','pnl'])
 # ordersEid = {}
 # new_dict = {k:[] for k in ['oo','tt','qq','ss','sl']}
 
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-kickTime = "13:48:00"
-wrapTime = "14:45:00"
-repairTime = "15:06:00"
+kickTime = "11:00:00"
+wrapTime = "14:40:00"
+repairTime = "15:05:00"
 globalSL = -1500
 globalTarget = 3000
 
@@ -181,11 +181,13 @@ def get_eID(symbol,ce_pe,expiry,strikePrice):
     # logger.info(f'{eID_resp}')
     if (eID_resp['type'] != 'error') and (eID_resp["result"]):
         eid = int(eID_resp["result"][0]["ExchangeInstrumentID"])
+        ename=eID_resp["result"][0]["DisplayName"]
         ordersEid['oty'].append(oType)
         ordersEid['ss'].append(str(eid))
-        ordersEid['nn'].append((lambda x: x['result'][0]['DisplayName'] if 'result' in x else None)(eID_resp))
+        ordersEid['nn'].append(ename)
+        # ordersEid['nn'].append((lambda x: x['result'][0]['DisplayName'] if 'result' in x else None)(eID_resp))
         # ordersEid[eid]=(oType)
-        logger.info(f'Exchange Instrument ID : {eid}, {ordersEid}')
+        logger.info(f'Exchange Instrument ID : {ename}, {eid},  {ordersEid}')
         return eid
     else:
         logger.error('Not able to get ExchangeInstrument ID')
@@ -386,7 +388,7 @@ def placeOrder(symbol,buy_sell,quantity,ordrtyp):
             # return orderID
             # loop = True
             a=0
-            while a<3:
+            while a<12:
                 orderLists = getOrderList()
                 if orderLists:
                     new_orders = [ol for ol in orderLists if ol['AppOrderID'] == orderID and ol['OrderStatus'] != 'Filled']  
@@ -397,12 +399,15 @@ def placeOrder(symbol,buy_sell,quantity,ordrtyp):
                         break
                         # loop = False
                     else:
-                        logger.info(f'\n Placed order {orderID} might be in Open or New Status, Hence retrying..{a}')
+                        logger.info(f' Placed order {orderID} might be in Open or New Status, Hence retrying..{a}')
                         a+=1
-                        time.sleep(1)
+                        time.sleep(2.5)
+                        if a==11:
+                            logger.info('Placed order is still in New or Open Status..Hence Cancelling the placed order')
+                            cancelOrder(orderID)
                 else:
                     logger.info('\n  Unable to get OrderList inside place order function..')
-                    logger.info('..Hence traded price will retun as None \n ')
+                    logger.info('..Hence traded price will retun as Zero \n ')
         elif order_resp['type'] == 'error':
             logger.error(order_resp['description'])
             logger.info(f'Order not placed for - {symbol} ')
@@ -444,9 +449,7 @@ def getPnL():
     logger.info('Checking CurPnL for this strategy..')
     global mdf
     try:
-        # #print(j)
         # logger.info('Checking CurPnL for this strategy..')
-        # login()
         odf=pd.DataFrame(new_dictR)
         eid_df =pd.DataFrame(ordersEid)
         fdf = odf.merge(eid_df, how='left')
@@ -477,8 +480,6 @@ def getPnL():
         # break
     except Exception:
         logger.exception('Failed to get PNL')
-        login()
-        # time.sleep(5)
         
         
 def isSLHit():
@@ -552,8 +553,7 @@ def repairStrategy(ticker):
             rt1.stop()
     except Exception:
         logger.exception('Repair Strategy Failed')
-        # logger.info("----Stopping repeatedTimer in Exception------")
-        # rt1.stop()
+
 
 
 def runSqOffLogics():

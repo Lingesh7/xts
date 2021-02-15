@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 
-filename='../logs/Strategy2_log1_'+datetime.strftime(datetime.now(), "%d%m%Y_%H")+'.txt'
+filename='../logs/Strategy2_log_'+datetime.strftime(datetime.now(), "%d%m%Y_%H")+'.txt'
 
 file_handler = logging.FileHandler(filename)
 # file_handler=logging.handlers.TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=5)
@@ -52,9 +52,9 @@ mdf=pd.DataFrame(columns=['ordrtyp','ss','nn','qq','oo','tt','ltp','pnl'])
 # new_dict = {k:[] for k in ['oo','tt','qq','ss','sl']}
 
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-kickTime = "15:28:00"
-wrapTime = "13:30:00"
-repairTime = "15:30:00"
+kickTime = "10:00:00"
+wrapTime = "14:40:00"
+repairTime = "15:05:00"
 globalSL = -1500
 globalTarget = 3000
 
@@ -181,11 +181,13 @@ def get_eID(symbol,ce_pe,expiry,strikePrice):
     # logger.info(f'{eID_resp}')
     if (eID_resp['type'] != 'error') and (eID_resp["result"]):
         eid = int(eID_resp["result"][0]["ExchangeInstrumentID"])
+        ename=eID_resp["result"][0]["DisplayName"]
         ordersEid['oty'].append(oType)
         ordersEid['ss'].append(str(eid))
-        ordersEid['nn'].append((lambda x: x['result'][0]['DisplayName'] if 'result' in x else None)(eID_resp))
+        ordersEid['nn'].append(ename)
+        # ordersEid['nn'].append((lambda x: x['result'][0]['DisplayName'] if 'result' in x else None)(eID_resp))
         # ordersEid[eid]=(oType)
-        logger.info(f'Exchange Instrument ID : {eid}, {ordersEid}')
+        logger.info(f'Exchange Instrument ID : {ename}, {eid},  {ordersEid}')
         return eid
     else:
         logger.error('Not able to get ExchangeInstrument ID')
@@ -447,16 +449,14 @@ def getPnL():
     logger.info('Checking CurPnL for this strategy..')
     global mdf
     try:
-        # #print(j)
         # logger.info('Checking CurPnL for this strategy..')
-        # login()
         odf=pd.DataFrame(new_dictR)
         eid_df =pd.DataFrame(ordersEid)
         fdf = odf.merge(eid_df, how='left')
         instruments=[]
         for i in range(len(fdf)):
             instruments.append({'exchangeSegment': 2, 'exchangeInstrumentID': fdf['ss'].values[i]})
-            # #print(instruments)
+            # print(instruments)
         # logger.info(f'sending subscription for : {instruments}')    
         xt.send_unsubscription(Instruments=instruments,xtsMessageCode=1502)
         # logger.info(unsubs_resp['description'])
@@ -475,13 +475,10 @@ def getPnL():
             logger.info(f' DF is : \n {mdf} \n')
             # logger.info(' Time    ,    PnL')
             logger.info((time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL))
-            # logger.info(time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL)
         return cur_PnL    
         # break
     except Exception:
         logger.exception('Failed to get PNL')
-        login()
-        # time.sleep(5)
         
         
 def isSLHit():
@@ -650,7 +647,7 @@ if __name__ == '__main__':
                     pnl_df=pnl_df.set_index(['date'])
                     pnl_df.index=pd.to_datetime(pnl_df.index, format='%d-%m-%Y %H:%M:%S')
                     xdf=pnl_df['pl'].resample('1min').ohlc()
-                    writer = pd.ExcelWriter(r'..\pnl\Strategy21_PnL.xls')
+                    writer = pd.ExcelWriter(r'..\pnl\Strategy2_PnL.xls')
                     xdf.to_excel(writer, sheet_name=(cdate+'_'+kickTime.replace(':','_')), index=True)
                     writer.save()
                 else:

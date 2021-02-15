@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Spyder Editor
-Script to get daily OHLC based on the strike price of Index at 09:20 AM everyday.
-change the variable bankniftyAt920, excelsheet file name
+Script to get daily OHLC   on EQ stocks
 """
 
 from datetime import datetime

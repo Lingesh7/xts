@@ -258,18 +258,21 @@ class RepeatedTimer(object):
         self.args       = args
         self.kwargs     = kwargs
         self.is_running = False
+        print('init f::::')
         self.start()
 
     def _run(self):
         self.is_running = False
         self.start()
         self.function(*self.args, **self.kwargs)
+        print('run f::::')
 
     def start(self):
         if not self.is_running:
             self._timer = Timer(self.interval, self._run)
             self._timer.start()
             self.is_running = True
+            print('start f::::')
 
     def stop(self):
         self._timer.cancel()
@@ -278,15 +281,16 @@ class RepeatedTimer(object):
 from time import sleep
 
 
-    
+def strategy():
+    print('Strategy func')    
 
     
 def printPNL(name):
     print("PNL")
     
 print("starting...")
-rt1 = RepeatedTimer(2, strategy, "strategy") # it auto-starts, no need of rt.start()
-rt2 = RepeatedTimer(10, printPNL, "printPNL")
+rt1 = RepeatedTimer(2, strategy) # it auto-starts, no need of rt.start()
+rt2 = RepeatedTimer(4, printPNL, "printPNL")
 try:
     print("sqOff started")
     squareOff(" in sqoff")
@@ -298,6 +302,42 @@ finally:
     rt2.stop()
     print("stopped all")
 
+#-------------------------------------------
+    
+def runOrders():
+    print('running orders')
+    
+import timer
+from datetime import datetime
+from threading import Timer
+
+cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
+kickTime = "16:40:00"
+kick_at = datetime.strptime(cdate + " " + kickTime, "%d-%m-%Y %H:%M:%S")
+duration = kick_at - datetime.now()
+delay = duration.total_seconds()
+delay=5
+ro1 = Timer(delay, runOrders)
+ro1.start()
+ro2 = Timer(delay+5, runOrders)
+ro2.start()
+ro3 = Timer(delay+10, runOrders)
+ro3.start()
+ro4 = Timer(delay+20, runOrders)
+ro4.start()
+
+ro3.cancel()
+ro4.cancel()
+
+rt1=RepeatedTimer(2, runOrders)
+rt1.stop()
+
+rta=Timer(2, runOrders)
+rta.start()
+rtc=Timer(2, runOrders).start()
+
+for thread in threading.enumerate(): 
+    print(thread.name)
 
 
 
@@ -306,25 +346,100 @@ finally:
 
 import threading 
 import time
-  
-def print_hello():
-  for i in range(4):
-    time.sleep(0.5)
-    print("Hello")
-  
-def print_hi(): 
-    for i in range(4): 
-      time.sleep(0.7)
-      print("Hi") 
+import datetime
 
-t1 = threading.Thread(target=print_hello)  
-t2 = threading.Thread(target=print_hi)  
+import sched, time
+
+def action():
+    print('sched is on')
+
+
+cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
+kickTime='15:30:30'
+
+t = time.strptime(cdate + " "+ kickTime, '%Y-%m-%d %H:%M:%S')
+t = time.mktime(t)
+
+s = sched.scheduler(time.time, time.sleep)
+
+s.enterabs(t, 1, action)
+s.run()
+
+
+t1=threading.Thread(target=s.run())
 t1.start()
-t2.start()
 
-# d1 = { 'CE' :58346 , 'PE' : 58349 }
+from datetime import datetime
+now = datetime.now()
+from datetime import timedelta
+run_at = now + timedelta(minutes=1)
+delay = (run_at - now).total_seconds()
 
+threading.Timer(delay, action).start()
 
+threading.Timer()
+#==============================================================
+from datetime import datetime
+
+def getDuration(then, now = datetime.now(), interval = "default"):
+
+    # Returns a duration as specified by variable interval
+    # Functions, except totalDuration, returns [quotient, remainder]
+
+    duration = now - then # For build-in functions
+    duration = then - now # For build-in functions
+    duration_in_s = duration.total_seconds() 
+    
+    def years():
+      return divmod(duration_in_s, 31536000) # Seconds in a year=31536000.
+
+    def days(seconds = None):
+      return divmod(seconds if seconds != None else duration_in_s, 86400) # Seconds in a day = 86400
+
+    def hours(seconds = None):
+      return divmod(seconds if seconds != None else duration_in_s, 3600) # Seconds in an hour = 3600
+
+    def minutes(seconds = None):
+      return divmod(seconds if seconds != None else duration_in_s, 60) # Seconds in a minute = 60
+
+    def seconds(seconds = None):
+      if seconds != None:
+        return divmod(seconds, 1)   
+      return duration_in_s
+
+    def totalDuration():
+        y = years()
+        d = days(y[1]) # Use remainder to calculate next variable
+        h = hours(d[1])
+        m = minutes(h[1])
+        s = seconds(m[1])
+
+        return "Time between dates: {} years, {} days, {} hours, {} minutes and {} seconds".format(int(y[0]), int(d[0]), int(h[0]), int(m[0]), int(s[0]))
+
+    return {
+        'years': int(years()[0]),
+        'days': int(days()[0]),
+        'hours': int(hours()[0]),
+        'minutes': int(minutes()[0]),
+        'seconds': int(seconds()),
+        'default': totalDuration()
+    }[interval]
+
+# Example usage
+# then = datetime(2012, 3, 5, 23, 8, 15)
+cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
+kickTime='15:31:30'
+then=datetime.strptime(cdate + " " + kickTime, "%d-%m-%Y %H:%M:%S")
+now = datetime.now()
+
+print(getDuration(then)) # E.g. Time between dates: 7 years, 208 days, 21 hours, 19 minutes and 15 seconds
+print(getDuration(then, now, 'years'))      # Prints duration in years
+print(getDuration(then, now, 'days'))       #                    days
+print(getDuration(then, now, 'hours'))      #                    hours
+print(getDuration(then, now, 'minutes'))    #                    minutes
+print(getDuration(then, now, 'seconds'))    #                    seconds
+
+#==============================================================
 import datetime
 
 def dummy():

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Feb 01 2021 21:44:33 2021
-Strategy_2  run 2 with token auth
+NFO Panther Strategy 
 @author: mling
 """
 
@@ -16,6 +16,7 @@ import pandas as pd
 import concurrent.futures
 import configparser
 import timer
+from threading import Timer
 # from itertools import repeat
 # import multiprocessing
 # import schedule
@@ -26,7 +27,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 
-filename='../logs/Strategy2_run2_log_'+datetime.strftime(datetime.now(), "%d%m%Y_%H")+'.txt'
+filename='../logs/NFOPanther_log_'+datetime.strftime(datetime.now(), "%d%m%Y_%H")+'.txt'
 
 file_handler = logging.FileHandler(filename)
 # file_handler=logging.handlers.TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=5)
@@ -52,7 +53,7 @@ mdf=pd.DataFrame(columns=['ordrtyp','ss','nn','qq','oo','tt','ltp','pnl'])
 # new_dict = {k:[] for k in ['oo','tt','qq','ss','sl']}
 
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-kickTime = "10:30:00"
+kickTime = "09:30:00"
 wrapTime = "14:40:00"
 repairTime = "15:05:00"
 globalSL = -1500
@@ -85,30 +86,9 @@ else:
             file.write('{}\n{}\n{}\n'.format(response['result']['token'], response['result']['userID'],
                                            response['result']['isInvestorClient']))   
          
-def login():
-    logger.debug('Again initializing inside login function..')
-    logger.info('Again creating a token file')   
-    response = xt.interactive_login()
-    logger.info(response['description'])
-    if "token" in response['result']:
-        with open ('access_token.txt','w') as file:
-            file.write('{}\n{}\n{}\n'.format(response['result']['token'], response['result']['userID'],
-                                              response['result']['isInvestorClient']))
-    else:
-        logger.error("Not able to login..")
-         
-def auth_issue_fix(resp):
-    logger.error(f'{resp["description"]}')
-    if (resp['description'] == "Please Provide token to Authenticate") \
-                   or (resp["description"] == "Your session has been expired") \
-                   or (resp["description"] == "Token/Authorization not found"):
-                   logger.debug("Trying to login in again...")
-                   # login()
-
 def nextThu_and_lastThu_expiry_date ():
     global weekly_exp, monthly_exp
     logger.info('Calculating weekly and monthly expiry dates..')
-    
     todayte = datetime.today()
     
     cmon = todayte.month
@@ -130,7 +110,7 @@ def nextThu_and_lastThu_expiry_date ():
     monthly_exp=str((month_last_thu_expiry.strftime("%d")))+month_last_thu_expiry.strftime("%b").capitalize()+month_last_thu_expiry.strftime("%Y")
     weekly_exp=str((next_thursday_expiry.strftime("%d")))+next_thursday_expiry.strftime("%b").capitalize()+next_thursday_expiry.strftime("%Y")
     logger.info(f'weekly expiry is : {weekly_exp}, monthly expiry is: {monthly_exp}')
-
+ 
 def getSpot():
     try:
         idx_instruments = [{'exchangeSegment': 1, 'exchangeInstrumentID': 'NIFTY 50'},
@@ -204,9 +184,9 @@ def getOrderList():
                logger.info('OrderBook result retreived success')
                return orderList
                break
-           if oBook_resp['type'] == "error":
-               auth_issue_fix(oBook_resp)
-               continue
+           # if oBook_resp['type'] == "error":
+           #     auth_issue_fix(oBook_resp)
+           #     continue
            else:
                raise Exception("Unkonwn error in getOrderList func")           
         except Exception:
@@ -226,9 +206,9 @@ def getPositionList():
                # logger.info(f'Position page result retreived success, {positionList}')
                return positionList
                break
-           elif pos_resp['type'] == "error":
-               auth_issue_fix(pos_resp)
-               continue
+           # elif pos_resp['type'] == "error":
+           #     auth_issue_fix(pos_resp)
+           #     continue
            else:
                raise Exception("Unkonwn error in getPositionoList func")
         except Exception:
@@ -268,9 +248,9 @@ def squareOff(eid,symb,qty):
            if sq_off_resp['type'] != "error":
                logger.info(f'Squared-off for symbol {symb} - {eid}')
                break
-           if sq_off_resp['type'] == "error":
-               auth_issue_fix(sq_off_resp)
-               continue
+           # if sq_off_resp['type'] == "error":
+           #     auth_issue_fix(sq_off_resp)
+           #     continue
            else:
                raise Exception("Unkonwn error in squareOff func")
         except Exception:
@@ -303,10 +283,10 @@ def checkBalance():
                logger.info(f'Balance retreived success, available cash : {cashAvailable}')
                return int(cashAvailable)
                break
-           if bal_resp['type'] == "error":
-               #print(bal_resp["description"])
-               auth_issue_fix(bal_resp)
-               continue
+           # if bal_resp['type'] == "error":
+           #     #print(bal_resp["description"])
+           #     auth_issue_fix(bal_resp)
+           #     continue
            else:
                raise Exception("Unkonwn error in checkBalance func")
         except Exception:
@@ -449,16 +429,14 @@ def getPnL():
     logger.info('Checking CurPnL for this strategy..')
     global mdf
     try:
-        # #print(j)
         # logger.info('Checking CurPnL for this strategy..')
-        # login()
         odf=pd.DataFrame(new_dictR)
         eid_df =pd.DataFrame(ordersEid)
         fdf = odf.merge(eid_df, how='left')
         instruments=[]
         for i in range(len(fdf)):
             instruments.append({'exchangeSegment': 2, 'exchangeInstrumentID': fdf['ss'].values[i]})
-            # #print(instruments)
+            # print(instruments)
         # logger.info(f'sending subscription for : {instruments}')    
         xt.send_unsubscription(Instruments=instruments,xtsMessageCode=1502)
         # logger.info(unsubs_resp['description'])
@@ -477,13 +455,11 @@ def getPnL():
             logger.info(f' DF is : \n {mdf} \n')
             # logger.info(' Time    ,    PnL')
             logger.info((time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL))
-            # logger.info(time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL)
         return cur_PnL    
         # break
     except Exception:
         logger.exception('Failed to get PNL')
-       
-        
+
 def isSLHit():
     odf=pd.DataFrame(new_dictR)
     orderList=getOrderList()
@@ -556,8 +532,6 @@ def repairStrategy(ticker):
     except Exception:
         logger.exception('Repair Strategy Failed')
 
-
-
 def runSqOffLogics():
     # login()
     global pnl_dump
@@ -616,52 +590,66 @@ def runSqOffLogics():
             else:
                 pnl_dump.append([time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL])
                 time.sleep(2)
-    # return pnl_dump
 
-#maybe main()
 if __name__ == '__main__':
-    # login()
     ticker='NIFTY'
     go = prepareVars(ticker)
     if go:
-        logger.info('required variables set-- ready to trigger orders at desired time')
-        nstart=True
-        while nstart:
-            if (datetime.now() >= datetime.strptime(cdate + " " + kickTime, "%d-%m-%Y %H:%M:%S")):
-                runOrders()
-                nstart = False
-            else:
-                time.sleep(0.5)
-        if monitor:
-            logger.info("starting multi funcs with threaded timer...")
-            rt1 = timer.RepeatedTimer(10, repairStrategy, ticker)
-            try:
-                logger.info("--- Entering SquareOffLogic Function after placing orders ---")
-                runSqOffLogics()
-                logger.info("--- Sq-off Func ended ---")
-            except Exception:
-                logger.exception("Something wrong with SquareoffLogic func..")
-            finally:
-                logger.info(f'Strategy2 Summary: \n {mdf}')
-                if pnl_dump:
-                    logger.info('Dumping the PnL list to excel sheet..')
-                    pnl_df= pd.DataFrame(pnl_dump,columns=['date','pl'])
-                    pnl_df=pnl_df.set_index(['date'])
-                    pnl_df.index=pd.to_datetime(pnl_df.index, format='%d-%m-%Y %H:%M:%S')
-                    xdf=pnl_df['pl'].resample('1min').ohlc()
-                    writer = pd.ExcelWriter(r'..\pnl\Strategy2_run2_PnL.xls')
-                    xdf.to_excel(writer, sheet_name=(cdate+'_'+kickTime.replace(':','_')), index=True)
-                    writer.save()
-                else:
-                    logger.info('Nothing to write in excel..')
-                    
-                logger.info('in finally block.. Closing multi threaded func if running..')
-                rt1.stop()
-                logger.info('-- Script Ended --')
-                logger.info('-- --------------------------------------------- --')
-        else:
-            logger.info("No Orders Placed")
-            logger.info("Not started any multi funcs threaded timer")
-    else:
-        logger.info("Vars not set properly...")
-
+        logger.info('required variables set -- ready to trigger orders at desired time')
+        
+        kick_at = datetime.strptime(cdate + " " + kickTime, "%d-%m-%Y %H:%M:%S")
+        duration = kick_at - datetime.now()
+        delay = duration.total_seconds()
+        
+        ro1 = Timer(delay, runOrders)
+        ro1.start()
+        ro2 = Timer(delay+3600, runOrders)
+        ro2.start()
+        ro3 = Timer(delay+7200, runOrders)
+        ro3.start()
+        ro4 = Timer(delay+10800, runOrders)
+        ro4.start()
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        

@@ -5,10 +5,12 @@ Script to get daily OHLC based on the strike price of Index at 09:20 AM everyday
 update only the variable niftyAt920 
 
 """
-from datetime import datetime
+from datetime import datetime,date
 import pandas as pd
 from XTConnect import XTSConnect
 import configparser
+from pathlib import Path
+
 
 cfg = configparser.ConfigParser()
 cfg.read('../../XTConnect/config.ini')
@@ -18,8 +20,25 @@ appKey = cfg.get('user', 'marketdata_appkey')
 secretKey = cfg.get('user', 'marketdata_secretkey')
 
 xt = XTSConnect(appKey, secretKey, source)
-response = xt.marketdata_login()
-print("Login: ", response['description'])
+
+file = Path('access_token.txt')
+if file.exists() and (date.today() == date.fromtimestamp(file.stat().st_mtime)):
+    print('Token file exists and created today')
+    in_file = open('access_token.txt','r').read().split()
+    access_token = in_file[0]
+    userID=in_file[1]
+    # isInvestorClient=in_file[2]
+    print('Initializing session with token..')
+    xt._set_common_variables(access_token, userID)
+else:
+    print('Creating token file')   
+    response = xt.marketdata_login()
+    print(response)
+    if "token" in response['result']:
+        with open ('access_token.txt','w') as file:
+            file.write('{}\n{}\n'.format(response['result']['token'], response['result']['userID']
+                                           )) 
+
 
 def strkPrcCalc(spot,base):
     strikePrice = base * round(spot/base)
@@ -28,7 +47,7 @@ def strkPrcCalc(spot,base):
     return strikePrice
 
 cdate = datetime.strftime(datetime.now(), "%b %d %Y")
-niftyAt920 = 15292.35
+niftyAt920 = 15411.65
 strikePrice = strkPrcCalc(niftyAt920, 50)
 
 if __name__ == '__main__':
@@ -68,6 +87,6 @@ if __name__ == '__main__':
                     print(e)
                     
         print('==========================================')
-        xt.marketdata_logout()
+        # xt.marketdata_logout()
 
     

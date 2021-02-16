@@ -15,7 +15,7 @@ import logging
 import pandas as pd
 import concurrent.futures
 import configparser
-import timer
+# import timer
 from threading import Timer
 # from itertools import repeat
 # import multiprocessing
@@ -44,18 +44,21 @@ global ordersEid
 global new_dict
 global pnl_dump
 global mdf
+global multiplier
 
 ordersEid= {k:[] for k in ['oty','ss','nn']}
 new_dict={}
 pnl_dump=[]
 mdf=pd.DataFrame(columns=['ordrtyp','ss','nn','qq','oo','tt','ltp','pnl'])
+idxs=['NIFTY 50','NIFTY BANK']
+multiplier=1
 # ordersEid = {}
 # new_dict = {k:[] for k in ['oo','tt','qq','ss','sl']}
 
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-kickTime = "09:30:00"
-wrapTime = "14:40:00"
-repairTime = "15:05:00"
+startTime = "09:30:00"
+repairTime = "14:40:00"
+endTime = "15:05:00"
 globalSL = -1500
 globalTarget = 3000
 
@@ -136,6 +139,27 @@ def strkPrcCalc(spot,base):
     logger.info(f'StrikePrice computed as : {strikePrice}')
     return strikePrice
 
+def strikePrice(idx):
+    if idx in idxs:
+        base = 50 if idx == 'NIFTY 50' else 100
+    else:
+        logger.info(f'Invalid Index name {idx} - Valid names are {idxs}')
+    try:
+        idx_instruments = [{'exchangeSegment': 1, 'exchangeInstrumentID': idx}]
+        spot_resp = xt.get_quote(
+                    Instruments=idx_instruments,
+                    xtsMessageCode=1504,
+                    publishFormat='JSON')
+        listQuotes = json.loads(spot_resp['result']['listQuotes'][0])
+        spot=(listQuotes['IndexValue'])
+    except Exception:
+        logger.exception('Unable to getSpot from index {idx}')
+    else:
+        strikePrice = base * round(spot/base)
+        # logger.info(f'StrikePrice computed as : {strikePrice}')
+    return strikePrice   
+    
+    
 def get_eID(symbol,ce_pe,expiry,strikePrice):
     logger.info(f'Input of get_eID fn : {symbol}, {ce_pe},{expiry},{strikePrice}')
     weekday = datetime.today().weekday()
@@ -336,7 +360,37 @@ def prepareVars(ticker):
         logger.exception("Unable to reterive info like margin,strikePrice,nfty_ltp,bnknfty_ltp to place order")
         return False
 
-def placeOrder(symbol,buy_sell,quantity,ordrtyp):
+
+def masterDump():
+    exchangesegments = [xt.EXCHANGE_NSEFO]
+    mastr_resp = xt.get_master(exchangeSegmentList=exchangesegments)
+    print("Master: " + str(response))
+    master=mastr_resp['result']
+    for line in master:
+        for _ in range(10):
+            print(line)
+        dir(master)
+    spl=master.split('\n')
+    mstr_df = pd.DataFrame([sub.split("|") for sub in spl],columns=(['ExchangeSegment','ExchangeInstrumentID','InstrumentType','Name','Description','Series','NameWithSeries','InstrumentID','PriceBand.High','PriceBand.Low','FreezeQty','TickSize',' LotSize','UnderlyingInstrumentId','UnderlyingIndexName','ContractExpiration','StrikePrice','OptionType']))
+    instrument_df = mstr_df[mstr_df.Series == 'OPTIDX']
+    instrument_df.to_csv(f"../ohlc/NSE_Instruments_{cdate}.csv",index=False)        
+            
+def instrumentLookup(instrument_df,symbol):
+    """Looks up instrument token for a given script from instrument dump"""
+    try:
+        return instrument_df[instrument_df.Description==symbol].ExchangeInstrumentID.values[0]
+    except:
+        return -1            
+           
+instrumentLookup(instrument_df, 'BANKNIFTY2121836300PE') 
+    
+    
+def entry(txn_type,idx,strike,otype,expiry,lot=1):
+    strike = strikePrice(idx)
+    expiry = weekly_exp
+    qty = 75*lot if idx == 'NIFTY 50' else 25*lot
+    
+    
     logger.info('Placing Orders.. \n')
     # Place an intraday stop loss order on NSE
     orderID = 0
@@ -593,23 +647,7 @@ def runSqOffLogics():
 
 if __name__ == '__main__':
     ticker='NIFTY'
-    go = prepareVars(ticker)
-    if go:
-        logger.info('required variables set -- ready to trigger orders at desired time')
-        
-        kick_at = datetime.strptime(cdate + " " + kickTime, "%d-%m-%Y %H:%M:%S")
-        duration = kick_at - datetime.now()
-        delay = duration.total_seconds()
-        
-        ro1 = Timer(delay, runOrders)
-        ro1.start()
-        ro2 = Timer(delay+3600, runOrders)
-        ro2.start()
-        ro3 = Timer(delay+7200, runOrders)
-        ro3.start()
-        ro4 = Timer(delay+10800, runOrders)
-        ro4.start()
-        
+    nextThu_and_lastThu_expiry_date()
         
         
         

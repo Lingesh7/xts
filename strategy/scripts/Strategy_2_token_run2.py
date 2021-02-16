@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Feb 01 2021 21:44:33 2021
-Strategy_2  run 2 with token auth
+Strategy_2 run 2  with token auth
 @author: mling
 """
 
@@ -25,17 +25,13 @@ import timer
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
-
 filename='../logs/Strategy2_run2_log_'+datetime.strftime(datetime.now(), "%d%m%Y_%H")+'.txt'
-
 file_handler = logging.FileHandler(filename)
 # file_handler=logging.handlers.TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=5)
 file_handler.setLevel(logging.INFO)
 file_handler.setFormatter(formatter)
-
 stream_handler = logging.StreamHandler()
 stream_handler.setFormatter(formatter)
-
 logger.addHandler(file_handler)
 logger.addHandler(stream_handler)
 
@@ -48,11 +44,10 @@ ordersEid= {k:[] for k in ['oty','ss','nn']}
 new_dict={}
 pnl_dump=[]
 mdf=pd.DataFrame(columns=['ordrtyp','ss','nn','qq','oo','tt','ltp','pnl'])
-# ordersEid = {}
-# new_dict = {k:[] for k in ['oo','tt','qq','ss','sl']}
+
 
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-kickTime = "10:30:00"
+kickTime = "12:30:30"
 wrapTime = "14:40:00"
 repairTime = "15:05:00"
 globalSL = -1500
@@ -449,16 +444,14 @@ def getPnL():
     logger.info('Checking CurPnL for this strategy..')
     global mdf
     try:
-        # #print(j)
         # logger.info('Checking CurPnL for this strategy..')
-        # login()
         odf=pd.DataFrame(new_dictR)
         eid_df =pd.DataFrame(ordersEid)
         fdf = odf.merge(eid_df, how='left')
         instruments=[]
         for i in range(len(fdf)):
             instruments.append({'exchangeSegment': 2, 'exchangeInstrumentID': fdf['ss'].values[i]})
-            # #print(instruments)
+            # print(instruments)
         # logger.info(f'sending subscription for : {instruments}')    
         xt.send_unsubscription(Instruments=instruments,xtsMessageCode=1502)
         # logger.info(unsubs_resp['description'])
@@ -477,12 +470,11 @@ def getPnL():
             logger.info(f' DF is : \n {mdf} \n')
             # logger.info(' Time    ,    PnL')
             logger.info((time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL))
-            # logger.info(time.strftime("%d-%m-%Y %H:%M:%S"),cur_PnL)
         return cur_PnL    
         # break
     except Exception:
         logger.exception('Failed to get PNL')
-       
+        
         
 def isSLHit():
     odf=pd.DataFrame(new_dictR)
@@ -555,7 +547,8 @@ def repairStrategy(ticker):
             rt1.stop()
     except Exception:
         logger.exception('Repair Strategy Failed')
-
+        # logger.info("----Stopping repeatedTimer in Exception------")
+        # rt1.stop()
 
 
 def runSqOffLogics():

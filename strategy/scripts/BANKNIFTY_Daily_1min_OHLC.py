@@ -2,12 +2,14 @@
 """
 Spyder Editor
 Script to get daily OHLC based on the strike price of Index at 09:20 AM everyday.
-change the variable bankniftyAt920
+change the variable bankniftyAt920 and expiryDate
 """
-from datetime import datetime
+from datetime import datetime,date
 import pandas as pd
 from XTConnect import XTSConnect
 import configparser
+from pathlib import Path
+
 
 cfg = configparser.ConfigParser()
 cfg.read('../../XTConnect/config.ini')
@@ -17,8 +19,27 @@ appKey = cfg.get('user', 'marketdata_appkey')
 secretKey = cfg.get('user', 'marketdata_secretkey')
 
 xt = XTSConnect(appKey, secretKey, source)
-response = xt.marketdata_login()
-print("Login: ", response['description'])
+
+file = Path('access_token.txt')
+if file.exists() and (date.today() == date.fromtimestamp(file.stat().st_mtime)):
+    print('Token file exists and created today')
+    in_file = open('access_token.txt','r').read().split()
+    access_token = in_file[0]
+    userID=in_file[1]
+    # isInvestorClient=in_file[2]
+    print('Initializing session with token..')
+    xt._set_common_variables(access_token, userID)
+else:
+    print('Creating token file')   
+    response = xt.marketdata_login()
+    print(response['description'])
+    if "token" in response['result']:
+        with open ('access_token.txt','w') as file:
+            file.write('{}\n{}\n'.format(response['result']['token'], response['result']['userID']
+                                          )) 
+
+# response = xt.marketdata_login()
+# print("Login: ", response['description'])
 
 def strkPrcCalc(spot,base):
     strikePrice = base * round(spot/base)
@@ -27,7 +48,7 @@ def strkPrcCalc(spot,base):
     return strikePrice
 
 cdate = datetime.strftime(datetime.now(), "%b %d %Y")
-bankniftyAt920 = 36757.25
+bankniftyAt920 = 37549.75
 strikePrice = strkPrcCalc(bankniftyAt920, 100)
 
 if __name__ == '__main__':
@@ -64,6 +85,6 @@ if __name__ == '__main__':
                 # writer = pd.ExcelWriter(r'..\logs\ohlc1.xls',engine='xlsxwriter')
                 spl_df.to_excel(writer, sheet_name=(name+'_'+j), index=False,)
         print('==========================================')
-        xt.marketdata_logout()
+        # xt.marketdata_logout()
 
     

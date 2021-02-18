@@ -1,0 +1,90 @@
+2021-02-18 21:09:02,055:__main__:INFO:Token file exists and created today
+2021-02-18 21:09:02,055:__main__:INFO:Initializing session with token..
+2021-02-18 21:10:25,494:__main__:INFO:Token file exists and created today
+2021-02-18 21:10:25,494:__main__:INFO:Token file exists and created today
+2021-02-18 21:10:25,494:__main__:INFO:Initializing session with token..
+2021-02-18 21:10:25,494:__main__:INFO:Initializing session with token..
+2021-02-18 21:10:25,494:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-18 21:10:25,494:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-18 21:10:25,494:__main__:INFO:weekly expiry is : 18Feb2021, monthly expiry is: 25Feb2021
+2021-02-18 21:10:25,494:__main__:INFO:weekly expiry is : 18Feb2021, monthly expiry is: 25Feb2021
+2021-02-18 21:19:58,750:__main__:INFO:Token file exists and created today
+2021-02-18 21:19:58,766:__main__:INFO:Initializing session with token..
+2021-02-18 21:19:58,766:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-18 21:19:58,766:__main__:INFO:weekly expiry is : 18Feb2021, monthly expiry is: 25Feb2021
+2021-02-18 21:20:10,249:__main__:INFO:StrikePrice computed as : 0
+2021-02-18 21:24:57,187:__main__:INFO:StrikePrice computed as : 0
+2021-02-18 21:25:25,938:__main__:INFO:StrikePrice computed as : 0
+2021-02-18 21:31:18,712:__main__:INFO:StrikePrice computed as : 0
+2021-02-18 21:40:29,178:__main__:INFO:Token file exists and created today
+2021-02-18 21:40:29,182:__main__:INFO:Initializing session with token..
+2021-02-18 21:40:47,579:__main__:INFO:Token file exists and created today
+2021-02-18 21:40:47,582:__main__:INFO:Initializing session with token..
+2021-02-18 21:40:47,583:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-18 21:40:47,583:__main__:INFO:weekly expiry is : 18Feb2021, monthly expiry is: 25Feb2021
+2021-02-18 21:42:47,834:__main__:INFO:Token file exists and created today
+2021-02-18 21:42:47,834:__main__:INFO:Initializing session with token..
+2021-02-18 21:42:47,834:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-18 21:42:47,834:__main__:INFO:weekly expiry is : 18Feb2021, monthly expiry is: 25Feb2021
+2021-02-18 21:44:47,827:__main__:INFO:Token file exists and created today
+2021-02-18 21:44:47,827:__main__:INFO:Initializing session with token..
+2021-02-18 21:44:47,827:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-18 21:44:47,827:__main__:INFO:weekly expiry is : 18Feb2021, monthly expiry is: 25Feb2021
+2021-02-18 21:46:39,717:__main__:INFO:Token file exists and created today
+2021-02-18 21:46:39,717:__main__:INFO:Initializing session with token..
+2021-02-18 21:46:39,717:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-18 21:46:39,717:__main__:INFO:weekly expiry is : 18Feb2021, monthly expiry is: 25Feb2021
+2021-02-18 21:49:16,450:__main__:INFO:Token file exists and created today
+2021-02-18 21:49:16,450:__main__:INFO:Initializing session with token..
+2021-02-18 21:49:16,450:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-18 21:49:16,450:__main__:INFO:weekly expiry is : 18Feb2021, monthly expiry is: 25Feb2021
+2021-02-18 21:55:27,198:__main__:INFO:Token file exists and created today
+2021-02-18 21:55:27,201:__main__:INFO:Initializing session with token..
+2021-02-18 21:55:27,202:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-18 21:55:27,203:__main__:INFO:weekly expiry is : 18Feb2021, monthly expiry is: 25Feb2021
+2021-02-18 21:56:48,970:__main__:INFO:Token file exists and created today
+2021-02-18 21:56:48,970:__main__:INFO:Initializing session with token..
+2021-02-18 21:56:48,970:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-18 21:56:48,970:__main__:INFO:weekly expiry is : 18Feb2021, monthly expiry is: 25Feb2021
+2021-02-18 21:59:44,802:__main__:INFO:Token file exists and created today
+2021-02-18 21:59:44,802:__main__:INFO:Initializing session with token..
+2021-02-18 21:59:44,802:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-18 21:59:44,802:__main__:INFO:weekly expiry is : 18Feb2021, monthly expiry is: 25Feb2021
+2021-02-18 21:59:55,749:__main__:INFO:StrikePrice computed as : 15150
+2021-02-18 22:05:43,258:__main__:INFO:Placing Orders..
+2021-02-18 22:05:45,282:__main__:ERROR:Gateway:Supplied Quantity is not in multiple of LotSize.
+2021-02-18 22:05:45,282:__main__:INFO:Order not placed for - 47744 
+2021-02-18 22:08:59,895:__main__:INFO:Placing Orders..
+2021-02-18 22:09:02,003:__main__:INFO:Order ID for SELL 47744 is: 10033934
+2021-02-18 22:09:02,004:__main__:INFO:Retreiving OrderBook..
+2021-02-18 22:09:03,923:__main__:INFO:OrderBook result retreived success
+2021-02-18 22:09:03,923:__main__:INFO:traded price is: 18.25 and ordered  time is: 2021-02-18 22:09:05
+2021-02-18 22:15:48,441:__main__:INFO:Token file exists and created today
+2021-02-18 22:15:48,445:__main__:INFO:Initializing session with token..
+2021-02-18 22:15:48,445:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-18 22:15:48,447:__main__:INFO:weekly expiry is : 18Feb2021, monthly expiry is: 25Feb2021
+2021-02-18 22:15:58,483:__main__:ERROR:Unable to getSpot from index {ids}
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 128, in strikePrice
+    listQuotes = json.loads(spot_resp['result']['listQuotes'][0])
+KeyError: 'result'
+2021-02-18 22:24:59,338:__main__:INFO:Token file exists and created today
+2021-02-18 22:24:59,341:__main__:INFO:Initializing session with token..
+2021-02-18 22:24:59,342:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-18 22:24:59,342:__main__:INFO:weekly expiry is : 18Feb2021, monthly expiry is: 25Feb2021
+2021-02-18 22:25:08,207:__main__:ERROR:Token/Authorization not found
+2021-02-18 22:25:08,207:__main__:ERROR:Unable to getSpot from index NIFTY 50
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 133, in strikePrice
+    raise Exception
+Exception
+2021-02-18 22:26:14,304:__main__:INFO:Token file exists and created today
+2021-02-18 22:26:14,307:__main__:INFO:Initializing session with token..
+2021-02-18 22:26:14,307:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-18 22:26:14,308:__main__:INFO:weekly expiry is : 18Feb2021, monthly expiry is: 25Feb2021
+2021-02-18 22:26:28,272:__main__:ERROR:Token/Authorization not found
+2021-02-18 22:26:28,273:__main__:ERROR:Unable to getSpot from index NIFTY 50
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 133, in strikePrice
+    raise
+RuntimeError: No active exception to reraise

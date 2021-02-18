@@ -9,6 +9,7 @@ import pandas as pd
 from XTConnect import XTSConnect
 import configparser
 from pathlib import Path
+from openpyxl import load_workbook
 
 cfg = configparser.ConfigParser()
 cfg.read('../../XTConnect/config.ini')
@@ -28,14 +29,14 @@ if file.exists() and (date.today() == date.fromtimestamp(file.stat().st_mtime)):
     # isInvestorClient=in_file[2]
     print('Initializing session with token..')
     xt._set_common_variables(access_token, userID)
-else:
-    print('Creating token file')   
-    response = xt.marketdata_login()
-    print(response)
-    if "token" in response['result']:
-        with open ('access_token.txt','w') as file:
-            file.write('{}\n{}\n'.format(response['result']['token'], response['result']['userID']
-                                           )) 
+# else:
+#     print('Creating token file')   
+#     response = xt.marketdata_login()
+#     print(response)
+#     if "token" in response['result']:
+#         with open ('access_token.txt','w') as file:
+#             file.write('{}\n{}\n'.format(response['result']['token'], response['result']['userID']
+#                                            )) 
 
 
 cdate = datetime.strftime(datetime.now(), "%b %d %Y")
@@ -47,7 +48,9 @@ symbols = [ watch['NSECM'][ticker] for ticker in tickers ]
 tsym=zip(tickers,symbols)
 
 if __name__ == '__main__':
-    with pd.ExcelWriter(f'..\ohlc\EQ_{datetime.strftime(datetime.now(),"%d%b%Y")}.xlsx',engine='xlsxwriter') as writer:
+    filename=r'..\ohlc\EQ_OHLC.xlsx'
+    # writer = pd.ExcelWriter(filename, engine='openpyxl')
+    with pd.ExcelWriter(filename,engine='openpyxl') as writer:
         for ticker,symbol in tsym:
             print(ticker)
             ohlc = xt.get_ohlc(
@@ -62,9 +65,13 @@ if __name__ == '__main__':
             spl_df = pd.DataFrame([sub.split("|") for sub in spl],columns=(['Timestamp','Open','High','Low','Close','Volume','OI','NA']))
             spl_df.drop(spl_df.columns[[-1,]], axis=1, inplace=True)
             spl_df['Timestamp'] = pd.to_datetime(spl_df['Timestamp'].astype('int'), unit='s')
-            spl_df.head()
-            # writer = pd.ExcelWriter(r'..\logs\ohlc1.xls',engine='xlsxwriter')
-            spl_df.to_excel(writer, sheet_name=(ticker), index=False,)
-        print('==========================================')
+            # writer=pd.ExcelWriter(filename,engine='openpyxl')
+            writer.book = load_workbook(filename)
+            writer.sheets=dict((ws.title, ws) for ws in writer.book.worksheets)
+            startrow = writer.book[ticker].max_row
+            spl_df.to_excel(writer, sheet_name=(ticker), index=False ,startrow=startrow,header=False)
+            # spl_df.to_excel(writer, sheet_name=(ticker), index=False )
+            writer.save()
+    print('==========================================')
         # xt.marketdata_logout()
 

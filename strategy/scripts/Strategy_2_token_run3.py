@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Feb 01 2021 21:44:33 2021
-Strategy_2 run 3  with token auth
+Strategy_2 run 3 with token auth
 @author: mling
 """
 
-from datetime import datetime,date
+from datetime import datetime,date,timedelta
 from dateutil.relativedelta import relativedelta, TH
 from XTConnect.Connect import XTSConnect
 from pathlib import Path
+from openpyxl import load_workbook
 import time
 import json
 import logging
@@ -25,13 +26,17 @@ import timer
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
+
 filename='../logs/Strategy2_run3_log_'+datetime.strftime(datetime.now(), "%d%m%Y_%H")+'.txt'
+
 file_handler = logging.FileHandler(filename)
 # file_handler=logging.handlers.TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=5)
 file_handler.setLevel(logging.INFO)
 file_handler.setFormatter(formatter)
+
 stream_handler = logging.StreamHandler()
 stream_handler.setFormatter(formatter)
+
 logger.addHandler(file_handler)
 logger.addHandler(stream_handler)
 
@@ -44,12 +49,13 @@ ordersEid= {k:[] for k in ['oty','ss','nn']}
 new_dict={}
 pnl_dump=[]
 mdf=pd.DataFrame(columns=['ordrtyp','ss','nn','qq','oo','tt','ltp','pnl'])
-
+# ordersEid = {}
+# new_dict = {k:[] for k in ['oo','tt','qq','ss','sl']}
 
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-kickTime = "13:00:00"
-wrapTime = "14:40:00"
-repairTime = "15:05:00"
+kickTime = "11:30:00"
+wrapTime = "15:05:00"
+repairTime = "14:40:00"
 globalSL = -1500
 globalTarget = 3000
 
@@ -615,7 +621,12 @@ def runSqOffLogics():
 if __name__ == '__main__':
     # login()
     ticker='NIFTY'
-    go = prepareVars(ticker)
+    logger.info(f'Waiting to check required variables at \
+                {datetime.strptime(cdate + " " + kickTime, "%d-%m-%Y %H:%M:%S") - timedelta(minutes=5)}')
+    while True:
+        if (datetime.now() >= (datetime.strptime(cdate + " " + kickTime, "%d-%m-%Y %H:%M:%S") - timedelta(minutes=5))):
+            go = prepareVars(ticker)
+            break
     if go:
         logger.info('required variables set-- ready to trigger orders at desired time')
         nstart=True
@@ -642,9 +653,13 @@ if __name__ == '__main__':
                     pnl_df=pnl_df.set_index(['date'])
                     pnl_df.index=pd.to_datetime(pnl_df.index, format='%d-%m-%Y %H:%M:%S')
                     xdf=pnl_df['pl'].resample('1min').ohlc()
-                    writer = pd.ExcelWriter(r'..\pnl\Strategy2_run3_PnL.xls')
-                    xdf.to_excel(writer, sheet_name=(cdate+'_'+kickTime.replace(':','_')), index=True)
-                    writer.save()
+                    # writer = pd.ExcelWriter(r'..\pnl\Master_Strategy2_PnL.xls')
+                    # xdf.to_excel(writer, sheet_name=(cdate+'_'+kickTime.replace(':','_')), index=True)
+                    # writer.save()
+                    with pd.ExcelWriter('../pnl/Master_Strategy2_PnL.xlsx',engine='openpyxl') as writer:
+                        writer.book = load_workbook('../pnl/Master_Strategy2_PnL.xlsx')
+                        xdf.to_excel(writer, sheet_name=(cdate+'_'+kickTime.replace(':','_')), index=True)
+                        writer.save()
                 else:
                     logger.info('Nothing to write in excel..')
                     

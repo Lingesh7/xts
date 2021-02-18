@@ -1451,3 +1451,126 @@ xt.apiKey
 xt.token
 xt.func1()
 
+exp = '18Oct2021'
+
+dobj= datetime.strptime(exp, '%d%b%Y')
+dobj.strftime('%y%#m%d')
+
+
+
+datetime.strftime(datetime.strptime(exp, '%d%b%Y'),'%y%#m%d')
+
+#=============================================================
+from datetime import datetime
+import uuid 
+
+# str(uuid.uuid4().fields[-1])[:5]
+
+
+
+
+# global orders
+global cdate
+
+cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
+
+orders={'refId':0001,'set':1, \
+        'symbol': 0, 'inst_name':None, \
+        'txn_type': "sell", 'idx':"NIFTY", \
+        'strike':0, 'otype': "ce", \
+        'status': "idle",'expiry': weekly_exp, \
+        'lot': 2, 'startTime':"09:45:00"}
+    
+  
+    
+def execute(orders):
+    global orders
+    # orders['strike'] = strikePrice(orders['idx'])
+    # qty = 75*orders['lot'] if orders['idx'] == 'NIFTY 50' else 25*lot
+    # orders['qty']=qty
+    # inst_name=orders['idx']+(datetime.strftime(datetime.strptime(orders['expiry'], '%d%b%Y'),'%y%#m%d'))+orders['strike']+orders['otype']
+    # orders['inst_name']=inst_name
+    # symbol=instrumentLookup(instrument_df,inst_name)
+    # orders['symbol']=symbol
+    
+    if order['status'] == 'idle':
+        if (datetime.now() >= datetime.strptime(cdate+" "+orders['startTime'],"%d-%m-%Y %H:%M:%S")
+            orders['strike'] = strikePrice(orders['idx'])
+            qty = 75*orders['lot'] if orders['idx'] == 'NIFTY 50' else 25*orders['lot']
+            orders['qty']=qty
+            inst_name=orders['idx']+(datetime.strftime(datetime.strptime(orders['expiry'], '%d%b%Y'),'%y%#m%d'))+orders['strike']+orders['otype']
+            orders['inst_name']=inst_name
+            symbol=instrumentLookup(instrument_df,inst_name)
+            orders['symbol']=symbol
+            
+            orderID, tradedPrice, dateTime=placeOrder(orders['symbol'],orders['txn_type'],orders['qty'])
+            orders['orderID']=orderID
+            orders['tradedPrice']=tradedPrice
+            orders['dateTime']=dateTime
+            if orderID:
+                orders['status']='Active'
+                orders['set_type']='Entry'
+    
+    if order['status'] == 'Active':
+        print('in Active loop')
+        
+    
+    
+def placeOrder(symbol,txn_type,qty):
+    logger.info('Placing Orders..')
+    # Place an intraday stop loss order on NSE
+    if txn_type == "buy":
+        t_type=xt.TRANSACTION_TYPE_BUY
+    elif txn_type == "sell":
+        t_type=xt.TRANSACTION_TYPE_SELL
+    try:
+        order_resp = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
+                         exchangeInstrumentID= symbol ,
+                         productType=xt.PRODUCT_MIS, 
+                         orderType=xt.ORDER_TYPE_MARKET,                   
+                         orderSide=t_type,
+                         timeInForce=xt.VALIDITY_DAY,
+                         disclosedQuantity=0,
+                         orderQuantity=qty,
+                         limitPrice=0,
+                         stopPrice=0,
+                         orderUniqueIdentifier="FC_MarketOrder"
+                         )
+        if order_resp['type'] != 'error':
+            orderID = order_resp['result']['AppOrderID']            #extracting the order id from response
+            logger.info(f'Order ID for {t_type} {symbol} is: {orderID}')
+            a=0
+            while a<12:
+                orderLists = getOrderList()
+                if orderLists:
+                    new_orders = [ol for ol in orderLists if ol['AppOrderID'] == orderID and ol['OrderStatus'] != 'Filled']  
+                    if not new_orders:
+                        tradedPrice = float(next((orderList['OrderAverageTradedPrice'] for orderList in orderLists if orderList['AppOrderID'] == orderID and orderList['OrderStatus'] == 'Filled'),None))
+                        LastUpdateDateTime=datetime.fromisoformat(next((orderList['LastUpdateDateTime'] for orderList in orderLists if orderList['AppOrderID'] == orderID and orderList['OrderStatus'] == 'Filled'))[:-1])
+                        dateTime = LastUpdateDateTime.strftime("%Y-%m-%d %H:%M:%S")
+                        logger.info(f"traded price is: {tradedPrice} and ordered  time is: {dateTime}")
+                        break
+                        # loop = False
+                    else:
+                        logger.info(f' Placed order {orderID} might be in Open or New Status, Hence retrying..{a}')
+                        a+=1
+                        time.sleep(2.5)
+                        if a==11:
+                            logger.info('Placed order is still in New or Open Status..Hence Cancelling the placed order')
+                            cancelOrder(orderID)
+                else:
+                    logger.info('\n  Unable to get OrderList inside place order function..')
+                    logger.info('..Hence traded price will retun as Zero \n ')
+        elif order_resp['type'] == 'error':
+            logger.error(order_resp['description'])
+            logger.info(f'Order not placed for - {symbol} ')
+            raise Exception('Order not placed')
+    except Exception():
+        logger.exception('Unable to place order in placeOrder func...')
+        time.sleep(1)
+    else:
+        return orderID, tradedPrice, dateTime
+
+
+
+

@@ -20,7 +20,7 @@ import timer
 # from itertools import repeat
 # import multiprocessing
 # import schedule
-# from sys import exit
+from sys import exit
 # import traceback
 
 logger = logging.getLogger(__name__)
@@ -53,7 +53,7 @@ mdf=pd.DataFrame(columns=['ordrtyp','ss','nn','qq','oo','tt','ltp','pnl'])
 # new_dict = {k:[] for k in ['oo','tt','qq','ss','sl']}
 
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-kickTime = "10:45:00"
+kickTime = "10:30:00"
 wrapTime = "15:05:00"
 repairTime = "14:40:00"
 globalSL = -1500
@@ -67,25 +67,27 @@ appKey = cfg.get('user', 'interactive_appkey')
 secretKey = cfg.get('user', 'interactive_secretkey')
 xt = XTSConnect(appKey, secretKey, source)
 
-
-file = Path('access_token.txt')
+token_file=f'access_token_{cdate}.txt'
+file = Path(token_file)
 if file.exists() and (date.today() == date.fromtimestamp(file.stat().st_mtime)):
     logger.info('Token file exists and created today')
-    in_file = open('access_token.txt','r').read().split()
+    in_file = open(token_file,'r').read().split()
     access_token = in_file[0]
     userID=in_file[1]
     isInvestorClient=in_file[2]
     logger.info('Initializing session with token..')
     xt._set_common_variables(access_token, userID, isInvestorClient)
 else:
-    logger.info('Creating token file')   
-    response = xt.interactive_login()
-    logger.info(response['description'])
-    if "token" in response['result']:
-        with open ('access_token.txt','w') as file:
-            file.write('{}\n{}\n{}\n'.format(response['result']['token'], response['result']['userID'],
-                                           response['result']['isInvestorClient']))   
-         
+    # logger.info('Creating token file')   
+    # response = xt.interactive_login()
+    # logger.info(response['description'])
+    # if "token" in response['result']:
+    #     with open ('access_token.txt','w') as file:
+    #         file.write('{}\n{}\n{}\n'.format(response['result']['token'], response['result']['userID'],
+    #                                        response['result']['isInvestorClient']))   
+    logger.error('token file unavailable..')
+    exit()
+    
 def login():
     logger.debug('Again initializing inside login function..')
     logger.info('Again creating a token file')   

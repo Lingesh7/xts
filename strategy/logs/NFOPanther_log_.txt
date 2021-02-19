@@ -88,3 +88,277 @@ Traceback (most recent call last):
   File "F:\Downloads\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 133, in strikePrice
     raise
 RuntimeError: No active exception to reraise
+2021-02-19 11:50:00,209:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-19 11:50:00,217:__main__:INFO:weekly expiry is : 25Feb2021, monthly expiry is: 25Feb2021
+2021-02-19 11:50:00,219:__main__:INFO:Creating MasterDump..
+2021-02-19 11:53:16,008:__main__:INFO:Token file exists and created today
+2021-02-19 11:53:16,008:__main__:INFO:Token file exists and created today
+2021-02-19 11:53:16,011:__main__:INFO:Initializing session with token..
+2021-02-19 11:53:16,011:__main__:INFO:Initializing session with token..
+2021-02-19 11:53:16,013:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-19 11:53:16,013:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-19 11:53:16,015:__main__:INFO:weekly expiry is : 25Feb2021, monthly expiry is: 25Feb2021
+2021-02-19 11:53:16,015:__main__:INFO:weekly expiry is : 25Feb2021, monthly expiry is: 25Feb2021
+2021-02-19 11:53:16,018:__main__:INFO:Creating MasterDump..
+2021-02-19 11:53:16,018:__main__:INFO:Creating MasterDump..
+2021-02-19 11:53:33,337:__main__:INFO:Placing orders as status is idle and timing 11:50:00 cond met ..
+2021-02-19 11:53:33,337:__main__:INFO:Placing orders as status is idle and timing 11:50:00 cond met ..
+2021-02-19 11:53:35,167:__main__:INFO:StrikePrice computed as : 15100
+2021-02-19 11:53:35,167:__main__:INFO:StrikePrice computed as : 15100
+2021-02-19 11:53:35,171:__main__:INFO:Placing Orders..
+2021-02-19 11:53:35,171:__main__:INFO:Placing Orders..
+2021-02-19 11:53:38,093:__main__:ERROR:OMSH: Supplied exchangeInstrumentID [-1] is not valid.
+2021-02-19 11:53:38,093:__main__:ERROR:OMSH: Supplied exchangeInstrumentID [-1] is not valid.
+2021-02-19 11:53:38,094:__main__:INFO:Order not placed for - -1 
+2021-02-19 11:53:38,094:__main__:INFO:Order not placed for - -1 
+2021-02-19 11:53:38,096:__main__:ERROR:Error Occured..
+Traceback (most recent call last):
+  File "D:\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 270, in placeOrder
+    raise Exception('Order not placed')
+Exception: Order not placed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 321, in <module>
+    execute(orders)
+  File "D:\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 292, in execute
+    orderID, tradedPrice, dateTime=placeOrder(orders['symbol'],orders['txn_type'],orders['qty'])
+  File "D:\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 271, in placeOrder
+    except Exception():
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2021-02-19 11:53:38,096:__main__:ERROR:Error Occured..
+Traceback (most recent call last):
+  File "D:\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 270, in placeOrder
+    raise Exception('Order not placed')
+Exception: Order not placed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 321, in <module>
+    execute(orders)
+  File "D:\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 292, in execute
+    orderID, tradedPrice, dateTime=placeOrder(orders['symbol'],orders['txn_type'],orders['qty'])
+  File "D:\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 271, in placeOrder
+    except Exception():
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2021-02-19 13:11:33,365:__main__:INFO:Token file exists and created today
+2021-02-19 13:11:33,368:__main__:INFO:Initializing session with token..
+2021-02-19 13:11:33,369:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-19 13:11:33,370:__main__:INFO:weekly expiry is : 25Feb2021, monthly expiry is: 25Feb2021
+2021-02-19 13:11:33,370:__main__:INFO:MasterDump already exists.. reading directly
+2021-02-19 13:11:33,393:__main__:INFO:Placing orders as status is idle and timing 11:50:00 cond met ..
+2021-02-19 13:11:35,184:__main__:INFO:StrikePrice computed as : 15050
+2021-02-19 13:11:35,186:__main__:INFO:Placing Orders..
+2021-02-19 13:11:35,187:__main__:ERROR:Error Occured..
+Traceback (most recent call last):
+  File "D:\Users\lmahendran\Anaconda3\lib\site-packages\xts-0.1-py3.7.egg\XTConnect\Connect.py", line 249, in place_order
+    response = self._post('order.place', json.dumps(params))
+  File "D:\Users\lmahendran\Anaconda3\lib\json\__init__.py", line 231, in dumps
+    return _default_encoder.encode(obj)
+  File "D:\Users\lmahendran\Anaconda3\lib\json\encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "D:\Users\lmahendran\Anaconda3\lib\json\encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "D:\Users\lmahendran\Anaconda3\lib\json\encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type int64 is not JSON serializable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 240, in placeOrder
+    orderUniqueIdentifier="FC_MarketOrder"
+  File "D:\Users\lmahendran\Anaconda3\lib\site-packages\xts-0.1-py3.7.egg\XTConnect\Connect.py", line 252, in place_order
+    return response['description']
+UnboundLocalError: local variable 'response' referenced before assignment
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 324, in <module>
+    execute(orders)
+  File "D:\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 295, in execute
+    orderID, tradedPrice, dateTime=placeOrder(orders['symbol'],orders['txn_type'],orders['qty'])
+  File "D:\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 271, in placeOrder
+    except Exception():
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2021-02-19 13:19:52,036:__main__:INFO:Token file exists and created today
+2021-02-19 13:19:52,040:__main__:INFO:Initializing session with token..
+2021-02-19 13:19:52,041:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-19 13:19:52,042:__main__:INFO:weekly expiry is : 25Feb2021, monthly expiry is: 25Feb2021
+2021-02-19 13:19:52,043:__main__:INFO:MasterDump already exists.. reading directly
+2021-02-19 13:19:52,070:__main__:INFO:Placing orders as status is idle and timing 11:50:00 cond met ..
+2021-02-19 13:19:53,900:__main__:INFO:StrikePrice computed as : 15050
+2021-02-19 13:19:53,902:__main__:INFO:Placing Orders..
+2021-02-19 13:19:55,676:__main__:INFO:Order ID for SELL 44183 is: 10026972
+2021-02-19 13:19:55,677:__main__:INFO:Retreiving OrderBook..
+2021-02-19 13:19:58,441:__main__:INFO:OrderBook result retreived success
+2021-02-19 13:19:58,441:__main__:INFO:traded price is: 146.58 and ordered  time is: 2021-02-19 13:16:32
+2021-02-19 17:38:51,706:__main__:INFO:Token file exists and created today
+2021-02-19 17:38:51,710:__main__:INFO:Initializing session with token..
+2021-02-19 17:38:51,711:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-19 17:38:51,712:__main__:INFO:weekly expiry is : 25Feb2021, monthly expiry is: 25Feb2021
+2021-02-19 17:38:51,714:__main__:INFO:MasterDump already exists.. reading directly
+2021-02-19 17:38:51,741:__main__:INFO:orders before : 
+2021-02-19 17:38:51,742:__main__:INFO:[]
+2021-02-19 17:38:51,742:__main__:INFO:{}
+2021-02-19 17:38:51,744:__main__:INFO:Placing orders as status is idle and timing 11:50:00 cond met ..
+2021-02-19 17:38:53,624:__main__:INFO:StrikePrice computed as : 15000
+2021-02-19 17:38:53,629:__main__:ERROR:Error Occured..
+Traceback (most recent call last):
+  File "D:\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 356, in <module>
+    result=execute(orders)
+  File "D:\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 293, in execute
+    inst_name = orders['idx']+(datetime.strftime(datetime.strptime(tr_inst['expiry'], '%d%b%Y'),'%y%b')).upper()+str(orders['strike'])+orders['otype'].upper()
+KeyError: 'strike'
+2021-02-19 17:40:19,411:__main__:INFO:Token file exists and created today
+2021-02-19 17:40:19,415:__main__:INFO:Initializing session with token..
+2021-02-19 17:40:19,416:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-19 17:40:19,417:__main__:INFO:weekly expiry is : 25Feb2021, monthly expiry is: 25Feb2021
+2021-02-19 17:40:19,419:__main__:INFO:MasterDump already exists.. reading directly
+2021-02-19 17:40:19,445:__main__:INFO:orders before : 
+2021-02-19 17:40:19,447:__main__:INFO:[]
+2021-02-19 17:40:19,447:__main__:INFO:{}
+2021-02-19 17:40:19,450:__main__:INFO:Placing orders as status is idle and timing 11:50:00 cond met ..
+2021-02-19 17:40:21,062:__main__:INFO:StrikePrice computed as : 15000
+2021-02-19 17:40:21,072:__main__:INFO:orders before placing orders : {'refId': 10001, 'setno': 1, 'txn_type': 'sell', 'idx': 'NIFTY', 'otype': 'ce', 'status': 'idle', 'expiry': 'week', 'lot': 2, 'startTime': '11:50:00'}
+2021-02-19 17:40:21,074:__main__:INFO:Placing Orders..
+2021-02-19 17:40:23,304:__main__:INFO:Order ID for SELL 44178 is: 10027092
+2021-02-19 17:40:23,307:__main__:INFO:Retreiving OrderBook..
+2021-02-19 17:40:24,894:__main__:INFO:OrderBook result retreived success
+2021-02-19 17:40:24,897:__main__:INFO: Placed order 10027092 might be in Open or New Status, Hence retrying..0
+2021-02-19 17:40:27,399:__main__:INFO:Retreiving OrderBook..
+2021-02-19 17:40:29,960:__main__:INFO:OrderBook result retreived success
+2021-02-19 17:40:29,964:__main__:INFO: Placed order 10027092 might be in Open or New Status, Hence retrying..1
+2021-02-19 17:40:32,469:__main__:INFO:Retreiving OrderBook..
+2021-02-19 17:40:34,024:__main__:INFO:OrderBook result retreived success
+2021-02-19 17:40:34,027:__main__:INFO: Placed order 10027092 might be in Open or New Status, Hence retrying..2
+2021-02-19 17:40:36,531:__main__:INFO:Retreiving OrderBook..
+2021-02-19 17:40:38,172:__main__:INFO:OrderBook result retreived success
+2021-02-19 17:40:38,175:__main__:INFO: Placed order 10027092 might be in Open or New Status, Hence retrying..3
+2021-02-19 17:40:40,678:__main__:INFO:Retreiving OrderBook..
+2021-02-19 17:40:42,310:__main__:INFO:OrderBook result retreived success
+2021-02-19 17:40:42,313:__main__:INFO: Placed order 10027092 might be in Open or New Status, Hence retrying..4
+2021-02-19 17:40:44,816:__main__:INFO:Retreiving OrderBook..
+2021-02-19 17:40:46,451:__main__:INFO:OrderBook result retreived success
+2021-02-19 17:40:46,454:__main__:INFO: Placed order 10027092 might be in Open or New Status, Hence retrying..5
+2021-02-19 17:40:48,958:__main__:INFO:Retreiving OrderBook..
+2021-02-19 17:40:50,884:__main__:INFO:OrderBook result retreived success
+2021-02-19 17:40:50,886:__main__:INFO: Placed order 10027092 might be in Open or New Status, Hence retrying..6
+2021-02-19 17:40:53,388:__main__:INFO:Retreiving OrderBook..
+2021-02-19 17:40:54,989:__main__:INFO:OrderBook result retreived success
+2021-02-19 17:40:54,992:__main__:INFO: Placed order 10027092 might be in Open or New Status, Hence retrying..7
+2021-02-19 17:40:57,494:__main__:INFO:Retreiving OrderBook..
+2021-02-19 17:40:59,194:__main__:INFO:OrderBook result retreived success
+2021-02-19 17:40:59,197:__main__:INFO: Placed order 10027092 might be in Open or New Status, Hence retrying..8
+2021-02-19 17:41:01,700:__main__:INFO:Retreiving OrderBook..
+2021-02-19 17:41:04,301:__main__:INFO:OrderBook result retreived success
+2021-02-19 17:41:04,304:__main__:INFO: Placed order 10027092 might be in Open or New Status, Hence retrying..9
+2021-02-19 17:41:06,808:__main__:INFO:Retreiving OrderBook..
+2021-02-19 17:41:08,483:__main__:INFO:OrderBook result retreived success
+2021-02-19 17:41:08,486:__main__:INFO: Placed order 10027092 might be in Open or New Status, Hence retrying..10
+2021-02-19 17:41:10,989:__main__:INFO:Placed order is still in New or Open Status..Hence Cancelling the placed order
+2021-02-19 17:41:10,992:__main__:INFO:Cancelling order: 10027092 
+2021-02-19 17:41:12,540:__main__:INFO:Cancelled SL order id : 10027092
+2021-02-19 17:41:12,542:__main__:INFO:Retreiving OrderBook..
+2021-02-19 17:41:14,329:__main__:INFO:OrderBook result retreived success
+2021-02-19 17:41:14,332:__main__:INFO: Placed order 10027092 might be in Open or New Status, Hence retrying..11
+2021-02-19 17:41:16,835:__main__:ERROR:Error Occured..
+Traceback (most recent call last):
+  File "D:\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 356, in <module>
+    result=execute(orders)
+  File "D:\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 301, in execute
+    orderID, tradedPrice, dateTime=placeOrder(tr_inst['symbol'],tr_inst['txn_type'],tr_inst['qty'])
+  File "D:\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 275, in placeOrder
+    return orderID, tradedPrice, dateTime
+UnboundLocalError: local variable 'tradedPrice' referenced before assignment
+2021-02-19 17:53:04,942:__main__:INFO:Token file exists and created today
+2021-02-19 17:53:04,947:__main__:INFO:Initializing session with token..
+2021-02-19 17:53:04,948:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-19 17:53:04,948:__main__:INFO:weekly expiry is : 25Feb2021, monthly expiry is: 25Feb2021
+2021-02-19 17:53:04,950:__main__:INFO:MasterDump already exists.. reading directly
+2021-02-19 17:53:04,982:__main__:INFO:orders before : 
+2021-02-19 17:53:04,983:__main__:INFO:[]
+2021-02-19 17:53:04,984:__main__:INFO:{}
+2021-02-19 17:53:04,987:__main__:INFO:Placing orders as status is idle and timing 11:50:00 cond met ..
+2021-02-19 17:53:06,776:__main__:INFO:StrikePrice computed as : 15000
+2021-02-19 17:53:06,786:__main__:INFO:orders before placing orders : {'refId': 10001, 'setno': 1, 'txn_type': 'sell', 'idx': 'NIFTY', 'otype': 'ce', 'status': 'idle', 'expiry': 'week', 'lot': 2, 'startTime': '11:50:00'}
+2021-02-19 17:53:06,790:__main__:INFO:Placing Orders..
+2021-02-19 17:53:08,455:__main__:INFO:Order ID for SELL 44178 is: 10027093
+2021-02-19 17:53:08,458:__main__:INFO:Retreiving OrderBook..
+2021-02-19 17:53:10,671:__main__:INFO:OrderBook result retreived success
+2021-02-19 17:53:10,674:__main__:INFO: Placed order 10027093 might be in Open or New Status, Hence retrying..0
+2021-02-19 17:53:13,176:__main__:INFO:Retreiving OrderBook..
+2021-02-19 17:53:14,993:__main__:INFO:OrderBook result retreived success
+2021-02-19 17:53:14,996:__main__:INFO: Placed order 10027093 might be in Open or New Status, Hence retrying..1
+2021-02-19 17:53:17,500:__main__:INFO:Retreiving OrderBook..
+2021-02-19 17:53:19,510:__main__:INFO:OrderBook result retreived success
+2021-02-19 17:53:19,514:__main__:INFO: Placed order 10027093 might be in Open or New Status, Hence retrying..2
+2021-02-19 17:53:22,018:__main__:INFO:Retreiving OrderBook..
+2021-02-19 17:53:24,742:__main__:INFO:OrderBook result retreived success
+2021-02-19 17:53:24,745:__main__:INFO: Placed order 10027093 might be in Open or New Status, Hence retrying..3
+2021-02-19 17:53:27,247:__main__:INFO:Retreiving OrderBook..
+2021-02-19 17:53:29,067:__main__:INFO:OrderBook result retreived success
+2021-02-19 17:53:29,070:__main__:INFO: Placed order 10027093 might be in Open or New Status, Hence retrying..4
+2021-02-19 17:53:31,573:__main__:INFO:Retreiving OrderBook..
+2021-02-19 17:53:33,409:__main__:INFO:OrderBook result retreived success
+2021-02-19 17:53:33,412:__main__:INFO: Placed order 10027093 might be in Open or New Status, Hence retrying..5
+2021-02-19 17:53:35,916:__main__:INFO:Retreiving OrderBook..
+2021-02-19 17:53:37,705:__main__:INFO:OrderBook result retreived success
+2021-02-19 17:53:37,708:__main__:INFO: Placed order 10027093 might be in Open or New Status, Hence retrying..6
+2021-02-19 17:53:40,211:__main__:INFO:Retreiving OrderBook..
+2021-02-19 17:53:42,025:__main__:INFO:OrderBook result retreived success
+2021-02-19 17:53:42,028:__main__:INFO: Placed order 10027093 might be in Open or New Status, Hence retrying..7
+2021-02-19 17:53:44,535:__main__:INFO:Retreiving OrderBook..
+2021-02-19 17:53:46,300:__main__:INFO:OrderBook result retreived success
+2021-02-19 17:53:46,303:__main__:INFO: Placed order 10027093 might be in Open or New Status, Hence retrying..8
+2021-02-19 17:53:48,806:__main__:INFO:Retreiving OrderBook..
+2021-02-19 17:53:50,591:__main__:INFO:OrderBook result retreived success
+2021-02-19 17:53:50,594:__main__:INFO: Placed order 10027093 might be in Open or New Status, Hence retrying..9
+2021-02-19 17:53:53,096:__main__:INFO:Retreiving OrderBook..
+2021-02-19 17:53:55,002:__main__:INFO:OrderBook result retreived success
+2021-02-19 17:53:55,006:__main__:INFO: Placed order 10027093 might be in Open or New Status, Hence retrying..10
+2021-02-19 17:53:57,508:__main__:INFO:Placed order is still in New or Open Status..Hence Cancelling the placed order
+2021-02-19 17:53:57,510:__main__:INFO:Cancelling order: 10027093 
+2021-02-19 17:53:59,349:__main__:INFO:Cancelled SL order id : 10027093
+2021-02-19 17:53:59,352:__main__:ERROR:Error Occured..
+Traceback (most recent call last):
+  File "D:\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 358, in <module>
+    result=execute(orders)
+  File "D:\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 303, in execute
+    orderID, tradedPrice, dateTime=placeOrder(tr_inst['symbol'],tr_inst['txn_type'],tr_inst['qty'])
+TypeError: cannot unpack non-iterable NoneType object
+2021-02-19 18:36:19,703:__main__:INFO:Token file exists and created today
+2021-02-19 18:36:19,708:__main__:INFO:Initializing session with token..
+2021-02-19 18:36:19,710:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-19 18:36:19,711:__main__:INFO:weekly expiry is : 25Feb2021, monthly expiry is: 25Feb2021
+2021-02-19 18:36:19,713:__main__:INFO:MasterDump already exists.. reading directly
+2021-02-19 18:36:19,747:__main__:INFO:orders before : 
+2021-02-19 18:36:19,748:__main__:INFO:[]
+2021-02-19 18:36:19,749:__main__:INFO:{}
+2021-02-19 18:36:19,752:__main__:INFO:Placing orders as status is idle and timing 11:50:00 cond met ..
+2021-02-19 18:36:21,289:__main__:INFO:StrikePrice computed as : 15100
+2021-02-19 18:36:21,298:__main__:INFO:orders before placing orders : {'refId': 10001, 'setno': 1, 'txn_type': 'sell', 'idx': 'NIFTY', 'otype': 'ce', 'status': 'idle', 'expiry': 'week', 'lot': 2, 'startTime': '11:50:00'}
+2021-02-19 18:36:21,302:__main__:INFO:Placing Orders..
+2021-02-19 18:36:24,678:__main__:INFO:Order ID for SELL 46357 is: 10027094
+2021-02-19 18:36:24,681:__main__:INFO:Retreiving OrderBook..
+2021-02-19 18:36:26,202:__main__:INFO:OrderBook result retreived success
+2021-02-19 18:36:26,204:__main__:INFO:traded price is: 130.25 and ordered  time is: 2021-02-19 18:33:01
+2021-02-19 18:36:26,206:__main__:INFO:{'set': 1, 'txn_type': 'sell', 'strike': 15100, 'qty': 150, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB15100CE', 'symbol': 46357, 'orderID': 10027094, 'tradedPrice': 130.25, 'dateTime': '2021-02-19 18:33:01', 'set_type': 'Entry'}
+2021-02-19 18:36:26,208:__main__:INFO:running orders as status is Active..
+2021-02-19 18:36:26,211:__main__:INFO:in Active loop
+2021-02-19 18:36:26,213:__main__:INFO:1
+2021-02-19 18:36:27,216:__main__:INFO:2
+2021-02-19 18:36:28,219:__main__:INFO:3
+2021-02-19 18:36:29,222:__main__:INFO:4
+2021-02-19 18:36:30,225:__main__:INFO:5
+2021-02-19 18:36:31,229:__main__:INFO:6
+2021-02-19 18:36:32,231:__main__:INFO:7
+2021-02-19 18:36:33,234:__main__:INFO:8
+2021-02-19 18:36:34,236:__main__:INFO:9
+2021-02-19 18:36:35,240:__main__:INFO:10
+2021-02-19 18:36:36,243:__main__:INFO:running orders as status is exit..
+2021-02-19 18:36:36,245:__main__:INFO:temrinating the loop..
+2021-02-19 18:36:36,250:__main__:INFO:--------------------------------------------

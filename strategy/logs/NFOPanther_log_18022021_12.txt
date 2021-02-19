@@ -1,2 +1,0 @@
-2021-02-18 12:08:10,659:__main__:INFO:Calculating weekly and monthly expiry dates..
-2021-02-18 12:08:10,659:__main__:INFO:weekly expiry is : 18Feb2021, monthly expiry is: 25Feb2021

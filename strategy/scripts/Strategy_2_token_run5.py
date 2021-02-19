@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Feb 01 2021 21:44:33 2021
-Strategy_2 run 4 with token auth
+Strategy_2 run 5 with token auth
 @author: mling
 """
 
@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 
-filename='../logs/Strategy2_run4_log_'+datetime.strftime(datetime.now(), "%d%m%Y_%H")+'.txt'
+filename='../logs/Strategy2_run5_log_'+datetime.strftime(datetime.now(), "%d%m%Y_%H")+'.txt'
 
 file_handler = logging.FileHandler(filename)
 # file_handler=logging.handlers.TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=5)
@@ -53,7 +53,7 @@ mdf=pd.DataFrame(columns=['ordrtyp','ss','nn','qq','oo','tt','ltp','pnl'])
 # new_dict = {k:[] for k in ['oo','tt','qq','ss','sl']}
 
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-kickTime = "12:00:00"
+kickTime = "13:30:00"
 wrapTime = "15:05:00"
 repairTime = "14:40:00"
 globalSL = -1500

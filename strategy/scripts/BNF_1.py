@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Feb 01 2021 21:44:33 2021
-Strategy_2 run 4 with token auth
+Created on Thu Feb 19 2021 10:00:00 2021
+BNF_1.py with token auth
 @author: mling
 """
 
@@ -20,14 +20,14 @@ import timer
 # from itertools import repeat
 # import multiprocessing
 # import schedule
-from sys import exit
+# from sys import exit
 # import traceback
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 
-filename='../logs/Strategy2_run4_log_'+datetime.strftime(datetime.now(), "%d%m%Y_%H")+'.txt'
+filename='../logs/BNF_1_log_'+datetime.now().strftime("%d%m%Y")+'.txt'
 
 file_handler = logging.FileHandler(filename)
 # file_handler=logging.handlers.TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=5)
@@ -53,7 +53,7 @@ mdf=pd.DataFrame(columns=['ordrtyp','ss','nn','qq','oo','tt','ltp','pnl'])
 # new_dict = {k:[] for k in ['oo','tt','qq','ss','sl']}
 
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-kickTime = "12:00:00"
+kickTime = "11:30:00"
 wrapTime = "15:05:00"
 repairTime = "14:40:00"
 globalSL = -1500
@@ -162,16 +162,20 @@ def strkPrcCalc(spot,base):
 def get_eID(symbol,ce_pe,expiry,strikePrice):
     logger.info(f'Input of get_eID fn : {symbol}, {ce_pe},{expiry},{strikePrice}')
     weekday = datetime.today().weekday()
+    if symbol=='NIFTY':
+        straddle_points=50
+    elif symbol=='BANKNIFTY':
+        straddle_points=100
     if ce_pe == "ce":
         oType="CE"
         if weekday != 3:
             logger.info('Today is not Thursday. Hence straddle')
-            strikePrice=strikePrice+50
+            strikePrice=strikePrice+straddle_points
     elif ce_pe == "pe":
         oType="PE"
         if weekday != 3:
             logger.info('Today is not Thursday. Hence straddle')
-            strikePrice=strikePrice-50
+            strikePrice=strikePrice-straddle_points
     # print("expiry date caluclated as :", expiry)
     eID_resp = xt.get_option_symbol(
                 exchangeSegment=2,
@@ -495,14 +499,18 @@ def repairStrategy(ticker):
     spotList=getSpot()
     if ticker=='NIFTY':
         cur_prc=spotList[0]
+        idx_ltp=nfty_ltp
+        hit=40
     elif ticker=='BANKNIFTY':
         cur_prc=spotList[1]
+        idx_ltp=bnknfty_ltp
+        hit=80
     logger.info(f'Cur price of NIFTY is: {cur_prc}')
-    logger.info(f'Points changed: {round(cur_prc-nfty_ltp,2)}')
+    logger.info(f'Points changed: {round(cur_prc-idx_ltp,2)}')
     try:
         if (datetime.now() <= datetime.strptime(cdate + " " + repairTime, "%d-%m-%Y %H:%M:%S")):
-            if cur_prc > nfty_ltp+40:
-                logger.info(f'{ticker} hits +40')
+            if cur_prc > idx_ltp+hit:
+                logger.info(f'{ticker} hits +{hit}')
                 logger.info('SquaringOff CE position..')
                 pos=pd.DataFrame(new_dictR)
                 eid_df=pd.DataFrame(ordersEid)
@@ -525,8 +533,8 @@ def repairStrategy(ticker):
                 new_dictR.append(frsh)
                 logger.info("----Stopping repeatedTimer------")
                 rt1.stop()
-            elif cur_prc < nfty_ltp-40:
-                logger.info(f'{ticker} hits -40')
+            elif cur_prc < idx_ltp-hit:
+                logger.info(f'{ticker} hits -{hit}')
                 logger.info('SquaringOff PE position..')
                 pos=pd.DataFrame(new_dictR)
                 eid_df=pd.DataFrame(ordersEid)
@@ -622,7 +630,7 @@ def runSqOffLogics():
 #maybe main()
 if __name__ == '__main__':
     # login()
-    ticker='NIFTY'
+    ticker='BANKNIFTY'
     logger.info(f'Waiting to check required variables at \
                 {datetime.strptime(cdate + " " + kickTime, "%d-%m-%Y %H:%M:%S") - timedelta(minutes=5)}')
     while True:
@@ -658,8 +666,8 @@ if __name__ == '__main__':
                     # writer = pd.ExcelWriter(r'..\pnl\Master_Strategy2_PnL.xls')
                     # xdf.to_excel(writer, sheet_name=(cdate+'_'+kickTime.replace(':','_')), index=True)
                     # writer.save()
-                    with pd.ExcelWriter('../pnl/Master_Strategy2_PnL.xlsx',engine='openpyxl') as writer:
-                        writer.book = load_workbook('../pnl/Master_Strategy2_PnL.xlsx')
+                    with pd.ExcelWriter('../pnl/MASTER_BNF_PnL.xlsx',engine='openpyxl') as writer:
+                        writer.book = load_workbook('../pnl/Master_BNF_PnL.xlsx')
                         xdf.to_excel(writer, sheet_name=(cdate+'_'+kickTime.replace(':','_')), index=True)
                         writer.save()
                 else:

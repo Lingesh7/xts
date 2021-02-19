@@ -20,11 +20,14 @@ appKey = cfg.get('user', 'marketdata_appkey')
 secretKey = cfg.get('user', 'marketdata_secretkey')
 
 xt = XTSConnect(appKey, secretKey, source)
+cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
 
-file = Path('access_token.txt')
+token_file=f'access_token_{cdate}.txt'
+file = Path(token_file)
+
 if file.exists() and (date.today() == date.fromtimestamp(file.stat().st_mtime)):
     print('Token file exists and created today')
-    in_file = open('access_token.txt','r').read().split()
+    in_file = open(token_file,'r').read().split()
     access_token = in_file[0]
     userID=in_file[1]
     # isInvestorClient=in_file[2]

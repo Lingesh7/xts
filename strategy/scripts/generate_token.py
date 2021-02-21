@@ -9,7 +9,7 @@ from pathlib import Path
 from datetime import date,datetime
 import configparser
 
-cdate=datetime.now().strftime('%d_%m_%Y')
+cdate=datetime.now().strftime('%d-%m-%Y')
 
 token_file=f'access_token_{cdate}.txt'
 file = Path(token_file)

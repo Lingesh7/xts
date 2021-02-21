@@ -60,30 +60,44 @@ appKey = cfg.get('user', 'interactive_appkey')
 secretKey = cfg.get('user', 'interactive_secretkey')
 xt = XTSConnect(appKey, secretKey, source)
 
+response=xt.interactive_login()
+print(response)
+
 token_file=f'access_token_{cdate}.txt'
 file = Path(token_file)
-try:
-    if file.exists() and (date.today() == date.fromtimestamp(file.stat().st_mtime)):
-        logger.info('Token file exists and created today')
-        in_file = open(token_file,'r').read().split()
-        access_token = in_file[0]
-        userID=in_file[1]
-        isInvestorClient=in_file[2]
-        logger.info('Initializing session with token..')
-        xt._set_common_variables(access_token, userID, isInvestorClient)
-except:
-    logger.exception('Wrong with token file. Generate separately.. Aborting script!..')
-    exit()
 
-# orders={'refId':10001,'set':1, \
-#         'symbol': 0, 'inst_name':None, \
-#         'txn_type': "sell", 'idx':"NIFTY", \
-#         'strike':0, 'otype': "ce", \
-#         'status': "idle",'expiry': weekly_exp, \
-#         'lot': 2, 'startTime':"20:57:00"}
-    
-        
-def nextThu_and_lastThu_expiry_date ():
+
+# if file.exists() and (date.today() == date.fromtimestamp(file.stat().st_mtime)):
+#     logger.info('Token file exists and created today')
+#     in_file = open(token_file,'r').read().split()
+#     access_token = in_file[0]
+#     userID=in_file[1]
+#     isInvestorClient=in_file[2]
+#     logger.info('Initializing session with token..')
+#     xt._set_common_variables(access_token, userID, isInvestorClient)
+# else:
+#     logger.error('Wrong with token file. Generate separately.. Aborting script!..')
+#     exit()
+
+orders={'refId':10001,          \
+        'setno':1,              \
+        'ent_txn_type': "sell", \
+        'rpr_txn_type': "buy",  \
+        'ext_txn_type': "buy",  \
+        'idx':"NIFTY",          \
+        'otype': "ce",          \
+        'status': "Idle",       \
+        'expiry': 'week',       \
+        'lot': 2,               \
+        'startTime':"11:50:00", \
+        'endTime':"15:05:00",   \
+        'repairedAlready':False}
+etr_inst= {}
+rpr_inst= {}
+ext_inst= {}
+tr_insts=[]
+       
+def nextThu_and_lastThu_expiry_date():
     global weekly_exp, monthly_exp
     logger.info('Calculating weekly and monthly expiry dates..')
     todayte = datetime.today()
@@ -217,18 +231,18 @@ def instrumentLookup(instrument_df,symbol):
     try:
         return instrument_df[instrument_df.Description==symbol].ExchangeInstrumentID.values[0]
     except:
-        return -1            
-
+        return -1
+    
 def ltp(symbol):
     try:
         instruments={'exchangeSegment': 2, 'exchangeInstrumentID': symbol}
         xt.send_unsubscription(Instruments=instruments,xtsMessageCode=1502)
         subs_resp=xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
         if subs_resp['type'] == 'success':
-            listQuotes = json.loads(subs_resp['result']['listQuotes'][i])
+            listQuotes = json.loads(subs_resp['result']['listQuotes'][0])
             return listQuotes['Touchline']['LastTradedPrice']
-     except:
-         return -1
+    except:
+        return -1
 
 def placeOrder(symbol,txn_type,qty):
     logger.info('Placing Orders..')
@@ -290,102 +304,124 @@ def placeOrder(symbol,txn_type,qty):
 def execute(orders):
     global tr_insts
     # global orders
-    a=0
     while True:
-        if orders['status'] == 'idle':
+        if orders['status'] == 'Idle':
+            #Entry condition check
             if (datetime.now() >= datetime.strptime((cdate+" "+orders['startTime']),"%d-%m-%Y %H:%M:%S")):
                 logger.info(f'Placing orders as status is idle and timing {orders["startTime"]} cond met ..')
-                tr_inst['set']=orders['setno']
-                tr_inst['txn_type'] = orders['txn_type']
-                tr_inst['strike'] = strikePrice(orders['idx'])
-                qty = 75*orders['lot'] if orders['idx'] == 'NIFTY' else 25*orders['lot']
-                tr_inst['qty'] = qty
+                etr_inst['set']=orders['setno']
+                etr_inst['txn_type'] = orders['ent_txn_type']
+                etr_inst['strike'] = strikePrice(orders['idx'])
+                etr_inst['qty'] = 75*orders['lot'] if orders['idx'] == 'NIFTY' else 25*orders['lot']
+                # etr_inst['qty'] = qty
                 if orders['expiry'] == 'week':
-                    tr_inst['expiry']=weekly_exp
+                    etr_inst['expiry'] = weekly_exp
                 if weekly_exp == monthly_exp:
-                    inst_name = orders['idx']+(datetime.strftime(datetime.strptime(tr_inst['expiry'], '%d%b%Y'),'%y%b')).upper()+str(tr_inst['strike'])+orders['otype'].upper()
+                    inst_name = orders['idx']+(datetime.strftime(datetime.strptime(etr_inst['expiry'], '%d%b%Y'),'%y%b')).upper()+str(etr_inst['strike'])+orders['otype'].upper()
                 else:
-                    inst_name = orders['idx']+(datetime.strftime(datetime.strptime(tr_inst['expiry'], '%d%b%Y'),'%y%#m%d'))+str(orders['strike'])+orders['otype'].upper()
-                tr_inst['name'] = inst_name
-                tr_inst['symbol'] = int(instrumentLookup(instrument_df,inst_name))
-                tr_inst['orderID']=None
-                tr_inst['tradedPrice']=None
+                    inst_name = orders['idx']+(datetime.strftime(datetime.strptime(etr_inst['expiry'], '%d%b%Y'),'%y%#m%d'))+str(orders['strike'])+orders['otype'].upper()
+                etr_inst['name'] = inst_name
+                etr_inst['symbol'] = int(instrumentLookup(instrument_df,inst_name))
+                etr_inst['orderID'] = None
+                etr_inst['tradedPrice'] = None
                 logger.info(f"orders before placing orders : {orders}")
-                orderID, tradedPrice, dateTime=placeOrder(tr_inst['symbol'],tr_inst['txn_type'],tr_inst['qty'])
-                tr_inst['orderID']=orderID
-                tr_inst['tradedPrice']=tradedPrice
-                tr_inst['dateTime']=dateTime
+                orderID, tradedPrice, dateTime = placeOrder(etr_inst['symbol'],etr_inst['txn_type'],etr_inst['qty'])
+                etr_inst['orderID'] = orderID
+                etr_inst['tradedPrice'] = tradedPrice
+                etr_inst['dateTime'] = dateTime
                 if orderID and tradedPrice:
-                    orders['status']='Active'
-                    tr_inst['set_type']='Entry'
-                logger.info(f'{tr_inst}')
-                tr_insts.append(tr_inst)
-        if orders['status'] == 'Active':
-            if (ltp(next(i['symbol'] for i in tr_insts if i['set_type']=='Entry' and i['set']==1 )) > \
-                   next(i['tradedPrice'] for i in tr_insts if i['set_type']=='Entry' and i['set']==1) + 15) or \
+                    etr_inst['set_type'] = 'Entry'
+                    orders['status'] = 'Active'
+                logger.info(f'Entry order dtls: {etr_inst}')
+                tr_insts.append(etr_inst)
                 
-            logger.info('running orders as status is Active..')
-            logger.info('in Active loop')
-            orders['status']='exit'
-        if orders['status'] == 'exit' and a==10:
-            logger.info('running orders as status is exit..')
-            logger.info('temrinating the loop..')
+        if orders['status'] == 'Active':
+            ename = next(i['name'] for i in tr_insts if i['set_type']=='Entry' and i['set']==orders['setno'])
+            esymbol = next(i['symbol'] for i in tr_insts if i['set_type']=='Entry' and i['set']==orders['setno'])
+            etp = next(i['tradedPrice'] for i in tr_insts if i['set_type']=='Entry' and i['set']==orders['setno'])
+            
+            #Exit condition check
+            if (datetime.now() >= datetime.strptime((cdate+" "+orders['endTime']),"%d-%m-%Y %H:%M:%S")):
+                ext_inst['set'] = orders['setno']
+                ext_inst['txn_type'] = orders['ext_txn_type']
+                ext_inst['strike'] = strikePrice(orders['idx'])
+                if orders['repairedAlready']:
+                    ext_inst['qty'] = (next(i['qty'] for i in tr_insts if i['set_type']=='Entry' and i['set']==orders['setno']))*0.5
+                elif not orders['repairedAlready']:
+                    ext_inst['qty'] = (next(i['qty'] for i in tr_insts if i['set_type']=='Entry' and i['set']==orders['setno']))*0.5
+                if orders['expiry'] == 'week':
+                    etr_inst['expiry']=weekly_exp
+                ext_inst['name'] = ename
+                ext_inst['symbol'] = esymbol
+                ext_inst['orderID'] = None
+                ext_inst['tradedPrice'] = None
+                # logger.info(f"orders before placing orders : {orders}")
+                orderID, tradedPrice, dateTime = placeOrder(ext_inst['symbol'],ext_inst['txn_type'],ext_inst['qty'])
+                ext_inst['orderID']=orderID
+                ext_inst['tradedPrice']=tradedPrice
+                ext_inst['dateTime']=dateTime
+                if orderID and tradedPrice:
+                    ext_inst['set_type']='Exit'
+                    orders['status']='Exit'
+                logger.info(f'Exit order dtls: {ext_inst}')
+                tr_insts.append(ext_inst)
+                # orders['status'] = 'Exit'
+                continue
+
+            ltpsymbol = ltp(esymbol)
+            
+            # Repair condition check
+            if ((ltpsymbol > etp + 15) or (ltpsymbol < etp -45)) and not orders['repairedAlready']:
+                logger.info('Reparing order as status is active and +15/-45 cond met..')
+                rpr_inst['set']=orders['setno']
+                rpr_inst['txn_type'] = orders['rpr_txn_type']
+                rpr_inst['strike'] = strikePrice(orders['idx'])
+                rpr_inst['qty']=orders['lot']*0.5
+                if orders['expiry'] == 'week':
+                    rpr_inst['expiry']=weekly_exp
+                rpr_inst['name'] = ename
+                rpr_inst['symbol'] = esymbol
+                rpr_inst['orderID'] = None
+                rpr_inst['tradedPrice'] = None
+                orderID, tradedPrice, dateTime = placeOrder(rpr_inst['symbol'],rpr_inst['txn_type'],rpr_inst['qty'])
+                rpr_inst['orderID'] = orderID
+                rpr_inst['tradedPrice'] = tradedPrice
+                rpr_inst['dateTime'] = dateTime
+                if orderID and tradedPrice:
+                    # orders['status'] = 'Repair_Done'
+                    orders['repairedAlready'] = True
+                    rpr_inst['set_type'] = 'Repair'
+                logger.info(f'Exit order dtls: {rpr_inst}')
+                tr_insts.append(etr_inst)
+        #if status turns exit
+        if orders['status'] == 'Exit':
+            logger.info('End Time Reached. Winding up..')
+            return "Completed.."
             break
-        a+=1
-        logger.info(a)
-        time.sleep(1)
-    return tr_insts
-
-
+                
 if __name__ == '__main__':
 
-    # orders={'refId':10001,          \
-    #         'setno':1,              \ 
-    #         'symbol': 0,            \
-    #         'inst_name':None,       \
-    #         'txn_type': "sell",     \
-    #         'idx':"NIFTY",          \
-    #         'strike':0,             \
-    #         'otype': "ce",          \
-    #         'status': "idle",       \
-    #         'expiry': weekly_exp,   \
-    #         'lot': 2,               \
-    #         'startTime':"11:50:00"}
-    orders={'refId':10001,          \
-            'setno':1,              \
-            'txn_type': "sell",     \
-            'idx':"NIFTY",          \
-            'otype': "ce",          \
-            'status': "idle",       \
-            'expiry': 'week',   \
-            'lot': 2,               \
-            'startTime':"11:50:00"}
-        
-    tr_inst= {}
-    tr_insts=[]
     nextThu_and_lastThu_expiry_date()
     masterDump()
     try:
-        logger.info("orders before : ",orders)
-        logger.info(f"{tr_insts}")
-        logger.info(f"{tr_inst}")
+        logger.info(f"orders before : {orders}")
+        logger.info(f" traded inst list - {tr_insts}")
         result=execute(orders)
-        print(result)
+        logger.info(result)
     except Exception:
         logger.exception('Error Occured..')
     finally:
         logger.info('--------------------------------------------')
     
-    # print("orders after execute function : ",orders)
-    
-    # id = [x['id'] for x in results if x['name'] == "virtual-machine-1"]
 
-    # strikePrice(orders['idx'])
        
 tr_insts=[{'set': 1, 'txn_type': 'sell', 'strike': 15100, 'qty': 150, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB15100CE', 'symbol': 46357, 'orderID': 10027094, 'tradedPrice': 130.25, 'dateTime': '2021-02-19 18:33:01', 'set_type': 'Entry'},
-          {'set': 1, 'txn_type': 'buy', 'strike': 15100, 'qty': 150, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB15150CE', 'symbol': 46357, 'orderID': 10027095, 'tradedPrice': 1.25, 'dateTime': '2021-02-19 18:33:01', 'set_type': 'Repair'}]
-for i in tr_insts:
-    a = next(i['tradedPrice'] for i in tr_insts if i['set_type']=='Entry' and i['set']==1)
+          {'set': 1, 'txn_type': 'buy', 'strike': 15100, 'qty': 75, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB15150CE', 'symbol': 46357, 'orderID': 10027095, 'tradedPrice': 1.25, 'dateTime': '2021-02-19 19:33:01', 'set_type': 'Repair'},
+          {'set': 1, 'txn_type': 'buy', 'strike': 15100, 'qty': 75, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB15150CE', 'symbol': 46357, 'orderID': 10027096, 'tradedPrice': 11.25, 'dateTime': '2021-02-19 19:37:01', 'set_type': 'Exit'},
+          {'set': 2, 'txn_type': 'sell', 'strike': 15100, 'qty': 150, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB15100CE', 'symbol': 46357, 'orderID': 10027097, 'tradedPrice': 9.25, 'dateTime': '2021-02-19 20:33:01', 'set_type': 'Entry'},
+          {'set': 2, 'txn_type': 'buy', 'strike': 15100, 'qty': 75, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB15150CE', 'symbol': 46357, 'orderID': 10027098, 'tradedPrice': 76.25, 'dateTime': '2021-02-19 21:33:01', 'set_type': 'Repair'},
+          {'set': 2, 'txn_type': 'buy', 'strike': 15100, 'qty': 75, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB15150CE', 'symbol': 46357, 'orderID': 10027099, 'tradedPrice': 987.25, 'dateTime': '2021-02-19 21:37:01', 'set_type': 'Exit'}]
+# a = next(i['tradedPrice'] for i in tr_insts if i['set_type']=='Exit' and i['set']==2)
         
 
 
@@ -410,21 +446,4 @@ for i in tr_insts:
         
         
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+    

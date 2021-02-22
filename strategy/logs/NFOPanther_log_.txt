@@ -1917,3 +1917,5 @@ TypeError: catching classes that do not inherit from BaseException is not allowe
 2021-02-22 14:45:02,448:__main__:INFO:End Time Reached. Winding up..
 2021-02-22 14:45:02,448:__main__:INFO:Completed..
 2021-02-22 14:45:02,451:__main__:INFO:--------------------------------------------
+2021-02-22 21:25:58,599:__main__:INFO:Token file exists and created today
+2021-02-22 21:25:58,600:__main__:INFO:Initializing session with token..

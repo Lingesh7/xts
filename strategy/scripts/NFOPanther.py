@@ -234,17 +234,53 @@ def instrumentLookup(instrument_df,symbol):
     except:
         return -1
     
-def ltp(symbol):
-    try:
-        instruments=[{'exchangeSegment': 2, 'exchangeInstrumentID': symbol}]
-        xt.send_unsubscription(Instruments=instruments,xtsMessageCode=1502)
-        subs_resp=xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
-        if subs_resp['type'] == 'success':
-            listQuotes = json.loads(subs_resp['result']['listQuotes'][0])
-            return listQuotes['Touchline']['LastTradedPrice']
-    except:
-        logger.exception('Unable to get LTP')
-        return None
+# def ltp(symbol):
+#     try:
+#         instruments=[{'exchangeSegment': 2, 'exchangeInstrumentID': symbol}]
+#         xt.send_unsubscription(Instruments=instruments,xtsMessageCode=1502)
+#         subs_resp=xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
+#         if subs_resp['type'] == 'success':
+#             listQuotes = json.loads(subs_resp['result']['listQuotes'][0])
+#             return listQuotes['Touchline']['LastTradedPrice']
+#     except:
+#         logger.exception('Unable to get LTP')
+#         return None
+
+def ltp(tr_insts):
+    global ltp
+    symbols=[i['symbol'] for i in tr_insts if i['set_type'] == 'Entry']
+    instruments=[]
+    for symbol in symbols:
+        instruments.append({'exchangeSegment': 2, 'exchangeInstrumentID': symbol})
+    xt.send_unsubscription(Instruments=instruments,xtsMessageCode=1502)
+    subs_resp=xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
+    if subs_resp['type'] == 'success':
+        ltp={}
+        for symbol,i in zip(symbols,range(len(symbols))):
+            listQuotes = json.loads(subs_resp['result']['listQuotes'][i])
+            price=listQuotes['Touchline']['LastTradedPrice']
+            ltp[symbol]=price
+
+def get_global_ltp():
+    df = pd.DataFrame(tr_insts)
+    df['amount'] = df['tr_qty']*df['tradedPrice']
+    df = df.astype(dtype={'set': int,
+                             'txn_type': str,
+                             'strike': int,
+                             'qty': int,
+                             'tr_qty': int,
+                             'expiry': str,
+                             'name': str,
+                             'symbol': int,
+                             'orderID': int,
+                             'tradedPrice': float,
+                             'dateTime': str,
+                             'set_type': str,
+                             'amount': float})
+    gdf = df.groupby(['name','symbol'],as_index=False).sum()[['symbol','name','tr_qty','tradedPrice','amount']]
+    gdf['ltp'] = gdf['symbol'].map(ltp)
+    gdf['cur_amt'] = gdf['tr_qty']*gdf['ltp']
+    gdf['pnl'] = gdf['cur_amt'] - gdf['amount']
 
 def placeOrder(symbol,txn_type,qty):
     logger.info('Placing Orders..')
@@ -269,6 +305,7 @@ def placeOrder(symbol,txn_type,qty):
         if order_resp['type'] != 'error':
             orderID = order_resp['result']['AppOrderID']            #extracting the order id from response
             logger.info(f'Order ID for {t_type} {symbol} is: {orderID}')
+            time.sleep(2)
             a=0
             while a<12:
                 orderLists = getOrderList()
@@ -300,8 +337,6 @@ def placeOrder(symbol,txn_type,qty):
     except Exception():
         logger.exception('Unable to place order in placeOrder func...')
         time.sleep(1)
-    # else:
-    #     return orderID, tradedPrice, dateTime
 
 def execute(orders):
     global tr_insts
@@ -356,7 +391,7 @@ def execute(orders):
                     ext_inst['qty'] = next(i['qty'] for i in tr_insts if i['set_type']=='Entry' and i['set']==orders['setno'])
                 ext_inst['tr_qty'] = -ext_inst['qty'] if orders['ext_txn_type'] == 'sell' else ext_inst['qty']
                 if orders['expiry'] == 'week':
-                    etr_inst['expiry']=weekly_exp
+                    ext_inst['expiry']=weekly_exp
                 ext_inst['name'] = ename
                 ext_inst['symbol'] = esymbol
                 ext_inst['orderID'] = None
@@ -374,11 +409,11 @@ def execute(orders):
                 # orders['status'] = 'Exit'
                 continue
 
-            ltpsymbol = ltp(esymbol)
+            ltpsymbol = ltp['esymbol']
             # logger.info(f'LTP of Entry instrument : {ltpsymbol}')
             
             # Repair condition check
-            if ((ltpsymbol > etp + 5) or (ltpsymbol < etp -10)) and not orders['repairedAlready']:
+            if ((ltpsymbol > etp + 15) or (ltpsymbol < etp -45)) and not orders['repairedAlready']:
                 logger.info('Reparing order as status is active and +15/-45 cond met..')
                 rpr_inst['set']=orders['setno']
                 rpr_inst['txn_type'] = orders['rpr_txn_type']
@@ -409,12 +444,11 @@ def execute(orders):
             break
                 
 if __name__ == '__main__':
-
     nextThu_and_lastThu_expiry_date()
     masterDump()
     try:
-        logger.info(f"orders before : {orders}")
-        logger.info(f" traded inst list - {tr_insts}")
+        # logger.info(f"orders before : {orders}")
+        # logger.info(f" traded inst list - {tr_insts}")
         result=execute(orders)
         logger.info(result)
     except Exception:
@@ -433,47 +467,15 @@ if __name__ == '__main__':
 # # a = next(i['tradedPrice'] for i in tr_insts if i['set_type']=='Exit' and i['set']==2)
 
 
-atr_insts= [{'set': 1, 'txn_type': 'sell', 'strike': 14700, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10026944, 'tradedPrice': 115.2, 'dateTime': '2021-02-22 14:25:05', 'set_type': 'Entry'}, {'set': 1, 'txn_type': 'sell', 'strike': 14700, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10026944, 'tradedPrice': 115.2, 'dateTime': '2021-02-22 14:25:05', 'set_type': 'Entry'}, {'set': 1, 'txn_type': 'buy', 'strike': 14700, 'qty': 75.0, 'tr_qty': 75.0, 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10026962, 'tradedPrice': 138.0, 'dateTime': '2021-02-22 14:45:04', 'set_type': 'Exit'},
-           {'set': 2, 'txn_type': 'sell', 'strike': 14701, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB14800CE', 'symbol': 39608, 'orderID': 10026956, 'tradedPrice': 115.2, 'dateTime': '2021-02-22 14:25:05', 'set_type': 'Entry'}, {'set': 2, 'txn_type': 'sell', 'strike': 14800, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB14700CE', 'symbol': 39653, 'orderID': 10026944, 'tradedPrice': 115.2, 'dateTime': '2021-02-22 14:25:05', 'set_type': 'Entry'}, {'set': 2, 'txn_type': 'buy', 'strike': 14700, 'qty': 75.0, 'tr_qty': 75.0, 'name': 'NIFTY21FEB14800CE', 'symbol': 39656, 'orderID': 10026962, 'tradedPrice': 138.0, 'dateTime': '2021-02-22 14:45:04', 'set_type': 'Exit'}]
+# tr_insts= [{'set': 1, 'txn_type': 'sell', 'strike': 14700, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10026944, 'tradedPrice': 115.2, 'dateTime': '2021-02-22 14:25:05', 'set_type': 'Entry'}, {'set': 1, 'txn_type': 'sell', 'strike': 14700, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10026944, 'tradedPrice': 115.2, 'dateTime': '2021-02-22 14:25:05', 'set_type': 'Entry'}, {'set': 1, 'txn_type': 'buy', 'strike': 14700, 'qty': 75.0, 'tr_qty': 75.0, 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10026962, 'tradedPrice': 138.0, 'dateTime': '2021-02-22 14:45:04', 'set_type': 'Exit'},
+#            {'set': 2, 'txn_type': 'sell', 'strike': 14701, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB14800CE', 'symbol': 39608, 'orderID': 10026956, 'tradedPrice': 115.2, 'dateTime': '2021-02-22 14:25:05', 'set_type': 'Entry'}, {'set': 2, 'txn_type': 'sell', 'strike': 14800, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB14700CE', 'symbol': 39653, 'orderID': 10026944, 'tradedPrice': 115.2, 'dateTime': '2021-02-22 14:25:05', 'set_type': 'Entry'}, {'set': 2, 'txn_type': 'buy', 'strike': 14700, 'qty': 75.0, 'tr_qty': 75.0, 'name': 'NIFTY21FEB14800CE', 'symbol': 39656, 'orderID': 10026962, 'tradedPrice': 138.0, 'dateTime': '2021-02-22 14:45:04', 'set_type': 'Exit'}]
+
+# tr_insts=[{'set': 1, 'txn_type': 'sell', 'strike': 14700, 'qty': 150, 'tr_qty': 75, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10026944, 'tradedPrice': 138.7, 'dateTime': '2021-02-22 14:25:05', 'set_type': 'RepairOnce'},
+#           {'set': 1, 'txn_type': 'buy', 'strike': 14700, 'qty': 75, 'tr_qty': -150, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10026945, 'tradedPrice': 122.2, 'dateTime': '2021-02-22 14:25:05', 'set_type': 'Entry'}]
+# tr_insts1=[{'set': 1, 'txn_type': 'buy', 'strike': 14700, 'qty': 75, 'tr_qty': -150, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10026945, 'tradedPrice': 122.2, 'dateTime': '2021-02-22 14:25:05', 'set_type': 'Entry'}]
 
 
-df = pd.DataFrame(tr_insts)
-adf = pd.DataFrame(atr_insts)
-
-dfdt = adf.astype(dtype={'set': int,
-                         'txn_type': str,
-                         'strike': int,
-                         'qty': int,
-                         'tr_qty': int,
-                         'expiry': str,
-                         'name': str,
-                         'symbol': int,
-                         'orderID': int,
-                         'tradedPrice': float,
-                         'dateTime': str,
-                         'set_type': str})
-
-gdf = dfdt.groupby(['name'],as_index=False).sum()[['tradedPrice','tr_qty']]
-gdf['amount'] = 
-
-gdf = dfdt.groupby(['name'],as_index=False).sum()[['tradedPrice','tr_qty','name']]
-
-       
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
     
+
+# ltp={39607:234,39613:123}    
+ 

@@ -458,3 +458,79 @@ Traceback (most recent call last):
     orderID, tradedPrice, dateTime = placeOrder(etr_inst['symbol'],etr_inst['txn_type'],etr_inst['qty'])
 TypeError: cannot unpack non-iterable NoneType object
 2021-02-21 21:41:08,136:__main__:INFO:--------------------------------------------
+2021-02-22 10:47:35,910:__main__:INFO:Token file exists and created today
+2021-02-22 10:47:35,914:__main__:INFO:Initializing session with token..
+2021-02-22 10:47:35,915:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-22 10:47:35,916:__main__:INFO:weekly expiry is : 25Feb2021, monthly expiry is: 25Feb2021
+2021-02-22 10:47:35,917:__main__:INFO:Creating MasterDump..
+2021-02-22 10:47:40,440:__main__:INFO:orders before : {'refId': 10001, 'setno': 1, 'ent_txn_type': 'sell', 'rpr_txn_type': 'buy', 'ext_txn_type': 'buy', 'idx': 'NIFTY', 'otype': 'ce', 'status': 'Idle', 'expiry': 'week', 'lot': 2, 'startTime': '11:50:00', 'endTime': '15:05:00', 'repairedAlready': False}
+2021-02-22 10:47:40,442:__main__:INFO: traded inst list - []
+2021-02-22 10:49:37,499:__main__:INFO:--------------------------------------------
+2021-02-22 10:53:33,717:__main__:INFO:Token file exists and created today
+2021-02-22 10:53:33,721:__main__:INFO:Initializing session with token..
+2021-02-22 10:53:33,721:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-22 10:53:33,721:__main__:INFO:weekly expiry is : 25Feb2021, monthly expiry is: 25Feb2021
+2021-02-22 10:53:33,721:__main__:INFO:MasterDump already exists.. reading directly
+2021-02-22 10:53:33,763:__main__:INFO:orders before : {'refId': 10001, 'setno': 1, 'ent_txn_type': 'sell', 'rpr_txn_type': 'buy', 'ext_txn_type': 'buy', 'idx': 'NIFTY', 'otype': 'ce', 'status': 'Idle', 'expiry': 'week', 'lot': 2, 'startTime': '10:55:00', 'endTime': '11:05:00', 'repairedAlready': False}
+2021-02-22 10:53:33,764:__main__:INFO: traded inst list - []
+2021-02-22 10:55:00,000:__main__:INFO:Placing orders as status is idle and timing 10:55:00 cond met ..
+2021-02-22 10:55:00,889:__main__:INFO:StrikePrice computed as : 14900
+2021-02-22 10:55:00,896:__main__:INFO:orders before placing orders : {'refId': 10001, 'setno': 1, 'ent_txn_type': 'sell', 'rpr_txn_type': 'buy', 'ext_txn_type': 'buy', 'idx': 'NIFTY', 'otype': 'ce', 'status': 'Idle', 'expiry': 'week', 'lot': 2, 'startTime': '10:55:00', 'endTime': '11:05:00', 'repairedAlready': False}
+2021-02-22 10:55:00,899:__main__:INFO:Placing Orders..
+2021-02-22 10:55:01,700:__main__:INFO:Order ID for SELL 43017 is: 10026794
+2021-02-22 10:55:01,702:__main__:INFO:Retreiving OrderBook..
+2021-02-22 10:55:02,504:__main__:INFO:OrderBook result retreived success
+2021-02-22 10:55:02,506:__main__:INFO: Placed order 10026794 might be in Open or New Status, Hence retrying..0
+2021-02-22 10:55:05,012:__main__:INFO:Retreiving OrderBook..
+2021-02-22 10:55:05,867:__main__:INFO:OrderBook result retreived success
+2021-02-22 10:55:05,868:__main__:ERROR:Error Occured..
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 277, in placeOrder
+    LastUpdateDateTime=datetime.fromisoformat(next((orderList['LastUpdateDateTime'] for orderList in orderLists if orderList['AppOrderID'] == orderID and orderList['OrderStatus'] == 'Filled'))[:-1])
+ValueError: Invalid isoformat string: '2021-02-22T10:55:05.5624'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 409, in <module>
+    result=execute(orders)
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 328, in execute
+    orderID, tradedPrice, dateTime = placeOrder(etr_inst['symbol'],etr_inst['txn_type'],etr_inst['qty'])
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 298, in placeOrder
+    except Exception():
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2021-02-22 10:55:05,869:__main__:INFO:--------------------------------------------
+2021-02-22 11:03:18,550:__main__:INFO:Token file exists and created today
+2021-02-22 11:03:18,550:__main__:INFO:Initializing session with token..
+2021-02-22 11:03:18,550:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-22 11:03:18,550:__main__:INFO:weekly expiry is : 25Feb2021, monthly expiry is: 25Feb2021
+2021-02-22 11:03:18,550:__main__:INFO:MasterDump already exists.. reading directly
+2021-02-22 11:03:18,567:__main__:INFO:orders before : {'refId': 10001, 'setno': 1, 'ent_txn_type': 'sell', 'rpr_txn_type': 'buy', 'ext_txn_type': 'buy', 'idx': 'NIFTY', 'otype': 'ce', 'status': 'Idle', 'expiry': 'week', 'lot': 2, 'startTime': '10:55:00', 'endTime': '11:05:00', 'repairedAlready': False}
+2021-02-22 11:03:18,567:__main__:INFO: traded inst list - []
+2021-02-22 11:03:18,567:__main__:INFO:Placing orders as status is idle and timing 10:55:00 cond met ..
+2021-02-22 11:03:19,397:__main__:INFO:StrikePrice computed as : 14900
+2021-02-22 11:03:19,404:__main__:INFO:orders before placing orders : {'refId': 10001, 'setno': 1, 'ent_txn_type': 'sell', 'rpr_txn_type': 'buy', 'ext_txn_type': 'buy', 'idx': 'NIFTY', 'otype': 'ce', 'status': 'Idle', 'expiry': 'week', 'lot': 2, 'startTime': '10:55:00', 'endTime': '11:05:00', 'repairedAlready': False}
+2021-02-22 11:03:19,406:__main__:INFO:Placing Orders..
+2021-02-22 11:03:20,470:__main__:INFO:Order ID for SELL 43017 is: 10026803
+2021-02-22 11:03:20,470:__main__:INFO:Retreiving OrderBook..
+2021-02-22 11:03:22,101:__main__:INFO:OrderBook result retreived success
+2021-02-22 11:03:22,103:__main__:INFO: Placed order 10026803 might be in Open or New Status, Hence retrying..0
+2021-02-22 11:03:24,606:__main__:INFO:Retreiving OrderBook..
+2021-02-22 11:03:25,614:__main__:INFO:OrderBook result retreived success
+2021-02-22 11:03:25,616:__main__:ERROR:Error Occured..
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 277, in placeOrder
+    LastUpdateDateTime=datetime.fromisoformat(next((orderList['LastUpdateDateTime'] for orderList in orderLists if orderList['AppOrderID'] == orderID and orderList['OrderStatus'] == 'Filled')))
+ValueError: Invalid isoformat string: '2021-02-22T11:03:25.0039931'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 409, in <module>
+    result=execute(orders)
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 328, in execute
+    orderID, tradedPrice, dateTime = placeOrder(etr_inst['symbol'],etr_inst['txn_type'],etr_inst['qty'])
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 298, in placeOrder
+    except Exception():
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2021-02-22 11:03:25,618:__main__:INFO:--------------------------------------------

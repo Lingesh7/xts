@@ -53,7 +53,7 @@ mdf=pd.DataFrame(columns=['ordrtyp','ss','nn','qq','oo','tt','ltp','pnl'])
 # new_dict = {k:[] for k in ['oo','tt','qq','ss','sl']}
 
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-kickTime = "11:30:00"
+kickTime = "12:00:00"
 wrapTime = "15:05:00"
 repairTime = "14:40:00"
 globalSL = -1500
@@ -658,10 +658,11 @@ if __name__ == '__main__':
                     # writer = pd.ExcelWriter(r'..\pnl\Master_Strategy2_PnL.xls')
                     # xdf.to_excel(writer, sheet_name=(cdate+'_'+kickTime.replace(':','_')), index=True)
                     # writer.save()
-                    with pd.ExcelWriter('../pnl/Master_Strategy2_PnL.xlsx',engine='openpyxl') as writer:
-                        writer.book = load_workbook('../pnl/Master_Strategy2_PnL.xlsx')
-                        xdf.to_excel(writer, sheet_name=(cdate+'_'+kickTime.replace(':','_')), index=True)
-                        writer.save()
+                    # with pd.ExcelWriter('../pnl/Master_Strategy2_PnL.xlsx',engine='openpyxl') as writer:
+                    writer=pd.ExcelWriter('../pnl/Master_Strategy2_PnL.xlsx',engine='openpyxl')    
+                    writer.book = load_workbook('../pnl/Master_Strategy2_PnL.xlsx')
+                    xdf.to_excel(writer, sheet_name=(cdate+'_'+kickTime.replace(':','_')), index=True)
+                    writer.save()
                 else:
                     logger.info('Nothing to write in excel..')
                     

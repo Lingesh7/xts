@@ -53,7 +53,7 @@ mdf=pd.DataFrame(columns=['ordrtyp','ss','nn','qq','oo','tt','ltp','pnl'])
 # new_dict = {k:[] for k in ['oo','tt','qq','ss','sl']}
 
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-kickTime = "12:00:00"
+kickTime = "12:30:00"
 wrapTime = "15:05:00"
 repairTime = "14:40:00"
 globalSL = -1500

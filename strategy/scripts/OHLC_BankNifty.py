@@ -52,11 +52,11 @@ def strkPrcCalc(spot,base):
     return strikePrice
 
 cdate = datetime.strftime(datetime.now(), "%b %d %Y")
-bankniftyAt920 = 36902.70
+bankniftyAt920 = 36073
 strikePrice = strkPrcCalc(bankniftyAt920, 100)
 
 if __name__ == '__main__':
-    filename=r'..\ohlc\BankNifty_OHLC.xlsx'
+    filename='..\ohlc\BankNifty_OHLC.xlsx'
     with pd.ExcelWriter(filename,engine='openpyxl') as writer:
         for i in range(strikePrice-500,strikePrice+600,100):
             print(i)
@@ -66,7 +66,7 @@ if __name__ == '__main__':
                 exchangeSegment=2,
                 series='OPTIDX',
                 symbol='BANKNIFTY',
-                expiryDate='18Feb2021',
+                expiryDate='25Feb2021',
                 optionType=j,
                 strikePrice=i)
                 # alist.append([resp['result'][0]['ExchangeInstrumentID'],resp['result'][0]['DisplayName']])
@@ -99,6 +99,7 @@ if __name__ == '__main__':
                 startrow = writer.book[name+'_'+j].max_row
                 spl_df.to_excel(writer, sheet_name=(name+'_'+j), index=False, header=False, startrow=startrow)
                 writer.save()
+                writer.close()
         print('==========================================')
         # xt.marketdata_logout()
 

@@ -52,29 +52,31 @@ tsym=zip(tickers,symbols)
 if __name__ == '__main__':
     filename=r'..\ohlc\EQ_OHLC.xlsx'
     # writer = pd.ExcelWriter(filename, engine='openpyxl')
-    with pd.ExcelWriter(filename,engine='openpyxl') as writer:
-        for ticker,symbol in tsym:
-            print(ticker)
-            ohlc = xt.get_ohlc(
-                        exchangeSegment=xt.EXCHANGE_NSECM,
-                        exchangeInstrumentID=symbol,
-                        startTime=cdate+' 091500',
-                        endTime=cdate+' 153000',
-                        compressionValue=60)
-            # print("OHLC: " + str(ohlc))
-            dataresp= ohlc['result']['dataReponse']
-            spl = dataresp.split(',')
-            spl_df = pd.DataFrame([sub.split("|") for sub in spl],columns=(['Timestamp','Open','High','Low','Close','Volume','OI','NA']))
-            spl_df.drop(spl_df.columns[[-1,]], axis=1, inplace=True)
-            spl_df['Timestamp'] = pd.to_datetime(spl_df['Timestamp'].astype('int'), unit='s')
-            # writer=pd.ExcelWriter(filename,engine='openpyxl')
-            print('...')
-            writer.book = load_workbook(filename)
-            writer.sheets=dict((ws.title, ws) for ws in writer.book.worksheets)
-            startrow = writer.book[ticker].max_row
-            spl_df.to_excel(writer, sheet_name=(ticker), index=False ,startrow=startrow,header=False)
-            # spl_df.to_excel(writer, sheet_name=(ticker), index=False )
-            writer.save()
+    # with pd.ExcelWriter(filename,engine='openpyxl') as writer:
+    for ticker,symbol in tsym:
+        print(ticker)
+        ohlc = xt.get_ohlc(
+                    exchangeSegment=xt.EXCHANGE_NSECM,
+                    exchangeInstrumentID=symbol,
+                    startTime=cdate+' 091500',
+                    endTime=cdate+' 153000',
+                    compressionValue=60)
+        # print("OHLC: " + str(ohlc))
+        dataresp= ohlc['result']['dataReponse']
+        spl = dataresp.split(',')
+        spl_df = pd.DataFrame([sub.split("|") for sub in spl],columns=(['Timestamp','Open','High','Low','Close','Volume','OI','NA']))
+        spl_df.drop(spl_df.columns[[-1,]], axis=1, inplace=True)
+        spl_df['Timestamp'] = pd.to_datetime(spl_df['Timestamp'].astype('int'), unit='s')
+        # writer=pd.ExcelWriter(filename,engine='openpyxl')
+        print('...')
+        writer = pd.ExcelWriter(filename, engine='openpyxl')
+        writer.book = load_workbook(filename)
+        writer.sheets=dict((ws.title, ws) for ws in writer.book.worksheets)
+        startrow = writer.book[ticker].max_row
+        spl_df.to_excel(writer, sheet_name=(ticker), index=False ,startrow=startrow,header=False)
+        # spl_df.to_excel(writer, sheet_name=(ticker), index=False )
+        writer.save()
+        writer.close()
     print('==========================================')
         # xt.marketdata_logout()
 

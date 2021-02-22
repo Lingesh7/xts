@@ -534,3 +534,1386 @@ Traceback (most recent call last):
     except Exception():
 TypeError: catching classes that do not inherit from BaseException is not allowed
 2021-02-22 11:03:25,618:__main__:INFO:--------------------------------------------
+2021-02-22 11:18:18,899:__main__:INFO:Token file exists and created today
+2021-02-22 11:18:18,902:__main__:INFO:Initializing session with token..
+2021-02-22 11:18:18,903:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-22 11:18:18,904:__main__:INFO:weekly expiry is : 25Feb2021, monthly expiry is: 25Feb2021
+2021-02-22 11:18:18,904:__main__:INFO:MasterDump already exists.. reading directly
+2021-02-22 11:18:18,924:__main__:INFO:orders before : {'refId': 10001, 'setno': 1, 'ent_txn_type': 'sell', 'rpr_txn_type': 'buy', 'ext_txn_type': 'buy', 'idx': 'NIFTY', 'otype': 'ce', 'status': 'Idle', 'expiry': 'week', 'lot': 2, 'startTime': '10:55:00', 'endTime': '11:05:00', 'repairedAlready': False}
+2021-02-22 11:18:18,925:__main__:INFO: traded inst list - []
+2021-02-22 11:18:18,926:__main__:INFO:Placing orders as status is idle and timing 10:55:00 cond met ..
+2021-02-22 11:18:19,914:__main__:INFO:StrikePrice computed as : 14850
+2021-02-22 11:18:19,917:__main__:INFO:orders before placing orders : {'refId': 10001, 'setno': 1, 'ent_txn_type': 'sell', 'rpr_txn_type': 'buy', 'ext_txn_type': 'buy', 'idx': 'NIFTY', 'otype': 'ce', 'status': 'Idle', 'expiry': 'week', 'lot': 2, 'startTime': '10:55:00', 'endTime': '11:05:00', 'repairedAlready': False}
+2021-02-22 11:18:19,918:__main__:INFO:Placing Orders..
+2021-02-22 11:18:20,650:__main__:INFO:Order ID for SELL 41858 is: 10026809
+2021-02-22 11:18:20,652:__main__:INFO:Retreiving OrderBook..
+2021-02-22 11:18:22,074:__main__:INFO:OrderBook result retreived success
+2021-02-22 11:18:22,075:__main__:INFO: Placed order 10026809 might be in Open or New Status, Hence retrying..0
+2021-02-22 11:18:24,578:__main__:INFO:Retreiving OrderBook..
+2021-02-22 11:18:25,602:__main__:INFO:OrderBook result retreived success
+2021-02-22 11:18:25,604:__main__:INFO:traded price is: 135.7 and ordered  time is: 2021-02-22 11:18:25
+2021-02-22 11:18:25,605:__main__:INFO:Entry order dtls: {'set': 1, 'txn_type': 'sell', 'strike': 14850, 'qty': 150, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB14850CE', 'symbol': 41858, 'orderID': 10026809, 'tradedPrice': 135.7, 'dateTime': '2021-02-22 11:18:25', 'set_type': 'Entry'}
+2021-02-22 11:18:26,439:__main__:INFO:StrikePrice computed as : 14850
+2021-02-22 11:18:26,441:__main__:INFO:Placing Orders..
+2021-02-22 11:18:27,277:__main__:INFO:Order ID for BUY 41858 is: 10026810
+2021-02-22 11:18:27,278:__main__:INFO:Retreiving OrderBook..
+2021-02-22 11:18:29,021:__main__:INFO:OrderBook result retreived success
+2021-02-22 11:18:29,022:__main__:INFO:traded price is: 137.0 and ordered  time is: 2021-02-22 11:18:30
+2021-02-22 11:18:29,024:__main__:INFO:Exit order dtls: {'set': 1, 'txn_type': 'buy', 'strike': 14850, 'qty': 75.0, 'name': 'NIFTY21FEB14850CE', 'symbol': 41858, 'orderID': 10026810, 'tradedPrice': 137.0, 'dateTime': '2021-02-22 11:18:30', 'set_type': 'Exit'}
+2021-02-22 11:18:29,025:__main__:INFO:End Time Reached. Winding up..
+2021-02-22 11:18:29,027:__main__:INFO:Completed..
+2021-02-22 11:18:29,028:__main__:INFO:--------------------------------------------
+2021-02-22 12:49:24,834:__main__:INFO:Token file exists and created today
+2021-02-22 12:49:24,838:__main__:INFO:Initializing session with token..
+2021-02-22 12:49:24,838:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-22 12:49:24,839:__main__:INFO:weekly expiry is : 25Feb2021, monthly expiry is: 25Feb2021
+2021-02-22 12:49:24,840:__main__:INFO:MasterDump already exists.. reading directly
+2021-02-22 12:49:24,860:__main__:INFO:orders before : {'refId': 10001, 'setno': 1, 'ent_txn_type': 'sell', 'rpr_txn_type': 'buy', 'ext_txn_type': 'buy', 'idx': 'NIFTY', 'otype': 'ce', 'status': 'Idle', 'expiry': 'week', 'lot': 2, 'startTime': '12:50:00', 'endTime': '13:05:00', 'repairedAlready': False}
+2021-02-22 12:49:24,861:__main__:INFO: traded inst list - []
+2021-02-22 12:50:00,000:__main__:INFO:Placing orders as status is idle and timing 12:50:00 cond met ..
+2021-02-22 12:50:00,783:__main__:INFO:StrikePrice computed as : 14800
+2021-02-22 12:50:00,786:__main__:INFO:orders before placing orders : {'refId': 10001, 'setno': 1, 'ent_txn_type': 'sell', 'rpr_txn_type': 'buy', 'ext_txn_type': 'buy', 'idx': 'NIFTY', 'otype': 'ce', 'status': 'Idle', 'expiry': 'week', 'lot': 2, 'startTime': '12:50:00', 'endTime': '13:05:00', 'repairedAlready': False}
+2021-02-22 12:50:00,788:__main__:INFO:Placing Orders..
+2021-02-22 12:50:02,128:__main__:INFO:Order ID for SELL 41851 is: 10026883
+2021-02-22 12:50:02,129:__main__:INFO:Retreiving OrderBook..
+2021-02-22 12:50:02,899:__main__:INFO:OrderBook result retreived success
+2021-02-22 12:50:02,900:__main__:INFO: Placed order 10026883 might be in Open or New Status, Hence retrying..0
+2021-02-22 12:50:05,410:__main__:INFO:Retreiving OrderBook..
+2021-02-22 12:50:06,083:__main__:INFO:OrderBook result retreived success
+2021-02-22 12:50:06,085:__main__:INFO:traded price is: 118.38 and ordered  time is: 2021-02-22 12:50:06
+2021-02-22 12:50:06,087:__main__:INFO:Entry order dtls: {'set': 1, 'txn_type': 'sell', 'strike': 14800, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB14800CE', 'symbol': 41851, 'orderID': 10026883, 'tradedPrice': 118.38, 'dateTime': '2021-02-22 12:50:06', 'set_type': 'Entry'}
+2021-02-22 12:50:06,846:__main__:INFO:Reparing order as status is active and +15/-45 cond met..
+2021-02-22 12:50:06,847:__main__:INFO:Placing Orders..
+2021-02-22 12:50:07,665:__main__:ERROR:Gateway:Supplied Quantity is not in multiple of LotSize.
+2021-02-22 12:50:07,666:__main__:INFO:Order not placed for - 41851 
+2021-02-22 12:50:07,668:__main__:ERROR:Error Occured..
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 297, in placeOrder
+    raise Exception('Order not placed - ')
+Exception: Order not placed - 
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 413, in <module>
+    result=execute(orders)
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 390, in execute
+    orderID, tradedPrice, dateTime = placeOrder(rpr_inst['symbol'],rpr_inst['txn_type'],rpr_inst['qty'])
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther.py", line 298, in placeOrder
+    except Exception():
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2021-02-22 12:50:07,669:__main__:INFO:--------------------------------------------
+2021-02-22 13:18:28,145:__main__:INFO:Token file exists and created today
+2021-02-22 13:18:28,145:__main__:INFO:Token file exists and created today
+2021-02-22 13:18:28,145:__main__:INFO:Initializing session with token..
+2021-02-22 13:18:28,145:__main__:INFO:Initializing session with token..
+2021-02-22 13:18:28,145:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-22 13:18:28,145:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-22 13:18:28,145:__main__:INFO:weekly expiry is : 25Feb2021, monthly expiry is: 25Feb2021
+2021-02-22 13:18:28,145:__main__:INFO:weekly expiry is : 25Feb2021, monthly expiry is: 25Feb2021
+2021-02-22 13:18:28,145:__main__:INFO:MasterDump already exists.. reading directly
+2021-02-22 13:18:28,145:__main__:INFO:MasterDump already exists.. reading directly
+2021-02-22 13:18:28,178:__main__:INFO:orders before : {'refId': 10001, 'setno': 1, 'ent_txn_type': 'sell', 'rpr_txn_type': 'buy', 'ext_txn_type': 'buy', 'idx': 'NIFTY', 'otype': 'ce', 'status': 'Idle', 'expiry': 'week', 'lot': 2, 'startTime': '13:20:00', 'endTime': '13:35:00', 'repairedAlready': False}
+2021-02-22 13:18:28,178:__main__:INFO:orders before : {'refId': 10001, 'setno': 1, 'ent_txn_type': 'sell', 'rpr_txn_type': 'buy', 'ext_txn_type': 'buy', 'idx': 'NIFTY', 'otype': 'ce', 'status': 'Idle', 'expiry': 'week', 'lot': 2, 'startTime': '13:20:00', 'endTime': '13:35:00', 'repairedAlready': False}
+2021-02-22 13:18:28,181:__main__:INFO: traded inst list - []
+2021-02-22 13:18:28,181:__main__:INFO: traded inst list - []
+2021-02-22 13:18:32,392:__main__:INFO:--------------------------------------------
+2021-02-22 13:18:32,392:__main__:INFO:--------------------------------------------
+2021-02-22 13:18:58,370:__main__:INFO:Token file exists and created today
+2021-02-22 13:18:58,372:__main__:INFO:Initializing session with token..
+2021-02-22 13:18:58,372:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-22 13:18:58,372:__main__:INFO:weekly expiry is : 25Feb2021, monthly expiry is: 25Feb2021
+2021-02-22 13:18:58,372:__main__:INFO:MasterDump already exists.. reading directly
+2021-02-22 13:18:58,401:__main__:INFO:orders before : {'refId': 10001, 'setno': 1, 'ent_txn_type': 'sell', 'rpr_txn_type': 'buy', 'ext_txn_type': 'buy', 'idx': 'NIFTY', 'otype': 'ce', 'status': 'Idle', 'expiry': 'week', 'lot': 2, 'startTime': '13:20:00', 'endTime': '13:35:00', 'repairedAlready': False}
+2021-02-22 13:18:58,403:__main__:INFO: traded inst list - []
+2021-02-22 13:20:00,000:__main__:INFO:Placing orders as status is idle and timing 13:20:00 cond met ..
+2021-02-22 13:20:00,680:__main__:INFO:StrikePrice computed as : 14800
+2021-02-22 13:20:00,680:__main__:INFO:orders before placing orders : {'refId': 10001, 'setno': 1, 'ent_txn_type': 'sell', 'rpr_txn_type': 'buy', 'ext_txn_type': 'buy', 'idx': 'NIFTY', 'otype': 'ce', 'status': 'Idle', 'expiry': 'week', 'lot': 2, 'startTime': '13:20:00', 'endTime': '13:35:00', 'repairedAlready': False}
+2021-02-22 13:20:00,680:__main__:INFO:Placing Orders..
+2021-02-22 13:20:01,421:__main__:INFO:Order ID for SELL 41851 is: 10026901
+2021-02-22 13:20:01,422:__main__:INFO:Retreiving OrderBook..
+2021-02-22 13:20:02,155:__main__:INFO:OrderBook result retreived success
+2021-02-22 13:20:02,155:__main__:INFO: Placed order 10026901 might be in Open or New Status, Hence retrying..0
+2021-02-22 13:20:04,662:__main__:INFO:Retreiving OrderBook..
+2021-02-22 13:20:05,377:__main__:INFO:OrderBook result retreived success
+2021-02-22 13:20:05,377:__main__:INFO:traded price is: 121.65 and ordered  time is: 2021-02-22 13:20:05
+2021-02-22 13:20:05,377:__main__:INFO:Entry order dtls: {'set': 1, 'txn_type': 'sell', 'strike': 14800, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB14800CE', 'symbol': 41851, 'orderID': 10026901, 'tradedPrice': 121.65, 'dateTime': '2021-02-22 13:20:05', 'set_type': 'Entry'}
+2021-02-22 13:20:05,377:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:07,081:__main__:INFO:LTP of Entry instrument : 121.65
+2021-02-22 13:20:07,081:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:08,500:__main__:INFO:LTP of Entry instrument : 121.55
+2021-02-22 13:20:08,500:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:09,982:__main__:INFO:LTP of Entry instrument : 121.55
+2021-02-22 13:20:09,982:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:11,413:__main__:INFO:LTP of Entry instrument : 121.6
+2021-02-22 13:20:11,413:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:13,000:__main__:INFO:LTP of Entry instrument : 121.45
+2021-02-22 13:20:13,000:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:14,752:__main__:INFO:LTP of Entry instrument : 121
+2021-02-22 13:20:14,752:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:16,195:__main__:INFO:LTP of Entry instrument : 121
+2021-02-22 13:20:16,196:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:17,546:__main__:INFO:LTP of Entry instrument : 119
+2021-02-22 13:20:17,546:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:18,986:__main__:INFO:LTP of Entry instrument : 119
+2021-02-22 13:20:18,986:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:20,473:__main__:INFO:LTP of Entry instrument : 119
+2021-02-22 13:20:20,473:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:22,038:__main__:INFO:LTP of Entry instrument : 119.1
+2021-02-22 13:20:22,038:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:23,490:__main__:INFO:LTP of Entry instrument : 119.6
+2021-02-22 13:20:23,490:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:24,923:__main__:INFO:LTP of Entry instrument : 119.6
+2021-02-22 13:20:24,923:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:26,421:__main__:INFO:LTP of Entry instrument : 119
+2021-02-22 13:20:26,421:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:28,091:__main__:INFO:LTP of Entry instrument : 119.1
+2021-02-22 13:20:28,091:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:29,667:__main__:INFO:LTP of Entry instrument : 118.5
+2021-02-22 13:20:29,667:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:31,123:__main__:INFO:LTP of Entry instrument : 118.5
+2021-02-22 13:20:31,123:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:32,641:__main__:INFO:LTP of Entry instrument : 118.65
+2021-02-22 13:20:32,641:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:34,145:__main__:INFO:LTP of Entry instrument : 117
+2021-02-22 13:20:34,145:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:35,518:__main__:INFO:LTP of Entry instrument : 116.95
+2021-02-22 13:20:35,519:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:36,959:__main__:INFO:LTP of Entry instrument : 116.95
+2021-02-22 13:20:36,959:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:38,466:__main__:INFO:LTP of Entry instrument : 117.3
+2021-02-22 13:20:38,466:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:40,028:__main__:INFO:LTP of Entry instrument : 117.35
+2021-02-22 13:20:40,028:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:41,934:__main__:INFO:LTP of Entry instrument : 117.65
+2021-02-22 13:20:41,934:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:43,635:__main__:INFO:LTP of Entry instrument : 118.45
+2021-02-22 13:20:43,637:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:45,300:__main__:INFO:LTP of Entry instrument : 118.45
+2021-02-22 13:20:45,300:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:47,278:__main__:INFO:LTP of Entry instrument : 118
+2021-02-22 13:20:47,278:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:48,884:__main__:INFO:LTP of Entry instrument : 118.35
+2021-02-22 13:20:48,884:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:50,571:__main__:INFO:LTP of Entry instrument : 118.1
+2021-02-22 13:20:50,571:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:52,273:__main__:INFO:LTP of Entry instrument : 118.05
+2021-02-22 13:20:52,274:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:53,867:__main__:INFO:LTP of Entry instrument : 118.05
+2021-02-22 13:20:53,867:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:55,532:__main__:INFO:LTP of Entry instrument : 117.9
+2021-02-22 13:20:55,534:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:56,973:__main__:INFO:LTP of Entry instrument : 118
+2021-02-22 13:20:56,973:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:20:58,533:__main__:INFO:LTP of Entry instrument : 118
+2021-02-22 13:20:58,533:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:00,222:__main__:INFO:LTP of Entry instrument : 118.4
+2021-02-22 13:21:00,223:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:01,860:__main__:INFO:LTP of Entry instrument : 118.4
+2021-02-22 13:21:01,860:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:03,184:__main__:INFO:LTP of Entry instrument : 118.15
+2021-02-22 13:21:03,184:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:04,558:__main__:INFO:LTP of Entry instrument : 118.2
+2021-02-22 13:21:04,559:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:05,914:__main__:INFO:LTP of Entry instrument : 118.2
+2021-02-22 13:21:05,914:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:07,426:__main__:INFO:LTP of Entry instrument : 118.85
+2021-02-22 13:21:07,427:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:08,961:__main__:INFO:LTP of Entry instrument : 118.65
+2021-02-22 13:21:08,961:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:10,496:__main__:INFO:LTP of Entry instrument : 118.5
+2021-02-22 13:21:10,496:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:11,897:__main__:INFO:LTP of Entry instrument : 118.5
+2021-02-22 13:21:11,897:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:13,159:__main__:INFO:LTP of Entry instrument : 118
+2021-02-22 13:21:13,159:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:14,597:__main__:INFO:LTP of Entry instrument : 118
+2021-02-22 13:21:14,597:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:16,159:__main__:INFO:LTP of Entry instrument : 118.05
+2021-02-22 13:21:16,159:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:17,619:__main__:INFO:LTP of Entry instrument : 116.6
+2021-02-22 13:21:17,619:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:18,976:__main__:INFO:LTP of Entry instrument : 115.55
+2021-02-22 13:21:18,976:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:20,236:__main__:INFO:LTP of Entry instrument : 115.55
+2021-02-22 13:21:20,236:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:21,728:__main__:INFO:LTP of Entry instrument : 114.85
+2021-02-22 13:21:21,728:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:23,168:__main__:INFO:LTP of Entry instrument : 113.75
+2021-02-22 13:21:23,168:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:24,741:__main__:INFO:LTP of Entry instrument : 113.75
+2021-02-22 13:21:24,741:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:26,101:__main__:INFO:LTP of Entry instrument : 113.2
+2021-02-22 13:21:26,101:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:27,560:__main__:INFO:LTP of Entry instrument : 113.4
+2021-02-22 13:21:27,560:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:28,987:__main__:INFO:LTP of Entry instrument : 114.05
+2021-02-22 13:21:28,987:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:30,445:__main__:INFO:LTP of Entry instrument : 114.05
+2021-02-22 13:21:30,460:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:32,042:__main__:INFO:LTP of Entry instrument : 113.85
+2021-02-22 13:21:32,043:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:33,529:__main__:INFO:LTP of Entry instrument : 113.05
+2021-02-22 13:21:33,529:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:34,911:__main__:INFO:LTP of Entry instrument : 113.05
+2021-02-22 13:21:34,912:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:36,544:__main__:INFO:LTP of Entry instrument : 114.2
+2021-02-22 13:21:36,545:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:38,150:__main__:INFO:LTP of Entry instrument : 114.2
+2021-02-22 13:21:38,152:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:39,808:__main__:INFO:LTP of Entry instrument : 114
+2021-02-22 13:21:39,808:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:41,186:__main__:INFO:LTP of Entry instrument : 113.85
+2021-02-22 13:21:41,187:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:42,579:__main__:INFO:LTP of Entry instrument : 113
+2021-02-22 13:21:42,589:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:44,108:__main__:INFO:LTP of Entry instrument : 113
+2021-02-22 13:21:44,108:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:45,483:__main__:INFO:LTP of Entry instrument : 113.25
+2021-02-22 13:21:45,483:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:46,956:__main__:INFO:LTP of Entry instrument : 113.6
+2021-02-22 13:21:46,958:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:48,404:__main__:INFO:LTP of Entry instrument : 112.7
+2021-02-22 13:21:48,405:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:49,889:__main__:INFO:LTP of Entry instrument : 112.7
+2021-02-22 13:21:49,890:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:51,646:__main__:INFO:LTP of Entry instrument : 112.9
+2021-02-22 13:21:51,648:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:53,073:__main__:INFO:LTP of Entry instrument : 112.9
+2021-02-22 13:21:53,074:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:54,672:__main__:INFO:LTP of Entry instrument : 112.25
+2021-02-22 13:21:54,673:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:56,259:__main__:INFO:LTP of Entry instrument : 112.25
+2021-02-22 13:21:56,261:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:57,883:__main__:INFO:LTP of Entry instrument : 112.7
+2021-02-22 13:21:57,885:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:21:59,387:__main__:INFO:LTP of Entry instrument : 113.7
+2021-02-22 13:21:59,388:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:00,736:__main__:INFO:LTP of Entry instrument : 114.55
+2021-02-22 13:22:00,737:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:02,169:__main__:INFO:LTP of Entry instrument : 114.55
+2021-02-22 13:22:02,170:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:03,718:__main__:INFO:LTP of Entry instrument : 114.4
+2021-02-22 13:22:03,720:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:05,564:__main__:INFO:LTP of Entry instrument : 115.05
+2021-02-22 13:22:05,565:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:07,104:__main__:INFO:LTP of Entry instrument : 115.8
+2021-02-22 13:22:07,105:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:08,657:__main__:INFO:LTP of Entry instrument : 115.8
+2021-02-22 13:22:08,658:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:10,018:__main__:INFO:LTP of Entry instrument : 115.1
+2021-02-22 13:22:10,019:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:11,573:__main__:INFO:LTP of Entry instrument : 115.45
+2021-02-22 13:22:11,574:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:13,021:__main__:INFO:LTP of Entry instrument : 115.45
+2021-02-22 13:22:13,021:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:14,520:__main__:INFO:LTP of Entry instrument : 115.6
+2021-02-22 13:22:14,521:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:15,935:__main__:INFO:LTP of Entry instrument : 115.6
+2021-02-22 13:22:15,936:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:17,403:__main__:INFO:LTP of Entry instrument : 115.45
+2021-02-22 13:22:17,404:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:19,024:__main__:INFO:LTP of Entry instrument : 116.15
+2021-02-22 13:22:19,026:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:20,632:__main__:INFO:LTP of Entry instrument : 115.7
+2021-02-22 13:22:20,633:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:22,147:__main__:INFO:LTP of Entry instrument : 115.85
+2021-02-22 13:22:22,149:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:23,566:__main__:INFO:LTP of Entry instrument : 115.85
+2021-02-22 13:22:23,567:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:24,985:__main__:INFO:LTP of Entry instrument : 116.1
+2021-02-22 13:22:24,987:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:26,470:__main__:INFO:LTP of Entry instrument : 115.95
+2021-02-22 13:22:26,472:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:27,979:__main__:INFO:LTP of Entry instrument : 115.95
+2021-02-22 13:22:27,980:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:29,649:__main__:INFO:LTP of Entry instrument : 115.35
+2021-02-22 13:22:29,650:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:30,953:__main__:INFO:LTP of Entry instrument : 113.7
+2021-02-22 13:22:30,954:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:32,386:__main__:INFO:LTP of Entry instrument : 113.7
+2021-02-22 13:22:32,387:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:33,917:__main__:INFO:LTP of Entry instrument : 114.5
+2021-02-22 13:22:33,917:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:35,465:__main__:INFO:LTP of Entry instrument : 114.85
+2021-02-22 13:22:35,466:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:37,017:__main__:INFO:LTP of Entry instrument : 114.45
+2021-02-22 13:22:37,018:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:38,437:__main__:INFO:LTP of Entry instrument : 114.45
+2021-02-22 13:22:38,438:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:39,990:__main__:INFO:LTP of Entry instrument : 114.85
+2021-02-22 13:22:39,991:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:41,547:__main__:INFO:LTP of Entry instrument : 114.95
+2021-02-22 13:22:41,550:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:43,101:__main__:INFO:LTP of Entry instrument : 114.95
+2021-02-22 13:22:43,102:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:44,870:__main__:INFO:LTP of Entry instrument : 114.85
+2021-02-22 13:22:44,871:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:46,352:__main__:INFO:LTP of Entry instrument : 115.1
+2021-02-22 13:22:46,353:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:47,849:__main__:INFO:LTP of Entry instrument : 116.35
+2021-02-22 13:22:47,850:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:49,450:__main__:INFO:LTP of Entry instrument : 116.35
+2021-02-22 13:22:49,450:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:50,909:__main__:INFO:LTP of Entry instrument : 116.15
+2021-02-22 13:22:50,911:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:52,461:__main__:INFO:LTP of Entry instrument : 115.9
+2021-02-22 13:22:52,462:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:53,882:__main__:INFO:LTP of Entry instrument : 115.65
+2021-02-22 13:22:53,883:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:55,417:__main__:INFO:LTP of Entry instrument : 115.65
+2021-02-22 13:22:55,418:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:56,967:__main__:INFO:LTP of Entry instrument : 115.5
+2021-02-22 13:22:56,968:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:22:58,617:__main__:INFO:LTP of Entry instrument : 115.5
+2021-02-22 13:22:58,618:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:00,342:__main__:INFO:LTP of Entry instrument : 116.2
+2021-02-22 13:23:00,343:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:01,859:__main__:INFO:LTP of Entry instrument : 116.2
+2021-02-22 13:23:01,860:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:03,438:__main__:INFO:LTP of Entry instrument : 116.25
+2021-02-22 13:23:03,439:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:05,029:__main__:INFO:LTP of Entry instrument : 116
+2021-02-22 13:23:05,030:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:06,582:__main__:INFO:LTP of Entry instrument : 116.25
+2021-02-22 13:23:06,584:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:08,514:__main__:INFO:LTP of Entry instrument : 116.4
+2021-02-22 13:23:08,516:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:10,031:__main__:INFO:LTP of Entry instrument : 116.4
+2021-02-22 13:23:10,033:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:11,620:__main__:INFO:LTP of Entry instrument : 116.35
+2021-02-22 13:23:11,622:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:13,249:__main__:INFO:LTP of Entry instrument : 116.9
+2021-02-22 13:23:13,250:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:14,877:__main__:INFO:LTP of Entry instrument : 116.5
+2021-02-22 13:23:14,878:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:16,567:__main__:INFO:LTP of Entry instrument : 116.45
+2021-02-22 13:23:16,569:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:18,029:__main__:INFO:LTP of Entry instrument : 116.45
+2021-02-22 13:23:18,030:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:19,666:__main__:INFO:LTP of Entry instrument : 116.45
+2021-02-22 13:23:19,667:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:21,091:__main__:INFO:LTP of Entry instrument : 116
+2021-02-22 13:23:21,092:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:22,604:__main__:INFO:LTP of Entry instrument : 116
+2021-02-22 13:23:22,605:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:24,365:__main__:INFO:LTP of Entry instrument : 116.5
+2021-02-22 13:23:24,366:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:26,000:__main__:INFO:LTP of Entry instrument : 116.3
+2021-02-22 13:23:26,001:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:27,620:__main__:INFO:LTP of Entry instrument : 115.95
+2021-02-22 13:23:27,621:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:29,265:__main__:INFO:LTP of Entry instrument : 116.85
+2021-02-22 13:23:29,266:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:30,902:__main__:INFO:LTP of Entry instrument : 116.85
+2021-02-22 13:23:30,903:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:32,352:__main__:INFO:LTP of Entry instrument : 116.55
+2021-02-22 13:23:32,353:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:33,872:__main__:INFO:LTP of Entry instrument : 116.85
+2021-02-22 13:23:33,873:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:35,317:__main__:INFO:LTP of Entry instrument : 116.35
+2021-02-22 13:23:35,318:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:37,018:__main__:INFO:LTP of Entry instrument : 116.35
+2021-02-22 13:23:37,019:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:38,666:__main__:INFO:LTP of Entry instrument : 115.55
+2021-02-22 13:23:38,667:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:40,376:__main__:INFO:LTP of Entry instrument : 115.55
+2021-02-22 13:23:40,377:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:42,141:__main__:INFO:LTP of Entry instrument : 115.45
+2021-02-22 13:23:42,142:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:44,009:__main__:INFO:LTP of Entry instrument : 115.25
+2021-02-22 13:23:44,010:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:45,684:__main__:INFO:LTP of Entry instrument : 115.15
+2021-02-22 13:23:45,686:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:47,327:__main__:INFO:LTP of Entry instrument : 115.15
+2021-02-22 13:23:47,328:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:48,920:__main__:INFO:LTP of Entry instrument : 115.1
+2021-02-22 13:23:48,921:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:50,671:__main__:INFO:LTP of Entry instrument : 115.75
+2021-02-22 13:23:50,673:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:52,426:__main__:INFO:LTP of Entry instrument : 115.75
+2021-02-22 13:23:52,427:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:53,992:__main__:INFO:LTP of Entry instrument : 116
+2021-02-22 13:23:53,993:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:55,772:__main__:INFO:LTP of Entry instrument : 116
+2021-02-22 13:23:55,773:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:57,472:__main__:INFO:LTP of Entry instrument : 115.6
+2021-02-22 13:23:57,474:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:23:59,095:__main__:INFO:LTP of Entry instrument : 116
+2021-02-22 13:23:59,096:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:00,786:__main__:INFO:LTP of Entry instrument : 116.25
+2021-02-22 13:24:00,787:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:02,275:__main__:INFO:LTP of Entry instrument : 116.15
+2021-02-22 13:24:02,276:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:03,879:__main__:INFO:LTP of Entry instrument : 116.15
+2021-02-22 13:24:03,880:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:05,571:__main__:INFO:LTP of Entry instrument : 116.25
+2021-02-22 13:24:05,572:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:07,114:__main__:INFO:LTP of Entry instrument : 115.6
+2021-02-22 13:24:07,115:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:08,670:__main__:INFO:LTP of Entry instrument : 115.45
+2021-02-22 13:24:08,671:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:10,134:__main__:INFO:LTP of Entry instrument : 115.45
+2021-02-22 13:24:10,135:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:11,570:__main__:INFO:LTP of Entry instrument : 114.45
+2021-02-22 13:24:11,571:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:13,150:__main__:INFO:LTP of Entry instrument : 114.95
+2021-02-22 13:24:13,152:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:14,675:__main__:INFO:LTP of Entry instrument : 114.45
+2021-02-22 13:24:14,676:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:16,237:__main__:INFO:LTP of Entry instrument : 114.45
+2021-02-22 13:24:16,238:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:17,880:__main__:INFO:LTP of Entry instrument : 113.35
+2021-02-22 13:24:17,881:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:19,496:__main__:INFO:LTP of Entry instrument : 113.05
+2021-02-22 13:24:19,497:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:21,364:__main__:INFO:LTP of Entry instrument : 113.75
+2021-02-22 13:24:21,365:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:23,003:__main__:INFO:LTP of Entry instrument : 113.75
+2021-02-22 13:24:23,004:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:24,586:__main__:INFO:LTP of Entry instrument : 115.4
+2021-02-22 13:24:24,588:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:26,192:__main__:INFO:LTP of Entry instrument : 114.85
+2021-02-22 13:24:26,193:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:27,772:__main__:INFO:LTP of Entry instrument : 114.95
+2021-02-22 13:24:27,773:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:29,446:__main__:INFO:LTP of Entry instrument : 115.5
+2021-02-22 13:24:29,447:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:30,911:__main__:INFO:LTP of Entry instrument : 115.5
+2021-02-22 13:24:30,913:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:32,547:__main__:INFO:LTP of Entry instrument : 115
+2021-02-22 13:24:32,548:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:34,192:__main__:INFO:LTP of Entry instrument : 114.4
+2021-02-22 13:24:34,193:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:35,870:__main__:INFO:LTP of Entry instrument : 114.2
+2021-02-22 13:24:35,871:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:37,449:__main__:INFO:LTP of Entry instrument : 114.2
+2021-02-22 13:24:37,450:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:39,106:__main__:INFO:LTP of Entry instrument : 114.35
+2021-02-22 13:24:39,107:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:42,547:__main__:INFO:LTP of Entry instrument : 114.65
+2021-02-22 13:24:42,548:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:44,142:__main__:INFO:LTP of Entry instrument : 114.7
+2021-02-22 13:24:44,143:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:45,627:__main__:INFO:LTP of Entry instrument : 114.7
+2021-02-22 13:24:45,629:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:46,996:__main__:INFO:LTP of Entry instrument : 115.05
+2021-02-22 13:24:46,997:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:48,434:__main__:INFO:LTP of Entry instrument : 114.75
+2021-02-22 13:24:48,435:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:49,734:__main__:INFO:LTP of Entry instrument : 114.75
+2021-02-22 13:24:49,735:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:51,066:__main__:INFO:LTP of Entry instrument : 114.75
+2021-02-22 13:24:51,067:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:52,476:__main__:INFO:LTP of Entry instrument : 114.35
+2021-02-22 13:24:52,477:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:53,890:__main__:INFO:LTP of Entry instrument : 114.35
+2021-02-22 13:24:53,891:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:55,398:__main__:INFO:LTP of Entry instrument : 114.05
+2021-02-22 13:24:55,398:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:56,767:__main__:INFO:LTP of Entry instrument : 113.25
+2021-02-22 13:24:56,768:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:58,181:__main__:INFO:LTP of Entry instrument : 113.25
+2021-02-22 13:24:58,182:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:24:59,600:__main__:INFO:LTP of Entry instrument : 113.4
+2021-02-22 13:24:59,602:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:01,135:__main__:INFO:LTP of Entry instrument : 113.5
+2021-02-22 13:25:01,136:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:02,919:__main__:INFO:LTP of Entry instrument : 112.6
+2021-02-22 13:25:02,920:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:04,320:__main__:INFO:LTP of Entry instrument : 112.6
+2021-02-22 13:25:04,321:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:05,802:__main__:INFO:LTP of Entry instrument : 112
+2021-02-22 13:25:05,804:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:07,082:__main__:INFO:LTP of Entry instrument : 111.55
+2021-02-22 13:25:07,083:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:08,464:__main__:INFO:LTP of Entry instrument : 111.55
+2021-02-22 13:25:08,465:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:09,893:__main__:INFO:LTP of Entry instrument : 111
+2021-02-22 13:25:09,894:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:11,341:__main__:INFO:LTP of Entry instrument : 110.95
+2021-02-22 13:25:11,344:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:12,847:__main__:INFO:LTP of Entry instrument : 110.6
+2021-02-22 13:25:12,848:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:14,195:__main__:INFO:LTP of Entry instrument : 110.6
+2021-02-22 13:25:14,196:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:15,628:__main__:INFO:LTP of Entry instrument : 110.55
+2021-02-22 13:25:15,629:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:17,084:__main__:INFO:LTP of Entry instrument : 110.4
+2021-02-22 13:25:17,084:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:18,446:__main__:INFO:LTP of Entry instrument : 110.4
+2021-02-22 13:25:18,447:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:19,950:__main__:INFO:LTP of Entry instrument : 111.45
+2021-02-22 13:25:19,951:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:21,205:__main__:INFO:LTP of Entry instrument : 112.45
+2021-02-22 13:25:21,206:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:22,608:__main__:INFO:LTP of Entry instrument : 112.45
+2021-02-22 13:25:22,610:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:24,108:__main__:INFO:LTP of Entry instrument : 113.1
+2021-02-22 13:25:24,109:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:25,720:__main__:INFO:LTP of Entry instrument : 112.85
+2021-02-22 13:25:25,721:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:27,386:__main__:INFO:LTP of Entry instrument : 114.05
+2021-02-22 13:25:27,388:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:28,768:__main__:INFO:LTP of Entry instrument : 114.05
+2021-02-22 13:25:28,770:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:30,071:__main__:INFO:LTP of Entry instrument : 113.45
+2021-02-22 13:25:30,072:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:31,584:__main__:INFO:LTP of Entry instrument : 113.15
+2021-02-22 13:25:31,585:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:33,050:__main__:INFO:LTP of Entry instrument : 113.15
+2021-02-22 13:25:33,051:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:34,649:__main__:INFO:LTP of Entry instrument : 113.45
+2021-02-22 13:25:34,650:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:35,979:__main__:INFO:LTP of Entry instrument : 114.25
+2021-02-22 13:25:35,980:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:37,416:__main__:INFO:LTP of Entry instrument : 114.25
+2021-02-22 13:25:37,418:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:38,706:__main__:INFO:LTP of Entry instrument : 114.2
+2021-02-22 13:25:38,707:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:40,100:__main__:INFO:LTP of Entry instrument : 113.95
+2021-02-22 13:25:40,101:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:41,527:__main__:INFO:LTP of Entry instrument : 113.95
+2021-02-22 13:25:41,529:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:42,827:__main__:INFO:LTP of Entry instrument : 114.45
+2021-02-22 13:25:42,828:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:44,235:__main__:INFO:LTP of Entry instrument : 114.6
+2021-02-22 13:25:44,236:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:45,547:__main__:INFO:LTP of Entry instrument : 114.6
+2021-02-22 13:25:45,548:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:47,073:__main__:INFO:LTP of Entry instrument : 114.45
+2021-02-22 13:25:47,074:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:48,459:__main__:INFO:LTP of Entry instrument : 113.85
+2021-02-22 13:25:48,460:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:49,963:__main__:INFO:LTP of Entry instrument : 113.3
+2021-02-22 13:25:49,964:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:51,550:__main__:INFO:LTP of Entry instrument : 113.3
+2021-02-22 13:25:51,551:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:52,833:__main__:INFO:LTP of Entry instrument : 112.65
+2021-02-22 13:25:52,834:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:54,169:__main__:INFO:LTP of Entry instrument : 112.95
+2021-02-22 13:25:54,170:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:55,522:__main__:INFO:LTP of Entry instrument : 112.95
+2021-02-22 13:25:55,523:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:56,956:__main__:INFO:LTP of Entry instrument : 113.35
+2021-02-22 13:25:56,956:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:58,468:__main__:INFO:LTP of Entry instrument : 113.25
+2021-02-22 13:25:58,469:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:25:59,951:__main__:INFO:LTP of Entry instrument : 113.25
+2021-02-22 13:25:59,953:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:01,416:__main__:INFO:LTP of Entry instrument : 113.95
+2021-02-22 13:26:01,418:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:02,896:__main__:INFO:LTP of Entry instrument : 114.35
+2021-02-22 13:26:02,896:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:04,313:__main__:INFO:LTP of Entry instrument : 114.35
+2021-02-22 13:26:04,315:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:05,827:__main__:INFO:LTP of Entry instrument : 114.25
+2021-02-22 13:26:05,829:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:06,972:__main__:INFO:LTP of Entry instrument : 114.7
+2021-02-22 13:26:06,973:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:08,023:__main__:INFO:LTP of Entry instrument : 114.7
+2021-02-22 13:26:08,025:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:09,114:__main__:INFO:LTP of Entry instrument : 114.95
+2021-02-22 13:26:09,116:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:10,302:__main__:INFO:LTP of Entry instrument : 114.95
+2021-02-22 13:26:10,303:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:11,535:__main__:INFO:LTP of Entry instrument : 114.6
+2021-02-22 13:26:11,536:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:12,692:__main__:INFO:LTP of Entry instrument : 114.6
+2021-02-22 13:26:12,693:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:13,909:__main__:INFO:LTP of Entry instrument : 115
+2021-02-22 13:26:13,910:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:15,059:__main__:INFO:LTP of Entry instrument : 114.25
+2021-02-22 13:26:15,061:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:16,125:__main__:INFO:LTP of Entry instrument : 114.25
+2021-02-22 13:26:16,126:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:17,282:__main__:INFO:LTP of Entry instrument : 114.85
+2021-02-22 13:26:17,282:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:18,490:__main__:INFO:LTP of Entry instrument : 114.85
+2021-02-22 13:26:18,492:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:19,595:__main__:INFO:LTP of Entry instrument : 114.85
+2021-02-22 13:26:19,596:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:20,787:__main__:INFO:LTP of Entry instrument : 114.85
+2021-02-22 13:26:20,788:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:21,884:__main__:INFO:LTP of Entry instrument : 114.65
+2021-02-22 13:26:21,885:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:23,018:__main__:INFO:LTP of Entry instrument : 114.65
+2021-02-22 13:26:23,020:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:24,280:__main__:INFO:LTP of Entry instrument : 115
+2021-02-22 13:26:24,280:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:25,393:__main__:INFO:LTP of Entry instrument : 115.1
+2021-02-22 13:26:25,394:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:26,486:__main__:INFO:LTP of Entry instrument : 115.1
+2021-02-22 13:26:26,486:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:27,601:__main__:INFO:LTP of Entry instrument : 114.7
+2021-02-22 13:26:27,602:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:28,693:__main__:INFO:LTP of Entry instrument : 114.7
+2021-02-22 13:26:28,695:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:29,843:__main__:INFO:LTP of Entry instrument : 115.05
+2021-02-22 13:26:29,844:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:30,972:__main__:INFO:LTP of Entry instrument : 115.05
+2021-02-22 13:26:30,973:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:32,060:__main__:INFO:LTP of Entry instrument : 113.8
+2021-02-22 13:26:32,060:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:33,188:__main__:INFO:LTP of Entry instrument : 113.8
+2021-02-22 13:26:33,189:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:34,476:__main__:INFO:LTP of Entry instrument : 114.25
+2021-02-22 13:26:34,477:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:35,773:__main__:INFO:LTP of Entry instrument : 114.25
+2021-02-22 13:26:35,775:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:37,143:__main__:INFO:LTP of Entry instrument : 114.25
+2021-02-22 13:26:37,144:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:38,286:__main__:INFO:LTP of Entry instrument : 114.05
+2021-02-22 13:26:38,287:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:39,357:__main__:INFO:LTP of Entry instrument : 114.05
+2021-02-22 13:26:39,358:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:40,429:__main__:INFO:LTP of Entry instrument : 114.4
+2021-02-22 13:26:40,430:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:41,496:__main__:INFO:LTP of Entry instrument : 114.4
+2021-02-22 13:26:41,496:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:42,601:__main__:INFO:LTP of Entry instrument : 115.15
+2021-02-22 13:26:42,602:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:43,765:__main__:INFO:LTP of Entry instrument : 115.15
+2021-02-22 13:26:43,766:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:45,005:__main__:INFO:LTP of Entry instrument : 115.45
+2021-02-22 13:26:45,006:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:46,294:__main__:INFO:LTP of Entry instrument : 116
+2021-02-22 13:26:46,295:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:47,976:__main__:INFO:LTP of Entry instrument : 116
+2021-02-22 13:26:47,976:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:49,597:__main__:INFO:LTP of Entry instrument : 115.5
+2021-02-22 13:26:49,597:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:51,547:__main__:INFO:LTP of Entry instrument : 115.35
+2021-02-22 13:26:51,549:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:53,275:__main__:INFO:LTP of Entry instrument : 116
+2021-02-22 13:26:53,276:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:55,286:__main__:INFO:LTP of Entry instrument : 116
+2021-02-22 13:26:55,291:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:57,201:__main__:INFO:LTP of Entry instrument : 115
+2021-02-22 13:26:57,202:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:26:58,931:__main__:INFO:LTP of Entry instrument : 115
+2021-02-22 13:26:58,933:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:00,987:__main__:INFO:LTP of Entry instrument : 114.35
+2021-02-22 13:27:00,988:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:03,195:__main__:INFO:LTP of Entry instrument : 113.75
+2021-02-22 13:27:03,196:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:04,976:__main__:INFO:LTP of Entry instrument : 114.8
+2021-02-22 13:27:04,976:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:06,850:__main__:INFO:LTP of Entry instrument : 114.35
+2021-02-22 13:27:06,851:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:08,222:__main__:INFO:LTP of Entry instrument : 114.35
+2021-02-22 13:27:08,223:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:09,891:__main__:INFO:LTP of Entry instrument : 114.25
+2021-02-22 13:27:09,893:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:11,435:__main__:INFO:LTP of Entry instrument : 115.1
+2021-02-22 13:27:11,437:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:13,012:__main__:INFO:LTP of Entry instrument : 114.9
+2021-02-22 13:27:13,014:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:14,527:__main__:INFO:LTP of Entry instrument : 114.9
+2021-02-22 13:27:14,529:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:15,932:__main__:INFO:LTP of Entry instrument : 114.35
+2021-02-22 13:27:15,933:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:17,447:__main__:INFO:LTP of Entry instrument : 114.2
+2021-02-22 13:27:17,449:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:18,946:__main__:INFO:LTP of Entry instrument : 114.35
+2021-02-22 13:27:18,947:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:20,472:__main__:INFO:LTP of Entry instrument : 114.35
+2021-02-22 13:27:20,474:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:21,716:__main__:INFO:LTP of Entry instrument : 114.25
+2021-02-22 13:27:21,716:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:22,979:__main__:INFO:LTP of Entry instrument : 114.25
+2021-02-22 13:27:22,980:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:24,300:__main__:INFO:LTP of Entry instrument : 114.1
+2021-02-22 13:27:24,302:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:25,572:__main__:INFO:LTP of Entry instrument : 114.55
+2021-02-22 13:27:25,574:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:26,948:__main__:INFO:LTP of Entry instrument : 114.55
+2021-02-22 13:27:26,949:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:28,220:__main__:INFO:LTP of Entry instrument : 114.5
+2021-02-22 13:27:28,221:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:29,556:__main__:INFO:LTP of Entry instrument : 114.5
+2021-02-22 13:27:29,556:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:30,993:__main__:INFO:LTP of Entry instrument : 114.55
+2021-02-22 13:27:30,995:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:32,249:__main__:INFO:LTP of Entry instrument : 114.55
+2021-02-22 13:27:32,249:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:33,706:__main__:INFO:LTP of Entry instrument : 114.55
+2021-02-22 13:27:33,711:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:35,080:__main__:INFO:LTP of Entry instrument : 114
+2021-02-22 13:27:35,081:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:36,508:__main__:INFO:LTP of Entry instrument : 113.45
+2021-02-22 13:27:36,509:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:37,816:__main__:INFO:LTP of Entry instrument : 113.45
+2021-02-22 13:27:37,816:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:39,093:__main__:INFO:LTP of Entry instrument : 113.55
+2021-02-22 13:27:39,096:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:40,535:__main__:INFO:LTP of Entry instrument : 113.35
+2021-02-22 13:27:40,537:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:41,886:__main__:INFO:LTP of Entry instrument : 113.35
+2021-02-22 13:27:41,896:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:43,242:__main__:INFO:LTP of Entry instrument : 112.7
+2021-02-22 13:27:43,243:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:44,446:__main__:INFO:LTP of Entry instrument : 113.25
+2021-02-22 13:27:44,447:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:45,906:__main__:INFO:LTP of Entry instrument : 113.25
+2021-02-22 13:27:45,908:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:47,438:__main__:INFO:LTP of Entry instrument : 113.15
+2021-02-22 13:27:47,439:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:48,806:__main__:INFO:LTP of Entry instrument : 112.6
+2021-02-22 13:27:48,806:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:50,253:__main__:INFO:LTP of Entry instrument : 112.6
+2021-02-22 13:27:50,254:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:51,513:__main__:INFO:LTP of Entry instrument : 111.45
+2021-02-22 13:27:51,515:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:53,036:__main__:INFO:LTP of Entry instrument : 111.5
+2021-02-22 13:27:53,046:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:54,411:__main__:INFO:LTP of Entry instrument : 111.5
+2021-02-22 13:27:54,412:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:55,702:__main__:INFO:LTP of Entry instrument : 111.4
+2021-02-22 13:27:55,703:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:57,138:__main__:INFO:LTP of Entry instrument : 111.9
+2021-02-22 13:27:57,139:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:27:58,552:__main__:INFO:LTP of Entry instrument : 111.9
+2021-02-22 13:27:58,554:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:00,025:__main__:INFO:LTP of Entry instrument : 112.7
+2021-02-22 13:28:00,027:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:01,670:__main__:INFO:LTP of Entry instrument : 113.55
+2021-02-22 13:28:01,671:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:03,140:__main__:INFO:LTP of Entry instrument : 113.15
+2021-02-22 13:28:03,142:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:04,749:__main__:INFO:LTP of Entry instrument : 113.15
+2021-02-22 13:28:04,750:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:06,039:__main__:INFO:LTP of Entry instrument : 113.35
+2021-02-22 13:28:06,046:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:07,638:__main__:INFO:LTP of Entry instrument : 112.9
+2021-02-22 13:28:07,640:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:08,914:__main__:INFO:LTP of Entry instrument : 112.9
+2021-02-22 13:28:08,915:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:10,238:__main__:INFO:LTP of Entry instrument : 112.8
+2021-02-22 13:28:10,239:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:11,684:__main__:INFO:LTP of Entry instrument : 113.4
+2021-02-22 13:28:11,685:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:13,068:__main__:INFO:LTP of Entry instrument : 113.4
+2021-02-22 13:28:13,071:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:14,711:__main__:INFO:LTP of Entry instrument : 113.1
+2021-02-22 13:28:14,713:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:15,993:__main__:INFO:LTP of Entry instrument : 113
+2021-02-22 13:28:15,995:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:17,372:__main__:INFO:LTP of Entry instrument : 113
+2021-02-22 13:28:17,374:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:18,669:__main__:INFO:LTP of Entry instrument : 112.6
+2021-02-22 13:28:18,671:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:20,020:__main__:INFO:LTP of Entry instrument : 113.2
+2021-02-22 13:28:20,020:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:21,773:__main__:INFO:LTP of Entry instrument : 113.4
+2021-02-22 13:28:21,774:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:23,172:__main__:INFO:LTP of Entry instrument : 113.4
+2021-02-22 13:28:23,174:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:24,608:__main__:INFO:LTP of Entry instrument : 113.2
+2021-02-22 13:28:24,609:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:25,892:__main__:INFO:LTP of Entry instrument : 112.85
+2021-02-22 13:28:25,894:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:28,310:__main__:INFO:LTP of Entry instrument : 112.8
+2021-02-22 13:28:28,311:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:29,738:__main__:INFO:LTP of Entry instrument : 112.8
+2021-02-22 13:28:29,739:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:31,191:__main__:INFO:LTP of Entry instrument : 113.6
+2021-02-22 13:28:31,194:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:32,465:__main__:INFO:LTP of Entry instrument : 113.55
+2021-02-22 13:28:32,465:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:33,836:__main__:INFO:LTP of Entry instrument : 113.55
+2021-02-22 13:28:33,838:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:35,135:__main__:INFO:LTP of Entry instrument : 113.45
+2021-02-22 13:28:35,135:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:36,581:__main__:INFO:LTP of Entry instrument : 113.45
+2021-02-22 13:28:36,582:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:38,034:__main__:INFO:LTP of Entry instrument : 113.45
+2021-02-22 13:28:38,037:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:39,374:__main__:INFO:LTP of Entry instrument : 113.05
+2021-02-22 13:28:39,375:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:40,774:__main__:INFO:LTP of Entry instrument : 114.85
+2021-02-22 13:28:40,776:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:42,126:__main__:INFO:LTP of Entry instrument : 114.85
+2021-02-22 13:28:42,127:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:43,560:__main__:INFO:LTP of Entry instrument : 114.85
+2021-02-22 13:28:43,562:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:45,005:__main__:INFO:LTP of Entry instrument : 113.9
+2021-02-22 13:28:45,005:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:46,319:__main__:INFO:LTP of Entry instrument : 113.9
+2021-02-22 13:28:46,321:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:47,675:__main__:INFO:LTP of Entry instrument : 114.8
+2021-02-22 13:28:47,677:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:48,920:__main__:INFO:LTP of Entry instrument : 115.4
+2021-02-22 13:28:48,921:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:50,382:__main__:INFO:LTP of Entry instrument : 115.4
+2021-02-22 13:28:50,383:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:51,995:__main__:INFO:LTP of Entry instrument : 114.7
+2021-02-22 13:28:51,996:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:53,348:__main__:INFO:LTP of Entry instrument : 114.7
+2021-02-22 13:28:53,350:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:54,845:__main__:INFO:LTP of Entry instrument : 114.7
+2021-02-22 13:28:54,847:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:56,272:__main__:INFO:LTP of Entry instrument : 113.9
+2021-02-22 13:28:56,273:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:57,688:__main__:INFO:LTP of Entry instrument : 113.25
+2021-02-22 13:28:57,690:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:28:59,178:__main__:INFO:LTP of Entry instrument : 114
+2021-02-22 13:28:59,180:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:00,672:__main__:INFO:LTP of Entry instrument : 114
+2021-02-22 13:29:00,675:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:02,126:__main__:INFO:LTP of Entry instrument : 114.15
+2021-02-22 13:29:02,135:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:03,550:__main__:INFO:LTP of Entry instrument : 113.65
+2021-02-22 13:29:03,551:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:04,815:__main__:INFO:LTP of Entry instrument : 113.65
+2021-02-22 13:29:04,815:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:06,233:__main__:INFO:LTP of Entry instrument : 113.4
+2021-02-22 13:29:06,234:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:07,520:__main__:INFO:LTP of Entry instrument : 112.8
+2021-02-22 13:29:07,522:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:09,119:__main__:INFO:LTP of Entry instrument : 112.8
+2021-02-22 13:29:09,121:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:10,767:__main__:INFO:LTP of Entry instrument : 112.3
+2021-02-22 13:29:10,769:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:12,098:__main__:INFO:LTP of Entry instrument : 112.85
+2021-02-22 13:29:12,100:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:13,558:__main__:INFO:LTP of Entry instrument : 112.85
+2021-02-22 13:29:13,560:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:14,971:__main__:INFO:LTP of Entry instrument : 112.65
+2021-02-22 13:29:14,972:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:16,629:__main__:INFO:LTP of Entry instrument : 112.65
+2021-02-22 13:29:16,631:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:19,419:__main__:INFO:LTP of Entry instrument : 112.15
+2021-02-22 13:29:19,421:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:21,004:__main__:INFO:LTP of Entry instrument : 112.3
+2021-02-22 13:29:21,006:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:22,314:__main__:INFO:LTP of Entry instrument : 111.6
+2021-02-22 13:29:22,315:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:23,800:__main__:INFO:LTP of Entry instrument : 111.6
+2021-02-22 13:29:23,800:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:25,085:__main__:INFO:LTP of Entry instrument : 111.95
+2021-02-22 13:29:25,085:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:26,487:__main__:INFO:LTP of Entry instrument : 111.15
+2021-02-22 13:29:26,487:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:27,934:__main__:INFO:LTP of Entry instrument : 111.15
+2021-02-22 13:29:27,935:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:29,203:__main__:INFO:LTP of Entry instrument : 111.25
+2021-02-22 13:29:29,205:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:30,865:__main__:INFO:LTP of Entry instrument : 111.05
+2021-02-22 13:29:30,866:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:32,295:__main__:INFO:LTP of Entry instrument : 112.15
+2021-02-22 13:29:32,296:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:33,770:__main__:INFO:LTP of Entry instrument : 112.15
+2021-02-22 13:29:33,772:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:35,444:__main__:INFO:LTP of Entry instrument : 111.45
+2021-02-22 13:29:35,446:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:37,072:__main__:INFO:LTP of Entry instrument : 111.55
+2021-02-22 13:29:37,073:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:38,450:__main__:INFO:LTP of Entry instrument : 112.15
+2021-02-22 13:29:38,451:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:39,965:__main__:INFO:LTP of Entry instrument : 112.15
+2021-02-22 13:29:39,967:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:41,513:__main__:INFO:LTP of Entry instrument : 111.9
+2021-02-22 13:29:41,515:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:43,201:__main__:INFO:LTP of Entry instrument : 112.1
+2021-02-22 13:29:43,202:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:44,565:__main__:INFO:LTP of Entry instrument : 112.25
+2021-02-22 13:29:44,567:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:46,200:__main__:INFO:LTP of Entry instrument : 112.25
+2021-02-22 13:29:46,202:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:47,675:__main__:INFO:LTP of Entry instrument : 111.7
+2021-02-22 13:29:47,685:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:49,070:__main__:INFO:LTP of Entry instrument : 112
+2021-02-22 13:29:49,071:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:50,759:__main__:INFO:LTP of Entry instrument : 112
+2021-02-22 13:29:50,760:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:52,323:__main__:INFO:LTP of Entry instrument : 111.95
+2021-02-22 13:29:52,325:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:53,969:__main__:INFO:LTP of Entry instrument : 112.15
+2021-02-22 13:29:53,971:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:55,685:__main__:INFO:LTP of Entry instrument : 112.8
+2021-02-22 13:29:55,685:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:57,288:__main__:INFO:LTP of Entry instrument : 112.4
+2021-02-22 13:29:57,290:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:29:58,980:__main__:INFO:LTP of Entry instrument : 112.4
+2021-02-22 13:29:58,982:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:00,965:__main__:INFO:LTP of Entry instrument : 113.55
+2021-02-22 13:30:00,965:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:02,780:__main__:INFO:LTP of Entry instrument : 113
+2021-02-22 13:30:02,782:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:04,363:__main__:INFO:LTP of Entry instrument : 112.35
+2021-02-22 13:30:04,365:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:05,775:__main__:INFO:LTP of Entry instrument : 112.5
+2021-02-22 13:30:05,780:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:07,311:__main__:INFO:LTP of Entry instrument : 112.1
+2021-02-22 13:30:07,313:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:08,674:__main__:INFO:LTP of Entry instrument : 112.1
+2021-02-22 13:30:08,674:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:10,175:__main__:INFO:LTP of Entry instrument : 111
+2021-02-22 13:30:10,178:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:12,084:__main__:INFO:LTP of Entry instrument : 107.7
+2021-02-22 13:30:12,087:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:13,760:__main__:INFO:LTP of Entry instrument : 106.8
+2021-02-22 13:30:13,762:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:15,294:__main__:INFO:LTP of Entry instrument : 106.8
+2021-02-22 13:30:15,295:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:16,758:__main__:INFO:LTP of Entry instrument : 105.75
+2021-02-22 13:30:16,759:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:18,129:__main__:INFO:LTP of Entry instrument : 106.2
+2021-02-22 13:30:18,131:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:19,536:__main__:INFO:LTP of Entry instrument : 106.2
+2021-02-22 13:30:19,538:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:20,705:__main__:INFO:LTP of Entry instrument : 105.5
+2021-02-22 13:30:20,708:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:22,038:__main__:INFO:LTP of Entry instrument : 104.1
+2021-02-22 13:30:22,040:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:23,375:__main__:INFO:LTP of Entry instrument : 104.1
+2021-02-22 13:30:23,375:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:24,712:__main__:INFO:LTP of Entry instrument : 104.2
+2021-02-22 13:30:24,713:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:26,117:__main__:INFO:LTP of Entry instrument : 106.45
+2021-02-22 13:30:26,118:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:27,302:__main__:INFO:LTP of Entry instrument : 106.45
+2021-02-22 13:30:27,303:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:28,825:__main__:INFO:LTP of Entry instrument : 106.45
+2021-02-22 13:30:28,838:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:30,122:__main__:INFO:LTP of Entry instrument : 106.45
+2021-02-22 13:30:30,123:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:31,545:__main__:INFO:LTP of Entry instrument : 105.15
+2021-02-22 13:30:31,545:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:32,931:__main__:INFO:LTP of Entry instrument : 105.8
+2021-02-22 13:30:32,932:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:34,365:__main__:INFO:LTP of Entry instrument : 105.8
+2021-02-22 13:30:34,365:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:35,865:__main__:INFO:LTP of Entry instrument : 102
+2021-02-22 13:30:35,866:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:37,231:__main__:INFO:LTP of Entry instrument : 103.65
+2021-02-22 13:30:37,232:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:38,695:__main__:INFO:LTP of Entry instrument : 104.95
+2021-02-22 13:30:38,695:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:39,985:__main__:INFO:LTP of Entry instrument : 104.95
+2021-02-22 13:30:39,994:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:41,237:__main__:INFO:LTP of Entry instrument : 105.5
+2021-02-22 13:30:41,238:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:42,720:__main__:INFO:LTP of Entry instrument : 105.5
+2021-02-22 13:30:42,721:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:44,031:__main__:INFO:LTP of Entry instrument : 105.65
+2021-02-22 13:30:44,032:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:45,352:__main__:INFO:LTP of Entry instrument : 104.25
+2021-02-22 13:30:45,352:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:46,588:__main__:INFO:LTP of Entry instrument : 104.25
+2021-02-22 13:30:46,590:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:48,078:__main__:INFO:LTP of Entry instrument : 103.85
+2021-02-22 13:30:48,079:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:49,614:__main__:INFO:LTP of Entry instrument : 105.9
+2021-02-22 13:30:49,614:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:50,894:__main__:INFO:LTP of Entry instrument : 105.9
+2021-02-22 13:30:50,894:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:52,345:__main__:INFO:LTP of Entry instrument : 105.9
+2021-02-22 13:30:52,345:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:53,561:__main__:INFO:LTP of Entry instrument : 105
+2021-02-22 13:30:53,562:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:54,786:__main__:INFO:LTP of Entry instrument : 105
+2021-02-22 13:30:54,788:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:55,973:__main__:INFO:LTP of Entry instrument : 104.15
+2021-02-22 13:30:55,974:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:57,248:__main__:INFO:LTP of Entry instrument : 104.75
+2021-02-22 13:30:57,250:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:30:58,605:__main__:INFO:LTP of Entry instrument : 104.75
+2021-02-22 13:30:58,607:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:00,057:__main__:INFO:LTP of Entry instrument : 104.25
+2021-02-22 13:31:00,059:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:01,454:__main__:INFO:LTP of Entry instrument : 105
+2021-02-22 13:31:01,459:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:02,833:__main__:INFO:LTP of Entry instrument : 105
+2021-02-22 13:31:02,835:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:04,227:__main__:INFO:LTP of Entry instrument : 104
+2021-02-22 13:31:04,228:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:05,866:__main__:INFO:LTP of Entry instrument : 104
+2021-02-22 13:31:05,868:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:07,095:__main__:INFO:LTP of Entry instrument : 104.7
+2021-02-22 13:31:07,097:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:08,443:__main__:INFO:LTP of Entry instrument : 103.85
+2021-02-22 13:31:08,444:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:09,755:__main__:INFO:LTP of Entry instrument : 104.85
+2021-02-22 13:31:09,757:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:11,027:__main__:INFO:LTP of Entry instrument : 104.85
+2021-02-22 13:31:11,028:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:12,475:__main__:INFO:LTP of Entry instrument : 105.3
+2021-02-22 13:31:12,476:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:13,814:__main__:INFO:LTP of Entry instrument : 103.7
+2021-02-22 13:31:13,814:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:15,316:__main__:INFO:LTP of Entry instrument : 103.7
+2021-02-22 13:31:15,317:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:16,585:__main__:INFO:LTP of Entry instrument : 104.4
+2021-02-22 13:31:16,585:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:17,830:__main__:INFO:LTP of Entry instrument : 104.4
+2021-02-22 13:31:17,831:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:19,594:__main__:INFO:LTP of Entry instrument : 105
+2021-02-22 13:31:19,594:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:21,077:__main__:INFO:LTP of Entry instrument : 104.8
+2021-02-22 13:31:21,078:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:22,552:__main__:INFO:LTP of Entry instrument : 103.8
+2021-02-22 13:31:22,554:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:23,887:__main__:INFO:LTP of Entry instrument : 103.8
+2021-02-22 13:31:23,889:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:25,360:__main__:INFO:LTP of Entry instrument : 104
+2021-02-22 13:31:25,361:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:27,066:__main__:INFO:LTP of Entry instrument : 104.85
+2021-02-22 13:31:27,067:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:28,382:__main__:INFO:LTP of Entry instrument : 104.35
+2021-02-22 13:31:28,384:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:29,680:__main__:INFO:LTP of Entry instrument : 104.35
+2021-02-22 13:31:29,682:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:30,854:__main__:INFO:LTP of Entry instrument : 105.5
+2021-02-22 13:31:30,854:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:32,250:__main__:INFO:LTP of Entry instrument : 105.5
+2021-02-22 13:31:32,251:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:33,745:__main__:INFO:LTP of Entry instrument : 105.15
+2021-02-22 13:31:33,745:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:35,110:__main__:INFO:LTP of Entry instrument : 105.15
+2021-02-22 13:31:35,111:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:36,746:__main__:INFO:LTP of Entry instrument : 105.35
+2021-02-22 13:31:36,748:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:38,179:__main__:INFO:LTP of Entry instrument : 105.65
+2021-02-22 13:31:38,180:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:39,694:__main__:INFO:LTP of Entry instrument : 104.6
+2021-02-22 13:31:39,694:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:41,217:__main__:INFO:LTP of Entry instrument : 104.6
+2021-02-22 13:31:41,218:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:42,624:__main__:INFO:LTP of Entry instrument : 104.6
+2021-02-22 13:31:42,626:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:44,182:__main__:INFO:LTP of Entry instrument : 104.05
+2021-02-22 13:31:44,184:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:45,930:__main__:INFO:LTP of Entry instrument : 105.6
+2021-02-22 13:31:45,932:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:47,594:__main__:INFO:LTP of Entry instrument : 105.25
+2021-02-22 13:31:47,595:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:49,849:__main__:INFO:LTP of Entry instrument : 104.55
+2021-02-22 13:31:49,852:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:51,739:__main__:INFO:LTP of Entry instrument : 104.05
+2021-02-22 13:31:51,740:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:53,316:__main__:INFO:LTP of Entry instrument : 104.05
+2021-02-22 13:31:53,318:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:54,971:__main__:INFO:LTP of Entry instrument : 104.4
+2021-02-22 13:31:54,973:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:56,572:__main__:INFO:LTP of Entry instrument : 104.85
+2021-02-22 13:31:56,573:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:31:58,059:__main__:INFO:LTP of Entry instrument : 106
+2021-02-22 13:31:58,060:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:00,090:__main__:INFO:LTP of Entry instrument : 105.6
+2021-02-22 13:32:00,091:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:03,152:__main__:INFO:LTP of Entry instrument : 104.95
+2021-02-22 13:32:03,154:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:04,514:__main__:INFO:LTP of Entry instrument : 106
+2021-02-22 13:32:04,515:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:05,801:__main__:INFO:LTP of Entry instrument : 106
+2021-02-22 13:32:05,802:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:07,069:__main__:INFO:LTP of Entry instrument : 105.95
+2021-02-22 13:32:07,070:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:08,474:__main__:INFO:LTP of Entry instrument : 105.6
+2021-02-22 13:32:08,477:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:09,854:__main__:INFO:LTP of Entry instrument : 105.6
+2021-02-22 13:32:09,856:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:11,158:__main__:INFO:LTP of Entry instrument : 105.9
+2021-02-22 13:32:11,160:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:12,330:__main__:INFO:LTP of Entry instrument : 106
+2021-02-22 13:32:12,332:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:13,724:__main__:INFO:LTP of Entry instrument : 106
+2021-02-22 13:32:13,724:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:14,931:__main__:INFO:LTP of Entry instrument : 106
+2021-02-22 13:32:14,933:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:16,352:__main__:INFO:LTP of Entry instrument : 106
+2021-02-22 13:32:16,354:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:17,659:__main__:INFO:LTP of Entry instrument : 105.8
+2021-02-22 13:32:17,660:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:18,867:__main__:INFO:LTP of Entry instrument : 105.8
+2021-02-22 13:32:18,868:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:20,169:__main__:INFO:LTP of Entry instrument : 105.95
+2021-02-22 13:32:20,171:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:21,287:__main__:INFO:LTP of Entry instrument : 104.55
+2021-02-22 13:32:21,288:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:22,668:__main__:INFO:LTP of Entry instrument : 104.55
+2021-02-22 13:32:22,670:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:23,941:__main__:INFO:LTP of Entry instrument : 104.85
+2021-02-22 13:32:23,943:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:25,104:__main__:INFO:LTP of Entry instrument : 104.85
+2021-02-22 13:32:25,104:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:26,586:__main__:INFO:LTP of Entry instrument : 105.4
+2021-02-22 13:32:26,588:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:27,689:__main__:INFO:LTP of Entry instrument : 104
+2021-02-22 13:32:27,691:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:29,035:__main__:INFO:LTP of Entry instrument : 104
+2021-02-22 13:32:29,036:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:30,333:__main__:INFO:LTP of Entry instrument : 104.05
+2021-02-22 13:32:30,334:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:31,832:__main__:INFO:LTP of Entry instrument : 104.65
+2021-02-22 13:32:31,833:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:33,217:__main__:INFO:LTP of Entry instrument : 104.65
+2021-02-22 13:32:33,218:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:34,354:__main__:INFO:LTP of Entry instrument : 104.6
+2021-02-22 13:32:34,355:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:35,599:__main__:INFO:LTP of Entry instrument : 104.6
+2021-02-22 13:32:35,600:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:36,880:__main__:INFO:LTP of Entry instrument : 104.35
+2021-02-22 13:32:36,881:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:38,086:__main__:INFO:LTP of Entry instrument : 104.7
+2021-02-22 13:32:38,087:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:39,325:__main__:INFO:LTP of Entry instrument : 104.7
+2021-02-22 13:32:39,326:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:40,658:__main__:INFO:LTP of Entry instrument : 104.65
+2021-02-22 13:32:40,659:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:41,980:__main__:INFO:LTP of Entry instrument : 104.5
+2021-02-22 13:32:41,981:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:43,467:__main__:INFO:LTP of Entry instrument : 104.5
+2021-02-22 13:32:43,469:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:44,946:__main__:INFO:LTP of Entry instrument : 104.1
+2021-02-22 13:32:44,947:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:46,257:__main__:INFO:LTP of Entry instrument : 103.55
+2021-02-22 13:32:46,258:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:47,637:__main__:INFO:LTP of Entry instrument : 103.55
+2021-02-22 13:32:47,638:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:48,952:__main__:INFO:LTP of Entry instrument : 103.95
+2021-02-22 13:32:48,954:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:50,467:__main__:INFO:LTP of Entry instrument : 103.8
+2021-02-22 13:32:50,468:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:51,958:__main__:INFO:LTP of Entry instrument : 103.8
+2021-02-22 13:32:51,960:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:53,389:__main__:INFO:LTP of Entry instrument : 103.7
+2021-02-22 13:32:53,391:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:54,886:__main__:INFO:LTP of Entry instrument : 104.15
+2021-02-22 13:32:54,887:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:56,241:__main__:INFO:LTP of Entry instrument : 104.15
+2021-02-22 13:32:56,242:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:57,659:__main__:INFO:LTP of Entry instrument : 104.4
+2021-02-22 13:32:57,660:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:32:59,140:__main__:INFO:LTP of Entry instrument : 105.5
+2021-02-22 13:32:59,141:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:00,534:__main__:INFO:LTP of Entry instrument : 105.5
+2021-02-22 13:33:00,535:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:02,034:__main__:INFO:LTP of Entry instrument : 104.9
+2021-02-22 13:33:02,035:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:03,321:__main__:INFO:LTP of Entry instrument : 103.75
+2021-02-22 13:33:03,322:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:04,738:__main__:INFO:LTP of Entry instrument : 103.75
+2021-02-22 13:33:04,738:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:06,042:__main__:INFO:LTP of Entry instrument : 104.25
+2021-02-22 13:33:06,043:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:07,292:__main__:INFO:LTP of Entry instrument : 103.9
+2021-02-22 13:33:07,292:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:08,669:__main__:INFO:LTP of Entry instrument : 103.9
+2021-02-22 13:33:08,671:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:09,853:__main__:INFO:LTP of Entry instrument : 104.1
+2021-02-22 13:33:09,855:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:11,271:__main__:INFO:LTP of Entry instrument : 104.1
+2021-02-22 13:33:11,272:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:12,671:__main__:INFO:LTP of Entry instrument : 104.4
+2021-02-22 13:33:12,672:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:13,926:__main__:INFO:LTP of Entry instrument : 105.05
+2021-02-22 13:33:13,927:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:15,218:__main__:INFO:LTP of Entry instrument : 105.05
+2021-02-22 13:33:15,219:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:16,314:__main__:INFO:LTP of Entry instrument : 104.7
+2021-02-22 13:33:16,316:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:17,722:__main__:INFO:LTP of Entry instrument : 104.95
+2021-02-22 13:33:17,724:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:19,058:__main__:INFO:LTP of Entry instrument : 104.95
+2021-02-22 13:33:19,058:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:20,404:__main__:INFO:LTP of Entry instrument : 105.5
+2021-02-22 13:33:20,406:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:21,924:__main__:INFO:LTP of Entry instrument : 104.85
+2021-02-22 13:33:21,925:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:23,266:__main__:INFO:LTP of Entry instrument : 104.85
+2021-02-22 13:33:23,267:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:24,738:__main__:INFO:LTP of Entry instrument : 105.5
+2021-02-22 13:33:24,740:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:26,176:__main__:INFO:LTP of Entry instrument : 105.3
+2021-02-22 13:33:26,177:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:27,505:__main__:INFO:LTP of Entry instrument : 105.3
+2021-02-22 13:33:27,506:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:28,934:__main__:INFO:LTP of Entry instrument : 104.35
+2021-02-22 13:33:28,935:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:30,211:__main__:INFO:LTP of Entry instrument : 104.15
+2021-02-22 13:33:30,212:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:31,567:__main__:INFO:LTP of Entry instrument : 104.15
+2021-02-22 13:33:31,568:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:32,802:__main__:INFO:LTP of Entry instrument : 104.8
+2021-02-22 13:33:32,803:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:33,989:__main__:INFO:LTP of Entry instrument : 104.8
+2021-02-22 13:33:33,989:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:35,441:__main__:INFO:LTP of Entry instrument : 104.65
+2021-02-22 13:33:35,443:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:36,683:__main__:INFO:LTP of Entry instrument : 104.35
+2021-02-22 13:33:36,683:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:38,064:__main__:INFO:LTP of Entry instrument : 104.35
+2021-02-22 13:33:38,064:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:39,324:__main__:INFO:LTP of Entry instrument : 104.7
+2021-02-22 13:33:39,325:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:40,534:__main__:INFO:LTP of Entry instrument : 103.95
+2021-02-22 13:33:40,535:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:42,076:__main__:INFO:LTP of Entry instrument : 103.95
+2021-02-22 13:33:42,077:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:45,000:__main__:INFO:LTP of Entry instrument : 103.35
+2021-02-22 13:33:45,001:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:46,350:__main__:INFO:LTP of Entry instrument : 103.35
+2021-02-22 13:33:46,352:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:47,667:__main__:INFO:LTP of Entry instrument : 103.8
+2021-02-22 13:33:47,669:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:49,106:__main__:INFO:LTP of Entry instrument : 103.85
+2021-02-22 13:33:49,107:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:50,547:__main__:INFO:LTP of Entry instrument : 103.85
+2021-02-22 13:33:50,547:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:51,983:__main__:INFO:LTP of Entry instrument : 103.2
+2021-02-22 13:33:51,983:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:53,327:__main__:INFO:LTP of Entry instrument : 103.5
+2021-02-22 13:33:53,329:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:54,633:__main__:INFO:LTP of Entry instrument : 103.5
+2021-02-22 13:33:54,633:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:55,844:__main__:INFO:LTP of Entry instrument : 102.9
+2021-02-22 13:33:55,846:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:57,052:__main__:INFO:LTP of Entry instrument : 102.55
+2021-02-22 13:33:57,053:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:33:58,455:__main__:INFO:LTP of Entry instrument : 102.55
+2021-02-22 13:33:58,456:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:00,049:__main__:INFO:LTP of Entry instrument : 102.45
+2021-02-22 13:34:00,051:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:01,625:__main__:INFO:LTP of Entry instrument : 102.15
+2021-02-22 13:34:01,625:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:02,907:__main__:INFO:LTP of Entry instrument : 102.15
+2021-02-22 13:34:02,910:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:04,086:__main__:INFO:LTP of Entry instrument : 100.95
+2021-02-22 13:34:04,087:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:05,509:__main__:INFO:LTP of Entry instrument : 99.3
+2021-02-22 13:34:05,509:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:06,866:__main__:INFO:LTP of Entry instrument : 99.3
+2021-02-22 13:34:06,866:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:08,360:__main__:INFO:LTP of Entry instrument : 98.45
+2021-02-22 13:34:08,362:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:09,537:__main__:INFO:LTP of Entry instrument : 97.55
+2021-02-22 13:34:09,539:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:10,849:__main__:INFO:LTP of Entry instrument : 97.55
+2021-02-22 13:34:10,851:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:12,093:__main__:INFO:LTP of Entry instrument : 98.65
+2021-02-22 13:34:12,093:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:13,333:__main__:INFO:LTP of Entry instrument : 98.45
+2021-02-22 13:34:13,334:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:14,678:__main__:INFO:LTP of Entry instrument : 98.45
+2021-02-22 13:34:14,679:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:16,042:__main__:INFO:LTP of Entry instrument : 97.55
+2021-02-22 13:34:16,044:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:17,341:__main__:INFO:LTP of Entry instrument : 97.55
+2021-02-22 13:34:17,342:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:18,532:__main__:INFO:LTP of Entry instrument : 96.7
+2021-02-22 13:34:18,534:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:19,831:__main__:INFO:LTP of Entry instrument : 96.35
+2021-02-22 13:34:19,833:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:21,196:__main__:INFO:LTP of Entry instrument : 96.35
+2021-02-22 13:34:21,197:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:22,538:__main__:INFO:LTP of Entry instrument : 96.35
+2021-02-22 13:34:22,539:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:23,913:__main__:INFO:LTP of Entry instrument : 96.6
+2021-02-22 13:34:23,914:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:25,173:__main__:INFO:LTP of Entry instrument : 96.35
+2021-02-22 13:34:25,175:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:26,558:__main__:INFO:LTP of Entry instrument : 97
+2021-02-22 13:34:26,559:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:27,673:__main__:INFO:LTP of Entry instrument : 97
+2021-02-22 13:34:27,674:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:28,900:__main__:INFO:LTP of Entry instrument : 97.1
+2021-02-22 13:34:28,901:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:30,213:__main__:INFO:LTP of Entry instrument : 97.1
+2021-02-22 13:34:30,214:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:31,530:__main__:INFO:LTP of Entry instrument : 97.25
+2021-02-22 13:34:31,531:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:32,975:__main__:INFO:LTP of Entry instrument : 97.3
+2021-02-22 13:34:32,976:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:34,128:__main__:INFO:LTP of Entry instrument : 97.3
+2021-02-22 13:34:34,129:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:35,505:__main__:INFO:LTP of Entry instrument : 97.6
+2021-02-22 13:34:35,507:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:36,732:__main__:INFO:LTP of Entry instrument : 97.6
+2021-02-22 13:34:36,733:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:37,973:__main__:INFO:LTP of Entry instrument : 97.75
+2021-02-22 13:34:37,977:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:39,436:__main__:INFO:LTP of Entry instrument : 97.45
+2021-02-22 13:34:39,437:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:40,771:__main__:INFO:LTP of Entry instrument : 97.45
+2021-02-22 13:34:40,771:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:42,027:__main__:INFO:LTP of Entry instrument : 98.2
+2021-02-22 13:34:42,028:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:43,196:__main__:INFO:LTP of Entry instrument : 97.9
+2021-02-22 13:34:43,197:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:44,514:__main__:INFO:LTP of Entry instrument : 97.9
+2021-02-22 13:34:44,515:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:45,778:__main__:INFO:LTP of Entry instrument : 98.25
+2021-02-22 13:34:45,780:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:47,029:__main__:INFO:LTP of Entry instrument : 98.25
+2021-02-22 13:34:47,032:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:48,315:__main__:INFO:LTP of Entry instrument : 99
+2021-02-22 13:34:48,316:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:49,537:__main__:INFO:LTP of Entry instrument : 98.25
+2021-02-22 13:34:49,539:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:51,054:__main__:INFO:LTP of Entry instrument : 98.25
+2021-02-22 13:34:51,055:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:52,334:__main__:INFO:LTP of Entry instrument : 98.5
+2021-02-22 13:34:52,335:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:53,655:__main__:INFO:LTP of Entry instrument : 98
+2021-02-22 13:34:53,657:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:54,872:__main__:INFO:LTP of Entry instrument : 98
+2021-02-22 13:34:54,872:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:56,170:__main__:INFO:LTP of Entry instrument : 98.5
+2021-02-22 13:34:56,171:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:57,740:__main__:INFO:LTP of Entry instrument : 98.5
+2021-02-22 13:34:57,742:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:34:59,099:__main__:INFO:LTP of Entry instrument : 97.3
+2021-02-22 13:34:59,101:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:35:00,489:__main__:INFO:LTP of Entry instrument : 97.55
+2021-02-22 13:35:00,490:__main__:INFO:Extracted from Entry Order:NIFTY21FEB14800CE, 41851, 121.65, 150
+2021-02-22 13:35:00,491:__main__:INFO:Placing Orders..
+2021-02-22 13:35:02,216:__main__:INFO:Order ID for BUY 41851 is: 10026913
+2021-02-22 13:35:02,217:__main__:INFO:Retreiving OrderBook..
+2021-02-22 13:35:02,972:__main__:INFO:OrderBook result retreived success
+2021-02-22 13:35:02,973:__main__:INFO: Placed order 10026913 might be in Open or New Status, Hence retrying..0
+2021-02-22 13:35:05,483:__main__:INFO:Retreiving OrderBook..
+2021-02-22 13:35:06,790:__main__:INFO:OrderBook result retreived success
+2021-02-22 13:35:06,791:__main__:INFO:traded price is: 96.83 and ordered  time is: 2021-02-22 13:35:06
+2021-02-22 13:35:06,791:__main__:INFO:Exit order dtls: {'set': 1, 'txn_type': 'buy', 'strike': 14800, 'qty': 150, 'tr_qty': 150, 'name': 'NIFTY21FEB14800CE', 'symbol': 41851, 'orderID': 10026913, 'tradedPrice': 96.83, 'dateTime': '2021-02-22 13:35:06', 'set_type': 'Exit'}
+2021-02-22 13:35:06,792:__main__:INFO:End Time Reached. Winding up..
+2021-02-22 13:35:06,792:__main__:INFO:Completed..
+2021-02-22 13:35:06,794:__main__:INFO:--------------------------------------------
+2021-02-22 14:23:18,115:__main__:INFO:Token file exists and created today
+2021-02-22 14:23:18,118:__main__:INFO:Initializing session with token..
+2021-02-22 14:23:18,119:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-22 14:23:18,120:__main__:INFO:weekly expiry is : 25Feb2021, monthly expiry is: 25Feb2021
+2021-02-22 14:23:18,120:__main__:INFO:MasterDump already exists.. reading directly
+2021-02-22 14:23:18,141:__main__:INFO:orders before : {'refId': 10001, 'setno': 1, 'ent_txn_type': 'sell', 'rpr_txn_type': 'buy', 'ext_txn_type': 'buy', 'idx': 'NIFTY', 'otype': 'ce', 'status': 'Idle', 'expiry': 'week', 'lot': 2, 'startTime': '14:25:00', 'endTime': '14:45:00', 'repairedAlready': False}
+2021-02-22 14:23:18,143:__main__:INFO: traded inst list - []
+2021-02-22 14:25:00,000:__main__:INFO:Placing orders as status is idle and timing 14:25:00 cond met ..
+2021-02-22 14:25:00,792:__main__:INFO:StrikePrice computed as : 14700
+2021-02-22 14:25:00,796:__main__:INFO:orders before placing orders : {'refId': 10001, 'setno': 1, 'ent_txn_type': 'sell', 'rpr_txn_type': 'buy', 'ext_txn_type': 'buy', 'idx': 'NIFTY', 'otype': 'ce', 'status': 'Idle', 'expiry': 'week', 'lot': 2, 'startTime': '14:25:00', 'endTime': '14:45:00', 'repairedAlready': False}
+2021-02-22 14:25:00,797:__main__:INFO:Placing Orders..
+2021-02-22 14:25:01,590:__main__:INFO:Order ID for SELL 39607 is: 10026944
+2021-02-22 14:25:01,591:__main__:INFO:Retreiving OrderBook..
+2021-02-22 14:25:02,446:__main__:INFO:OrderBook result retreived success
+2021-02-22 14:25:02,447:__main__:INFO: Placed order 10026944 might be in Open or New Status, Hence retrying..0
+2021-02-22 14:25:04,956:__main__:INFO:Retreiving OrderBook..
+2021-02-22 14:25:05,673:__main__:INFO:OrderBook result retreived success
+2021-02-22 14:25:05,675:__main__:INFO:traded price is: 115.2 and ordered  time is: 2021-02-22 14:25:05
+2021-02-22 14:25:05,677:__main__:INFO:Entry order dtls: {'set': 1, 'txn_type': 'sell', 'strike': 14700, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10026944, 'tradedPrice': 115.2, 'dateTime': '2021-02-22 14:25:05', 'set_type': 'Entry'}
+2021-02-22 14:29:42,729:__main__:INFO:Reparing order as status is active and +15/-45 cond met..
+2021-02-22 14:29:42,730:__main__:INFO:Placing Orders..
+2021-02-22 14:29:43,819:__main__:INFO:Order ID for BUY 39607 is: 10026945
+2021-02-22 14:29:43,820:__main__:INFO:Retreiving OrderBook..
+2021-02-22 14:29:44,504:__main__:INFO:OrderBook result retreived success
+2021-02-22 14:29:44,505:__main__:INFO:traded price is: 121.5 and ordered  time is: 2021-02-22 14:29:47
+2021-02-22 14:29:44,506:__main__:INFO:Repair order dtls: {'set': 1, 'txn_type': 'buy', 'strike': 14700, 'qty': 75, 'tr_qty': 75, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10026945, 'tradedPrice': 121.5, 'dateTime': '2021-02-22 14:29:47', 'set_type': 'Repair'}
+2021-02-22 14:45:00,131:__main__:INFO:Exit time condition passed. Squaring off open positions in this set
+2021-02-22 14:45:00,131:__main__:INFO:Placing Orders..
+2021-02-22 14:45:01,279:__main__:INFO:Order ID for BUY 39607 is: 10026962
+2021-02-22 14:45:01,280:__main__:INFO:Retreiving OrderBook..
+2021-02-22 14:45:02,441:__main__:INFO:OrderBook result retreived success
+2021-02-22 14:45:02,441:__main__:INFO:traded price is: 138.0 and ordered  time is: 2021-02-22 14:45:04
+2021-02-22 14:45:02,441:__main__:INFO:Exit order dtls: {'set': 1, 'txn_type': 'buy', 'strike': 14700, 'qty': 75.0, 'tr_qty': 75.0, 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10026962, 'tradedPrice': 138.0, 'dateTime': '2021-02-22 14:45:04', 'set_type': 'Exit'}
+2021-02-22 14:45:02,448:__main__:INFO:End Time Reached. Winding up..
+2021-02-22 14:45:02,448:__main__:INFO:Completed..
+2021-02-22 14:45:02,451:__main__:INFO:--------------------------------------------

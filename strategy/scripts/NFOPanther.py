@@ -453,16 +453,12 @@ dfdt = adf.astype(dtype={'set': int,
                          'dateTime': str,
                          'set_type': str})
 
-dfdt.groupby(['name'],as_index=False)['tradedPrice','tr_qty'].sum()
-import numpy as np
- 
+gdf = dfdt.groupby(['name'],as_index=False).sum()[['tradedPrice','tr_qty']]
+gdf['amount'] = 
 
-df.groupby(['name']).sum()[['tradedPrice','tr_qty']]
-df.groupby(['name'])['tr_qty'].agg(lambda x: pd.to_numeric(x).sum())
+gdf = dfdt.groupby(['name'],as_index=False).sum()[['tradedPrice','tr_qty','name']]
 
-
-df.groupby(['name']).agg({'tradedPrice': np.sum, 'tr_qty': np.sum}).reset_in
-        
+       
         
         
         

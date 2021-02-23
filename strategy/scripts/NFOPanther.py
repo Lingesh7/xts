@@ -13,10 +13,10 @@ import time
 import json
 import logging
 import pandas as pd
-import concurrent.futures
+# import concurrent.futures
 import configparser
 # import timer
-from threading import Timer
+from threading import Thread
 # from itertools import repeat
 # import multiprocessing
 # import schedule
@@ -40,29 +40,17 @@ stream_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 logger.addHandler(stream_handler)
 
-global multiplier
-global cdate
-
-idxs=['NIFTY','BANKNIFTY']
-multiplier=1
-cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-# startTime = "09:30:00"
-
 cfg = configparser.ConfigParser()
 cfg.read('../../XTConnect/config.ini')
-
 source = cfg['user']['source']
 appKey = cfg.get('user', 'interactive_appkey')
 secretKey = cfg.get('user', 'interactive_secretkey')
 xt = XTSConnect(appKey, secretKey, source)
 
-# response=xt.interactive_login()
-# print(response)
-
+global cdate
+cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
 token_file=f'access_token_{cdate}.txt'
 file = Path(token_file)
-
-
 if file.exists() and (date.today() == date.fromtimestamp(file.stat().st_mtime)):
     logger.info('Token file exists and created today')
     in_file = open(token_file,'r').read().split()
@@ -75,6 +63,11 @@ else:
     logger.error('Wrong with token file. Generate separately.. Aborting script!..')
     exit()
 
+global multiplier
+
+idxs=['NIFTY','BANKNIFTY']
+multiplier=1
+
 orders={'refId':10001,          \
         'setno':1,              \
         'ent_txn_type': "sell", \
@@ -85,14 +78,16 @@ orders={'refId':10001,          \
         'status': "Idle",       \
         'expiry': 'week',       \
         'lot': 2,               \
-        'startTime':"14:25:00", \
-        'endTime':"14:45:00",   \
+        'startTime':"14:05:00", \
+        'endTime':"14:14:00",   \
         'repairedAlready':False}
-        
+endfetchTime = '14:16:00'        
 etr_inst= {}
 rpr_inst= {}
 ext_inst= {}
 tr_insts=[]
+ltp={}
+gl_pnl=None
        
 def nextThu_and_lastThu_expiry_date():
     global weekly_exp, monthly_exp
@@ -241,8 +236,9 @@ def instrumentLookup(instrument_df,symbol):
 
 def getLTP():
     global ltp
-    ltp={}
+    # ltp={}
     if tr_insts:
+        # logger.info('inside tr_insts cond - getLTP')
         symbols=[i['symbol'] for i in tr_insts if i['set_type'] == 'Entry']
         instruments=[]
         for symbol in symbols:
@@ -255,11 +251,14 @@ def getLTP():
                 listQuotes = json.loads(subs_resp['result']['listQuotes'][i])
                 price=listQuotes['Touchline']['LastTradedPrice']
                 ltp[symbol]=price
+    # else:
+        # logger.info('tr_insts is empty')
 
 def getGlobalLTP():
     global gl_pnl
-    gl_pnl=None
+    # gl_pnl=None
     if tr_insts:
+        # logger.info('inside tr_insts cond - getGlobalLTP')
         df = pd.DataFrame(tr_insts)
         df['tr_amount'] = df['tr_qty']*df['tradedPrice']
         df = df.astype(dtype={'set': int, 'txn_type': str, 'strike': int, 'qty': int, 'tr_qty': int, 'expiry': str, \
@@ -272,9 +271,12 @@ def getGlobalLTP():
         logger.info(f'PositionsLists: \n {gdf}')
         gl_pnl = round(gdf['pnl'].sum(),2)
         logger.info(f'Global PnL : {gl_pnl}')
+    else:
+        logger.info('tr_insts is empty getgloballtp')
 
 def fetchLTPs():
-    while (datetime.now() <= datetime.strptime((cdate+" 15:10:00"),"%d-%m-%Y %H:%M:%S")):
+    logger.info('FetchLoop in progress..')
+    while (datetime.now() <= datetime.strptime((cdate+" "+endfetchTime),"%d-%m-%Y %H:%M:%S")):
         getLTP()
         getGlobalLTP()
         time.sleep(5)
@@ -338,7 +340,7 @@ def placeOrder(symbol,txn_type,qty):
 
 def execute(orders):
     global tr_insts
-    # global orders
+    # global ltp
     while True:
         if orders['status'] == 'Idle':
             #Entry condition check
@@ -408,46 +410,49 @@ def execute(orders):
                 tr_insts.append(ext_inst)
                 # orders['status'] = 'Exit'
                 continue
-
-            ltpsymbol = ltp['esymbol']
-            # logger.info(f'LTP of Entry instrument : {ltpsymbol}')
-            
-            # Repair condition check
-            if ((ltpsymbol > etp + 15) or (ltpsymbol < etp -45)) and not orders['repairedAlready']:
-                logger.info('Reparing order as status is active and +15/-45 cond met..')
-                rpr_inst['set']=orders['setno']
-                rpr_inst['txn_type'] = orders['rpr_txn_type']
-                # rpr_inst['strike'] = strikePrice(orders['idx'])
-                rpr_inst['strike'] = next(i['strike'] for i in tr_insts if i['set_type']=='Entry' and i['set']==orders['setno'])
-                rpr_inst['qty']= int(eqty/2)
-                rpr_inst['tr_qty'] = -rpr_inst['qty'] if orders['rpr_txn_type'] == 'sell' else rpr_inst['qty']
-                if orders['expiry'] == 'week':
-                    rpr_inst['expiry']=weekly_exp
-                rpr_inst['optionType'] = orders['otype']
-                rpr_inst['name'] = ename
-                rpr_inst['symbol'] = esymbol
-                rpr_inst['orderID'] = None
-                rpr_inst['tradedPrice'] = None
-                orderID, tradedPrice, dateTime = placeOrder(rpr_inst['symbol'],rpr_inst['txn_type'],rpr_inst['qty'])
-                rpr_inst['orderID'] = orderID
-                rpr_inst['tradedPrice'] = tradedPrice
-                rpr_inst['dateTime'] = dateTime
-                if orderID and tradedPrice:
-                    # orders['status'] = 'Repair_Done'
-                    orders['repairedAlready'] = True
-                    rpr_inst['set_type'] = 'Repair'
-                logger.info(f'Repair order dtls: {rpr_inst}')
-                tr_insts.append(rpr_inst)
-        #if status turns exit
-        if orders['status'] == 'Exit':
-            logger.info('End Time Reached. Winding up..')
-            return "Completed.."
-            break
+            if ltp:
+                ltpsymbol = ltp[esymbol]
+                # logger.info(f'LTP of Entry instrument : {ltpsymbol}')
+                
+                # Repair condition check
+                if ((ltpsymbol > etp + 5) or (ltpsymbol < etp -10)) and not orders['repairedAlready']:
+                    logger.info('Reparing order as status is active and +15/-45 cond met..')
+                    rpr_inst['set']=orders['setno']
+                    rpr_inst['txn_type'] = orders['rpr_txn_type']
+                    # rpr_inst['strike'] = strikePrice(orders['idx'])
+                    rpr_inst['strike'] = next(i['strike'] for i in tr_insts if i['set_type']=='Entry' and i['set']==orders['setno'])
+                    rpr_inst['qty']= int(eqty/2)
+                    rpr_inst['tr_qty'] = -rpr_inst['qty'] if orders['rpr_txn_type'] == 'sell' else rpr_inst['qty']
+                    if orders['expiry'] == 'week':
+                        rpr_inst['expiry']=weekly_exp
+                    rpr_inst['optionType'] = orders['otype']
+                    rpr_inst['name'] = ename
+                    rpr_inst['symbol'] = esymbol
+                    rpr_inst['orderID'] = None
+                    rpr_inst['tradedPrice'] = None
+                    orderID, tradedPrice, dateTime = placeOrder(rpr_inst['symbol'],rpr_inst['txn_type'],rpr_inst['qty'])
+                    rpr_inst['orderID'] = orderID
+                    rpr_inst['tradedPrice'] = tradedPrice
+                    rpr_inst['dateTime'] = dateTime
+                    if orderID and tradedPrice:
+                        # orders['status'] = 'Repair_Done'
+                        orders['repairedAlready'] = True
+                        rpr_inst['set_type'] = 'Repair'
+                    logger.info(f'Repair order dtls: {rpr_inst}')
+                    tr_insts.append(rpr_inst)
+            #if status turns exit
+            if orders['status'] == 'Exit':
+                logger.info('End Time Reached. Winding up..')
+                return "Completed.."
+                break
                 
 if __name__ == '__main__':
     nextThu_and_lastThu_expiry_date()
     masterDump()
-    #thread fetchLTP()
+    logger.info('Starting a separate thread to fetch LTP of traded instruments..')
+    fetchTimer = Thread(target=fetchLTPs)
+    # fetchTimer = multiprocessing.Process(target=fetchLTPs)
+    fetchTimer.start()
     try:
         # logger.info(f"orders before : {orders}")
         result=execute(orders)
@@ -455,28 +460,10 @@ if __name__ == '__main__':
     except Exception:
         logger.exception('Error Occured..')
     finally:
+        fetchTimer.join()
         logger.info('--------------------------------------------')
-    
+        
 
        
-# tr_insts=[{'set': 1, 'txn_type': 'sell', 'strike': 15100, 'qty': 150, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB15100CE', 'symbol': 46357, 'orderID': 10027094, 'tradedPrice': 130.25, 'dateTime': '2021-02-19 18:33:01', 'set_type': 'Entry'},
-#           {'set': 1, 'txn_type': 'buy', 'strike': 15100, 'qty': 75, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB15150CE', 'symbol': 46357, 'orderID': 10027095, 'tradedPrice': 1.25, 'dateTime': '2021-02-19 19:33:01', 'set_type': 'Repair'},
-#           {'set': 1, 'txn_type': 'buy', 'strike': 15100, 'qty': 75, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB15150CE', 'symbol': 46357, 'orderID': 10027096, 'tradedPrice': 11.25, 'dateTime': '2021-02-19 19:37:01', 'set_type': 'Exit'},
-#           {'set': 2, 'txn_type': 'sell', 'strike': 15100, 'qty': 150, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB15100CE', 'symbol': 46357, 'orderID': 10027097, 'tradedPrice': 9.25, 'dateTime': '2021-02-19 20:33:01', 'set_type': 'Entry'},
-#           {'set': 2, 'txn_type': 'buy', 'strike': 15100, 'qty': 75, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB15150CE', 'symbol': 46357, 'orderID': 10027098, 'tradedPrice': 76.25, 'dateTime': '2021-02-19 21:33:01', 'set_type': 'Repair'},
-#           {'set': 2, 'txn_type': 'buy', 'strike': 15100, 'qty': 75, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB15150CE', 'symbol': 46357, 'orderID': 10027099, 'tradedPrice': 987.25, 'dateTime': '2021-02-19 21:37:01', 'set_type': 'Exit'}]
-# # a = next(i['tradedPrice'] for i in tr_insts if i['set_type']=='Exit' and i['set']==2)
+tr_insts = [{'set': 1, 'txn_type': 'sell', 'strike': 14700, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10036280, 'tradedPrice': 111.9, 'dateTime': '2021-02-23 14:06:55', 'set_type': 'Entry'}, {'set': 1, 'txn_type': 'buy', 'strike': 14700, 'qty': 75, 'tr_qty': 75, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10036285, 'tradedPrice': 117.8, 'dateTime': '2021-02-23 14:12:21', 'set_type': 'Repair'}, {'set': 1, 'txn_type': 'buy', 'strike': 14700, 'qty': 75.0, 'tr_qty': 75.0, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10036301, 'tradedPrice': 122.4, 'dateTime': '2021-02-23 14:14:28', 'set_type': 'Exit'}]
 
-
-# tr_insts= [{'set': 1, 'txn_type': 'sell', 'strike': 14700, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10026944, 'tradedPrice': 115.2, 'dateTime': '2021-02-22 14:25:05', 'set_type': 'Entry'}, {'set': 1, 'txn_type': 'sell', 'strike': 14700, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10026944, 'tradedPrice': 115.2, 'dateTime': '2021-02-22 14:25:05', 'set_type': 'Entry'}, {'set': 1, 'txn_type': 'buy', 'strike': 14700, 'qty': 75.0, 'tr_qty': 75.0, 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10026962, 'tradedPrice': 138.0, 'dateTime': '2021-02-22 14:45:04', 'set_type': 'Exit'},
-#            {'set': 2, 'txn_type': 'sell', 'strike': 14701, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB14800CE', 'symbol': 39608, 'orderID': 10026956, 'tradedPrice': 115.2, 'dateTime': '2021-02-22 14:25:05', 'set_type': 'Entry'}, {'set': 2, 'txn_type': 'sell', 'strike': 14800, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB14700CE', 'symbol': 39653, 'orderID': 10026944, 'tradedPrice': 115.2, 'dateTime': '2021-02-22 14:25:05', 'set_type': 'Entry'}, {'set': 2, 'txn_type': 'buy', 'strike': 14700, 'qty': 75.0, 'tr_qty': 75.0, 'name': 'NIFTY21FEB14800CE', 'symbol': 39656, 'orderID': 10026962, 'tradedPrice': 138.0, 'dateTime': '2021-02-22 14:45:04', 'set_type': 'Exit'}]
-
-# tr_insts=[{'set': 1, 'txn_type': 'sell', 'strike': 14700, 'qty': 150, 'tr_qty': 75, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10026944, 'tradedPrice': 138.7, 'dateTime': '2021-02-22 14:25:05', 'set_type': 'RepairOnce'},
-#           {'set': 1, 'txn_type': 'buy', 'strike': 14700, 'qty': 75, 'tr_qty': -150, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10026945, 'tradedPrice': 122.2, 'dateTime': '2021-02-22 14:25:05', 'set_type': 'Entry'}]
-# tr_insts1=[{'set': 1, 'txn_type': 'buy', 'strike': 14700, 'qty': 75, 'tr_qty': -150, 'expiry': '25Feb2021', 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10026945, 'tradedPrice': 122.2, 'dateTime': '2021-02-22 14:25:05', 'set_type': 'Entry'}]
-
-
-    
-
-# ltp={39607:234,39613:123}    
- 

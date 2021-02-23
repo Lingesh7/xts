@@ -1,0 +1,20 @@
+2021-02-23 13:30:08,742:__mp_main__:INFO:Token file exists and created today
+2021-02-23 13:30:08,742:__mp_main__:INFO:Initializing session with token..
+2021-02-23 13:30:08,742:__mp_main__:INFO:Initializing session with token..
+2021-02-23 13:30:08,742:__mp_main__:INFO:Initializing session with token..
+2021-02-23 13:30:08,758:__mp_main__:INFO:Placing Orders.. 
+
+2021-02-23 13:30:08,774:__mp_main__:INFO:Placing Orders.. 
+
+2021-02-23 13:30:10,894:__mp_main__:INFO: 
+ Order ID for SELL 39612 is: 10036244 
+
+2021-02-23 13:30:10,894:__mp_main__:INFO:Retreiving OrderBook..
+2021-02-23 13:30:11,050:__mp_main__:INFO: 
+ Order ID for SELL 41851 is: 10036245 
+
+2021-02-23 13:30:11,050:__mp_main__:INFO:Retreiving OrderBook..
+2021-02-23 13:30:19,491:__mp_main__:INFO:OrderBook result retreived success
+2021-02-23 13:30:19,491:__mp_main__:INFO:traded price is: 67.35
+2021-02-23 13:30:19,960:__mp_main__:INFO:OrderBook result retreived success
+2021-02-23 13:30:19,960:__mp_main__:INFO:traded price is: 85.5

@@ -42,13 +42,9 @@ logger.addHandler(stream_handler)
 
 global multiplier
 global cdate
-# global orders
 
-
-# idxs=['NIFTY 50','NIFTY BANK']
 idxs=['NIFTY','BANKNIFTY']
 multiplier=1
-
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
 # startTime = "09:30:00"
 
@@ -156,18 +152,15 @@ def strikePrice(idx):
         
 def getOrderList():
     aa = 0
-    logger.info('Retreiving OrderBook..') 
+    logger.info('Checking OrderBook for order status..') 
     while aa < 5:
         try:
            oBook_resp = xt.get_order_book()
            if oBook_resp['type'] != "error":
                orderList =  oBook_resp['result']
-               logger.info('OrderBook result retreived success')
+               # logger.info('OrderBook result retreived success')
                return orderList
                break
-           # if oBook_resp['type'] == "error":
-           #     auth_issue_fix(oBook_resp)
-           #     continue
            else:
                raise Exception("Unkonwn error in getOrderList func")           
         except Exception:
@@ -246,41 +239,46 @@ def instrumentLookup(instrument_df,symbol):
 #         logger.exception('Unable to get LTP')
 #         return None
 
-def ltp(tr_insts):
+def getLTP():
     global ltp
-    symbols=[i['symbol'] for i in tr_insts if i['set_type'] == 'Entry']
-    instruments=[]
-    for symbol in symbols:
-        instruments.append({'exchangeSegment': 2, 'exchangeInstrumentID': symbol})
-    xt.send_unsubscription(Instruments=instruments,xtsMessageCode=1502)
-    subs_resp=xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
-    if subs_resp['type'] == 'success':
-        ltp={}
-        for symbol,i in zip(symbols,range(len(symbols))):
-            listQuotes = json.loads(subs_resp['result']['listQuotes'][i])
-            price=listQuotes['Touchline']['LastTradedPrice']
-            ltp[symbol]=price
+    ltp={}
+    if tr_insts:
+        symbols=[i['symbol'] for i in tr_insts if i['set_type'] == 'Entry']
+        instruments=[]
+        for symbol in symbols:
+            instruments.append({'exchangeSegment': 2, 'exchangeInstrumentID': symbol})
+        xt.send_unsubscription(Instruments=instruments,xtsMessageCode=1502)
+        subs_resp=xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
+        if subs_resp['type'] == 'success':
+            # ltp={}
+            for symbol,i in zip(symbols,range(len(symbols))):
+                listQuotes = json.loads(subs_resp['result']['listQuotes'][i])
+                price=listQuotes['Touchline']['LastTradedPrice']
+                ltp[symbol]=price
 
-def get_global_ltp():
-    df = pd.DataFrame(tr_insts)
-    df['amount'] = df['tr_qty']*df['tradedPrice']
-    df = df.astype(dtype={'set': int,
-                             'txn_type': str,
-                             'strike': int,
-                             'qty': int,
-                             'tr_qty': int,
-                             'expiry': str,
-                             'name': str,
-                             'symbol': int,
-                             'orderID': int,
-                             'tradedPrice': float,
-                             'dateTime': str,
-                             'set_type': str,
-                             'amount': float})
-    gdf = df.groupby(['name','symbol'],as_index=False).sum()[['symbol','name','tr_qty','tradedPrice','amount']]
-    gdf['ltp'] = gdf['symbol'].map(ltp)
-    gdf['cur_amt'] = gdf['tr_qty']*gdf['ltp']
-    gdf['pnl'] = gdf['cur_amt'] - gdf['amount']
+def getGlobalLTP():
+    global gl_pnl
+    gl_pnl=None
+    if tr_insts:
+        df = pd.DataFrame(tr_insts)
+        df['tr_amount'] = df['tr_qty']*df['tradedPrice']
+        df = df.astype(dtype={'set': int, 'txn_type': str, 'strike': int, 'qty': int, 'tr_qty': int, 'expiry': str, \
+                                 'name': str, 'symbol': int, 'orderID': int, 'tradedPrice': float, 'dateTime': str, \
+                                 'set_type': str, 'tr_amount': float, 'optionType': str})
+        gdf = df.groupby(['name','symbol'],as_index=False).sum()[['symbol','name','tr_qty','tradedPrice','tr_amount']]
+        gdf['ltp'] = gdf['symbol'].map(ltp)
+        gdf['cur_amount'] = gdf['tr_qty']*gdf['ltp']
+        gdf['pnl'] = gdf['cur_amount'] - gdf['tr_amount']
+        logger.info(f'PositionsLists: \n {gdf}')
+        gl_pnl = round(gdf['pnl'].sum(),2)
+        logger.info(f'Global PnL : {gl_pnl}')
+
+def fetchLTPs():
+    while (datetime.now() <= datetime.strptime((cdate+" 15:10:00"),"%d-%m-%Y %H:%M:%S")):
+        getLTP()
+        getGlobalLTP()
+        time.sleep(5)
+
 
 def placeOrder(symbol,txn_type,qty):
     logger.info('Placing Orders..')
@@ -353,6 +351,7 @@ def execute(orders):
                 etr_inst['tr_qty'] = -etr_inst['qty'] if orders['ent_txn_type'] == 'sell' else etr_inst['qty']
                 if orders['expiry'] == 'week':
                     etr_inst['expiry'] = weekly_exp
+                etr_inst['optionType'] = orders['otype']
                 if weekly_exp == monthly_exp:
                     inst_name = orders['idx']+(datetime.strftime(datetime.strptime(etr_inst['expiry'], '%d%b%Y'),'%y%b')).upper()+str(etr_inst['strike'])+orders['otype'].upper()
                 else:
@@ -392,6 +391,7 @@ def execute(orders):
                 ext_inst['tr_qty'] = -ext_inst['qty'] if orders['ext_txn_type'] == 'sell' else ext_inst['qty']
                 if orders['expiry'] == 'week':
                     ext_inst['expiry']=weekly_exp
+                ext_inst['optionType'] = orders['otype']
                 ext_inst['name'] = ename
                 ext_inst['symbol'] = esymbol
                 ext_inst['orderID'] = None
@@ -423,6 +423,7 @@ def execute(orders):
                 rpr_inst['tr_qty'] = -rpr_inst['qty'] if orders['rpr_txn_type'] == 'sell' else rpr_inst['qty']
                 if orders['expiry'] == 'week':
                     rpr_inst['expiry']=weekly_exp
+                rpr_inst['optionType'] = orders['otype']
                 rpr_inst['name'] = ename
                 rpr_inst['symbol'] = esymbol
                 rpr_inst['orderID'] = None
@@ -446,11 +447,11 @@ def execute(orders):
 if __name__ == '__main__':
     nextThu_and_lastThu_expiry_date()
     masterDump()
+    #thread fetchLTP()
     try:
         # logger.info(f"orders before : {orders}")
-        # logger.info(f" traded inst list - {tr_insts}")
         result=execute(orders)
-        logger.info(result)
+        logger.info(f'Execute function Result : {result}')
     except Exception:
         logger.exception('Error Occured..')
     finally:

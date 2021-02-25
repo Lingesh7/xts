@@ -1,0 +1,2143 @@
+2021-02-25 12:04:11,837:__main__:INFO:Token file exists and created today
+2021-02-25 12:04:11,841:__main__:INFO:Initializing session with token..
+2021-02-25 12:04:11,842:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-25 12:04:11,843:__main__:INFO:weekly expiry is : 25Feb2021, monthly expiry is: 25Feb2021
+2021-02-25 12:04:11,844:__main__:INFO:MasterDump already exists.. reading directly
+2021-02-25 12:04:11,863:__main__:INFO:Starting a separate thread to fetch LTP of traded instruments..
+2021-02-25 12:04:11,866:__main__:INFO:--------------------------------------------
+2021-02-25 12:05:03,753:__main__:INFO:Token file exists and created today
+2021-02-25 12:05:03,753:__main__:INFO:Token file exists and created today
+2021-02-25 12:05:03,760:__main__:INFO:Initializing session with token..
+2021-02-25 12:05:03,760:__main__:INFO:Initializing session with token..
+2021-02-25 12:05:03,760:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-25 12:05:03,760:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-25 12:05:03,760:__main__:INFO:weekly expiry is : 25Feb2021, monthly expiry is: 25Feb2021
+2021-02-25 12:05:03,760:__main__:INFO:weekly expiry is : 25Feb2021, monthly expiry is: 25Feb2021
+2021-02-25 12:05:03,760:__main__:INFO:MasterDump already exists.. reading directly
+2021-02-25 12:05:03,760:__main__:INFO:MasterDump already exists.. reading directly
+2021-02-25 12:05:03,793:__main__:INFO:Starting a separate thread to fetch LTP of traded instruments..
+2021-02-25 12:05:03,793:__main__:INFO:Starting a separate thread to fetch LTP of traded instruments..
+2021-02-25 12:05:03,796:__main__:INFO:--------------------------------------------
+2021-02-25 12:05:03,796:__main__:INFO:--------------------------------------------
+2021-02-25 12:59:45,697:__main__:INFO:Token file exists and created today
+2021-02-25 12:59:45,699:__main__:INFO:Initializing session with token..
+2021-02-25 13:05:19,460:__main__:INFO:Token file exists and created today
+2021-02-25 13:05:19,464:__main__:INFO:Initializing session with token..
+2021-02-25 13:06:07,200:__main__:INFO:Token file exists and created today
+2021-02-25 13:06:07,203:__main__:INFO:Initializing session with token..
+2021-02-25 13:06:07,206:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-25 13:06:07,208:__main__:INFO:weekly expiry is : 25Feb2021, monthly expiry is: 25Feb2021
+2021-02-25 13:06:07,209:__main__:INFO:MasterDump already exists.. reading directly
+2021-02-25 13:06:07,231:__main__:INFO:Starting a separate thread to fetch LTP of traded instruments..
+2021-02-25 13:06:07,234:__main__:INFO:Placing orders as status is idle and timing 13:05:00 cond met ..
+2021-02-25 13:06:07,236:__main__:INFO:Placing orders as status is idle and timing 13:05:00 cond met ..
+2021-02-25 13:06:08,609:__main__:INFO:StrikePrice computed as : 15100
+2021-02-25 13:06:08,657:__main__:INFO:StrikePrice computed as : 15100
+2021-02-25 13:06:08,923:__main__:INFO:orders before placing orders : {'refId': 10001, 'setno': 1, 'ent_txn_type': 'sell', 'rpr_txn_type': 'buy', 'idx': 'NIFTY', 'otype': 'ce', 'status': 'Idle', 'expiry': 'week', 'lot': 2, 'startTime': '13:05:00'}
+2021-02-25 13:06:08,954:__main__:INFO:orders before placing orders : {'refId': 10002, 'setno': 2, 'ent_txn_type': 'sell', 'rpr_txn_type': 'buy', 'idx': 'NIFTY', 'otype': 'pe', 'status': 'Idle', 'expiry': 'week', 'lot': 2, 'startTime': '13:05:00'}
+2021-02-25 13:06:09,756:__main__:INFO:Placing Orders..
+2021-02-25 13:06:09,804:__main__:INFO:Placing Orders..
+2021-02-25 13:06:12,205:__main__:INFO:Order ID for SELL 46357 is: 10025895
+2021-02-25 13:06:12,220:__main__:INFO:Order ID for SELL 46358 is: 10025894
+2021-02-25 13:06:14,492:__main__:INFO:Checking OrderBook for order status..
+2021-02-25 13:06:14,824:__main__:INFO:Checking OrderBook for order status..
+2021-02-25 13:06:16,123:__main__:INFO:traded price is: 27.9 and ordered  time is: 2021-02-25 13:06:15
+2021-02-25 13:06:16,245:__main__:INFO:Entry order dtls: {'set': 2, 'txn_type': 'sell', 'strike': 15100, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'optionType': 'pe', 'name': 'NIFTY21FEB15100PE', 'symbol': 46358, 'orderID': 10025894, 'tradedPrice': 27.9, 'dateTime': '2021-02-25 13:06:15', 'set_type': 'Entry'}
+2021-02-25 13:06:16,325:__main__:INFO:traded price is: 33.5 and ordered  time is: 2021-02-25 13:06:15
+2021-02-25 13:06:16,704:__main__:INFO:Entry order dtls: {'set': 1, 'txn_type': 'sell', 'strike': 15100, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB15100CE', 'symbol': 46357, 'orderID': 10025895, 'tradedPrice': 33.5, 'dateTime': '2021-02-25 13:06:15', 'set_type': 'Entry'}
+2021-02-25 13:06:22,471:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+
+[2 rows x 14 columns]
+2021-02-25 13:06:23,067:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount    pnl
+0   46357  NIFTY21FEB15100CE    -150  ...  34.3     -5145.0 -120.0
+1   46358  NIFTY21FEB15100PE    -150  ...  26.9     -4035.0  150.0
+
+[2 rows x 8 columns]
+2021-02-25 13:06:24,079:__main__:INFO:Global PnL : 30.0
+2021-02-25 13:06:29,022:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+
+[2 rows x 14 columns]
+2021-02-25 13:06:29,597:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount    pnl
+0   46357  NIFTY21FEB15100CE    -150  ...  34.3     -5145.0 -120.0
+1   46358  NIFTY21FEB15100PE    -150  ...  26.9     -4035.0  150.0
+
+[2 rows x 8 columns]
+2021-02-25 13:06:30,099:__main__:INFO:Global PnL : 30.0
+2021-02-25 13:06:40,153:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+
+[2 rows x 14 columns]
+2021-02-25 13:06:41,329:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46357  NIFTY21FEB15100CE    -150  ...  35.15     -5272.5 -247.5
+1   46358  NIFTY21FEB15100PE    -150  ...  25.45     -3817.5  367.5
+
+[2 rows x 8 columns]
+2021-02-25 13:06:42,234:__main__:INFO:Global PnL : 120.0
+2021-02-25 13:06:49,938:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+
+[2 rows x 14 columns]
+2021-02-25 13:06:50,405:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount    pnl
+0   46357  NIFTY21FEB15100CE    -150  ...  36.8     -5520.0 -495.0
+1   46358  NIFTY21FEB15100PE    -150  ...  24.3     -3645.0  540.0
+
+[2 rows x 8 columns]
+2021-02-25 13:06:50,988:__main__:INFO:Global PnL : 45.0
+2021-02-25 13:07:01,612:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+
+[2 rows x 14 columns]
+2021-02-25 13:07:02,874:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount    pnl
+0   46357  NIFTY21FEB15100CE    -150  ...  38.3     -5745.0 -720.0
+1   46358  NIFTY21FEB15100PE    -150  ...  23.4     -3510.0  675.0
+
+[2 rows x 8 columns]
+2021-02-25 13:07:04,604:__main__:INFO:Global PnL : -45.0
+2021-02-25 13:07:12,451:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+
+[2 rows x 14 columns]
+2021-02-25 13:07:13,085:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount    pnl
+0   46357  NIFTY21FEB15100CE    -150  ...  38.5     -5775.0 -750.0
+1   46358  NIFTY21FEB15100PE    -150  ...  23.9     -3585.0  600.0
+
+[2 rows x 8 columns]
+2021-02-25 13:07:13,826:__main__:INFO:Global PnL : -150.0
+2021-02-25 13:07:20,778:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+
+[2 rows x 14 columns]
+2021-02-25 13:07:20,912:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount    pnl
+0   46357  NIFTY21FEB15100CE    -150  ...  38.5     -5775.0 -750.0
+1   46358  NIFTY21FEB15100PE    -150  ...  23.9     -3585.0  600.0
+
+[2 rows x 8 columns]
+2021-02-25 13:07:21,777:__main__:INFO:Global PnL : -150.0
+2021-02-25 13:07:32,971:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+
+[2 rows x 14 columns]
+2021-02-25 13:07:33,294:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount    pnl
+0   46357  NIFTY21FEB15100CE    -150  ...  39.5     -5925.0 -900.0
+1   46358  NIFTY21FEB15100PE    -150  ...  23.9     -3585.0  600.0
+
+[2 rows x 8 columns]
+2021-02-25 13:07:33,688:__main__:INFO:Global PnL : -300.0
+2021-02-25 13:07:42,936:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+
+[2 rows x 14 columns]
+2021-02-25 13:07:43,203:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -150  ...  40.9     -6135.0 -1110.0
+1   46358  NIFTY21FEB15100PE    -150  ...  22.6     -3390.0   795.0
+
+[2 rows x 8 columns]
+2021-02-25 13:07:43,389:__main__:INFO:Global PnL : -315.0
+2021-02-25 13:07:53,168:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+
+[2 rows x 14 columns]
+2021-02-25 13:07:53,559:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46357  NIFTY21FEB15100CE    -150  ...  39.65     -5947.5 -922.5
+1   46358  NIFTY21FEB15100PE    -150  ...  23.35     -3502.5  682.5
+
+[2 rows x 8 columns]
+2021-02-25 13:07:53,667:__main__:INFO:Global PnL : -240.0
+2021-02-25 13:08:04,476:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+
+[2 rows x 14 columns]
+2021-02-25 13:08:05,150:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46357  NIFTY21FEB15100CE    -150  ...  38.60     -5790.0 -765.0
+1   46358  NIFTY21FEB15100PE    -150  ...  24.25     -3637.5  547.5
+
+[2 rows x 8 columns]
+2021-02-25 13:08:05,655:__main__:INFO:Global PnL : -217.5
+2021-02-25 13:08:14,110:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+
+[2 rows x 14 columns]
+2021-02-25 13:08:15,164:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46357  NIFTY21FEB15100CE    -150  ...  37.15     -5572.5 -547.5
+1   46358  NIFTY21FEB15100PE    -150  ...  25.55     -3832.5  352.5
+
+[2 rows x 8 columns]
+2021-02-25 13:08:15,858:__main__:INFO:Global PnL : -195.0
+2021-02-25 13:08:23,901:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+
+[2 rows x 14 columns]
+2021-02-25 13:08:24,390:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46357  NIFTY21FEB15100CE    -150  ...  37.50     -5625.0 -600.0
+1   46358  NIFTY21FEB15100PE    -150  ...  25.25     -3787.5  397.5
+
+[2 rows x 8 columns]
+2021-02-25 13:08:24,542:__main__:INFO:Global PnL : -202.5
+2021-02-25 13:08:34,222:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+
+[2 rows x 14 columns]
+2021-02-25 13:08:34,657:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46357  NIFTY21FEB15100CE    -150  ...  37.45     -5617.5 -592.5
+1   46358  NIFTY21FEB15100PE    -150  ...  25.60     -3840.0  345.0
+
+[2 rows x 8 columns]
+2021-02-25 13:08:35,512:__main__:INFO:Global PnL : -247.5
+2021-02-25 13:08:44,328:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+
+[2 rows x 14 columns]
+2021-02-25 13:08:45,157:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46357  NIFTY21FEB15100CE    -150  ...  37.45     -5617.5 -592.5
+1   46358  NIFTY21FEB15100PE    -150  ...  25.60     -3840.0  345.0
+
+[2 rows x 8 columns]
+2021-02-25 13:08:45,625:__main__:INFO:Global PnL : -247.5
+2021-02-25 13:08:54,591:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+
+[2 rows x 14 columns]
+2021-02-25 13:08:55,354:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46357  NIFTY21FEB15100CE    -150  ...  38.45     -5767.5 -742.5
+1   46358  NIFTY21FEB15100PE    -150  ...  24.65     -3697.5  487.5
+
+[2 rows x 8 columns]
+2021-02-25 13:08:55,724:__main__:INFO:Global PnL : -255.0
+2021-02-25 13:09:04,710:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+
+[2 rows x 14 columns]
+2021-02-25 13:09:05,217:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46357  NIFTY21FEB15100CE    -150  ...  37.80     -5670.0 -645.0
+1   46358  NIFTY21FEB15100PE    -150  ...  25.35     -3802.5  382.5
+
+[2 rows x 8 columns]
+2021-02-25 13:09:05,685:__main__:INFO:Global PnL : -262.5
+2021-02-25 13:09:15,749:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+
+[2 rows x 14 columns]
+2021-02-25 13:09:16,014:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46357  NIFTY21FEB15100CE    -150  ...  37.50     -5625.0 -600.0
+1   46358  NIFTY21FEB15100PE    -150  ...  24.75     -3712.5  472.5
+
+[2 rows x 8 columns]
+2021-02-25 13:09:16,280:__main__:INFO:Global PnL : -127.5
+2021-02-25 13:09:25,793:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+
+[2 rows x 14 columns]
+2021-02-25 13:09:26,954:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46357  NIFTY21FEB15100CE    -150  ...  39.25     -5887.5 -862.5
+1   46358  NIFTY21FEB15100PE    -150  ...  23.65     -3547.5  637.5
+
+[2 rows x 8 columns]
+2021-02-25 13:09:27,347:__main__:INFO:Global PnL : -225.0
+2021-02-25 13:09:36,679:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+
+[2 rows x 14 columns]
+2021-02-25 13:09:37,176:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46357  NIFTY21FEB15100CE    -150  ...  39.75     -5962.5 -937.5
+1   46358  NIFTY21FEB15100PE    -150  ...  23.00     -3450.0  735.0
+
+[2 rows x 8 columns]
+2021-02-25 13:09:37,625:__main__:INFO:Global PnL : -202.5
+2021-02-25 13:09:47,660:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+
+[2 rows x 14 columns]
+2021-02-25 13:09:48,039:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -150  ...  41.85     -6277.5 -1252.5
+1   46358  NIFTY21FEB15100PE    -150  ...  20.40     -3060.0  1125.0
+
+[2 rows x 8 columns]
+2021-02-25 13:09:48,859:__main__:INFO:Global PnL : -127.5
+2021-02-25 13:09:58,508:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+
+[2 rows x 14 columns]
+2021-02-25 13:09:59,132:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -150  ...  42.65     -6397.5 -1372.5
+1   46358  NIFTY21FEB15100PE    -150  ...  20.25     -3037.5  1147.5
+
+[2 rows x 8 columns]
+2021-02-25 13:09:59,598:__main__:INFO:Global PnL : -225.0
+2021-02-25 13:10:00,000:__main__:INFO:Placing orders as status is idle and timing 13:10:00 cond met ..
+2021-02-25 13:10:00,207:__main__:INFO:Placing orders as status is idle and timing 13:10:00 cond met ..
+2021-02-25 13:10:01,654:__main__:INFO:StrikePrice computed as : 15100
+2021-02-25 13:10:01,877:__main__:INFO:orders before placing orders : {'refId': 10004, 'setno': 4, 'ent_txn_type': 'sell', 'rpr_txn_type': 'buy', 'idx': 'NIFTY', 'otype': 'pe', 'status': 'Idle', 'expiry': 'week', 'lot': 2, 'startTime': '13:10:00'}
+2021-02-25 13:10:02,441:__main__:INFO:StrikePrice computed as : 15100
+2021-02-25 13:10:02,896:__main__:INFO:Placing Orders..
+2021-02-25 13:10:03,465:__main__:INFO:orders before placing orders : {'refId': 10003, 'setno': 3, 'ent_txn_type': 'sell', 'rpr_txn_type': 'buy', 'idx': 'NIFTY', 'otype': 'ce', 'status': 'Idle', 'expiry': 'week', 'lot': 2, 'startTime': '13:10:00'}
+2021-02-25 13:10:04,007:__main__:INFO:Placing Orders..
+2021-02-25 13:10:05,054:__main__:INFO:Order ID for SELL 46358 is: 10025898
+2021-02-25 13:10:05,401:__main__:INFO:Order ID for SELL 46357 is: 10025899
+2021-02-25 13:10:06,137:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+
+[2 rows x 14 columns]
+2021-02-25 13:10:06,312:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -150  ...  42.3     -6345.0 -1320.0
+1   46358  NIFTY21FEB15100PE    -150  ...  20.1     -3015.0  1170.0
+
+[2 rows x 8 columns]
+2021-02-25 13:10:06,597:__main__:INFO:Global PnL : -150.0
+2021-02-25 13:10:07,373:__main__:INFO:Checking OrderBook for order status..
+2021-02-25 13:10:07,827:__main__:INFO:Checking OrderBook for order status..
+2021-02-25 13:10:08,927:__main__:INFO:traded price is: 20.03 and ordered  time is: 2021-02-25 13:10:08
+2021-02-25 13:10:09,036:__main__:INFO:Entry order dtls: {'set': 4, 'txn_type': 'sell', 'strike': 15100, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'optionType': 'pe', 'name': 'NIFTY21FEB15100PE', 'symbol': 46358, 'orderID': 10025898, 'tradedPrice': 20.03, 'dateTime': '2021-02-25 13:10:08', 'set_type': 'Entry'}
+2021-02-25 13:10:09,718:__main__:INFO:traded price is: 41.93 and ordered  time is: 2021-02-25 13:10:08
+2021-02-25 13:10:10,031:__main__:INFO:Entry order dtls: {'set': 3, 'txn_type': 'sell', 'strike': 15100, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB15100CE', 'symbol': 46357, 'orderID': 10025899, 'tradedPrice': 41.93, 'dateTime': '2021-02-25 13:10:08', 'set_type': 'Entry'}
+2021-02-25 13:10:17,322:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry   -3004.5
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry   -6289.5
+
+[4 rows x 14 columns]
+2021-02-25 13:10:17,733:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -300  ...  42.80    -12840.0 -1525.5
+1   46358  NIFTY21FEB15100PE    -300  ...  19.65     -5895.0  1294.5
+
+[2 rows x 8 columns]
+2021-02-25 13:10:18,673:__main__:INFO:Global PnL : -231.0
+2021-02-25 13:10:28,553:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry   -3004.5
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry   -6289.5
+
+[4 rows x 14 columns]
+2021-02-25 13:10:29,005:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -300  ...  42.45    -12735.0 -1420.5
+1   46358  NIFTY21FEB15100PE    -300  ...  19.85     -5955.0  1234.5
+
+[2 rows x 8 columns]
+2021-02-25 13:10:30,374:__main__:INFO:Global PnL : -186.0
+2021-02-25 13:10:38,752:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry   -3004.5
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry   -6289.5
+
+[4 rows x 14 columns]
+2021-02-25 13:10:38,985:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -300  ...  41.45    -12435.0 -1120.5
+1   46358  NIFTY21FEB15100PE    -300  ...  20.70     -6210.0   979.5
+
+[2 rows x 8 columns]
+2021-02-25 13:10:39,136:__main__:INFO:Global PnL : -141.0
+2021-02-25 13:10:49,758:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry   -3004.5
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry   -6289.5
+
+[4 rows x 14 columns]
+2021-02-25 13:10:50,534:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount    pnl
+0   46357  NIFTY21FEB15100CE    -300  ...  40.6    -12180.0 -865.5
+1   46358  NIFTY21FEB15100PE    -300  ...  21.2     -6360.0  829.5
+
+[2 rows x 8 columns]
+2021-02-25 13:10:50,763:__main__:INFO:Global PnL : -36.0
+2021-02-25 13:11:00,465:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry   -3004.5
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry   -6289.5
+
+[4 rows x 14 columns]
+2021-02-25 13:11:01,080:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -300  ...  42.05    -12615.0 -1300.5
+1   46358  NIFTY21FEB15100PE    -300  ...  20.20     -6060.0  1129.5
+
+[2 rows x 8 columns]
+2021-02-25 13:11:01,173:__main__:INFO:Global PnL : -171.0
+2021-02-25 13:11:10,738:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry   -3004.5
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry   -6289.5
+
+[4 rows x 14 columns]
+2021-02-25 13:11:11,376:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -300  ...  43.75    -13125.0 -1810.5
+1   46358  NIFTY21FEB15100PE    -300  ...  19.35     -5805.0  1384.5
+
+[2 rows x 8 columns]
+2021-02-25 13:11:11,940:__main__:INFO:Global PnL : -426.0
+2021-02-25 13:11:20,518:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry   -3004.5
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry   -6289.5
+
+[4 rows x 14 columns]
+2021-02-25 13:11:22,116:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -300  ...  45.1    -13530.0 -2215.5
+1   46358  NIFTY21FEB15100PE    -300  ...  17.9     -5370.0  1819.5
+
+[2 rows x 8 columns]
+2021-02-25 13:11:22,287:__main__:INFO:Global PnL : -396.0
+2021-02-25 13:11:31,061:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry   -3004.5
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry   -6289.5
+
+[4 rows x 14 columns]
+2021-02-25 13:11:31,961:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -300  ...  43.65    -13095.0 -1780.5
+1   46358  NIFTY21FEB15100PE    -300  ...  18.50     -5550.0  1639.5
+
+[2 rows x 8 columns]
+2021-02-25 13:11:32,444:__main__:INFO:Global PnL : -141.0
+2021-02-25 13:11:42,031:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry   -3004.5
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry   -6289.5
+
+[4 rows x 14 columns]
+2021-02-25 13:11:42,546:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -300  ...  45.70    -13710.0 -2395.5
+1   46358  NIFTY21FEB15100PE    -300  ...  18.05     -5415.0  1774.5
+
+[2 rows x 8 columns]
+2021-02-25 13:11:43,331:__main__:INFO:Global PnL : -621.0
+2021-02-25 13:11:52,571:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry   -3004.5
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry   -6289.5
+
+[4 rows x 14 columns]
+2021-02-25 13:11:53,332:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -300  ...  44.70    -13410.0 -2095.5
+1   46358  NIFTY21FEB15100PE    -300  ...  18.25     -5475.0  1714.5
+
+[2 rows x 8 columns]
+2021-02-25 13:11:53,596:__main__:INFO:Global PnL : -381.0
+2021-02-25 13:12:01,123:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry   -3004.5
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry   -6289.5
+
+[4 rows x 14 columns]
+2021-02-25 13:12:01,915:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -300  ...  44.00    -13200.0 -1885.5
+1   46358  NIFTY21FEB15100PE    -300  ...  18.95     -5685.0  1504.5
+
+[2 rows x 8 columns]
+2021-02-25 13:12:02,541:__main__:INFO:Global PnL : -381.0
+2021-02-25 13:12:11,736:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry   -3004.5
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry   -6289.5
+
+[4 rows x 14 columns]
+2021-02-25 13:12:12,061:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -300  ...  44.35    -13305.0 -1990.5
+1   46358  NIFTY21FEB15100PE    -300  ...  18.90     -5670.0  1519.5
+
+[2 rows x 8 columns]
+2021-02-25 13:12:12,640:__main__:INFO:Global PnL : -471.0
+2021-02-25 13:12:21,477:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry   -3004.5
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry   -6289.5
+
+[4 rows x 14 columns]
+2021-02-25 13:12:22,084:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -300  ...  47.70    -14310.0 -2995.5
+1   46358  NIFTY21FEB15100PE    -300  ...  17.05     -5115.0  2074.5
+
+[2 rows x 8 columns]
+2021-02-25 13:12:22,438:__main__:INFO:Global PnL : -921.0
+2021-02-25 13:12:33,914:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry   -3004.5
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry   -6289.5
+
+[4 rows x 14 columns]
+2021-02-25 13:12:34,958:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -300  ...  46.30    -13890.0 -2575.5
+1   46358  NIFTY21FEB15100PE    -300  ...  17.65     -5295.0  1894.5
+
+[2 rows x 8 columns]
+2021-02-25 13:12:35,652:__main__:INFO:Global PnL : -681.0
+2021-02-25 13:12:42,609:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry   -3004.5
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry   -6289.5
+
+[4 rows x 14 columns]
+2021-02-25 13:12:42,809:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -300  ...  46.95    -14085.0 -2770.5
+1   46358  NIFTY21FEB15100PE    -300  ...  17.30     -5190.0  1999.5
+
+[2 rows x 8 columns]
+2021-02-25 13:12:42,811:__main__:INFO:Global PnL : -771.0
+2021-02-25 13:12:53,692:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry   -3004.5
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry   -6289.5
+
+[4 rows x 14 columns]
+2021-02-25 13:12:54,213:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -300  ...  46.05    -13815.0 -2500.5
+1   46358  NIFTY21FEB15100PE    -300  ...  18.05     -5415.0  1774.5
+
+[2 rows x 8 columns]
+2021-02-25 13:12:54,465:__main__:INFO:Global PnL : -726.0
+2021-02-25 13:13:04,171:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry   -3004.5
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry   -6289.5
+
+[4 rows x 14 columns]
+2021-02-25 13:13:05,282:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -300  ...  46.05    -13815.0 -2500.5
+1   46358  NIFTY21FEB15100PE    -300  ...  18.35     -5505.0  1684.5
+
+[2 rows x 8 columns]
+2021-02-25 13:13:05,907:__main__:INFO:Global PnL : -816.0
+2021-02-25 13:13:13,236:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry   -3004.5
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry   -6289.5
+
+[4 rows x 14 columns]
+2021-02-25 13:13:13,757:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -300  ...  46.10    -13830.0 -2515.5
+1   46358  NIFTY21FEB15100PE    -300  ...  18.45     -5535.0  1654.5
+
+[2 rows x 8 columns]
+2021-02-25 13:13:14,118:__main__:INFO:Global PnL : -861.0
+2021-02-25 13:13:24,352:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry   -3004.5
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry   -6289.5
+
+[4 rows x 14 columns]
+2021-02-25 13:13:24,970:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -300  ...  46.05    -13815.0 -2500.5
+1   46358  NIFTY21FEB15100PE    -300  ...  18.90     -5670.0  1519.5
+
+[2 rows x 8 columns]
+2021-02-25 13:13:25,044:__main__:INFO:Global PnL : -981.0
+2021-02-25 13:13:34,880:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry   -3004.5
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry   -6289.5
+
+[4 rows x 14 columns]
+2021-02-25 13:13:36,764:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -300  ...  46.25    -13875.0 -2560.5
+1   46358  NIFTY21FEB15100PE    -300  ...  19.10     -5730.0  1459.5
+
+[2 rows x 8 columns]
+2021-02-25 13:13:37,046:__main__:INFO:Global PnL : -1101.0
+2021-02-25 13:13:45,236:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry   -3004.5
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry   -6289.5
+
+[4 rows x 14 columns]
+2021-02-25 13:13:46,539:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -300  ...  47.25    -14175.0 -2860.5
+1   46358  NIFTY21FEB15100PE    -300  ...  17.90     -5370.0  1819.5
+
+[2 rows x 8 columns]
+2021-02-25 13:13:46,886:__main__:INFO:Global PnL : -1041.0
+2021-02-25 13:13:55,307:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry   -3004.5
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry   -6289.5
+
+[4 rows x 14 columns]
+2021-02-25 13:13:55,829:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -300  ...  48.25    -14475.0 -3160.5
+1   46358  NIFTY21FEB15100PE    -300  ...  18.00     -5400.0  1789.5
+
+[2 rows x 8 columns]
+2021-02-25 13:13:55,843:__main__:INFO:Global PnL : -1371.0
+2021-02-25 13:14:05,931:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry   -3004.5
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry   -6289.5
+
+[4 rows x 14 columns]
+2021-02-25 13:14:07,072:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -300  ...  48.40    -14520.0 -3205.5
+1   46358  NIFTY21FEB15100PE    -300  ...  17.55     -5265.0  1924.5
+
+[2 rows x 8 columns]
+2021-02-25 13:14:07,633:__main__:INFO:Global PnL : -1281.0
+2021-02-25 13:14:14,192:__main__:INFO:Reparing order as status is active and +15/-45 cond met..
+2021-02-25 13:14:14,443:__main__:INFO:Placing Orders..
+2021-02-25 13:14:15,321:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry   -4185.0
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry   -5025.0
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry   -3004.5
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry   -6289.5
+
+[4 rows x 14 columns]
+2021-02-25 13:14:15,822:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -300  ...  49.35    -14805.0 -3490.5
+1   46358  NIFTY21FEB15100PE    -300  ...  17.50     -5250.0  1939.5
+
+[2 rows x 8 columns]
+2021-02-25 13:14:16,167:__main__:INFO:Order ID for BUY 46357 is: 10025904
+2021-02-25 13:14:16,690:__main__:INFO:Global PnL : -1551.0
+2021-02-25 13:14:19,686:__main__:INFO:Checking OrderBook for order status..
+2021-02-25 13:14:21,489:__main__:INFO:traded price is: 49.55 and ordered  time is: 2021-02-25 13:14:18
+2021-02-25 13:14:21,647:__main__:INFO:Repair order dtls: {'set': 1, 'txn_type': 'buy', 'strike': 15100, 'qty': 75, 'tr_qty': 75, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB15100CE', 'symbol': 46357, 'orderID': 10025904, 'tradedPrice': 49.55, 'dateTime': '2021-02-25 13:14:18', 'set_type': 'Repair'}
+2021-02-25 13:14:21,884:__main__:INFO:Repaired the Entry Order. Exit will taken care by universally.
+2021-02-25 13:14:27,173:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry  -4185.00
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry  -5025.00
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry  -3004.50
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry  -6289.50
+4    1      buy   15100  ...  2021-02-25 13:14:18    Repair   3716.25
+
+[5 rows x 14 columns]
+2021-02-25 13:14:27,938:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount      pnl
+0   46357  NIFTY21FEB15100CE    -225  ...  48.7    -10957.5 -3359.25
+1   46358  NIFTY21FEB15100PE    -300  ...  17.6     -5280.0  1909.50
+
+[2 rows x 8 columns]
+2021-02-25 13:14:28,377:__main__:INFO:Global PnL : -1449.75
+2021-02-25 13:14:35,729:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry  -4185.00
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry  -5025.00
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry  -3004.50
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry  -6289.50
+4    1      buy   15100  ...  2021-02-25 13:14:18    Repair   3716.25
+
+[5 rows x 14 columns]
+2021-02-25 13:14:35,930:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount      pnl
+0   46357  NIFTY21FEB15100CE    -225  ...  47.8    -10755.0 -3156.75
+1   46358  NIFTY21FEB15100PE    -300  ...  17.6     -5280.0  1909.50
+
+[2 rows x 8 columns]
+2021-02-25 13:14:36,276:__main__:INFO:Global PnL : -1247.25
+2021-02-25 13:14:47,022:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry  -4185.00
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry  -5025.00
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry  -3004.50
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry  -6289.50
+4    1      buy   15100  ...  2021-02-25 13:14:18    Repair   3716.25
+
+[5 rows x 14 columns]
+2021-02-25 13:14:47,603:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -225  ...  47.55   -10698.75 -3100.5
+1   46358  NIFTY21FEB15100PE    -300  ...  18.25    -5475.00  1714.5
+
+[2 rows x 8 columns]
+2021-02-25 13:14:48,059:__main__:INFO:Global PnL : -1386.0
+2021-02-25 13:14:57,884:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry  -4185.00
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry  -5025.00
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry  -3004.50
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry  -6289.50
+4    1      buy   15100  ...  2021-02-25 13:14:18    Repair   3716.25
+
+[5 rows x 14 columns]
+2021-02-25 13:14:58,620:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -225  ...  47.85   -10766.25 -3168.0
+1   46358  NIFTY21FEB15100PE    -300  ...  18.25    -5475.00  1714.5
+
+[2 rows x 8 columns]
+2021-02-25 13:14:59,067:__main__:INFO:Global PnL : -1453.5
+2021-02-25 13:15:00,000:__main__:INFO:Placing orders as status is idle and timing 13:15:00 cond met ..
+2021-02-25 13:15:00,022:__main__:INFO:Placing orders as status is idle and timing 13:15:00 cond met ..
+2021-02-25 13:15:01,075:__main__:INFO:StrikePrice computed as : 15150
+2021-02-25 13:15:01,350:__main__:INFO:orders before placing orders : {'refId': 10006, 'setno': 6, 'ent_txn_type': 'sell', 'rpr_txn_type': 'buy', 'idx': 'NIFTY', 'otype': 'pe', 'status': 'Idle', 'expiry': 'week', 'lot': 2, 'startTime': '13:15:00'}
+2021-02-25 13:15:01,669:__main__:INFO:StrikePrice computed as : 15150
+2021-02-25 13:15:01,716:__main__:INFO:Placing Orders..
+2021-02-25 13:15:01,894:__main__:INFO:orders before placing orders : {'refId': 10005, 'setno': 5, 'ent_txn_type': 'sell', 'rpr_txn_type': 'buy', 'idx': 'NIFTY', 'otype': 'ce', 'status': 'Idle', 'expiry': 'week', 'lot': 2, 'startTime': '13:15:00'}
+2021-02-25 13:15:02,780:__main__:INFO:Placing Orders..
+2021-02-25 13:15:03,329:__main__:INFO:Order ID for SELL 46377 is: 10025905
+2021-02-25 13:15:04,411:__main__:INFO:Order ID for SELL 46359 is: 10025906
+2021-02-25 13:15:05,509:__main__:INFO:Checking OrderBook for order status..
+2021-02-25 13:15:06,604:__main__:INFO:Checking OrderBook for order status..
+2021-02-25 13:15:06,885:__main__:INFO:traded price is: 38.5 and ordered  time is: 2021-02-25 13:15:06
+2021-02-25 13:15:07,214:__main__:INFO:Entry order dtls: {'set': 6, 'txn_type': 'sell', 'strike': 15150, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'optionType': 'pe', 'name': 'NIFTY21FEB15150PE', 'symbol': 46377, 'orderID': 10025905, 'tradedPrice': 38.5, 'dateTime': '2021-02-25 13:15:06', 'set_type': 'Entry'}
+2021-02-25 13:15:07,282:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    2     sell   15100  ...  2021-02-25 13:06:15     Entry  -4185.00
+1    1     sell   15100  ...  2021-02-25 13:06:15     Entry  -5025.00
+2    4     sell   15100  ...  2021-02-25 13:10:08     Entry  -3004.50
+3    3     sell   15100  ...  2021-02-25 13:10:08     Entry  -6289.50
+4    1      buy   15100  ...  2021-02-25 13:14:18    Repair   3716.25
+
+[5 rows x 14 columns]
+2021-02-25 13:15:07,795:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46357  NIFTY21FEB15100CE    -225  ...  48.95   -11013.75 -3415.5
+1   46358  NIFTY21FEB15100PE    -300  ...  17.60    -5280.00  1909.5
+
+[2 rows x 8 columns]
+2021-02-25 13:15:07,962:__main__:INFO:Global PnL : -1506.0
+2021-02-25 13:15:08,277:__main__:INFO:traded price is: 19.95 and ordered  time is: 2021-02-25 13:15:07
+2021-02-25 13:15:08,587:__main__:INFO:Entry order dtls: {'set': 5, 'txn_type': 'sell', 'strike': 15150, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB15150CE', 'symbol': 46359, 'orderID': 10025906, 'tradedPrice': 19.95, 'dateTime': '2021-02-25 13:15:07', 'set_type': 'Entry'}
+2021-02-25 13:15:08,597:__main__:INFO:--------------------------------------------
+2021-02-25 14:43:48,605:__main__:INFO:Token file exists and created today
+2021-02-25 14:43:48,608:__main__:INFO:Initializing session with token..
+2021-02-25 14:43:48,611:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-25 14:43:48,612:__main__:INFO:weekly expiry is : 25Feb2021, monthly expiry is: 25Feb2021
+2021-02-25 14:43:48,613:__main__:INFO:MasterDump already exists.. reading directly
+2021-02-25 14:43:48,639:__main__:INFO:Starting a separate thread to fetch LTP of traded instruments..
+2021-02-25 14:45:00,007:__main__:INFO:Placing orders as status is idle and timing 14:45:00 cond met ..
+2021-02-25 14:45:00,027:__main__:INFO:Placing orders as status is idle and timing 14:45:00 cond met ..
+2021-02-25 14:45:01,787:__main__:INFO:StrikePrice computed as : 15150
+2021-02-25 14:45:02,073:__main__:INFO:StrikePrice computed as : 15150
+2021-02-25 14:45:02,213:__main__:INFO:orders before placing orders : {'refId': 10001, 'setno': 1, 'ent_txn_type': 'sell', 'rpr_txn_type': 'buy', 'idx': 'NIFTY', 'otype': 'ce', 'status': 'Idle', 'expiry': 'week', 'lot': 2, 'startTime': '14:45:00'}
+2021-02-25 14:45:02,213:__main__:INFO:Placing Orders..
+2021-02-25 14:45:02,244:__main__:INFO:orders before placing orders : {'refId': 10002, 'setno': 2, 'ent_txn_type': 'sell', 'rpr_txn_type': 'buy', 'idx': 'NIFTY', 'otype': 'pe', 'status': 'Idle', 'expiry': 'week', 'lot': 2, 'startTime': '14:45:00'}
+2021-02-25 14:45:02,479:__main__:INFO:Placing Orders..
+2021-02-25 14:45:04,329:__main__:INFO:Order ID for SELL 46359 is: 10025943
+2021-02-25 14:45:04,329:__main__:INFO:Order ID for SELL 46377 is: 10025944
+2021-02-25 14:45:06,464:__main__:INFO:Checking OrderBook for order status..
+2021-02-25 14:45:06,657:__main__:INFO:Checking OrderBook for order status..
+2021-02-25 14:45:08,940:__main__:INFO:traded price is: 16.88 and ordered  time is: 2021-02-25 14:45:07
+2021-02-25 14:45:08,972:__main__:INFO:traded price is: 13.75 and ordered  time is: 2021-02-25 14:45:07
+2021-02-25 14:45:09,001:__main__:INFO:Entry order dtls: {'set': 1, 'txn_type': 'sell', 'strike': 15150, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB15150CE', 'symbol': 46359, 'orderID': 10025943, 'tradedPrice': 16.88, 'dateTime': '2021-02-25 14:45:07', 'set_type': 'Entry'}
+2021-02-25 14:45:09,351:__main__:INFO:Entry order dtls: {'set': 2, 'txn_type': 'sell', 'strike': 15150, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'optionType': 'pe', 'name': 'NIFTY21FEB15150PE', 'symbol': 46377, 'orderID': 10025944, 'tradedPrice': 13.75, 'dateTime': '2021-02-25 14:45:07', 'set_type': 'Entry'}
+2021-02-25 14:45:18,966:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:45:19,970:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount   pnl
+0   46359  NIFTY21FEB15150CE    -150  ...  17.05     -2557.5 -25.5
+1   46377  NIFTY21FEB15150PE    -150  ...  13.85     -2077.5 -15.0
+
+[2 rows x 8 columns]
+2021-02-25 14:45:20,267:__main__:INFO:Global PnL : -40.5
+2021-02-25 14:45:24,543:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:45:25,032:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount   pnl
+0   46359  NIFTY21FEB15150CE    -150  ...  17.05     -2557.5 -25.5
+1   46377  NIFTY21FEB15150PE    -150  ...  13.85     -2077.5 -15.0
+
+[2 rows x 8 columns]
+2021-02-25 14:45:25,610:__main__:INFO:Global PnL : -40.5
+2021-02-25 14:45:34,393:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:45:35,057:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...  ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -150  ...   18       -2700 -168.0
+1   46377  NIFTY21FEB15150PE    -150  ...   13       -1950  112.5
+
+[2 rows x 8 columns]
+2021-02-25 14:45:35,526:__main__:INFO:Global PnL : -55.5
+2021-02-25 14:45:43,338:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:45:43,602:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -150  ...  18.7     -2805.0 -273.0
+1   46377  NIFTY21FEB15150PE    -150  ...  12.0     -1800.0  262.5
+
+[2 rows x 8 columns]
+2021-02-25 14:45:43,744:__main__:INFO:Global PnL : -10.5
+2021-02-25 14:45:55,064:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:45:55,914:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -150  ...  18.0     -2700.0 -168.0
+1   46377  NIFTY21FEB15150PE    -150  ...  12.3     -1845.0  217.5
+
+[2 rows x 8 columns]
+2021-02-25 14:45:57,133:__main__:INFO:Global PnL : 49.5
+2021-02-25 14:46:05,843:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:46:06,170:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -150  ...  17.55     -2632.5 -100.5
+1   46377  NIFTY21FEB15150PE    -150  ...  12.25     -1837.5  225.0
+
+[2 rows x 8 columns]
+2021-02-25 14:46:06,551:__main__:INFO:Global PnL : 124.5
+2021-02-25 14:46:15,426:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:46:15,598:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -150  ...  14.35     -2152.5  379.5
+1   46377  NIFTY21FEB15150PE    -150  ...  14.20     -2130.0  -67.5
+
+[2 rows x 8 columns]
+2021-02-25 14:46:16,202:__main__:INFO:Global PnL : 312.0
+2021-02-25 14:46:27,166:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:46:27,680:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -150  ...  13.35     -2002.5  529.5
+1   46377  NIFTY21FEB15150PE    -150  ...  14.80     -2220.0 -157.5
+
+[2 rows x 8 columns]
+2021-02-25 14:46:28,423:__main__:INFO:Global PnL : 372.0
+2021-02-25 14:46:37,505:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:46:39,621:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -150  ...  13.85     -2077.5  454.5
+1   46377  NIFTY21FEB15150PE    -150  ...  14.10     -2115.0  -52.5
+
+[2 rows x 8 columns]
+2021-02-25 14:46:39,884:__main__:INFO:Global PnL : 402.0
+2021-02-25 14:46:48,070:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:46:48,796:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -150  ...  13.15     -1972.5  559.5
+1   46377  NIFTY21FEB15150PE    -150  ...  15.10     -2265.0 -202.5
+
+[2 rows x 8 columns]
+2021-02-25 14:46:49,183:__main__:INFO:Global PnL : 357.0
+2021-02-25 14:46:58,843:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:47:00,674:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -150  ...  13.2     -1980.0  552.0
+1   46377  NIFTY21FEB15150PE    -150  ...  14.2     -2130.0  -67.5
+
+[2 rows x 8 columns]
+2021-02-25 14:47:01,998:__main__:INFO:Global PnL : 484.5
+2021-02-25 14:47:07,279:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:47:07,729:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -150  ...  12.65     -1897.5  634.5
+1   46377  NIFTY21FEB15150PE    -150  ...  14.40     -2160.0  -97.5
+
+[2 rows x 8 columns]
+2021-02-25 14:47:08,357:__main__:INFO:Global PnL : 537.0
+2021-02-25 14:47:17,789:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:47:18,259:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -150  ...  10.60     -1590.0  942.0
+1   46377  NIFTY21FEB15150PE    -150  ...  15.75     -2362.5 -300.0
+
+[2 rows x 8 columns]
+2021-02-25 14:47:18,525:__main__:INFO:Global PnL : 642.0
+2021-02-25 14:47:30,205:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:47:30,547:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -150  ...   7.65     -1147.5  1384.5
+1   46377  NIFTY21FEB15150PE    -150  ...  19.00     -2850.0  -787.5
+
+[2 rows x 8 columns]
+2021-02-25 14:47:32,034:__main__:INFO:Global PnL : 597.0
+2021-02-25 14:47:41,345:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:47:41,753:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -150  ...   9.80     -1470.0  1062.0
+1   46377  NIFTY21FEB15150PE    -150  ...  16.15     -2422.5  -360.0
+
+[2 rows x 8 columns]
+2021-02-25 14:47:42,432:__main__:INFO:Global PnL : 702.0
+2021-02-25 14:47:50,937:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:47:52,555:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -150  ...   9.80     -1470.0  1062.0
+1   46377  NIFTY21FEB15150PE    -150  ...  16.15     -2422.5  -360.0
+
+[2 rows x 8 columns]
+2021-02-25 14:47:52,714:__main__:INFO:Global PnL : 702.0
+2021-02-25 14:47:58,670:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:47:59,937:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -150  ...  10.25     -1537.5  994.5
+1   46377  NIFTY21FEB15150PE    -150  ...  15.35     -2302.5 -240.0
+
+[2 rows x 8 columns]
+2021-02-25 14:48:00,420:__main__:INFO:Global PnL : 754.5
+2021-02-25 14:48:10,365:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:48:10,672:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -150  ...  11.05     -1657.5  874.5
+1   46377  NIFTY21FEB15150PE    -150  ...  14.20     -2130.0  -67.5
+
+[2 rows x 8 columns]
+2021-02-25 14:48:12,026:__main__:INFO:Global PnL : 807.0
+2021-02-25 14:48:20,189:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:48:20,687:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -150  ...  12.45     -1867.5  664.5
+1   46377  NIFTY21FEB15150PE    -150  ...  13.30     -1995.0   67.5
+
+[2 rows x 8 columns]
+2021-02-25 14:48:21,421:__main__:INFO:Global PnL : 732.0
+2021-02-25 14:48:32,389:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:48:32,651:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -150  ...  12.8     -1920.0  612.0
+1   46377  NIFTY21FEB15150PE    -150  ...  12.9     -1935.0  127.5
+
+[2 rows x 8 columns]
+2021-02-25 14:48:33,742:__main__:INFO:Global PnL : 739.5
+2021-02-25 14:48:40,974:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:48:41,730:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -150  ...  14.15     -2122.5  409.5
+1   46377  NIFTY21FEB15150PE    -150  ...  12.65     -1897.5  165.0
+
+[2 rows x 8 columns]
+2021-02-25 14:48:42,222:__main__:INFO:Global PnL : 574.5
+2021-02-25 14:48:54,334:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:48:56,996:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -150  ...  13.35     -2002.5  529.5
+1   46377  NIFTY21FEB15150PE    -150  ...  12.45     -1867.5  195.0
+
+[2 rows x 8 columns]
+2021-02-25 14:48:57,356:__main__:INFO:Global PnL : 724.5
+2021-02-25 14:49:02,336:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:49:02,550:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -150  ...  12.30     -1845.0  687.0
+1   46377  NIFTY21FEB15150PE    -150  ...  13.85     -2077.5  -15.0
+
+[2 rows x 8 columns]
+2021-02-25 14:49:02,689:__main__:INFO:Global PnL : 672.0
+2021-02-25 14:49:12,112:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:49:12,576:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -150  ...  12.50     -1875.0  657.0
+1   46377  NIFTY21FEB15150PE    -150  ...  13.65     -2047.5   15.0
+
+[2 rows x 8 columns]
+2021-02-25 14:49:13,212:__main__:INFO:Global PnL : 672.0
+2021-02-25 14:49:22,863:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:49:22,966:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -150  ...  13.0     -1950.0  582.0
+1   46377  NIFTY21FEB15150PE    -150  ...  12.7     -1905.0  157.5
+
+[2 rows x 8 columns]
+2021-02-25 14:49:23,173:__main__:INFO:Global PnL : 739.5
+2021-02-25 14:49:32,998:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:49:33,340:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -150  ...  11.45     -1717.5  814.5
+1   46377  NIFTY21FEB15150PE    -150  ...  14.50     -2175.0 -112.5
+
+[2 rows x 8 columns]
+2021-02-25 14:49:33,510:__main__:INFO:Global PnL : 702.0
+2021-02-25 14:49:42,987:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:49:43,338:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -150  ...  11.35     -1702.5  829.5
+1   46377  NIFTY21FEB15150PE    -150  ...  15.05     -2257.5 -195.0
+
+[2 rows x 8 columns]
+2021-02-25 14:49:43,944:__main__:INFO:Global PnL : 634.5
+2021-02-25 14:49:52,827:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:49:52,932:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -150  ...   9.85     -1477.5  1054.5
+1   46377  NIFTY21FEB15150PE    -150  ...  15.30     -2295.0  -232.5
+
+[2 rows x 8 columns]
+2021-02-25 14:49:52,934:__main__:INFO:Global PnL : 822.0
+2021-02-25 14:50:00,106:__main__:INFO:Placing orders as status is idle and timing 14:50:00 cond met ..
+2021-02-25 14:50:00,261:__main__:INFO:Placing orders as status is idle and timing 14:50:00 cond met ..
+2021-02-25 14:50:03,029:__main__:INFO:StrikePrice computed as : 15150
+2021-02-25 14:50:03,061:__main__:INFO:StrikePrice computed as : 15150
+2021-02-25 14:50:03,172:__main__:INFO:orders before placing orders : {'refId': 10004, 'setno': 4, 'ent_txn_type': 'sell', 'rpr_txn_type': 'buy', 'idx': 'NIFTY', 'otype': 'pe', 'status': 'Idle', 'expiry': 'week', 'lot': 2, 'startTime': '14:50:00'}
+2021-02-25 14:50:03,254:__main__:INFO:orders before placing orders : {'refId': 10003, 'setno': 3, 'ent_txn_type': 'sell', 'rpr_txn_type': 'buy', 'idx': 'NIFTY', 'otype': 'ce', 'status': 'Idle', 'expiry': 'week', 'lot': 2, 'startTime': '14:50:00'}
+2021-02-25 14:50:03,367:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+
+[2 rows x 14 columns]
+2021-02-25 14:50:03,407:__main__:INFO:Placing Orders..
+2021-02-25 14:50:03,455:__main__:INFO:Placing Orders..
+2021-02-25 14:50:03,648:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -150  ...  11.05     -1657.5  874.5
+1   46377  NIFTY21FEB15150PE    -150  ...  14.55     -2182.5 -120.0
+
+[2 rows x 8 columns]
+2021-02-25 14:50:04,298:__main__:INFO:Global PnL : 754.5
+2021-02-25 14:50:05,437:__main__:INFO:Order ID for SELL 46377 is: 10025949
+2021-02-25 14:50:05,499:__main__:INFO:Order ID for SELL 46359 is: 10025950
+2021-02-25 14:50:07,688:__main__:INFO:Checking OrderBook for order status..
+2021-02-25 14:50:08,276:__main__:INFO:Checking OrderBook for order status..
+2021-02-25 14:50:09,438:__main__:INFO:traded price is: 13.5 and ordered  time is: 2021-02-25 14:50:08
+2021-02-25 14:50:09,469:__main__:INFO:Entry order dtls: {'set': 4, 'txn_type': 'sell', 'strike': 15150, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'optionType': 'pe', 'name': 'NIFTY21FEB15150PE', 'symbol': 46377, 'orderID': 10025949, 'tradedPrice': 13.5, 'dateTime': '2021-02-25 14:50:08', 'set_type': 'Entry'}
+2021-02-25 14:50:11,274:__main__:INFO:traded price is: 12.1 and ordered  time is: 2021-02-25 14:50:08
+2021-02-25 14:50:12,580:__main__:INFO:Entry order dtls: {'set': 3, 'txn_type': 'sell', 'strike': 15150, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB15150CE', 'symbol': 46359, 'orderID': 10025950, 'tradedPrice': 12.1, 'dateTime': '2021-02-25 14:50:08', 'set_type': 'Entry'}
+2021-02-25 14:50:13,777:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+
+[3 rows x 14 columns]
+2021-02-25 14:50:14,122:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -150  ...  12.1     -1815.0  717.0
+1   46377  NIFTY21FEB15150PE    -300  ...  13.4     -4020.0   67.5
+
+[2 rows x 8 columns]
+2021-02-25 14:50:14,124:__main__:INFO:Global PnL : 784.5
+2021-02-25 14:50:24,373:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:50:25,697:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -300  ...  12.35     -3705.0  642.0
+1   46377  NIFTY21FEB15150PE    -300  ...  13.10     -3930.0  157.5
+
+[2 rows x 8 columns]
+2021-02-25 14:50:27,003:__main__:INFO:Global PnL : 799.5
+2021-02-25 14:50:34,996:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:50:35,626:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -300  ...  11.85     -3555.0  792.0
+1   46377  NIFTY21FEB15150PE    -300  ...  13.35     -4005.0   82.5
+
+[2 rows x 8 columns]
+2021-02-25 14:50:36,020:__main__:INFO:Global PnL : 874.5
+2021-02-25 14:50:45,612:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:50:47,185:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -300  ...  12.55     -3765.0  582.0
+1   46377  NIFTY21FEB15150PE    -300  ...  13.05     -3915.0  172.5
+
+[2 rows x 8 columns]
+2021-02-25 14:50:47,416:__main__:INFO:Global PnL : 754.5
+2021-02-25 14:50:54,496:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:50:54,713:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -300  ...  10.6     -3180.0  1167.0
+1   46377  NIFTY21FEB15150PE    -300  ...  14.6     -4380.0  -292.5
+
+[2 rows x 8 columns]
+2021-02-25 14:50:54,791:__main__:INFO:Global PnL : 874.5
+2021-02-25 14:51:06,811:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:51:07,893:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -300  ...   9.1     -2730.0  1617.0
+1   46377  NIFTY21FEB15150PE    -300  ...  16.6     -4980.0  -892.5
+
+[2 rows x 8 columns]
+2021-02-25 14:51:08,303:__main__:INFO:Global PnL : 724.5
+2021-02-25 14:51:17,676:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:51:18,142:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -300  ...   7.85     -2355.0  1992.0
+1   46377  NIFTY21FEB15150PE    -300  ...  18.30     -5490.0 -1402.5
+
+[2 rows x 8 columns]
+2021-02-25 14:51:18,303:__main__:INFO:Global PnL : 589.5
+2021-02-25 14:51:27,086:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:51:27,937:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -300  ...   8.8     -2640.0  1707.0
+1   46377  NIFTY21FEB15150PE    -300  ...  16.2     -4860.0  -772.5
+
+[2 rows x 8 columns]
+2021-02-25 14:51:28,220:__main__:INFO:Global PnL : 934.5
+2021-02-25 14:51:37,694:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:51:38,019:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -300  ...   9.3     -2790.0  1557.0
+1   46377  NIFTY21FEB15150PE    -300  ...  16.5     -4950.0  -862.5
+
+[2 rows x 8 columns]
+2021-02-25 14:51:38,020:__main__:INFO:Global PnL : 694.5
+2021-02-25 14:51:48,476:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:51:48,834:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -300  ...   9.40     -2820.0  1527.0
+1   46377  NIFTY21FEB15150PE    -300  ...  16.45     -4935.0  -847.5
+
+[2 rows x 8 columns]
+2021-02-25 14:51:49,562:__main__:INFO:Global PnL : 679.5
+2021-02-25 14:51:59,847:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:52:00,019:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -300  ...   9.8     -2940.0  1407.0
+1   46377  NIFTY21FEB15150PE    -300  ...  15.6     -4680.0  -592.5
+
+[2 rows x 8 columns]
+2021-02-25 14:52:02,363:__main__:INFO:Global PnL : 814.5
+2021-02-25 14:52:07,922:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:52:08,217:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -300  ...   9.8     -2940.0  1407.0
+1   46377  NIFTY21FEB15150PE    -300  ...  15.6     -4680.0  -592.5
+
+[2 rows x 8 columns]
+2021-02-25 14:52:08,277:__main__:INFO:Global PnL : 814.5
+2021-02-25 14:52:18,392:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:52:18,953:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -300  ...   7.8     -2340.0  2007.0
+1   46377  NIFTY21FEB15150PE    -300  ...  19.3     -5790.0 -1702.5
+
+[2 rows x 8 columns]
+2021-02-25 14:52:19,127:__main__:INFO:Global PnL : 304.5
+2021-02-25 14:52:29,195:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:52:29,597:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -300  ...   7.6     -2280.0  2067.0
+1   46377  NIFTY21FEB15150PE    -300  ...  18.8     -5640.0 -1552.5
+
+[2 rows x 8 columns]
+2021-02-25 14:52:30,512:__main__:INFO:Global PnL : 514.5
+2021-02-25 14:52:40,547:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:52:41,990:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -300  ...   9.45     -2835.0  1512.0
+1   46377  NIFTY21FEB15150PE    -300  ...  17.35     -5205.0 -1117.5
+
+[2 rows x 8 columns]
+2021-02-25 14:52:42,151:__main__:INFO:Global PnL : 394.5
+2021-02-25 14:52:51,245:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:52:51,397:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -300  ...  10.35     -3105.0  1242.0
+1   46377  NIFTY21FEB15150PE    -300  ...  16.85     -5055.0  -967.5
+
+[2 rows x 8 columns]
+2021-02-25 14:52:51,443:__main__:INFO:Global PnL : 274.5
+2021-02-25 14:53:03,302:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:53:03,516:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -300  ...  10.65     -3195.0  1152.0
+1   46377  NIFTY21FEB15150PE    -300  ...  16.50     -4950.0  -862.5
+
+[2 rows x 8 columns]
+2021-02-25 14:53:03,577:__main__:INFO:Global PnL : 289.5
+2021-02-25 14:53:12,548:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:53:13,106:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -300  ...  10.45     -3135.0  1212.0
+1   46377  NIFTY21FEB15150PE    -300  ...  17.35     -5205.0 -1117.5
+
+[2 rows x 8 columns]
+2021-02-25 14:53:13,515:__main__:INFO:Global PnL : 94.5
+2021-02-25 14:53:24,447:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:53:24,717:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -300  ...   9.80     -2940.0  1407.0
+1   46377  NIFTY21FEB15150PE    -300  ...  18.05     -5415.0 -1327.5
+
+[2 rows x 8 columns]
+2021-02-25 14:53:25,123:__main__:INFO:Global PnL : 79.5
+2021-02-25 14:53:33,774:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:53:34,455:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -300  ...   9.45     -2835.0  1512.0
+1   46377  NIFTY21FEB15150PE    -300  ...  18.55     -5565.0 -1477.5
+
+[2 rows x 8 columns]
+2021-02-25 14:53:35,245:__main__:INFO:Global PnL : 34.5
+2021-02-25 14:53:43,608:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:53:43,698:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -300  ...  10.50     -3150.0  1197.0
+1   46377  NIFTY21FEB15150PE    -300  ...  16.95     -5085.0  -997.5
+
+[2 rows x 8 columns]
+2021-02-25 14:53:45,339:__main__:INFO:Global PnL : 199.5
+2021-02-25 14:53:55,010:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:53:55,354:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -300  ...  14.00     -4200.0  147.0
+1   46377  NIFTY21FEB15150PE    -300  ...  13.25     -3975.0  112.5
+
+[2 rows x 8 columns]
+2021-02-25 14:53:55,358:__main__:INFO:Global PnL : 259.5
+2021-02-25 14:54:05,014:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:54:05,526:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -300  ...  12.55     -3765.0  582.0
+1   46377  NIFTY21FEB15150PE    -300  ...  13.90     -4170.0  -82.5
+
+[2 rows x 8 columns]
+2021-02-25 14:54:06,050:__main__:INFO:Global PnL : 499.5
+2021-02-25 14:54:17,654:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:54:18,104:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -300  ...  12.15     -3645.0  702.0
+1   46377  NIFTY21FEB15150PE    -300  ...  14.70     -4410.0 -322.5
+
+[2 rows x 8 columns]
+2021-02-25 14:54:18,418:__main__:INFO:Global PnL : 379.5
+2021-02-25 14:54:26,729:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:54:26,996:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -300  ...  12.15     -3645.0  702.0
+1   46377  NIFTY21FEB15150PE    -300  ...  14.70     -4410.0 -322.5
+
+[2 rows x 8 columns]
+2021-02-25 14:54:27,121:__main__:INFO:Global PnL : 379.5
+2021-02-25 14:54:39,272:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:54:40,743:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -300  ...  13.00     -3900.0  447.0
+1   46377  NIFTY21FEB15150PE    -300  ...  14.25     -4275.0 -187.5
+
+[2 rows x 8 columns]
+2021-02-25 14:54:41,258:__main__:INFO:Global PnL : 259.5
+2021-02-25 14:54:47,495:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:54:48,340:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -300  ...  14.0     -4200.0  147.0
+1   46377  NIFTY21FEB15150PE    -300  ...  12.9     -3870.0  217.5
+
+[2 rows x 8 columns]
+2021-02-25 14:54:49,221:__main__:INFO:Global PnL : 364.5
+2021-02-25 14:54:58,469:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:54:58,923:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -300  ...  12.80     -3840.0  507.0
+1   46377  NIFTY21FEB15150PE    -300  ...  13.95     -4185.0  -97.5
+
+[2 rows x 8 columns]
+2021-02-25 14:54:59,343:__main__:INFO:Global PnL : 409.5
+2021-02-25 14:55:00,036:__main__:INFO:Placing orders as status is idle and timing 14:55:00 cond met ..
+2021-02-25 14:55:00,195:__main__:INFO:Placing orders as status is idle and timing 14:55:00 cond met ..
+2021-02-25 14:55:02,329:__main__:INFO:StrikePrice computed as : 15150
+2021-02-25 14:55:02,500:__main__:INFO:StrikePrice computed as : 15150
+2021-02-25 14:55:02,814:__main__:INFO:orders before placing orders : {'refId': 10006, 'setno': 6, 'ent_txn_type': 'sell', 'rpr_txn_type': 'buy', 'idx': 'NIFTY', 'otype': 'pe', 'status': 'Idle', 'expiry': 'week', 'lot': 2, 'startTime': '14:55:00'}
+2021-02-25 14:55:03,037:__main__:INFO:orders before placing orders : {'refId': 10005, 'setno': 5, 'ent_txn_type': 'sell', 'rpr_txn_type': 'buy', 'idx': 'NIFTY', 'otype': 'ce', 'status': 'Idle', 'expiry': 'week', 'lot': 2, 'startTime': '14:55:00'}
+2021-02-25 14:55:03,665:__main__:INFO:Placing Orders..
+2021-02-25 14:55:03,901:__main__:INFO:Placing Orders..
+2021-02-25 14:55:06,314:__main__:INFO:Order ID for SELL 46359 is: 10025955
+2021-02-25 14:55:06,315:__main__:INFO:Order ID for SELL 46377 is: 10025954
+2021-02-25 14:55:07,886:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+
+[4 rows x 14 columns]
+2021-02-25 14:55:08,314:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -300  ...  12.80     -3840.0  507.0
+1   46377  NIFTY21FEB15150PE    -300  ...  13.95     -4185.0  -97.5
+
+[2 rows x 8 columns]
+2021-02-25 14:55:08,502:__main__:INFO:Global PnL : 409.5
+2021-02-25 14:55:08,834:__main__:INFO:Checking OrderBook for order status..
+2021-02-25 14:55:08,961:__main__:INFO:Checking OrderBook for order status..
+2021-02-25 14:55:10,534:__main__:INFO:traded price is: 14.53 and ordered  time is: 2021-02-25 14:55:09
+2021-02-25 14:55:10,691:__main__:INFO:traded price is: 11.63 and ordered  time is: 2021-02-25 14:55:09
+2021-02-25 14:55:11,003:__main__:INFO:Entry order dtls: {'set': 6, 'txn_type': 'sell', 'strike': 15150, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'optionType': 'pe', 'name': 'NIFTY21FEB15150PE', 'symbol': 46377, 'orderID': 10025954, 'tradedPrice': 14.53, 'dateTime': '2021-02-25 14:55:09', 'set_type': 'Entry'}
+2021-02-25 14:55:11,680:__main__:INFO:Entry order dtls: {'set': 5, 'txn_type': 'sell', 'strike': 15150, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB15150CE', 'symbol': 46359, 'orderID': 10025955, 'tradedPrice': 11.63, 'dateTime': '2021-02-25 14:55:09', 'set_type': 'Entry'}
+2021-02-25 14:55:17,692:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+4    6     sell   15150  ...  2021-02-25 14:55:09     Entry   -2179.5
+5    5     sell   15150  ...  2021-02-25 14:55:09     Entry   -1744.5
+
+[6 rows x 14 columns]
+2021-02-25 14:55:19,144:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount    pnl
+0   46359  NIFTY21FEB15150CE    -450  ...  12.90     -5805.0  286.5
+1   46377  NIFTY21FEB15150PE    -450  ...  13.75     -6187.5   79.5
+
+[2 rows x 8 columns]
+2021-02-25 14:55:20,566:__main__:INFO:Global PnL : 366.0
+2021-02-25 14:55:30,254:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+4    6     sell   15150  ...  2021-02-25 14:55:09     Entry   -2179.5
+5    5     sell   15150  ...  2021-02-25 14:55:09     Entry   -1744.5
+
+[6 rows x 14 columns]
+2021-02-25 14:55:30,489:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -450  ...   9.8     -4410.0  1681.5
+1   46377  NIFTY21FEB15150PE    -450  ...  16.8     -7560.0 -1293.0
+
+[2 rows x 8 columns]
+2021-02-25 14:55:30,629:__main__:INFO:Global PnL : 388.5
+2021-02-25 14:55:38,638:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+4    6     sell   15150  ...  2021-02-25 14:55:09     Entry   -2179.5
+5    5     sell   15150  ...  2021-02-25 14:55:09     Entry   -1744.5
+
+[6 rows x 14 columns]
+2021-02-25 14:55:39,298:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -450  ...   9.65     -4342.5  1749.0
+1   46377  NIFTY21FEB15150PE    -450  ...  17.60     -7920.0 -1653.0
+
+[2 rows x 8 columns]
+2021-02-25 14:55:39,767:__main__:INFO:Global PnL : 96.0
+2021-02-25 14:55:49,754:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+4    6     sell   15150  ...  2021-02-25 14:55:09     Entry   -2179.5
+5    5     sell   15150  ...  2021-02-25 14:55:09     Entry   -1744.5
+
+[6 rows x 14 columns]
+2021-02-25 14:55:50,472:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -450  ...   9.85     -4432.5  1659.0
+1   46377  NIFTY21FEB15150PE    -450  ...  18.75     -8437.5 -2170.5
+
+[2 rows x 8 columns]
+2021-02-25 14:55:50,738:__main__:INFO:Global PnL : -511.5
+2021-02-25 14:56:00,760:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+4    6     sell   15150  ...  2021-02-25 14:55:09     Entry   -2179.5
+5    5     sell   15150  ...  2021-02-25 14:55:09     Entry   -1744.5
+
+[6 rows x 14 columns]
+2021-02-25 14:56:01,336:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -450  ...   9.25     -4162.5  1929.0
+1   46377  NIFTY21FEB15150PE    -450  ...  21.05     -9472.5 -3205.5
+
+[2 rows x 8 columns]
+2021-02-25 14:56:01,540:__main__:INFO:Global PnL : -1276.5
+2021-02-25 14:56:11,322:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+4    6     sell   15150  ...  2021-02-25 14:55:09     Entry   -2179.5
+5    5     sell   15150  ...  2021-02-25 14:55:09     Entry   -1744.5
+
+[6 rows x 14 columns]
+2021-02-25 14:56:11,430:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -450  ...   9.15     -4117.5  1974.0
+1   46377  NIFTY21FEB15150PE    -450  ...  22.10     -9945.0 -3678.0
+
+[2 rows x 8 columns]
+2021-02-25 14:56:11,463:__main__:INFO:Global PnL : -1704.0
+2021-02-25 14:56:19,951:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+4    6     sell   15150  ...  2021-02-25 14:55:09     Entry   -2179.5
+5    5     sell   15150  ...  2021-02-25 14:55:09     Entry   -1744.5
+
+[6 rows x 14 columns]
+2021-02-25 14:56:20,197:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -450  ...  10.55     -4747.5  1344.0
+1   46377  NIFTY21FEB15150PE    -450  ...  19.10     -8595.0 -2328.0
+
+[2 rows x 8 columns]
+2021-02-25 14:56:20,328:__main__:INFO:Global PnL : -984.0
+2021-02-25 14:56:32,030:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+4    6     sell   15150  ...  2021-02-25 14:55:09     Entry   -2179.5
+5    5     sell   15150  ...  2021-02-25 14:55:09     Entry   -1744.5
+
+[6 rows x 14 columns]
+2021-02-25 14:56:32,590:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -450  ...   9.10     -4095.0  1996.5
+1   46377  NIFTY21FEB15150PE    -450  ...  21.85     -9832.5 -3565.5
+
+[2 rows x 8 columns]
+2021-02-25 14:56:32,699:__main__:INFO:Global PnL : -1569.0
+2021-02-25 14:56:41,557:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+4    6     sell   15150  ...  2021-02-25 14:55:09     Entry   -2179.5
+5    5     sell   15150  ...  2021-02-25 14:55:09     Entry   -1744.5
+
+[6 rows x 14 columns]
+2021-02-25 14:56:41,794:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -450  ...   9.15     -4117.5  1974.0
+1   46377  NIFTY21FEB15150PE    -450  ...  21.95     -9877.5 -3610.5
+
+[2 rows x 8 columns]
+2021-02-25 14:56:41,901:__main__:INFO:Global PnL : -1636.5
+2021-02-25 14:56:51,549:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+4    6     sell   15150  ...  2021-02-25 14:55:09     Entry   -2179.5
+5    5     sell   15150  ...  2021-02-25 14:55:09     Entry   -1744.5
+
+[6 rows x 14 columns]
+2021-02-25 14:56:52,639:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -450  ...   7.75     -3487.5  2604.0
+1   46377  NIFTY21FEB15150PE    -450  ...  26.50    -11925.0 -5658.0
+
+[2 rows x 8 columns]
+2021-02-25 14:56:53,011:__main__:INFO:Global PnL : -3054.0
+2021-02-25 14:57:02,553:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+4    6     sell   15150  ...  2021-02-25 14:55:09     Entry   -2179.5
+5    5     sell   15150  ...  2021-02-25 14:55:09     Entry   -1744.5
+
+[6 rows x 14 columns]
+2021-02-25 14:57:03,198:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -450  ...   8.15     -3667.5  2424.0
+1   46377  NIFTY21FEB15150PE    -450  ...  24.40    -10980.0 -4713.0
+
+[2 rows x 8 columns]
+2021-02-25 14:57:03,577:__main__:INFO:Global PnL : -2289.0
+2021-02-25 14:57:12,158:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+4    6     sell   15150  ...  2021-02-25 14:55:09     Entry   -2179.5
+5    5     sell   15150  ...  2021-02-25 14:55:09     Entry   -1744.5
+
+[6 rows x 14 columns]
+2021-02-25 14:57:12,636:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -450  ...   8.6     -3870.0  2221.5
+1   46377  NIFTY21FEB15150PE    -450  ...  23.1    -10395.0 -4128.0
+
+[2 rows x 8 columns]
+2021-02-25 14:57:13,049:__main__:INFO:Global PnL : -1906.5
+2021-02-25 14:57:25,317:__main__:INFO:Reparing order as status is active and +15/-45 cond met..
+2021-02-25 14:57:25,398:__main__:INFO:Placing Orders..
+2021-02-25 14:57:25,518:__main__:INFO:Reparing order as status is active and +15/-45 cond met..
+2021-02-25 14:57:26,003:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+4    6     sell   15150  ...  2021-02-25 14:55:09     Entry   -2179.5
+5    5     sell   15150  ...  2021-02-25 14:55:09     Entry   -1744.5
+
+[6 rows x 14 columns]
+2021-02-25 14:57:26,059:__main__:INFO:Placing Orders..
+2021-02-25 14:57:26,412:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -450  ...   6.80     -3060.0  3031.5
+1   46377  NIFTY21FEB15150PE    -450  ...  28.85    -12982.5 -6715.5
+
+[2 rows x 8 columns]
+2021-02-25 14:57:26,776:__main__:INFO:Global PnL : -3684.0
+2021-02-25 14:57:26,872:__main__:INFO:Order ID for BUY 46377 is: 10025956
+2021-02-25 14:57:27,948:__main__:INFO:Order ID for BUY 46377 is: 10025957
+2021-02-25 14:57:29,249:__main__:INFO:Checking OrderBook for order status..
+2021-02-25 14:57:30,005:__main__:INFO:Checking OrderBook for order status..
+2021-02-25 14:57:31,550:__main__:INFO:traded price is: 28.9 and ordered  time is: 2021-02-25 14:57:29
+2021-02-25 14:57:31,717:__main__:INFO:traded price is: 30.0 and ordered  time is: 2021-02-25 14:57:28
+2021-02-25 14:57:31,743:__main__:INFO:Repair order dtls: {'set': 2, 'txn_type': 'buy', 'strike': 15150, 'qty': 75, 'tr_qty': 75, 'expiry': '25Feb2021', 'optionType': 'pe', 'name': 'NIFTY21FEB15150PE', 'symbol': 46377, 'orderID': 10025957, 'tradedPrice': 28.9, 'dateTime': '2021-02-25 14:57:29', 'set_type': 'Repair'}
+2021-02-25 14:57:31,880:__main__:INFO:Repair order dtls: {'set': 4, 'txn_type': 'buy', 'strike': 15150, 'qty': 75, 'tr_qty': 75, 'expiry': '25Feb2021', 'optionType': 'pe', 'name': 'NIFTY21FEB15150PE', 'symbol': 46377, 'orderID': 10025956, 'tradedPrice': 30.0, 'dateTime': '2021-02-25 14:57:28', 'set_type': 'Repair'}
+2021-02-25 14:57:32,040:__main__:INFO:Repaired the Entry Order. Exit will taken care by universally.
+2021-02-25 14:57:32,388:__main__:INFO:Repaired the Entry Order. Exit will taken care by universally.
+2021-02-25 14:57:33,529:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+4    6     sell   15150  ...  2021-02-25 14:55:09     Entry   -2179.5
+5    5     sell   15150  ...  2021-02-25 14:55:09     Entry   -1744.5
+6    4      buy   15150  ...  2021-02-25 14:57:28    Repair    2250.0
+
+[7 rows x 14 columns]
+2021-02-25 14:57:33,731:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount      pnl
+0   46359  NIFTY21FEB15150CE    -450  ...   6.80    -3060.00  3031.50
+1   46377  NIFTY21FEB15150PE    -375  ...  28.85   -10818.75 -6801.75
+
+[2 rows x 8 columns]
+2021-02-25 14:57:33,839:__main__:INFO:Global PnL : -3770.25
+2021-02-25 14:57:43,085:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+4    6     sell   15150  ...  2021-02-25 14:55:09     Entry   -2179.5
+5    5     sell   15150  ...  2021-02-25 14:55:09     Entry   -1744.5
+6    4      buy   15150  ...  2021-02-25 14:57:28    Repair    2250.0
+7    2      buy   15150  ...  2021-02-25 14:57:29    Repair    2167.5
+
+[8 rows x 14 columns]
+2021-02-25 14:57:43,456:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -450  ...   7.0     -3150.0  2941.5
+1   46377  NIFTY21FEB15150PE    -300  ...  26.7     -8010.0 -6160.5
+
+[2 rows x 8 columns]
+2021-02-25 14:57:43,680:__main__:INFO:Global PnL : -3219.0
+2021-02-25 14:57:53,839:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+4    6     sell   15150  ...  2021-02-25 14:55:09     Entry   -2179.5
+5    5     sell   15150  ...  2021-02-25 14:55:09     Entry   -1744.5
+6    4      buy   15150  ...  2021-02-25 14:57:28    Repair    2250.0
+7    2      buy   15150  ...  2021-02-25 14:57:29    Repair    2167.5
+
+[8 rows x 14 columns]
+2021-02-25 14:57:54,873:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -450  ...   7.5     -3375.0  2716.5
+1   46377  NIFTY21FEB15150PE    -300  ...  24.2     -7260.0 -5410.5
+
+[2 rows x 8 columns]
+2021-02-25 14:57:55,339:__main__:INFO:Global PnL : -2694.0
+2021-02-25 14:58:04,339:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+4    6     sell   15150  ...  2021-02-25 14:55:09     Entry   -2179.5
+5    5     sell   15150  ...  2021-02-25 14:55:09     Entry   -1744.5
+6    4      buy   15150  ...  2021-02-25 14:57:28    Repair    2250.0
+7    2      buy   15150  ...  2021-02-25 14:57:29    Repair    2167.5
+
+[8 rows x 14 columns]
+2021-02-25 14:58:04,716:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -450  ...   7.35     -3307.5  2784.0
+1   46377  NIFTY21FEB15150PE    -300  ...  25.35     -7605.0 -5755.5
+
+[2 rows x 8 columns]
+2021-02-25 14:58:04,938:__main__:INFO:Global PnL : -2971.5
+2021-02-25 14:58:14,040:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+4    6     sell   15150  ...  2021-02-25 14:55:09     Entry   -2179.5
+5    5     sell   15150  ...  2021-02-25 14:55:09     Entry   -1744.5
+6    4      buy   15150  ...  2021-02-25 14:57:28    Repair    2250.0
+7    2      buy   15150  ...  2021-02-25 14:57:29    Repair    2167.5
+
+[8 rows x 14 columns]
+2021-02-25 14:58:14,305:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -450  ...   7.30     -3285.0  2806.5
+1   46377  NIFTY21FEB15150PE    -300  ...  25.75     -7725.0 -5875.5
+
+[2 rows x 8 columns]
+2021-02-25 14:58:14,696:__main__:INFO:Global PnL : -3069.0
+2021-02-25 14:58:24,605:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+4    6     sell   15150  ...  2021-02-25 14:55:09     Entry   -2179.5
+5    5     sell   15150  ...  2021-02-25 14:55:09     Entry   -1744.5
+6    4      buy   15150  ...  2021-02-25 14:57:28    Repair    2250.0
+7    2      buy   15150  ...  2021-02-25 14:57:29    Repair    2167.5
+
+[8 rows x 14 columns]
+2021-02-25 14:58:24,731:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -450  ...   8.5     -3825.0  2266.5
+1   46377  NIFTY21FEB15150PE    -300  ...  22.0     -6600.0 -4750.5
+
+[2 rows x 8 columns]
+2021-02-25 14:58:24,942:__main__:INFO:Global PnL : -2484.0
+2021-02-25 14:58:35,567:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+4    6     sell   15150  ...  2021-02-25 14:55:09     Entry   -2179.5
+5    5     sell   15150  ...  2021-02-25 14:55:09     Entry   -1744.5
+6    4      buy   15150  ...  2021-02-25 14:57:28    Repair    2250.0
+7    2      buy   15150  ...  2021-02-25 14:57:29    Repair    2167.5
+
+[8 rows x 14 columns]
+2021-02-25 14:58:36,080:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -450  ...   8.0     -3600.0  2491.5
+1   46377  NIFTY21FEB15150PE    -300  ...  24.6     -7380.0 -5530.5
+
+[2 rows x 8 columns]
+2021-02-25 14:58:36,707:__main__:INFO:Global PnL : -3039.0
+2021-02-25 14:58:45,111:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+4    6     sell   15150  ...  2021-02-25 14:55:09     Entry   -2179.5
+5    5     sell   15150  ...  2021-02-25 14:55:09     Entry   -1744.5
+6    4      buy   15150  ...  2021-02-25 14:57:28    Repair    2250.0
+7    2      buy   15150  ...  2021-02-25 14:57:29    Repair    2167.5
+
+[8 rows x 14 columns]
+2021-02-25 14:58:45,489:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -450  ...   7.65     -3442.5  2649.0
+1   46377  NIFTY21FEB15150PE    -300  ...  26.55     -7965.0 -6115.5
+
+[2 rows x 8 columns]
+2021-02-25 14:58:45,605:__main__:INFO:Global PnL : -3466.5
+2021-02-25 14:58:57,576:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+4    6     sell   15150  ...  2021-02-25 14:55:09     Entry   -2179.5
+5    5     sell   15150  ...  2021-02-25 14:55:09     Entry   -1744.5
+6    4      buy   15150  ...  2021-02-25 14:57:28    Repair    2250.0
+7    2      buy   15150  ...  2021-02-25 14:57:29    Repair    2167.5
+
+[8 rows x 14 columns]
+2021-02-25 14:58:58,070:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -450  ...   7.25     -3262.5  2829.0
+1   46377  NIFTY21FEB15150PE    -300  ...  26.55     -7965.0 -6115.5
+
+[2 rows x 8 columns]
+2021-02-25 14:58:58,386:__main__:INFO:Global PnL : -3286.5
+2021-02-25 14:59:06,056:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+4    6     sell   15150  ...  2021-02-25 14:55:09     Entry   -2179.5
+5    5     sell   15150  ...  2021-02-25 14:55:09     Entry   -1744.5
+6    4      buy   15150  ...  2021-02-25 14:57:28    Repair    2250.0
+7    2      buy   15150  ...  2021-02-25 14:57:29    Repair    2167.5
+
+[8 rows x 14 columns]
+2021-02-25 14:59:07,037:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...    ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -450  ...   7.25     -3262.5  2829.0
+1   46377  NIFTY21FEB15150PE    -300  ...  26.55     -7965.0 -6115.5
+
+[2 rows x 8 columns]
+2021-02-25 14:59:07,209:__main__:INFO:Global PnL : -3286.5
+2021-02-25 14:59:17,745:__main__:INFO:PositionList: 
+    set txn_type  strike  ...             dateTime  set_type tr_amount
+0    1     sell   15150  ...  2021-02-25 14:45:07     Entry   -2532.0
+1    2     sell   15150  ...  2021-02-25 14:45:07     Entry   -2062.5
+2    4     sell   15150  ...  2021-02-25 14:50:08     Entry   -2025.0
+3    3     sell   15150  ...  2021-02-25 14:50:08     Entry   -1815.0
+4    6     sell   15150  ...  2021-02-25 14:55:09     Entry   -2179.5
+5    5     sell   15150  ...  2021-02-25 14:55:09     Entry   -1744.5
+6    4      buy   15150  ...  2021-02-25 14:57:28    Repair    2250.0
+7    2      buy   15150  ...  2021-02-25 14:57:29    Repair    2167.5
+
+[8 rows x 14 columns]
+2021-02-25 14:59:18,171:__main__:INFO:Reparing order as status is active and +15/-45 cond met..
+2021-02-25 14:59:18,186:__main__:INFO:CombinedPositionsLists: 
+    symbol               name  tr_qty  ...   ltp  cur_amount     pnl
+0   46359  NIFTY21FEB15150CE    -450  ...   6.5     -2925.0  3166.5
+1   46377  NIFTY21FEB15150PE    -300  ...  28.4     -8520.0 -6670.5
+
+[2 rows x 8 columns]
+2021-02-25 14:59:18,387:__main__:INFO:Placing Orders..
+2021-02-25 14:59:18,728:__main__:INFO:Global PnL : -3504.0
+2021-02-25 14:59:20,711:__main__:INFO:Order ID for BUY 46377 is: 10025958
+2021-02-25 14:59:22,760:__main__:INFO:Checking OrderBook for order status..
+2021-02-25 14:59:24,399:__main__:INFO:traded price is: 30.45 and ordered  time is: 2021-02-25 14:59:22
+2021-02-25 14:59:24,536:__main__:INFO:Repair order dtls: {'set': 6, 'txn_type': 'buy', 'strike': 15150, 'qty': 75, 'tr_qty': 75, 'expiry': '25Feb2021', 'optionType': 'pe', 'name': 'NIFTY21FEB15150PE', 'symbol': 46377, 'orderID': 10025958, 'tradedPrice': 30.45, 'dateTime': '2021-02-25 14:59:22', 'set_type': 'Repair'}
+2021-02-25 14:59:24,715:__main__:INFO:Repaired the Entry Order. Exit will taken care by universally.
+2021-02-25 14:59:24,780:__main__:INFO:thread.join ends here
+2021-02-25 14:59:25,121:__main__:INFO:--------------------------------------------

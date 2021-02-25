@@ -17,17 +17,26 @@ import pandas as pd
 import concurrent.futures
 import configparser
 import timer
+import argparse
 # from itertools import repeat
 # import multiprocessing
 # import schedule
 from sys import exit
 # import traceback
 
+parser = argparse.ArgumentParser(description='Strategy 2')
+parser.add_argument('-t', '--ticker',type=str, required=True, help='NIFTY or BANKNIFTY')
+parser.add_argument('-k', '--kickTime',type=str, required=True, help='start time of the script')
+parser.add_argument('-e', '--endTime',type=str, default="15:05:00", help='end time')
+parser.add_argument('-sl', '--stopLoss',type=int, default=-1500, help='stopLoss amount')
+parser.add_argument('-tgt', '--target',type=int, default=3000, help='Target amount')
+args = parser.parse_args()
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 
-filename='../logs/Strategy2_log_'+datetime.strftime(datetime.now(), "%d%m%Y_%H")+'.txt'
+filename='../logs/Strategy2_log_'+datetime.strftime(datetime.now(), "%d%m%Y_%H%M")+'.txt'
 
 file_handler = logging.FileHandler(filename)
 # file_handler=logging.handlers.TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=5)
@@ -53,11 +62,17 @@ mdf=pd.DataFrame(columns=['ordrtyp','ss','nn','qq','oo','tt','ltp','pnl'])
 # new_dict = {k:[] for k in ['oo','tt','qq','ss','sl']}
 
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-kickTime = "10:30:00"
-wrapTime = "15:05:00"
+# kickTime = "10:30:00"
+# wrapTime = "15:05:00"
+# repairTime = "14:40:00"
+# globalSL = -1500
+# globalTarget = 3000
+
+kickTime = args.kickTime
+wrapTime = args.endTime
 repairTime = "14:40:00"
-globalSL = -1500
-globalTarget = 3000
+globalSL = args.stopLoss
+globalTarget = args.target
 
 cfg = configparser.ConfigParser()
 cfg.read('../../XTConnect/config.ini')
@@ -622,7 +637,8 @@ def runSqOffLogics():
 #maybe main()
 if __name__ == '__main__':
     # login()
-    ticker='NIFTY'
+    # ticker='NIFTY'
+    ticker = args.ticker
     logger.info(f'Waiting to check required variables at \
                 {datetime.strptime(cdate + " " + kickTime, "%d-%m-%Y %H:%M:%S") - timedelta(minutes=5)}')
     while True:

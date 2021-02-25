@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Feb 01 2021 21:44:33 2021
-NFO Panther Strategy  - With Universal Exit
+NFO Panther Strategy  - With Universal Exit - Array of Orders
 @author: mling
 """
 
@@ -13,9 +13,10 @@ import time
 import json
 import logging
 import pandas as pd
+pd.set_option('display.max_colwidth', None)
 import configparser
 import timer
-# from threading import Thread
+from threading import Thread
 from sys import exit
 
 ############## logging configs ##############
@@ -23,7 +24,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 
-filename='../logs/NFOPanther_UnivExit_log.txt'
+filename='../logs/NFOPanther_UnivExit_ArrayOrders_log.txt'
 
 file_handler = logging.FileHandler(filename)
 # file_handler=logging.handlers.TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=5)
@@ -69,16 +70,12 @@ tr_insts = None
 ltp = {}
 gl_pnl = None
 idxs = ['NIFTY','BANKNIFTY']
-orders={'refId':10001,          \
-        'setno':1,              \
-        'ent_txn_type': "sell", \
-        'rpr_txn_type': "buy",  \
-        'idx':"NIFTY",          \
-        'otype': "ce",          \
-        'status': "Idle",       \
-        'expiry': 'week',       \
-        'lot': 2,               \
-        'startTime':"11:00:00"}
+orders=[{'refId':10001, 'setno':1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"14:45:00"},
+		{'refId':10002, 'setno':2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"14:45:00"},
+		{'refId':10003, 'setno':3, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"14:50:00"},
+		{'refId':10004, 'setno':4, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"14:50:00"},
+		{'refId':10005, 'setno':5, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"14:55:00"},
+		{'refId':10006, 'setno':6, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"14:55:00"}]
 universal = {'exit_status': 'Idle', 'minPrice': -12000, 'maxPrice': 24000, 'exitTime':'15:00:00', 'ext_txn_type':'buy'}
 exitTime = datetime.strptime((cdate+" "+universal['exitTime']),"%d-%m-%Y %H:%M:%S")
 
@@ -330,12 +327,12 @@ def execute(orders):
                 etp = next(i['tradedPrice'] for i in tr_insts if i['set_type']=='Entry' and i['set']==orders['setno'])
                 eqty = next(i['qty'] for i in tr_insts if i['set_type']=='Entry' and i['set']==orders['setno'])
                 # logger.info(f'Extracted from Entry Order:{ename}, {esymbol}, {etp}, {eqty}')
-                if ltp:
+                if esymbol in ltp.keys():
                     ltpsymbol = ltp[esymbol]
                     # logger.info(f'LTP of Entry instrument : {ltpsymbol}')
                     # Repair condition check
                     if ((ltpsymbol > etp + 15) or (ltpsymbol < etp - 45)):
-                        logger.info('Reparing order as status is active and +15/-45 cond met..')
+                        logger.info(f"Reparing order as status is active and +15/-45 cond met in {orders['setno']}..")
                         rpr_inst['set']=orders['setno']
                         rpr_inst['txn_type'] = orders['rpr_txn_type']
                         # rpr_inst['strike'] = strikePrice(orders['idx'])
@@ -370,7 +367,7 @@ def execute(orders):
             logger.info('Repaired the Entry Order. Exit will taken care by universally.')
             break
         elif orders['status'] == 'Universal_Exit':
-            logger.info('Orders must be square-off by Universal Exit Func')
+            logger.info('Orders already square-off by Universal Exit Func')
             break
             
 def exitCheck():
@@ -396,7 +393,7 @@ def exitCheck():
             chkExit.stop()
 
 ############## main ##############             
-if __name__ == '__main__':
+def main():
     nextThu_and_lastThu_expiry_date()
     masterDump()
     logger.info('Starting a separate thread to fetch LTP of traded instruments..')
@@ -404,7 +401,14 @@ if __name__ == '__main__':
     fetchPnL = timer.RepeatedTimer(10,getGlobalPnL)
     chkExit = timer.RepeatedTimer(15,exitCheck)
     try:
-        execute(orders)
+        for i in range(len(orders)):
+            threads=[]
+            t = Thread(target=execute,args=(orders[i],))
+            t.start()
+            threads.append(t)
+        for thread in threads:
+            thread.join()
+        logger.info('thread.join ends here')
     except Exception:
         logger.exception('Error Occured..')
     finally:
@@ -413,14 +417,21 @@ if __name__ == '__main__':
         chkExit.stop()
         logger.info('--------------------------------------------')
         
-
+if __name__ == '__main__':
+    main()
+    # starttime=time.time()
+    # timeout = time.time() + 60*60*1 #runs for 1 hour
+    # while time.time() <= timeout:
+    #     try:
+    #         time.sleep(5)
+    #     except KeyboardInterrupt:
+    #         print('\n\nKeyboard exception received. Exiting.')
+    #         exit() 
 ############## END ##############
-       
+
 # tr_insts = [{'set': 1, 'txn_type': 'sell', 'strike': 14700, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10036280, 'tradedPrice': 111.9, 'dateTime': '2021-02-23 14:06:55', 'set_type': 'Entry'},
 #             {'set': 1, 'txn_type': 'buy', 'strike': 14700, 'qty': 75, 'tr_qty': 75, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10036285, 'tradedPrice': 117.8, 'dateTime': '2021-02-23 14:12:21', 'set_type': 'Repair'},
 #             {'set': 1, 'txn_type': 'buy', 'strike': 14700, 'qty': 0, 'tr_qty': 75, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10036301, 'tradedPrice': 122.4, 'dateTime': '2021-02-23 14:14:28', 'set_type': 'Exit'},
 #             {'set': 2, 'txn_type': 'sell', 'strike': 14700, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB14800CE', 'symbol': 39608, 'orderID': 10036280, 'tradedPrice': 7111.9, 'dateTime': '2021-02-23 14:06:55', 'set_type': 'Entry'},
 #             {'set': 2, 'txn_type': 'buy', 'strike': 14700, 'qty': 75, 'tr_qty': 75, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB14800CE', 'symbol': 39608, 'orderID': 10036285, 'tradedPrice': 6117.8, 'dateTime': '2021-02-23 14:12:21', 'set_type': 'Repair'},
 #             {'set': 3, 'txn_type': 'buy', 'strike': 14700, 'qty': 0, 'tr_qty': 75, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB14880CE', 'symbol': 39608, 'orderID': 10036301, 'tradedPrice': 5122.4, 'dateTime': '2021-02-23 14:14:28', 'set_type': 'Exit'}]
-
-

@@ -49,7 +49,7 @@ def strkPrcCalc(spot,base):
     print(f'StrikePrice computed as : {strikePrice}')
     return strikePrice
 
-cdate = datetime.strftime(datetime.now(), "%b %d %Y")
+cdate1 = datetime.strftime(datetime.now(), "%b %d %Y")
 niftyAt920 = 14752
 strikePrice = strkPrcCalc(niftyAt920, 50)
 
@@ -75,8 +75,8 @@ if __name__ == '__main__':
             ohlc = xt.get_ohlc(
             exchangeSegment=xt.EXCHANGE_NSEFO,
             exchangeInstrumentID=eid,
-            startTime=cdate+' 091500',
-            endTime=cdate+' 153000',
+            startTime=cdate1+' 091500',
+            endTime=cdate1+' 153000',
             compressionValue=60)
             # print("OHLC: " + str(ohlc))
             dataresp= ohlc['result']['dataReponse']

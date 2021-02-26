@@ -2141,3 +2141,39 @@
 2021-02-25 14:59:24,715:__main__:INFO:Repaired the Entry Order. Exit will taken care by universally.
 2021-02-25 14:59:24,780:__main__:INFO:thread.join ends here
 2021-02-25 14:59:25,121:__main__:INFO:--------------------------------------------
+2021-02-26 13:13:18,350:__main__:INFO:Token file exists and created today
+2021-02-26 13:13:18,381:__main__:INFO:Initializing session with token..
+2021-02-26 13:13:18,381:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-26 13:13:18,381:__main__:INFO:weekly expiry is : 04Mar2021, monthly expiry is: 25Mar2021
+2021-02-26 13:13:18,381:__main__:INFO:Creating MasterDump..
+2021-02-26 13:13:23,045:__main__:INFO:Starting a separate thread to fetch LTP of traded instruments..
+2021-02-26 13:13:23,045:__main__:INFO:starting execution of orders parallely..
+2021-02-26 13:13:23,767:__main__:INFO:ExitCondition check is in process till the end
+2021-02-26 13:13:24,441:__main__:INFO:Exit function ends
+2021-02-26 13:13:25,095:__main__:INFO:True
+2021-02-26 13:13:25,330:__main__:INFO:True
+2021-02-26 13:13:25,533:__main__:INFO:True
+2021-02-26 13:13:26,146:__main__:INFO:True
+2021-02-26 13:13:26,475:__main__:INFO:True
+2021-02-26 13:13:26,651:__main__:INFO:True
+2021-02-26 13:13:26,967:__main__:INFO:--------------------------------------------
+2021-02-26 13:15:00,016:__main__:INFO:Placing orders as status is idle and timing 13:15:00 cond met ..
+2021-02-26 13:15:00,046:__main__:INFO:Placing orders as status is idle and timing 13:15:00 cond met ..
+2021-02-26 13:15:01,320:__main__:INFO:StrikePrice computed as : 14600
+2021-02-26 13:15:01,505:__main__:INFO:StrikePrice computed as : 14600
+2021-02-26 13:17:27,319:__main__:INFO:Token file exists and created today
+2021-02-26 13:17:27,322:__main__:INFO:Initializing session with token..
+2021-02-26 13:17:27,325:__main__:INFO:Calculating weekly and monthly expiry dates..
+2021-02-26 13:17:27,327:__main__:INFO:weekly expiry is : 04Mar2021, monthly expiry is: 25Mar2021
+2021-02-26 13:17:27,328:__main__:INFO:MasterDump already exists.. reading directly
+2021-02-26 13:17:27,369:__main__:INFO:Starting a separate thread to fetch LTP of traded instruments..
+2021-02-26 13:17:27,374:__main__:INFO:starting execution of orders parallely..
+2021-02-26 13:17:27,375:__main__:INFO:Placing orders as status is idle and timing 13:15:00 cond met ..
+2021-02-26 13:17:27,378:__main__:INFO:Placing orders as status is idle and timing 13:15:00 cond met ..
+2021-02-26 13:17:27,674:__main__:INFO:ExitCondition check is in process till the end
+2021-02-26 13:17:28,794:__main__:INFO:StrikePrice computed as : 14600
+2021-02-26 13:17:28,856:__main__:INFO:StrikePrice computed as : 14600
+2021-02-26 13:20:00,011:__main__:INFO:Placing orders as status is idle and timing 13:20:00 cond met ..
+2021-02-26 13:20:00,026:__main__:INFO:Placing orders as status is idle and timing 13:20:00 cond met ..
+2021-02-26 13:20:01,389:__main__:INFO:StrikePrice computed as : 14600
+2021-02-26 13:20:01,483:__main__:INFO:StrikePrice computed as : 14600

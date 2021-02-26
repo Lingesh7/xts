@@ -13,7 +13,10 @@ import time
 import json
 import logging
 import pandas as pd
-pd.set_option('display.max_colwidth', None)
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
+# pd.set_option('display.width', None)
+# pd.set_option('display.max_colwidth', -1)
 import configparser
 import timer
 from threading import Thread
@@ -24,7 +27,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 
-filename='../logs/NFOPanther_UnivExit_ArrayOrders_log.txt'
+filename='../logs/NFOPanther_UnivExit_ArrayOrders_2_log.txt'
 
 file_handler = logging.FileHandler(filename)
 # file_handler=logging.handlers.TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=5)
@@ -70,14 +73,14 @@ tr_insts = None
 ltp = {}
 gl_pnl = None
 idxs = ['NIFTY','BANKNIFTY']
-orders=[{'refId':10001, 'setno':1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"14:45:00"},
-		{'refId':10002, 'setno':2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"14:45:00"},
-		{'refId':10003, 'setno':3, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"14:50:00"},
-		{'refId':10004, 'setno':4, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"14:50:00"},
-		{'refId':10005, 'setno':5, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"14:55:00"},
-		{'refId':10006, 'setno':6, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"14:55:00"}]
-universal = {'exit_status': 'Idle', 'minPrice': -12000, 'maxPrice': 24000, 'exitTime':'15:00:00', 'ext_txn_type':'buy'}
-exitTime = datetime.strptime((cdate+" "+universal['exitTime']),"%d-%m-%Y %H:%M:%S")
+orders=[{'refId':10001, 'setno':1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"15:15:00"},
+		{'refId':10002, 'setno':2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"15:15:00"},
+		{'refId':10003, 'setno':3, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"13:20:00"},
+		{'refId':10004, 'setno':4, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"13:20:00"},
+		{'refId':10005, 'setno':5, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"13:27:00"},
+		{'refId':10006, 'setno':6, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"13:27:00"}]
+universal = {'exit_status': 'Idle', 'minPrice': -2000, 'maxPrice': 4000, 'exitTime':'13:25:00', 'ext_txn_type':'buy'}
+# exitTime = datetime.strptime((cdate+" "+universal['exitTime']),"%d-%m-%Y %H:%M:%S")
 
 ############## Functions ##############
 def nextThu_and_lastThu_expiry_date():
@@ -300,11 +303,11 @@ def execute(orders):
                 etr_inst['tr_qty'] = -etr_inst['qty'] if orders['ent_txn_type'] == 'sell' else etr_inst['qty']
                 if orders['expiry'] == 'week':
                     etr_inst['expiry'] = weekly_exp
-                etr_inst['optionType'] = orders['otype']
+                etr_inst['optionType'] = orders['otype'].upper()
                 if weekly_exp == monthly_exp:
-                    inst_name = orders['idx']+(datetime.strftime(datetime.strptime(etr_inst['expiry'], '%d%b%Y'),'%y%b')).upper()+str(etr_inst['strike'])+orders['otype'].upper()
+                    inst_name = orders['idx']+(datetime.strftime(datetime.strptime(etr_inst['expiry'], '%d%b%Y'),'%y%b')).upper()+str(etr_inst['strike'])+etr_inst['optionType']
                 else:
-                    inst_name = orders['idx']+(datetime.strftime(datetime.strptime(etr_inst['expiry'], '%d%b%Y'),'%y%#m%d'))+str(orders['strike'])+orders['otype'].upper()
+                    inst_name = orders['idx']+(datetime.strftime(datetime.strptime(etr_inst['expiry'], '%d%b%Y'),'%y%#m%d'))+str(etr_inst['strike'])+etr_inst['optionType']
                 etr_inst['name'] = inst_name
                 etr_inst['symbol'] = int(instrumentLookup(instrument_df,inst_name))
                 etr_inst['orderID'] = None
@@ -331,7 +334,7 @@ def execute(orders):
                     ltpsymbol = ltp[esymbol]
                     # logger.info(f'LTP of Entry instrument : {ltpsymbol}')
                     # Repair condition check
-                    if ((ltpsymbol > etp + 15) or (ltpsymbol < etp - 45)):
+                    if ((ltpsymbol > etp + 5) or (ltpsymbol < etp - 10)):
                         logger.info(f"Reparing order as status is active and +15/-45 cond met in {orders['setno']}..")
                         rpr_inst['set']=orders['setno']
                         rpr_inst['txn_type'] = orders['rpr_txn_type']
@@ -370,27 +373,30 @@ def execute(orders):
             logger.info('Orders already square-off by Universal Exit Func')
             break
             
-def exitCheck():
-    global tr_insts
-    if universal['exit_status'] == 'idle':
-        #Exit condition check
-        if (datetime.now() >= exitTime) or (gl_pnl <= universal['minPrice']) or (gl_pnl <= universal['maxPrice']):
-            logger.info('Exit time condition passed. Squaring off all open positions')
-            for i in range(len(gdf)):
-                ext_inst['symbol'] = gdf['symbol'].values[i]
-                ext_inst['tr_qty'] = gdf['tr_qty'].values[i]
-                ext_inst['qty'] = abs(ext_inst['tr_qty'])
-                ext_inst['txn_type'] = universal['ext_txn_type'] 
-                ext_inst['name'] = gdf['name'].values[i]
-                ext_inst['orderID'] = None
-                ext_inst['tradedPrice'] = None
-                orderID, tradedPrice, dateTime = placeOrder(ext_inst['symbol'], ext_inst['txn_type'], ext_inst['qty'])
-                if orderID and tradedPrice:
-                    ext_inst['set_type']='Universal_Exit'
-                    universal['exit_status'] = 'Exited'
-                logger.info(f'Universal Exit order dtls: {ext_inst}')
-                tr_insts.append(ext_inst)
-            chkExit.stop()
+def exitCheck(universal):
+    global tr_insts,gl_pnl
+    exitTime = datetime.strptime((cdate+" "+universal['exitTime']),"%d-%m-%Y %H:%M:%S")
+    while True:
+        if universal['exit_status'] == 'Idle':
+            #Exit condition check
+            if (datetime.now() >= exitTime) or (gl_pnl <= universal['minPrice']) or (gl_pnl >= universal['maxPrice']):
+                logger.info('Exit time condition passed. Squaring off all open positions')
+                for i in range(len(gdf)):
+                    ext_inst['symbol'] = gdf['symbol'].values[i]
+                    ext_inst['tr_qty'] = gdf['tr_qty'].values[i]
+                    ext_inst['qty'] = abs(ext_inst['tr_qty'])
+                    ext_inst['txn_type'] = universal['ext_txn_type'] 
+                    ext_inst['name'] = gdf['name'].values[i]
+                    ext_inst['orderID'] = None
+                    ext_inst['tradedPrice'] = None
+                    orderID, tradedPrice, dateTime = placeOrder(ext_inst['symbol'], ext_inst['txn_type'], ext_inst['qty'])
+                    if orderID and tradedPrice:
+                        ext_inst['set_type']='Universal_Exit'
+                        universal['exit_status'] = 'Exited'
+                    logger.info(f'Universal Exit order dtls: {ext_inst}')
+                    tr_insts.append(ext_inst)
+                    break
+
 
 ############## main ##############             
 def main():
@@ -399,35 +405,39 @@ def main():
     logger.info('Starting a separate thread to fetch LTP of traded instruments..')
     fetchLtp = timer.RepeatedTimer(10, getLTP)
     fetchPnL = timer.RepeatedTimer(10,getGlobalPnL)
-    chkExit = timer.RepeatedTimer(15,exitCheck)
+    # chkExit = timer.RepeatedTimer(15,exitCheck)
+    threads=[]
+    logger.info('starting execution of orders parallely..')
+    for i in range(len(orders)):
+        t = Thread(target=execute,args=(orders[i],))
+        t.start()
+        threads.append(t)
     try:
-        for i in range(len(orders)):
-            threads=[]
-            t = Thread(target=execute,args=(orders[i],))
-            t.start()
-            threads.append(t)
-        for thread in threads:
-            thread.join()
-        logger.info('thread.join ends here')
+        chkExit = Thread(target=exitCheck,args=(universal,))
+        chkExit.start()
+        logger.info('ExitCondition check is in process till the end')
+        chkExit.join()
+        logger.info('Exit function ends')
     except Exception:
         logger.exception('Error Occured..')
     finally:
         fetchLtp.stop()
         fetchPnL.stop()
-        chkExit.stop()
+        for thread in threads:
+            logger.info(thread.is_alive())
         logger.info('--------------------------------------------')
         
 if __name__ == '__main__':
     main()
-    # starttime=time.time()
-    # timeout = time.time() + 60*60*1 #runs for 1 hour
-    # while time.time() <= timeout:
-    #     try:
-    #         time.sleep(5)
-    #     except KeyboardInterrupt:
-    #         print('\n\nKeyboard exception received. Exiting.')
-    #         exit() 
-############## END ##############
+    starttime=time.time()
+    timeout = time.time() + 60*60*1 #runs for 1 hour
+    while time.time() <= timeout:
+        try:
+            time.sleep(5)
+        except KeyboardInterrupt:
+            print('\n\nKeyboard exception received. Exiting.')
+            exit() 
+############# END ##############
 
 # tr_insts = [{'set': 1, 'txn_type': 'sell', 'strike': 14700, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10036280, 'tradedPrice': 111.9, 'dateTime': '2021-02-23 14:06:55', 'set_type': 'Entry'},
 #             {'set': 1, 'txn_type': 'buy', 'strike': 14700, 'qty': 75, 'tr_qty': 75, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10036285, 'tradedPrice': 117.8, 'dateTime': '2021-02-23 14:12:21', 'set_type': 'Repair'},

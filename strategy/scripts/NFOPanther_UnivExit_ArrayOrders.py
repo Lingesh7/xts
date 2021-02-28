@@ -20,6 +20,7 @@ pd.set_option('display.max_columns', None)
 import configparser
 import timer
 from threading import Thread
+from openpyxl import load_workbook
 from sys import exit
 
 ############## logging configs ##############
@@ -27,7 +28,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 
-filename='../logs/NFOPanther_UnivExit_ArrayOrders_2_log.txt'
+filename='../logs/NFOPanther_log.txt'
 
 file_handler = logging.FileHandler(filename)
 # file_handler=logging.handlers.TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=5)
@@ -295,7 +296,7 @@ def execute(orders):
         if orders['status'] == 'Idle':
             #Entry condition check
             if (datetime.now() >= startTime):
-                logger.info(f'Placing orders as status is idle and timing {orders["startTime"]} cond met ..')
+                logger.info(f'Placing orders for {orders["setno"]} at {orders["startTime"]}..')
                 etr_inst['set']=orders['setno']
                 etr_inst['txn_type'] = orders['ent_txn_type']
                 etr_inst['strike'] = strikePrice(orders['idx'])
@@ -312,7 +313,7 @@ def execute(orders):
                 etr_inst['symbol'] = int(instrumentLookup(instrument_df,inst_name))
                 etr_inst['orderID'] = None
                 etr_inst['tradedPrice'] = None
-                logger.info(f"orders before placing orders : {orders}")
+                # logger.info(f"orders before placing orders : {orders}")
                 orderID, tradedPrice, dateTime = placeOrder(etr_inst['symbol'],etr_inst['txn_type'],etr_inst['qty'])
                 etr_inst['orderID'] = orderID
                 etr_inst['tradedPrice'] = tradedPrice
@@ -335,7 +336,7 @@ def execute(orders):
                     # logger.info(f'LTP of Entry instrument : {ltpsymbol}')
                     # Repair condition check
                     if ((ltpsymbol > etp + 5) or (ltpsymbol < etp - 10)):
-                        logger.info(f"Reparing order as status is active and +15/-45 cond met in {orders['setno']}..")
+                        logger.info(f'Reparing order as +15/-45 cond met in set: {orders["setno"]}..')
                         rpr_inst['set']=orders['setno']
                         rpr_inst['txn_type'] = orders['rpr_txn_type']
                         # rpr_inst['strike'] = strikePrice(orders['idx'])
@@ -363,22 +364,21 @@ def execute(orders):
         elif universal['exit_status'] == 'Exited':
            orders['status'] = 'Universal_Exit'
            logger.info('Orders must be square-off by Universal Exit Func')
-           
-       
+           break
         #breaking set loop if status repaired
         if orders['status'] == 'Repaired':
-            logger.info('Repaired the Entry Order. Exit will taken care by universally.')
-            break
-        elif orders['status'] == 'Universal_Exit':
-            logger.info('Orders already square-off by Universal Exit Func')
+            logger.info(f'Repaired the Entry Order set: {orders["setno"]}. Exit will taken care by universally.')
             break
             
 def exitCheck(universal):
-    global tr_insts,gl_pnl
+    global tr_insts #todo add gl_pnl to global if the conditions didnt work
+    pnl_dump=[]           
     exitTime = datetime.strptime((cdate+" "+universal['exitTime']),"%d-%m-%Y %H:%M:%S")
+    print('exitTime:', exitTime)
     while True:
         if universal['exit_status'] == 'Idle':
             #Exit condition check
+            logger.info(f'exitcheck - {gl_pnl}') #todo comment this line after execution
             if (datetime.now() >= exitTime) or (gl_pnl <= universal['minPrice']) or (gl_pnl >= universal['maxPrice']):
                 logger.info('Exit time condition passed. Squaring off all open positions')
                 for i in range(len(gdf)):
@@ -396,7 +396,11 @@ def exitCheck(universal):
                     logger.info(f'Universal Exit order dtls: {ext_inst}')
                     tr_insts.append(ext_inst)
                     break
-
+        else:
+            pnl_dump.append([time.strftime("%d-%m-%Y %H:%M:%S"),gl_pnl])
+            time.sleep(10)
+    else:
+        return pnl_dump
 
 ############## main ##############             
 def main():
@@ -413,19 +417,38 @@ def main():
         t.start()
         threads.append(t)
     try:
-        chkExit = Thread(target=exitCheck,args=(universal,))
-        chkExit.start()
-        logger.info('ExitCondition check is in process till the end')
-        chkExit.join()
-        logger.info('Exit function ends')
+        result = exitCheck(universal)
     except Exception:
         logger.exception('Error Occured..')
     finally:
         fetchLtp.stop()
         fetchPnL.stop()
+        # _ = [t.join() for t in threads] #anohter way to join threads
         for thread in threads:
             logger.info(thread.is_alive())
+            thread.join()
+        if result:
+            logger.info('Dumping the PnL list to excel sheet..')
+            pnl_df = pd.DataFrame(result,columns=['date','pl'])
+            pnl_df = pnl_df.set_index(['date'])
+            pnl_df.index = pd.to_datetime(pnl_df.index, format='%d-%m-%Y %H:%M:%S')
+            resampled_df = pnl_df['pl'].resample('1min').ohlc()
+            #writing the output to excel sheet
+            writer = pd.ExcelWriter('../pnl/NFOPanther_PnL.xlsx',engine='openpyxl')
+            writer.book = load_workbook('../pnl/NFOPanther_PnL.xlsx')
+            resampled_df.to_excel(writer, sheet_name=(cdate), index=True)
+            writer.save()
+            writer.close()
+            
+            # https://stackoverflow.com/questions/59876479/create-a-new-dataframe-column-by-applying-excel-formula-using-python
         logger.info('--------------------------------------------')
+        logger.info(f'Total Orders and its status: \n {tr_insts} \n')
+        logger.info('Summary')
+        logger.info(f'\n\n PositionList: \n {df}')
+        logger.info(f'\n\n CombinedPositionsLists: \n {gdf}')
+        logger.info(f'\n\n Global PnL : {gl_pnl} \n')
+        logger.info('--------------------------------------------')
+        
         
 if __name__ == '__main__':
     main()

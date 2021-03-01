@@ -74,13 +74,13 @@ tr_insts = None
 ltp = {}
 gl_pnl = None
 idxs = ['NIFTY','BANKNIFTY']
-orders=[{'refId':10001, 'setno':1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"20:10:00"},
-		{'refId':10002, 'setno':2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"20:10:00"},
-		{'refId':10003, 'setno':3, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"20:12:00"},
-		{'refId':10004, 'setno':4, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"20:12:00"},
-		{'refId':10005, 'setno':5, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"20:15:00"},
-		{'refId':10006, 'setno':6, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"20:15:00"}]
-universal = {'exit_status': 'Idle', 'minPrice': -2000, 'maxPrice': 4000, 'exitTime':'20:14:00', 'ext_txn_type':'buy'}
+orders=[{'refId':10001, 'setno':1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"22:45:00"},
+		{'refId':10002, 'setno':2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"22:45:00"},
+		{'refId':10003, 'setno':3, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"22:47:00"},
+		{'refId':10004, 'setno':4, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"22:47:00"},
+		{'refId':10005, 'setno':5, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"22:49:00"},
+		{'refId':10006, 'setno':6, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"22:49:00"}]
+universal = {'exit_status': 'Idle', 'minPrice': -12000, 'maxPrice': 24000, 'exitTime':'22:48:00', 'ext_txn_type':'buy'}
 # exitTime = datetime.strptime((cdate+" "+universal['exitTime']),"%d-%m-%Y %H:%M:%S")
 
 ############## Functions ##############
@@ -340,7 +340,7 @@ def execute(orders):
                     ltpsymbol = ltp[esymbol]
                     # logger.info(f'LTP of Entry instrument : {ltpsymbol}')
                     # Repair condition check
-                    if ((ltpsymbol > etp + 5) or (ltpsymbol < etp - 10)):
+                    if ((ltpsymbol > etp + 15) or (ltpsymbol < etp - 45)):
                         logger.info(f'Reparing order as +15/-45 cond met in set: {orders["setno"]}..')
                         rpr_inst['set']=orders['setno']
                         rpr_inst['txn_type'] = orders['rpr_txn_type']
@@ -421,15 +421,14 @@ def dataToExcel(result):
     writer = pd.ExcelWriter('../pnl/NFOPanther_PnL.xlsx',engine='openpyxl')
     writer.book = load_workbook('../pnl/NFOPanther_PnL.xlsx')
     resampled_df.to_excel(writer, sheet_name=(cdate), index=True)
-    df.to_excel(writer, sheet_name=(cdate),startrow=10, startcol=7, index=False)
-    gdf.to_excel(writer, sheet_name=(cdate),startrow=20, startcol=7, index=False)
+    df.to_excel(writer, sheet_name=(cdate),startrow=25, startcol=7, index=False)
+    gdf.to_excel(writer, sheet_name=(cdate),startrow=4, startcol=7, index=False)
     writer.sheets=dict((ws.title, ws) for ws in writer.book.worksheets)
     worksheet = writer.sheets[cdate]
     worksheet['G1'] = "MaxPnL"
     worksheet["G2"] = "=MAX(E:E)"
     worksheet['H1'] = "MinPnL"
     worksheet["H2"] = "=MIN(E:E)"
-    worksheet["G10"] = "Placed Orders"
     worksheet['I1'] = "FinalPnL"
     worksheet['I2'] = gl_pnl          
     writer.save()

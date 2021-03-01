@@ -157,3 +157,10 @@ Trading :secretKey: Yuis804$IK
 
 =============
 https://stackoverflow.com/questions/49542912/schedule-a-script-developed-in-anaconda-via-windows-task-scheduler
+
+SET log_file=%cd%\logfile.txt
+call C:\Anaconda3\Scripts\activate.bat
+cd \script_directory
+python script.py arg1 arg2 > %log_file%
+
+D:\Users\lmahendran\Anaconda3\Scripts\

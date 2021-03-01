@@ -74,13 +74,13 @@ tr_insts = None
 ltp = {}
 gl_pnl = None
 idxs = ['NIFTY','BANKNIFTY']
-orders=[{'refId':10001, 'setno':1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"15:15:00"},
-		{'refId':10002, 'setno':2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"15:15:00"},
-		{'refId':10003, 'setno':3, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"13:20:00"},
-		{'refId':10004, 'setno':4, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"13:20:00"},
-		{'refId':10005, 'setno':5, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"13:27:00"},
-		{'refId':10006, 'setno':6, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"13:27:00"}]
-universal = {'exit_status': 'Idle', 'minPrice': -2000, 'maxPrice': 4000, 'exitTime':'13:25:00', 'ext_txn_type':'buy'}
+orders=[{'refId':10001, 'setno':1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"20:10:00"},
+		{'refId':10002, 'setno':2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"20:10:00"},
+		{'refId':10003, 'setno':3, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"20:12:00"},
+		{'refId':10004, 'setno':4, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"20:12:00"},
+		{'refId':10005, 'setno':5, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"20:15:00"},
+		{'refId':10006, 'setno':6, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"20:15:00"}]
+universal = {'exit_status': 'Idle', 'minPrice': -2000, 'maxPrice': 4000, 'exitTime':'20:14:00', 'ext_txn_type':'buy'}
 # exitTime = datetime.strptime((cdate+" "+universal['exitTime']),"%d-%m-%Y %H:%M:%S")
 
 ############## Functions ##############
@@ -214,10 +214,12 @@ def getLTP():
 
 def getGlobalPnL():
     global gl_pnl,df,gdf
+    # gl_pnl = 0
     if tr_insts:
         # logger.info('inside tr_insts cond - getGlobalLTP')
         df = pd.DataFrame(tr_insts)
         df['tr_amount'] = df['tr_qty']*df['tradedPrice']
+        df = df.fillna(0)
         df = df.astype(dtype={'set': int, 'txn_type': str, 'strike': int, 'qty': int, 'tr_qty': int, 'expiry': str, \
                                  'name': str, 'symbol': int, 'orderID': int, 'tradedPrice': float, 'dateTime': str, \
                                  'set_type': str, 'tr_amount': float, 'optionType': str})
@@ -229,7 +231,9 @@ def getGlobalPnL():
         logger.info(f'CombinedPositionsLists: \n {gdf}')
         gl_pnl = round(gdf['pnl'].sum(),2)
         logger.info(f'Global PnL : {gl_pnl}')
-
+    else:
+        gl_pnl = 0
+ 
 def placeOrder(symbol,txn_type,qty):
     logger.info('Placing Orders..')
     # Place an intraday stop loss order on NSE
@@ -274,6 +278,7 @@ def placeOrder(symbol,txn_type,qty):
                         if a==11:
                             logger.info('Placed order is still in New or Open Status..Hence Cancelling the placed order')
                             cancelOrder(orderID)
+                            return None, None, None
                             break
                 else:
                     logger.info('\n  Unable to get OrderList inside place order function..')
@@ -369,46 +374,74 @@ def execute(orders):
         if orders['status'] == 'Repaired':
             logger.info(f'Repaired the Entry Order set: {orders["setno"]}. Exit will taken care by universally.')
             break
-            
+          
 def exitCheck(universal):
     global tr_insts #todo add gl_pnl to global if the conditions didnt work
-    pnl_dump=[]           
+    pnl_dump=[] 
+    ext_inst = {}          
     exitTime = datetime.strptime((cdate+" "+universal['exitTime']),"%d-%m-%Y %H:%M:%S")
-    print('exitTime:', exitTime)
+    # print('exitTime:', exitTime)
     while True:
         if universal['exit_status'] == 'Idle':
             #Exit condition check
-            logger.info(f'exitcheck - {gl_pnl}') #todo comment this line after execution
+            # logger.info(f'exitcheck - {gl_pnl}') #todo comment this line after execution
             if (datetime.now() >= exitTime) or (gl_pnl <= universal['minPrice']) or (gl_pnl >= universal['maxPrice']):
                 logger.info('Exit time condition passed. Squaring off all open positions')
                 for i in range(len(gdf)):
-                    ext_inst['symbol'] = gdf['symbol'].values[i]
-                    ext_inst['tr_qty'] = gdf['tr_qty'].values[i]
+                    logger.info(f'gdf is : {gdf}')
+                    ext_inst['symbol'] = int(gdf['symbol'].values[i])
+                    ext_inst['tr_qty'] = int(gdf['tr_qty'].values[i])
                     ext_inst['qty'] = abs(ext_inst['tr_qty'])
                     ext_inst['txn_type'] = universal['ext_txn_type'] 
-                    ext_inst['name'] = gdf['name'].values[i]
+                    ext_inst['name'] = str(gdf['name'].values[i])
                     ext_inst['orderID'] = None
                     ext_inst['tradedPrice'] = None
                     orderID, tradedPrice, dateTime = placeOrder(ext_inst['symbol'], ext_inst['txn_type'], ext_inst['qty'])
+                    ext_inst['orderID'] = orderID
+                    ext_inst['tradedPrice'] = tradedPrice
+                    ext_inst['dateTime'] = dateTime
                     if orderID and tradedPrice:
                         ext_inst['set_type']='Universal_Exit'
                         universal['exit_status'] = 'Exited'
                     logger.info(f'Universal Exit order dtls: {ext_inst}')
                     tr_insts.append(ext_inst)
-                    break
-        else:
-            pnl_dump.append([time.strftime("%d-%m-%Y %H:%M:%S"),gl_pnl])
-            time.sleep(10)
-    else:
-        return pnl_dump
+                break
+            else:
+                pnl_dump.append([time.strftime("%d-%m-%Y %H:%M:%S"),gl_pnl])
+                time.sleep(10)
+    logger.info('Returning pnl dump')
+    return pnl_dump
 
-############## main ##############             
+def dataToExcel(result):
+    pnl_df = pd.DataFrame(result,columns=['date','pl'])
+    pnl_df = pnl_df.set_index(['date'])
+    pnl_df.index = pd.to_datetime(pnl_df.index, format='%d-%m-%Y %H:%M:%S')
+    resampled_df = pnl_df['pl'].resample('1min').ohlc()
+    #writing the output to excel sheet
+    writer = pd.ExcelWriter('../pnl/NFOPanther_PnL.xlsx',engine='openpyxl')
+    writer.book = load_workbook('../pnl/NFOPanther_PnL.xlsx')
+    resampled_df.to_excel(writer, sheet_name=(cdate), index=True)
+    df.to_excel(writer, sheet_name=(cdate),startrow=10, startcol=7, index=False)
+    gdf.to_excel(writer, sheet_name=(cdate),startrow=20, startcol=7, index=False)
+    writer.sheets=dict((ws.title, ws) for ws in writer.book.worksheets)
+    worksheet = writer.sheets[cdate]
+    worksheet['G1'] = "MaxPnL"
+    worksheet["G2"] = "=MAX(E:E)"
+    worksheet['H1'] = "MinPnL"
+    worksheet["H2"] = "=MIN(E:E)"
+    worksheet["G10"] = "Placed Orders"
+    worksheet['I1'] = "FinalPnL"
+    worksheet['I2'] = gl_pnl          
+    writer.save()
+    writer.close()             
+
 def main():
     nextThu_and_lastThu_expiry_date()
     masterDump()
     logger.info('Starting a separate thread to fetch LTP of traded instruments..')
+    getGlobalPnL()
     fetchLtp = timer.RepeatedTimer(10, getLTP)
-    fetchPnL = timer.RepeatedTimer(10,getGlobalPnL)
+    fetchPnL = timer.RepeatedTimer(10, getGlobalPnL)
     # chkExit = timer.RepeatedTimer(15,exitCheck)
     threads=[]
     logger.info('starting execution of orders parallely..')
@@ -418,6 +451,11 @@ def main():
         threads.append(t)
     try:
         result = exitCheck(universal)
+        time.sleep(5)
+        if result:
+            logger.info('Writing pnl dump to excel..')
+            dataToExcel(result)
+        time.sleep(5)
     except Exception:
         logger.exception('Error Occured..')
     finally:
@@ -427,20 +465,8 @@ def main():
         for thread in threads:
             logger.info(thread.is_alive())
             thread.join()
-        if result:
-            logger.info('Dumping the PnL list to excel sheet..')
-            pnl_df = pd.DataFrame(result,columns=['date','pl'])
-            pnl_df = pnl_df.set_index(['date'])
-            pnl_df.index = pd.to_datetime(pnl_df.index, format='%d-%m-%Y %H:%M:%S')
-            resampled_df = pnl_df['pl'].resample('1min').ohlc()
-            #writing the output to excel sheet
-            writer = pd.ExcelWriter('../pnl/NFOPanther_PnL.xlsx',engine='openpyxl')
-            writer.book = load_workbook('../pnl/NFOPanther_PnL.xlsx')
-            resampled_df.to_excel(writer, sheet_name=(cdate), index=True)
-            writer.save()
-            writer.close()
-            
-            # https://stackoverflow.com/questions/59876479/create-a-new-dataframe-column-by-applying-excel-formula-using-python
+        # if result:
+        #     dataToExcel(result)
         logger.info('--------------------------------------------')
         logger.info(f'Total Orders and its status: \n {tr_insts} \n')
         logger.info('Summary')
@@ -449,11 +475,11 @@ def main():
         logger.info(f'\n\n Global PnL : {gl_pnl} \n')
         logger.info('--------------------------------------------')
         
-        
+############## main ##############        
 if __name__ == '__main__':
     main()
     starttime=time.time()
-    timeout = time.time() + 60*60*1 #runs for 1 hour
+    timeout = time.time() + 60*60*6 #runs for 6 hours
     while time.time() <= timeout:
         try:
             time.sleep(5)
@@ -468,3 +494,16 @@ if __name__ == '__main__':
 #             {'set': 2, 'txn_type': 'sell', 'strike': 14700, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB14800CE', 'symbol': 39608, 'orderID': 10036280, 'tradedPrice': 7111.9, 'dateTime': '2021-02-23 14:06:55', 'set_type': 'Entry'},
 #             {'set': 2, 'txn_type': 'buy', 'strike': 14700, 'qty': 75, 'tr_qty': 75, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB14800CE', 'symbol': 39608, 'orderID': 10036285, 'tradedPrice': 6117.8, 'dateTime': '2021-02-23 14:12:21', 'set_type': 'Repair'},
 #             {'set': 3, 'txn_type': 'buy', 'strike': 14700, 'qty': 0, 'tr_qty': 75, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB14880CE', 'symbol': 39608, 'orderID': 10036301, 'tradedPrice': 5122.4, 'dateTime': '2021-02-23 14:14:28', 'set_type': 'Exit'}]
+# orders=[{'refId':10001, 'setno':1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"09:30:00"},
+# 		{'refId':10002, 'setno':2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"09:30:00"},
+# 		{'refId':10003, 'setno':3, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"10:00:00"},
+# 		{'refId':10004, 'setno':4, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"10:00:00"},
+# 		{'refId':10005, 'setno':5, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"10:30:00"},
+# 		{'refId':10006, 'setno':6, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"10:30:00"},
+# 		{'refId':10007, 'setno':7, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"11:00:00"},
+# 		{'refId':10008, 'setno':8, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"11:00:00"},
+# 		{'refId':10000, 'setno':9, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"11:30:00"},
+# 		{'refId':10010, 'setno':10, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"11:30:00"},
+# 		{'refId':10011, 'setno':11, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"13:30:00"},
+# 		{'refId':10012, 'setno':12, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"13:30:00"}]
+# universal = {'exit_status': 'Idle', 'minPrice': -12000, 'maxPrice': 24000, 'exitTime':'15:05:00', 'ext_txn_type':'buy'}

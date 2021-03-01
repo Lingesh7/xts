@@ -109,7 +109,7 @@ https://nsetools.readthedocs.io/en/latest/usage.html#getting-a-stock-quote
  					 -40pts pe square off - sell pe next strike
 
 
-IIFL24 // login - Jan@1234 // tranx - Jan@123
+IIFL28 // login - Mar@123 // tranx - Mar@1234
 
 Thank you VERY much! Adding future.result() it seems to work just like expected: goes ok if the code is correct, prints the error if there's something wrong... Anyway I think it would be important to report this strange behaviour to users which are/will be in the same situation as me – Alessio Martorana Feb 20 '19 at 10:15
 future = executor.submit(f, vars) followed by print(f'{future.result()}') worked for me as well. My thanks to both of you for this solution!
@@ -154,3 +154,6 @@ MarketData Key:98a27a5e1b81a59a7df220
 MarketData: secretKey: Naip137#fo
 Trading Key: 8a2c9c2c650b2334c0e432
 Trading :secretKey: Yuis804$IK
+
+=============
+https://stackoverflow.com/questions/49542912/schedule-a-script-developed-in-anaconda-via-windows-task-scheduler

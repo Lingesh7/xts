@@ -156,11 +156,23 @@ Trading Key: 8a2c9c2c650b2334c0e432
 Trading :secretKey: Yuis804$IK
 
 =============
-https://stackoverflow.com/questions/49542912/schedule-a-script-developed-in-anaconda-via-windows-task-scheduler
+@ECHO OFF 
+TITLE Execute python script on anaconda environment
+ECHO Please Wait...
+:: Section 1: Activate the environment.
+ECHO ============================
+ECHO Conda Activate
+ECHO ============================
+@CALL "C:\Users\Welcome\Anaconda3\Scripts\activate.bat" base
+:: Section 2: Execute python script.
+ECHO ============================
+ECHO Python test.py
+ECHO ============================
+python D:\Python\First_Choice_Git\xts\strategy\scripts\NFOPanther_Live.py
 
-SET log_file=%cd%\logfile.txt
-call C:\Anaconda3\Scripts\activate.bat
-cd \script_directory
-python script.py arg1 arg2 > %log_file%
+ECHO ============================
+ECHO End
+ECHO ============================
 
-D:\Users\lmahendran\Anaconda3\Scripts\
+PAUSE
+==================

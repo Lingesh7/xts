@@ -213,8 +213,8 @@ def getLTP():
                 ltp[symbol]=price
 
 def getGlobalPnL():
-    global gl_pnl,df,gdf
-    # gl_pnl = 0
+    global gl_pnl, df, gdf, pnl_dump
+    pnl_dump = []
     if tr_insts:
         # logger.info('inside tr_insts cond - getGlobalLTP')
         df = pd.DataFrame(tr_insts)
@@ -231,6 +231,7 @@ def getGlobalPnL():
         logger.info(f'CombinedPositionsLists: \n {gdf}')
         gl_pnl = round(gdf['pnl'].sum(),2)
         logger.info(f'Global PnL : {gl_pnl}')
+        pnl_dump.append([time.strftime("%d-%m-%Y %H:%M:%S"),gl_pnl])
     else:
         gl_pnl = 0
  
@@ -377,7 +378,7 @@ def execute(orders):
           
 def exitCheck(universal):
     global tr_insts #todo add gl_pnl to global if the conditions didnt work
-    pnl_dump=[] 
+    # pnl_dump=[] 
     ext_inst = {}          
     exitTime = datetime.strptime((cdate+" "+universal['exitTime']),"%d-%m-%Y %H:%M:%S")
     # print('exitTime:', exitTime)
@@ -406,14 +407,9 @@ def exitCheck(universal):
                     logger.info(f'Universal Exit order dtls: {ext_inst}')
                     tr_insts.append(ext_inst)
                 break
-            else:
-                pnl_dump.append([time.strftime("%d-%m-%Y %H:%M:%S"),gl_pnl])
-                time.sleep(10)
-    logger.info('Returning pnl dump')
-    return pnl_dump
 
-def dataToExcel(result):
-    pnl_df = pd.DataFrame(result,columns=['date','pl'])
+def dataToExcel(pnl_dump):
+    pnl_df = pd.DataFrame(pnl_dump,columns=['date','pl'])
     pnl_df = pnl_df.set_index(['date'])
     pnl_df.index = pd.to_datetime(pnl_df.index, format='%d-%m-%Y %H:%M:%S')
     resampled_df = pnl_df['pl'].resample('1min').ohlc()
@@ -435,26 +431,25 @@ def dataToExcel(result):
     writer.close()             
 
 def main():
+    threads=[]
     nextThu_and_lastThu_expiry_date()
     masterDump()
-    logger.info('Starting a separate thread to fetch LTP of traded instruments..')
     getGlobalPnL()
+    logger.info('Starting a timer based thread to fetch LTP of traded instruments..')
     fetchLtp = timer.RepeatedTimer(10, getLTP)
     fetchPnL = timer.RepeatedTimer(10, getGlobalPnL)
-    # chkExit = timer.RepeatedTimer(15,exitCheck)
-    threads=[]
-    logger.info('starting execution of orders parallely..')
+    logger.info('starting thread based execution of orders parallely..')
     for i in range(len(orders)):
         t = Thread(target=execute,args=(orders[i],))
         t.start()
         threads.append(t)
     try:
-        result = exitCheck(universal)
+        exitCheck(universal)
         time.sleep(5)
-        if result:
-            logger.info('Writing pnl dump to excel..')
-            dataToExcel(result)
-        time.sleep(5)
+        # if result:
+        #     logger.info('Writing pnl dump to excel..')
+        #     dataToExcel(result)
+        # time.sleep(5)
     except Exception:
         logger.exception('Error Occured..')
     finally:
@@ -465,7 +460,7 @@ def main():
             logger.info(thread.is_alive())
             thread.join()
         # if result:
-        #     dataToExcel(result)
+        dataToExcel(pnl_dump)
         logger.info('--------------------------------------------')
         logger.info(f'Total Orders and its status: \n {tr_insts} \n')
         logger.info('Summary')

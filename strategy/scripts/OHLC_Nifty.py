@@ -50,7 +50,7 @@ def strkPrcCalc(spot,base):
     return strikePrice
 
 cdate1 = datetime.strftime(datetime.now(), "%b %d %Y")
-niftyAt920 = 14705
+niftyAt920 = 15025
 strikePrice = strkPrcCalc(niftyAt920, 50)
 
 if __name__ == '__main__':

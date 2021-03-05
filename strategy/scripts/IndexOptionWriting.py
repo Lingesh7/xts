@@ -29,10 +29,10 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 
-filename='../logs/Index_Option_Writing_log.txt'
+filename='../logs/Index_Option_Writing1_log.txt'
 
-file_handler = logging.FileHandler(filename)
-# file_handler=logging.handlers.TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=5)
+# file_handler = logging.FileHandler(filename)
+file_handler = logging.handlers.TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=5)
 file_handler.setLevel(logging.INFO)
 file_handler.setFormatter(formatter)
 
@@ -76,9 +76,11 @@ tr_insts = None
 ltp = {}
 gl_pnl = None
 idxs = ['NIFTY','BANKNIFTY']
-orders=[{'refId':10001, 'setno':1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime':"09:58:00"},
-		{'refId':10002, 'setno':2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime':"09:58:00"}]
-universal = {'exit_status': 'Idle', 'minPrice': -12000, 'maxPrice': 24000, 'exitTime':'22:48:00', 'ext_txn_type':'buy'}
+orders=[{'refId':10001, 'setno':1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'stoplosstrig': 15.25, 'startTime':"15:22:00"},
+		{'refId':10002, 'setno':2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'stoplosstrig': 15.25, 'startTime':"15:22:00"},
+        {'refId':10003, 'setno':3, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'stoplosstrig': 60.25, 'startTime':"15:22:00"},
+		{'refId':10004, 'setno':4, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'stoplosstrig': 60.25, 'startTime':"15:22:00"}]
+universal = {'exit_status': 'Idle', 'minPrice': -3000, 'maxPrice': 6900, 'exitTime':'15:29:00', 'ext_txn_type':'buy'}
 
 ############## Functions ##############
 
@@ -269,12 +271,28 @@ def placeSLOrder(symbol, txn_type, qty, slTrigger):
                          )
     if sl_order_resp['type'] != 'error':
         orderID = sl_order_resp['result']['AppOrderID']            #extracting the order id from response
-        logger.info(f'\n  StopLoss Order ID for {t_type_sl} {symbol} is: {orderID} \n')
-        return orderID
+        logger.info(f'\n  StopLoss Order ID for {t_type}ing {instrumentLookup(instrument_df,symbol)} is: {orderID} \n')
     else:
-        logger.info(' \n TradedPice is not available, Hence not placing SL order, TRY MANUALLY.. \n')
+        logger.error(' \n Error in placing SL order \n')
+    time.sleep(2)
+    logger.info('Checking StopLoss status..')
+    while universal['exit_status'] == 'Idle':
+        time.sleep(5)
+        orderLists = getOrderList()
+        if orderLists:
+            new_sl_orders = [ol for ol in orderLists if ol['AppOrderID'] == orderID and ol['OrderStatus'] != 'Filled']  
+            if not new_sl_orders:
+                tradedPrice = float(next((orderList['OrderAverageTradedPrice'] for orderList in orderLists if orderList['AppOrderID'] == orderID and orderList['OrderStatus'] == 'Filled'),None))
+                LastUpdateDateTime=datetime.fromisoformat(next((orderList['LastUpdateDateTime'] for orderList in orderLists if orderList['AppOrderID'] == orderID and orderList['OrderStatus'] == 'Filled'))[0:19])
+                dateTime = LastUpdateDateTime.strftime("%Y-%m-%d %H:%M:%S")
+                logger.info(f"traded price is: {tradedPrice} and ordered  time is: {dateTime}")
+                return orderID, tradedPrice, dateTime
+                break
+    if universal['exit_status'] == 'Exited':
+        logger.info('Cancelling the SL order. Since the universal exit closes all open positiions')
+        cancelOrder(orderID)
+        return None,None,None
 
-    
 def execute(orders):
     global tr_insts
     tr_insts = []
@@ -289,12 +307,12 @@ def execute(orders):
                 logger.info(f'Placing orders for {orders["setno"]} at {orders["startTime"]}..')
                 etr_inst['set']=orders['setno']
                 etr_inst['txn_type'] = orders['ent_txn_type']
-                strikePrice = strikePrice(orders['idx'])
+                sp = strikePrice(orders['idx'])
                 
                 if weekday != 3: #if not thursday, take straddle
-                    etr_inst['strike'] = strikePrice + 50 if orders['otype'] == 'ce' else strikePrice - 50
+                    etr_inst['strike'] = sp + 50 if orders['otype'] == 'ce' else sp - 50
                 else:
-                    etr_inst['strike'] = strikePrice
+                    etr_inst['strike'] = sp
                 
                 etr_inst['qty'] = 75*orders['lot'] if orders['idx'] == 'NIFTY' else 25*orders['lot']
                 etr_inst['tr_qty'] = -etr_inst['qty'] if orders['ent_txn_type'] == 'sell' else etr_inst['qty']
@@ -323,19 +341,167 @@ def execute(orders):
                 logger.info(f'Entry order dtls: {etr_inst}')
                 tr_insts.append(etr_inst)
                 
+        if universal['exit_status'] == 'Idle':  #Checking wheather universal exit triggered or not
             if orders['status'] == 'Entered':
-                # ename = next(i['name'] for i in tr_insts if i['set_type']=='Entry' and i['set']==orders['setno'])
+                ename = next(i['name'] for i in tr_insts if i['set_type']=='Entry' and i['set']==orders['setno'])
                 esymbol = next(i['symbol'] for i in tr_insts if i['set_type']=='Entry' and i['set']==orders['setno'])
                 etp = next(i['tradedPrice'] for i in tr_insts if i['set_type']=='Entry' and i['set']==orders['setno'])
-                slt = round((etp + 15.25),2)
+                slt = round((etp + orders['stoplosstrig']),2)
                 eqty = next(i['qty'] for i in tr_insts if i['set_type']=='Entry' and i['set']==orders['setno'])
-                rpr_txn_type = orders['rpr_txn_type']
-                placeSLOrder(esymbol, rpr_txn_type, eqty, slt)
                 
-                
+                rpr_inst['set']=orders['setno']
+                rpr_inst['txn_type'] = orders['rpr_txn_type']
+                rpr_inst['strike'] = next(i['strike'] for i in tr_insts if i['set_type']=='Entry' and i['set']==orders['setno'])
+                rpr_inst['qty']= eqty
+                rpr_inst['tr_qty'] = -rpr_inst['qty'] if orders['rpr_txn_type'] == 'sell' else rpr_inst['qty']
+                if orders['expiry'] == 'week':
+                    rpr_inst['expiry']=weekly_exp
+                rpr_inst['optionType'] = orders['otype']
+                rpr_inst['name'] = ename
+                rpr_inst['symbol'] = esymbol
+                rpr_inst['orderID'] = None
+                rpr_inst['tradedPrice'] = None
+                orderID, tradedPrice, dateTime = placeSLOrder(rpr_inst['symbol'], rpr_inst['txn_type'], rpr_inst['qty'], slt)
+                logger.info('Stop Loss Order Triggered')
+                if orderID and tradedPrice:
+                    orders['status'] = 'Repaired'
+                    # orders['repairedAlready'] = True
+                    rpr_inst['set_type'] = 'Repair'
+                logger.info(f'Repair order dtls: {rpr_inst}')
+                tr_insts.append(rpr_inst)
+                continue
+        elif universal['exit_status'] == 'Exited':
+           orders['status'] = 'Universal_Exit'
+           logger.info('Orders must be square-off by Universal Exit Func')
+           break
+            
+        if orders['status'] == 'Repaired':
+            logger.info(f'Repaired the Entry Order set: {orders["setno"]}.')
+            break
+
+def exitCheck(universal):
+    global tr_insts
+    ext_inst = {}          
+    exitTime = datetime.strptime((cdate+" "+universal['exitTime']),"%d-%m-%Y %H:%M:%S")
+    while True:
+        if universal['exit_status'] == 'Idle':
+            if (datetime.now() >= exitTime) or (gl_pnl <= universal['minPrice']) or (gl_pnl >= universal['maxPrice']):
+                logger.info('Exit time condition passed. Squaring off all open positions')
+                for i in range(len(gdf)):
+                    logger.info(f'gdf is : {gdf}')
+                    ext_inst['symbol'] = int(gdf['symbol'].values[i])
+                    ext_inst['txn_type'] = universal['ext_txn_type'] 
+                    ext_inst['tr_qty'] = -int(gdf['tr_qty'].values[i])
+                    ext_inst['qty'] = abs(ext_inst['tr_qty'])
+                    ext_inst['name'] = str(gdf['name'].values[i])
+                    ext_inst['orderID'] = None
+                    ext_inst['tradedPrice'] = None
+                    orderID, tradedPrice, dateTime = placeOrder(ext_inst['symbol'], ext_inst['txn_type'], ext_inst['qty'])
+                    ext_inst['orderID'] = orderID
+                    ext_inst['tradedPrice'] = tradedPrice
+                    ext_inst['dateTime'] = dateTime
+                    if orderID and tradedPrice:
+                        ext_inst['set_type']='Universal_Exit'
+                        universal['exit_status'] = 'Exited'
+                    logger.info(f'Universal Exit order dtls: {ext_inst}')
+                    tr_insts.append(ext_inst)
+                break
+
+def getLTP():
+    global ltp
+    # ltp={}
+    if tr_insts:
+        # logger.info('inside tr_insts cond - getLTP')
+        symbols=[i['symbol'] for i in tr_insts if i['set_type'] == 'Entry']
+        instruments=[]
+        for symbol in symbols:
+            instruments.append({'exchangeSegment': 2, 'exchangeInstrumentID': symbol})
+        xt.send_unsubscription(Instruments=instruments,xtsMessageCode=1502)
+        subs_resp=xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
+        if subs_resp['type'] == 'success':
+            for symbol,i in zip(symbols,range(len(symbols))):
+                listQuotes = json.loads(subs_resp['result']['listQuotes'][i])
+                price=listQuotes['Touchline']['LastTradedPrice']
+                ltp[symbol]=price
+
+def getGlobalPnL():
+    global gl_pnl, df, gdf, pnl_dump
+    pnl_dump = []
+    if tr_insts:
+        # logger.info('inside tr_insts cond - getGlobalLTP')
+        df = pd.DataFrame(tr_insts)
+        df['tr_amount'] = df['tr_qty']*df['tradedPrice']
+        df = df.fillna(0)
+        df = df.astype(dtype={'set': int, 'txn_type': str, 'strike': int, 'qty': int, 'tr_qty': int, 'expiry': str, \
+                                 'name': str, 'symbol': int, 'orderID': int, 'tradedPrice': float, 'dateTime': str, \
+                                 'set_type': str, 'tr_amount': float, 'optionType': str})
+        gdf = df.groupby(['name','symbol'],as_index=False).sum()[['symbol','name','tr_qty','tradedPrice','tr_amount']]
+        gdf['ltp'] = gdf['symbol'].map(ltp)
+        gdf['cur_amount'] = gdf['tr_qty']*gdf['ltp']
+        gdf['pnl'] = gdf['cur_amount'] - gdf['tr_amount']
+        logger.info(f'\n\nPositionList: \n {df}')
+        logger.info(f'\n\nCombinedPositionsLists: \n {gdf}')
+        gl_pnl = round(gdf['pnl'].sum(),2)
+        logger.info(f'\n\nGlobal PnL : {gl_pnl}')
+        pnl_dump.append([time.strftime("%d-%m-%Y %H:%M:%S"),gl_pnl])
+    else:
+        gl_pnl = 0
+
+def dataToExcel(pnl_dump):
+    pnl_df = pd.DataFrame(pnl_dump,columns=['date','pl'])
+    pnl_df = pnl_df.set_index(['date'])
+    pnl_df.index = pd.to_datetime(pnl_df.index, format='%d-%m-%Y %H:%M:%S')
+    resampled_df = pnl_df['pl'].resample('1min').ohlc()
+    #writing the output to excel sheet
+    writer = pd.ExcelWriter('../pnl/NFOPanther_PnL.xlsx',engine='openpyxl')
+    writer.book = load_workbook('../pnl/NFOPanther_PnL.xlsx')
+    resampled_df.to_excel(writer, sheet_name=(cdate), index=True)
+    df.to_excel(writer, sheet_name=(cdate),startrow=25, startcol=7, index=False)
+    gdf.to_excel(writer, sheet_name=(cdate),startrow=4, startcol=7, index=False)
+    writer.sheets=dict((ws.title, ws) for ws in writer.book.worksheets)
+    worksheet = writer.sheets[cdate]
+    worksheet['G1'] = "MaxPnL"
+    worksheet["G2"] = "=MAX(E:E)"
+    worksheet['H1'] = "MinPnL"
+    worksheet["H2"] = "=MIN(E:E)"
+    worksheet['I1'] = "FinalPnL"
+    worksheet['I2'] = gl_pnl          
+    writer.save()
+    writer.close()
+
 ############## main ##############
 if __name__ == '__main__':
+    threads=[]
     nextThu_and_lastThu_expiry_date()
     masterDump()
-    execute(orders)
+    getGlobalPnL()
+    logger.info('Starting a timer based thread to fetch LTP of traded instruments..')
+    fetchLtp = timer.RepeatedTimer(10, getLTP)
+    fetchPnL = timer.RepeatedTimer(10, getGlobalPnL)
+    # execute(orders)
+    for i in range(len(orders)):
+        t = Thread(target=execute,args=(orders[i],))
+        t.start()
+        threads.append(t)
+    try:
+        exitCheck(universal)
+        time.sleep(5)
+    except Exception:
+        logger.exception('Error Occured..')
+    finally:
+        logger.info('Cleaning up..')
+        fetchLtp.stop()
+        fetchPnL.stop()
+        _ = [t.join() for t in threads]
+        getLTP()
+        getGlobalPnL()
+        # dataToExcel(pnl_dump)
+        logger.info('--------------------------------------------')
+        logger.info(f'Total Orders and its status: \n {tr_insts} \n')
+        logger.info('Summary')
+        logger.info(f'\n\n PositionList: \n {df}')
+        logger.info(f'\n\n CombinedPositionsLists: \n {gdf}')
+        logger.info(f'\n\n Global PnL : {gl_pnl} \n')
+        logger.info('--------------------------------------------')
+        
     

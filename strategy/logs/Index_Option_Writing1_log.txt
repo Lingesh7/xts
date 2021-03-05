@@ -1,0 +1,208 @@
+2021-03-05 14:42:51,321:__main__:INFO:Token file exists and created today
+2021-03-05 14:42:51,328:__main__:INFO:Initializing session with token..
+2021-03-05 14:42:51,614:__main__:INFO:weekly expiry is : 01Apr2021, monthly expiry is: 29Apr2021
+2021-03-05 14:42:51,617:__main__:INFO:MasterDump already exists.. reading directly
+2021-03-05 14:42:51,774:__main__:INFO:Starting a timer based thread to fetch LTP of traded instruments..
+2021-03-05 14:45:00,000:__main__:INFO:Placing orders for 1 at 14:45:00..
+2021-03-05 14:45:00,000:__main__:INFO:Placing orders for 4 at 14:45:00..
+2021-03-05 14:45:00,000:__main__:INFO:Placing orders for 3 at 14:45:00..
+2021-03-05 14:45:00,013:__main__:INFO:Placing orders for 2 at 14:45:00..
+2021-03-05 14:45:00,654:__main__:INFO:StrikePrice computed as : 14900
+2021-03-05 14:45:00,732:__main__:INFO:StrikePrice computed as : 35100
+2021-03-05 14:45:00,832:__main__:INFO:StrikePrice computed as : 35100
+2021-03-05 14:45:00,832:__main__:INFO:Placing Orders..
+2021-03-05 14:45:00,921:__main__:INFO:Placing Orders..
+2021-03-05 14:45:00,971:__main__:INFO:StrikePrice computed as : 14900
+2021-03-05 14:45:01,003:__main__:INFO:Placing Orders..
+2021-03-05 14:45:01,311:__main__:INFO:Placing Orders..
+2021-03-05 14:45:02,617:__main__:ERROR:OMSH: Supplied exchangeInstrumentID [-1] is not valid.
+2021-03-05 14:45:02,618:__main__:ERROR:OMSH: Supplied exchangeInstrumentID [-1] is not valid.
+2021-03-05 14:45:02,637:__main__:INFO:Order ID for SELL 59660 is: 10025360
+2021-03-05 14:45:02,644:__main__:INFO:Order ID for SELL 59668 is: 10025359
+2021-03-05 14:45:02,695:__main__:INFO:Order not placed for - -1 
+2021-03-05 14:45:02,790:__main__:INFO:Order not placed for - -1 
+2021-03-05 14:45:06,887:__main__:INFO:traded price is: 318.3 and ordered  time is: 2021-03-05 14:45:09
+2021-03-05 14:45:06,890:__main__:INFO:traded price is: 300.05 and ordered  time is: 2021-03-05 14:45:09
+2021-03-05 14:45:06,898:__main__:INFO:Entry order dtls: {'set': 1, 'txn_type': 'sell', 'strike': 14950, 'qty': 75, 'tr_qty': -75, 'expiry': '01Apr2021', 'optionType': 'CE', 'name': 'NIFTY2140114950CE', 'symbol': 59668, 'orderID': 10025359, 'tradedPrice': 318.3, 'dateTime': '2021-03-05 14:45:09', 'set_type': 'Entry'}
+2021-03-05 14:45:06,960:__main__:INFO:Entry order dtls: {'set': 2, 'txn_type': 'sell', 'strike': 14850, 'qty': 75, 'tr_qty': -75, 'expiry': '01Apr2021', 'optionType': 'PE', 'name': 'NIFTY2140114850PE', 'symbol': 59660, 'orderID': 10025360, 'tradedPrice': 300.05, 'dateTime': '2021-03-05 14:45:09', 'set_type': 'Entry'}
+2021-03-05 14:45:07,047:__main__:INFO:Placing SL Order..
+2021-03-05 14:45:07,144:__main__:INFO:Placing SL Order..
+2021-03-05 14:45:07,846:__main__:INFO:
+  StopLoss Order ID for BUYing -1 is: 10025361 
+
+2021-03-05 14:45:07,900:__main__:INFO:
+  StopLoss Order ID for BUYing -1 is: 10025362 
+
+2021-03-05 14:45:09,911:__main__:INFO:Checking StopLoss status..
+2021-03-05 14:45:09,921:__main__:INFO:Checking StopLoss status..
+2021-03-05 14:45:13,490:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   14950   75     -75  01Apr2021         CE  NIFTY2140114950CE   
+1    2     sell   14850   75     -75  01Apr2021         PE  NIFTY2140114850PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   59668  10025359       318.30  2021-03-05 14:45:09    Entry  -23872.50  
+1   59660  10025360       300.05  2021-03-05 14:45:09    Entry  -22503.75  
+2021-03-05 14:45:13,857:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount  ltp  cur_amount  \
+0   59660  NIFTY2140114850PE     -75       300.05  -22503.75  NaN         NaN   
+1   59668  NIFTY2140114950CE     -75       318.30  -23872.50  NaN         NaN   
+
+   pnl  
+0  NaN  
+1  NaN  
+2021-03-05 14:45:13,962:__main__:INFO:
+
+Global PnL : 0.0
+2021-03-05 14:45:22,627:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   14950   75     -75  01Apr2021         CE  NIFTY2140114950CE   
+1    2     sell   14850   75     -75  01Apr2021         PE  NIFTY2140114850PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   59668  10025359       318.30  2021-03-05 14:45:09    Entry  -23872.50  
+1   59660  10025360       300.05  2021-03-05 14:45:09    Entry  -22503.75  
+2021-03-05 14:45:22,674:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount  ltp  cur_amount  \
+0   59660  NIFTY2140114850PE     -75       300.05  -22503.75    0           0   
+1   59668  NIFTY2140114950CE     -75       318.30  -23872.50    0           0   
+
+        pnl  
+0  22503.75  
+1  23872.50  
+2021-03-05 14:45:22,714:__main__:INFO:
+
+Global PnL : 46376.25
+2021-03-05 14:45:22,715:__main__:INFO:Exit time condition passed. Squaring off all open positions
+2021-03-05 14:45:22,725:__main__:INFO:gdf is :    symbol               name  tr_qty  tradedPrice  tr_amount  ltp  cur_amount  \
+0   59660  NIFTY2140114850PE     -75       300.05  -22503.75    0           0   
+1   59668  NIFTY2140114950CE     -75       318.30  -23872.50    0           0   
+
+        pnl  
+0  22503.75  
+1  23872.50  
+2021-03-05 14:45:22,727:__main__:INFO:Placing Orders..
+2021-03-05 14:45:24,105:__main__:INFO:Order ID for BUY 59660 is: 10025363
+2021-03-05 14:45:28,429:__main__:INFO:traded price is: 460.15 and ordered  time is: 2021-03-05 14:45:31
+2021-03-05 14:45:28,432:__main__:INFO:Universal Exit order dtls: {'symbol': 59660, 'txn_type': 'buy', 'tr_qty': 75, 'qty': 75, 'name': 'NIFTY2140114850PE', 'orderID': 10025363, 'tradedPrice': 460.15, 'dateTime': '2021-03-05 14:45:31', 'set_type': 'Universal_Exit'}
+2021-03-05 14:45:28,443:__main__:INFO:gdf is :    symbol               name  tr_qty  tradedPrice  tr_amount  ltp  cur_amount  \
+0   59660  NIFTY2140114850PE     -75       300.05  -22503.75    0           0   
+1   59668  NIFTY2140114950CE     -75       318.30  -23872.50    0           0   
+
+        pnl  
+0  22503.75  
+1  23872.50  
+2021-03-05 14:45:28,446:__main__:INFO:Cancelling the SL order. Since the universal exit closes all open positiions
+2021-03-05 14:45:28,450:__main__:INFO:Cancelling the SL order. Since the universal exit closes all open positiions
+2021-03-05 14:45:28,450:__main__:INFO:Placing Orders..
+2021-03-05 14:45:28,452:__main__:INFO:Cancelling order: 10025361 
+2021-03-05 14:45:28,454:__main__:INFO:Cancelling order: 10025362 
+2021-03-05 14:45:29,018:__main__:INFO:Cancelled SL order id : 10025361
+2021-03-05 14:45:29,020:__main__:INFO:Stop Loss Order Triggered
+2021-03-05 14:45:29,022:__main__:INFO:Repair order dtls: {'set': 1, 'txn_type': 'buy', 'strike': 14950, 'qty': 75, 'tr_qty': 75, 'expiry': '01Apr2021', 'optionType': 'ce', 'name': 'NIFTY2140114950CE', 'symbol': 59668, 'orderID': None, 'tradedPrice': None}
+2021-03-05 14:45:29,023:__main__:INFO:Orders must be square-off by Universal Exit Func
+2021-03-05 14:45:29,030:__main__:INFO:Order ID for BUY 59668 is: 10025364
+2021-03-05 14:45:29,032:__main__:INFO:Cancelled SL order id : 10025362
+2021-03-05 14:45:29,037:__main__:INFO:Stop Loss Order Triggered
+2021-03-05 14:45:29,039:__main__:INFO:Repair order dtls: {'set': 2, 'txn_type': 'buy', 'strike': 14850, 'qty': 75, 'tr_qty': 75, 'expiry': '01Apr2021', 'optionType': 'pe', 'name': 'NIFTY2140114850PE', 'symbol': 59660, 'orderID': None, 'tradedPrice': None}
+2021-03-05 14:45:29,041:__main__:INFO:Orders must be square-off by Universal Exit Func
+2021-03-05 14:45:32,593:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   14950   75     -75  01Apr2021         CE  NIFTY2140114950CE   
+1    2     sell   14850   75     -75  01Apr2021         PE  NIFTY2140114850PE   
+2    0      buy       0   75      75          0          0  NIFTY2140114950CE   
+3    1      buy   14950   75      75  01Apr2021         ce  NIFTY2140114950CE   
+4    2      buy   14850   75      75  01Apr2021         pe  NIFTY2140114850PE   
+
+   symbol   orderID  tradedPrice             dateTime        set_type  \
+0   59668  10025359       318.30  2021-03-05 14:45:09           Entry   
+1   59660  10025360       300.05  2021-03-05 14:45:09           Entry   
+2   59668         0         0.00  2021-03-05 14:45:31  Universal_Exit   
+3   59668         0         0.00                    0               0   
+4   59660         0         0.00                    0               0   
+
+   tr_amount  
+0  -23872.50  
+1  -22503.75  
+2       0.00  
+3       0.00  
+4       0.00  
+2021-03-05 14:45:32,605:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount  ltp  cur_amount  \
+0   59660  NIFTY2140114850PE       0       300.05  -22503.75    0           0   
+1   59668  NIFTY2140114950CE      75       318.30  -23872.50    0           0   
+
+        pnl  
+0  22503.75  
+1  23872.50  
+2021-03-05 14:45:32,608:__main__:INFO:
+
+Global PnL : 46376.25
+2021-03-05 14:45:32,884:__main__:INFO:traded price is: 402.15 and ordered  time is: 2021-03-05 14:45:35
+2021-03-05 14:45:32,886:__main__:INFO:Universal Exit order dtls: {'symbol': 59668, 'txn_type': 'buy', 'tr_qty': 75, 'qty': 75, 'name': 'NIFTY2140114950CE', 'orderID': 10025364, 'tradedPrice': 402.15, 'dateTime': '2021-03-05 14:45:35', 'set_type': 'Universal_Exit'}
+2021-03-05 14:45:37,889:__main__:INFO:Cleaning up..
+2021-03-05 14:55:39,746:__main__:INFO:Token file exists and created today
+2021-03-05 14:55:39,755:__main__:INFO:Initializing session with token..
+2021-03-05 14:55:40,081:__main__:INFO:weekly expiry is : 04Mar2021, monthly expiry is: 25Mar2021
+2021-03-05 14:55:40,084:__main__:INFO:MasterDump already exists.. reading directly
+2021-03-05 14:55:40,162:__main__:INFO:Starting a timer based thread to fetch LTP of traded instruments..
+2021-03-05 14:57:00,005:__main__:INFO:Placing orders for 1 at 14:57:00..
+2021-03-05 14:57:00,005:__main__:INFO:Placing orders for 2 at 14:57:00..
+2021-03-05 14:57:00,005:__main__:INFO:Placing orders for 4 at 14:57:00..
+2021-03-05 14:57:00,005:__main__:INFO:Placing orders for 3 at 14:57:00..
+2021-03-05 14:57:00,471:__main__:INFO:StrikePrice computed as : 14900
+2021-03-05 14:57:00,550:__main__:INFO:StrikePrice computed as : 14900
+2021-03-05 14:57:00,562:__main__:INFO:Unable to get symbol frpm instrument Dump..exiting.
+2021-03-05 14:57:00,640:__main__:INFO:Unable to get symbol frpm instrument Dump..exiting.
+2021-03-05 14:57:00,816:__main__:INFO:StrikePrice computed as : 35100
+2021-03-05 14:57:00,819:__main__:INFO:StrikePrice computed as : 35100
+2021-03-05 14:57:00,882:__main__:INFO:Unable to get symbol frpm instrument Dump..exiting.
+2021-03-05 14:57:00,897:__main__:INFO:Unable to get symbol frpm instrument Dump..exiting.
+2021-03-05 14:59:16,593:__main__:INFO:Cleaning up..
+2021-03-05 14:59:16,602:__main__:INFO:--------------------------------------------
+2021-03-05 14:59:16,609:__main__:INFO:Total Orders and its status: 
+ [] 
+
+2021-03-05 14:59:16,614:__main__:INFO:Summary
+2021-03-05 15:01:43,292:__main__:INFO:Token file exists and created today
+2021-03-05 15:01:43,301:__main__:INFO:Initializing session with token..
+2021-03-05 15:01:43,609:__main__:INFO:weekly expiry is : 04Mar2021, monthly expiry is: 25Mar2021
+2021-03-05 15:01:43,612:__main__:INFO:MasterDump already exists.. reading directly
+2021-03-05 15:01:43,683:__main__:INFO:Starting a timer based thread to fetch LTP of traded instruments..
+2021-03-05 15:01:43,690:__main__:INFO:Placing orders for 1 at 14:57:00..
+2021-03-05 15:01:43,697:__main__:INFO:Placing orders for 2 at 14:57:00..
+2021-03-05 15:01:43,698:__main__:INFO:Placing orders for 3 at 14:57:00..
+2021-03-05 15:01:43,700:__main__:INFO:Placing orders for 4 at 14:57:00..
+2021-03-05 15:01:44,241:__main__:INFO:StrikePrice computed as : 14900
+2021-03-05 15:01:44,263:__main__:INFO:StrikePrice computed as : 14900
+2021-03-05 15:01:44,271:__main__:INFO: Instrument Name is : NIFTY2130414850PE
+2021-03-05 15:01:44,340:__main__:INFO: Instrument Name is : NIFTY2130414950CE
+2021-03-05 15:01:44,397:__main__:INFO:Unable to get symbol from instrument Dump..exiting.
+2021-03-05 15:01:44,437:__main__:INFO:StrikePrice computed as : 35000
+2021-03-05 15:01:44,480:__main__:INFO:StrikePrice computed as : 35000
+2021-03-05 15:01:44,480:__main__:INFO:Unable to get symbol from instrument Dump..exiting.
+2021-03-05 15:01:44,512:__main__:INFO: Instrument Name is : BANKNIFTY2130435050CE
+2021-03-05 15:01:44,540:__main__:INFO: Instrument Name is : BANKNIFTY2130434950PE
+2021-03-05 15:01:44,630:__main__:INFO:Unable to get symbol from instrument Dump..exiting.
+2021-03-05 15:01:44,663:__main__:INFO:Unable to get symbol from instrument Dump..exiting.
+2021-03-05 15:02:04,402:__main__:ERROR:
+
+Keyboard exception received. Exiting.
+2021-03-05 15:02:04,406:__main__:INFO:Cleaning up..
+2021-03-05 15:02:04,413:__main__:INFO:--------------------------------------------
+2021-03-05 15:02:04,416:__main__:INFO:Total Orders and its status: 
+ [] 
+
+2021-03-05 15:02:04,419:__main__:INFO:Summary

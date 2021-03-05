@@ -5,8 +5,8 @@ Re-writing Strategy-1 (INDEX OPTION WRITING)
 @author: lmahendran
 """
 ####
-from datetime import datetime,date
-from dateutil.relativedelta import relativedelta, TH
+from datetime import datetime,date,timedelta
+from dateutil.relativedelta import relativedelta, TH ,FR
 from XTConnect.Connect import XTSConnect
 from pathlib import Path
 import time
@@ -22,6 +22,7 @@ import timer
 from threading import Thread
 from openpyxl import load_workbook
 from sys import exit
+from nsepy.derivatives import get_expiry_date
 
 ############## logging configs ##############
 
@@ -76,11 +77,11 @@ tr_insts = None
 ltp = {}
 gl_pnl = None
 idxs = ['NIFTY','BANKNIFTY']
-orders=[{'refId':10001, 'setno':1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'stoplosstrig': 15.25, 'startTime':"15:22:00"},
-		{'refId':10002, 'setno':2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'stoplosstrig': 15.25, 'startTime':"15:22:00"},
-        {'refId':10003, 'setno':3, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'stoplosstrig': 60.25, 'startTime':"15:22:00"},
-		{'refId':10004, 'setno':4, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'stoplosstrig': 60.25, 'startTime':"15:22:00"}]
-universal = {'exit_status': 'Idle', 'minPrice': -3000, 'maxPrice': 6900, 'exitTime':'15:29:00', 'ext_txn_type':'buy'}
+orders=[{'refId':10001, 'setno':1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'stoplosstrig': 15.25, 'startTime':"14:57:00"},
+		{'refId':10002, 'setno':2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'stoplosstrig': 15.25, 'startTime':"14:57:00"},
+        {'refId':10003, 'setno':3, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'stoplosstrig': 60.25, 'startTime':"14:57:00"},
+		{'refId':10004, 'setno':4, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'stoplosstrig': 60.25, 'startTime':"14:57:00"}]
+universal = {'exit_status': 'Idle', 'minPrice': -3000, 'maxPrice': 6900, 'exitTime':'15:10:00', 'ext_txn_type':'buy'}
 
 ############## Functions ##############
 
@@ -105,6 +106,22 @@ def nextThu_and_lastThu_expiry_date():
                 break
     monthly_exp=str((month_last_thu_expiry.strftime("%d")))+month_last_thu_expiry.strftime("%b").capitalize()+month_last_thu_expiry.strftime("%Y")
     weekly_exp=str((next_thursday_expiry.strftime("%d")))+next_thursday_expiry.strftime("%b").capitalize()+next_thursday_expiry.strftime("%Y")
+    logger.info(f'weekly expiry is : {weekly_exp}, monthly expiry is: {monthly_exp}')
+
+def get_expiry():
+    global weekly_exp, monthly_exp
+    now = datetime.today()
+    expiry = get_expiry_date(year=now.year, month=now.month)
+    expiry = sorted(expiry)
+    # weekly_exp1, *b, monthly_exp1 = expiry
+    # weekday = datetime.today().weekday()
+    current_week_dates = [now + timedelta(days=i) for i in range(0 - now.weekday(), 7 - now.weekday())]
+    if now.weekday() != 4:
+        expiry_date = [d for d in expiry if d in current_week_dates]
+        
+    
+    weekly_exp = weekly_exp1.strftime('%d%b%Y')
+    monthly_exp = monthly_exp1.strftime('%d%b%Y')
     logger.info(f'weekly expiry is : {weekly_exp}, monthly expiry is: {monthly_exp}')
 
 def masterDump():
@@ -165,7 +182,7 @@ def instrumentLookup(instrument_df,symbol):
 
 def getOrderList():
     aa = 0
-    logger.info('Checking OrderBook for order status..') 
+    # logger.info('Checking OrderBook for order status..') 
     while aa < 5:
         try:
            oBook_resp = xt.get_order_book()
@@ -325,9 +342,12 @@ def execute(orders):
                     inst_name = orders['idx']+(datetime.strftime(datetime.strptime(etr_inst['expiry'], '%d%b%Y'),'%y%b')).upper()+str(etr_inst['strike'])+etr_inst['optionType']
                 else:
                     inst_name = orders['idx']+(datetime.strftime(datetime.strptime(etr_inst['expiry'], '%d%b%Y'),'%y%#m%d'))+str(etr_inst['strike'])+etr_inst['optionType']
-                
+                logger.info(f' Instrument Name is : {inst_name}')
                 etr_inst['name'] = inst_name
                 etr_inst['symbol'] = int(instrumentLookup(instrument_df,inst_name))
+                if etr_inst['symbol'] == -1:
+                    logger.info('Unable to get symbol from instrument Dump..exiting.')
+                    exit()
                 etr_inst['orderID'] = None
                 etr_inst['tradedPrice'] = None
                 # logger.info(f"orders before placing orders : {orders}")
@@ -472,7 +492,8 @@ def dataToExcel(pnl_dump):
 ############## main ##############
 if __name__ == '__main__':
     threads=[]
-    nextThu_and_lastThu_expiry_date()
+    # nextThu_and_lastThu_expiry_date()
+    get_expiry()
     masterDump()
     getGlobalPnL()
     logger.info('Starting a timer based thread to fetch LTP of traded instruments..')
@@ -486,6 +507,9 @@ if __name__ == '__main__':
     try:
         exitCheck(universal)
         time.sleep(5)
+    except KeyboardInterrupt:
+        logger.error('\n\nKeyboard exception received. Exiting.')
+        exit()
     except Exception:
         logger.exception('Error Occured..')
     finally:

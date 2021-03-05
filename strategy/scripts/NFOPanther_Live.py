@@ -6,11 +6,12 @@ NFO Panther Strategy  - With Universal Exit - Array of Orders
 """
 
 from datetime import datetime,date
-from dateutil.relativedelta import relativedelta, TH
+from dateutil.relativedelta import relativedelta, TH, WE
 from XTConnect.Connect import XTSConnect
 from pathlib import Path
 import time
 import json
+import os
 import logging
 import pandas as pd
 pd.set_option('display.max_rows', None)
@@ -22,8 +23,10 @@ import timer
 from threading import Thread
 from openpyxl import load_workbook
 from sys import exit
+from nsepy.derivatives import get_expiry_date
 
 ############## logging configs ##############
+os.chdir(r'D:\Python\First_Choice_Git\xts\strategy\scripts')
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
@@ -97,7 +100,7 @@ def nextThu_and_lastThu_expiry_date():
     
     cmon = todayte.month
     if_month_next=(todayte + relativedelta(weekday=TH(1))).month
-    next_thursday_expiry=todayte + relativedelta(weekday=TH(1))
+    next_thursday_expiry=todayte + relativedelta(weekday=WE(1))
    
     if (if_month_next!=cmon):
         month_last_thu_expiry= todayte + relativedelta(weekday=TH(5))
@@ -113,6 +116,17 @@ def nextThu_and_lastThu_expiry_date():
                 break
     monthly_exp=str((month_last_thu_expiry.strftime("%d")))+month_last_thu_expiry.strftime("%b").capitalize()+month_last_thu_expiry.strftime("%Y")
     weekly_exp=str((next_thursday_expiry.strftime("%d")))+next_thursday_expiry.strftime("%b").capitalize()+next_thursday_expiry.strftime("%Y")
+    logger.info(f'weekly expiry is : {weekly_exp}, monthly expiry is: {monthly_exp}')
+
+def get_expiry():
+    global weekly_exp, monthly_exp
+    now = datetime.now()
+    expiry = get_expiry_date(year=now.year, month=now.month)
+    expiry = get_expiry_date(year=2021, month=4)
+    expiry = sorted(expiry)
+    weekly_exp1, *b, monthly_exp1 = expiry
+    weekly_exp = weekly_exp1.strftime('%d%b%Y')
+    monthly_exp = monthly_exp1.strftime('%d%b%Y')
     logger.info(f'weekly expiry is : {weekly_exp}, monthly expiry is: {monthly_exp}')
 
 def strikePrice(idx):
@@ -483,14 +497,14 @@ def main():
 ############## main ##############        
 if __name__ == '__main__':
     main()
-    starttime=time.time()
-    timeout = time.time() + 60*60*6 #runs for 6 hours
-    while time.time() <= timeout:
-        try:
-            time.sleep(5)
-        except KeyboardInterrupt:
-            print('\n\nKeyboard exception received. Exiting.')
-            exit() 
+    # starttime=time.time()
+    # timeout = time.time() + 60*60*6 #runs for 6 hours
+    # while time.time() <= timeout:
+    #     try:
+    #         time.sleep(5)
+    #     except KeyboardInterrupt:
+    #         print('\n\nKeyboard exception received. Exiting.')
+    #         exit() 
 ############# END ##############
 
 # tr_insts = [{'set': 1, 'txn_type': 'sell', 'strike': 14700, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10036280, 'tradedPrice': 111.9, 'dateTime': '2021-02-23 14:06:55', 'set_type': 'Entry'},

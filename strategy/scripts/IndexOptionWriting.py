@@ -5,8 +5,8 @@ Re-writing Strategy-1 (INDEX OPTION WRITING)
 @author: lmahendran
 """
 ####
-from datetime import datetime,date,timedelta
-from dateutil.relativedelta import relativedelta, TH ,FR
+from datetime import datetime,date
+from dateutil.relativedelta import relativedelta, TH , WE
 from XTConnect.Connect import XTSConnect
 from pathlib import Path
 import time
@@ -22,7 +22,6 @@ import timer
 from threading import Thread
 from openpyxl import load_workbook
 from sys import exit
-from nsepy.derivatives import get_expiry_date
 
 ############## logging configs ##############
 
@@ -77,11 +76,11 @@ tr_insts = None
 ltp = {}
 gl_pnl = None
 idxs = ['NIFTY','BANKNIFTY']
-orders=[{'refId':10001, 'setno':1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'stoplosstrig': 15.25, 'startTime':"14:57:00"},
-		{'refId':10002, 'setno':2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'stoplosstrig': 15.25, 'startTime':"14:57:00"},
-        {'refId':10003, 'setno':3, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'stoplosstrig': 60.25, 'startTime':"14:57:00"},
-		{'refId':10004, 'setno':4, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'stoplosstrig': 60.25, 'startTime':"14:57:00"}]
-universal = {'exit_status': 'Idle', 'minPrice': -3000, 'maxPrice': 6900, 'exitTime':'15:10:00', 'ext_txn_type':'buy'}
+orders=[{'refId':10001, 'setno':1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'straddle_points':50, 'stoplosstrig': 15.25, 'startTime':"23:10:00"},
+		{'refId':10002, 'setno':2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'straddle_points':50, 'stoplosstrig': 15.25, 'startTime':"23:10:00"},
+        {'refId':10003, 'setno':3, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'straddle_points':100, 'stoplosstrig': 60.25, 'startTime':"23:10:00"},
+		{'refId':10004, 'setno':4, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'straddle_points':100, 'stoplosstrig': 60.25, 'startTime':"23:10:00"}]
+universal = {'exit_status': 'Idle', 'minPrice': -3000, 'maxPrice': 6900, 'exitTime':'23:15:00', 'ext_txn_type':'buy'}
 
 ############## Functions ##############
 
@@ -111,21 +110,38 @@ def nextThu_and_lastThu_expiry_date():
 def get_expiry():
     global weekly_exp, monthly_exp
     now = datetime.today()
-    expiry = get_expiry_date(year=now.year, month=now.month)
-    expiry = sorted(expiry)
-    # weekly_exp1, *b, monthly_exp1 = expiry
-    # weekday = datetime.today().weekday()
-    current_week_dates = [now + timedelta(days=i) for i in range(0 - now.weekday(), 7 - now.weekday())]
-    if now.weekday() != 4:
-        expiry_date = [d for d in expiry if d in current_week_dates]
-        
-    
-    weekly_exp = weekly_exp1.strftime('%d%b%Y')
-    monthly_exp = monthly_exp1.strftime('%d%b%Y')
-    logger.info(f'weekly expiry is : {weekly_exp}, monthly expiry is: {monthly_exp}')
-
+    cmon = now.month
+    thu = (now + relativedelta(weekday=TH(1))).strftime('%d%b%Y')
+    wed = (now + relativedelta(weekday=WE(1))).strftime('%d%b%Y')
+    nxtmon = (now + relativedelta(weekday=TH(1))).month
+    if (nxtmon != cmon):
+        month_last_thu_expiry = now + relativedelta(weekday=TH(5))
+        if (month_last_thu_expiry.month!= nxtmon):
+            mon_thu = now + relativedelta(weekday=TH(4))
+            mon_wed = now + relativedelta(weekday=WE(4))
+    else:
+        for i in range(1, 7):
+            t = now + relativedelta(weekday=TH(i))
+            if t.month != cmon:
+                # since t is exceeded we need last one  which we can get by subtracting -2 since it is already a Thursday.
+                mon_thu = (t + relativedelta(weekday=TH(-2))).strftime('%d%b%Y')
+                mon_wed = (t + relativedelta(weekday=WE(-2))).strftime('%d%b%Y')
+                break
+    if thu in expiry_dates:
+        weekly_exp = thu
+        logger.info(f'Thursday - {weekly_exp} is the week expiry')
+    elif wed in expiry_dates:
+        weekly_exp = wed
+        logger.info(f'Wednesday - {weekly_exp} is the week expiry')
+    if mon_thu in expiry_dates:
+        monthly_exp = mon_thu
+        logger.info(f'Thursday - {monthly_exp} is the month expiry')
+    elif mon_wed in expiry_dates:
+        monthly_exp = mon_wed
+        logger.info(f'Wednesday - {monthly_exp} is the month expiry')
+                    
 def masterDump():
-    global instrument_df
+    global instrument_df, expiry_dates
     filename=f'../ohlc/NSE_Instruments_{cdate}.csv'
     file = Path(filename)
     if file.exists() and (date.today() == date.fromtimestamp(file.stat().st_mtime)):
@@ -140,13 +156,19 @@ def masterDump():
         spl=master.split('\n')
         mstr_df = pd.DataFrame([sub.split("|") for sub in spl],columns=(['ExchangeSegment','ExchangeInstrumentID','InstrumentType','Name','Description','Series','NameWithSeries','InstrumentID','PriceBand.High','PriceBand.Low','FreezeQty','TickSize',' LotSize','UnderlyingInstrumentId','UnderlyingIndexName','ContractExpiration','StrikePrice','OptionType']))
         instrument_df = mstr_df[mstr_df.Series == 'OPTIDX']
-        instrument_df.to_csv(f"../ohlc/NSE_Instruments_{cdate}.csv",index=False)        
+        instrument_df.to_csv(f"../ohlc/NSE_Instruments_{cdate}.csv",index=False)  
+        # getting expiry dates before hand
+    xpry_resp = xt.get_expiry_date(exchangeSegment=2, series='OPTIDX', symbol='NIFTY')
+    if 'result' in xpry_resp:
+        expiry_dates = xpry_resp['result']
+    else:
+        logger.error('Error getting Expiry dates..')
 
 def strikePrice(idx):
-    if idx in idxs[0]:
+    if idx == idxs[0]:
         base = 50
         ids = 'NIFTY 50'
-    elif idx in idxs[1]:
+    elif idx == idxs[1]:
         base = 100
         ids = 'NIFTY BANK'
     # if idx in idxs:
@@ -288,7 +310,7 @@ def placeSLOrder(symbol, txn_type, qty, slTrigger):
                          )
     if sl_order_resp['type'] != 'error':
         orderID = sl_order_resp['result']['AppOrderID']            #extracting the order id from response
-        logger.info(f'\n  StopLoss Order ID for {t_type}ing {instrumentLookup(instrument_df,symbol)} is: {orderID} \n')
+        logger.info(f'\n  StopLoss Order ID for {t_type}ing {symbol} is: {orderID} \n')
     else:
         logger.error(' \n Error in placing SL order \n')
     time.sleep(2)
@@ -299,6 +321,7 @@ def placeSLOrder(symbol, txn_type, qty, slTrigger):
         if orderLists:
             new_sl_orders = [ol for ol in orderLists if ol['AppOrderID'] == orderID and ol['OrderStatus'] != 'Filled']  
             if not new_sl_orders:
+                logger.info('Stop Loss Order Triggered inside repair block')
                 tradedPrice = float(next((orderList['OrderAverageTradedPrice'] for orderList in orderLists if orderList['AppOrderID'] == orderID and orderList['OrderStatus'] == 'Filled'),None))
                 LastUpdateDateTime=datetime.fromisoformat(next((orderList['LastUpdateDateTime'] for orderList in orderLists if orderList['AppOrderID'] == orderID and orderList['OrderStatus'] == 'Filled'))[0:19])
                 dateTime = LastUpdateDateTime.strftime("%Y-%m-%d %H:%M:%S")
@@ -327,7 +350,7 @@ def execute(orders):
                 sp = strikePrice(orders['idx'])
                 
                 if weekday != 3: #if not thursday, take straddle
-                    etr_inst['strike'] = sp + 50 if orders['otype'] == 'ce' else sp - 50
+                    etr_inst['strike'] = sp + orders['straddle_points'] if orders['otype'] == 'ce' else sp - orders['straddle_points']
                 else:
                     etr_inst['strike'] = sp
                 
@@ -368,25 +391,28 @@ def execute(orders):
                 etp = next(i['tradedPrice'] for i in tr_insts if i['set_type']=='Entry' and i['set']==orders['setno'])
                 slt = round((etp + orders['stoplosstrig']),2)
                 eqty = next(i['qty'] for i in tr_insts if i['set_type']=='Entry' and i['set']==orders['setno'])
-                
+                rpr_inst['set_type'] = 'Repair'
                 rpr_inst['set']=orders['setno']
                 rpr_inst['txn_type'] = orders['rpr_txn_type']
                 rpr_inst['strike'] = next(i['strike'] for i in tr_insts if i['set_type']=='Entry' and i['set']==orders['setno'])
                 rpr_inst['qty']= eqty
-                rpr_inst['tr_qty'] = -rpr_inst['qty'] if orders['rpr_txn_type'] == 'sell' else rpr_inst['qty']
+                # rpr_inst['tr_qty'] = -rpr_inst['qty'] if orders['rpr_txn_type'] == 'sell' else rpr_inst['qty']
                 if orders['expiry'] == 'week':
                     rpr_inst['expiry']=weekly_exp
-                rpr_inst['optionType'] = orders['otype']
+                rpr_inst['optionType'] = orders['otype'].upper()
                 rpr_inst['name'] = ename
                 rpr_inst['symbol'] = esymbol
-                rpr_inst['orderID'] = None
+                rpr_inst['orderID'] = None 
                 rpr_inst['tradedPrice'] = None
                 orderID, tradedPrice, dateTime = placeSLOrder(rpr_inst['symbol'], rpr_inst['txn_type'], rpr_inst['qty'], slt)
-                logger.info('Stop Loss Order Triggered')
+                rpr_inst['orderID'] = orderID
+                rpr_inst['tradedPrice'] = tradedPrice
+                rpr_inst['dateTime'] = dateTime
                 if orderID and tradedPrice:
+                    rpr_inst['tr_qty'] = -rpr_inst['qty'] if orders['rpr_txn_type'] == 'sell' else rpr_inst['qty']
                     orders['status'] = 'Repaired'
                     # orders['repairedAlready'] = True
-                    rpr_inst['set_type'] = 'Repair'
+                    # rpr_inst['set_type'] = 'Repair'
                 logger.info(f'Repair order dtls: {rpr_inst}')
                 tr_insts.append(rpr_inst)
                 continue
@@ -406,9 +432,12 @@ def exitCheck(universal):
     while True:
         if universal['exit_status'] == 'Idle':
             if (datetime.now() >= exitTime) or (gl_pnl <= universal['minPrice']) or (gl_pnl >= universal['maxPrice']):
-                logger.info('Exit time condition passed. Squaring off all open positions')
+                logger.info('Exit condition passed. Squaring off all open positions')
+                # squaring off based on the gdf value
                 for i in range(len(gdf)):
-                    logger.info(f'gdf is : {gdf}')
+                    # logger.info(f'gdf is : {gdf}')
+                    if gdf["tr_qty"].values[i] == 0:
+                        continue
                     ext_inst['symbol'] = int(gdf['symbol'].values[i])
                     ext_inst['txn_type'] = universal['ext_txn_type'] 
                     ext_inst['tr_qty'] = -int(gdf['tr_qty'].values[i])
@@ -462,7 +491,7 @@ def getGlobalPnL():
         logger.info(f'\n\nPositionList: \n {df}')
         logger.info(f'\n\nCombinedPositionsLists: \n {gdf}')
         gl_pnl = round(gdf['pnl'].sum(),2)
-        logger.info(f'\n\nGlobal PnL : {gl_pnl}')
+        logger.info(f'\n\nGlobal PnL : {gl_pnl} \n')
         pnl_dump.append([time.strftime("%d-%m-%Y %H:%M:%S"),gl_pnl])
     else:
         gl_pnl = 0
@@ -493,22 +522,25 @@ def dataToExcel(pnl_dump):
 if __name__ == '__main__':
     threads=[]
     # nextThu_and_lastThu_expiry_date()
-    get_expiry()
     masterDump()
-    getGlobalPnL()
-    logger.info('Starting a timer based thread to fetch LTP of traded instruments..')
-    fetchLtp = timer.RepeatedTimer(10, getLTP)
-    fetchPnL = timer.RepeatedTimer(10, getGlobalPnL)
+    get_expiry()
+       
     # execute(orders)
     for i in range(len(orders)):
         t = Thread(target=execute,args=(orders[i],))
         t.start()
         threads.append(t)
+
+    logger.info('Starting a timer based thread to fetch LTP of traded instruments..')
+    getGlobalPnL()
+    fetchLtp = timer.RepeatedTimer(10, getLTP)
+    fetchPnL = timer.RepeatedTimer(10, getGlobalPnL)
     try:
         exitCheck(universal)
         time.sleep(5)
     except KeyboardInterrupt:
         logger.error('\n\nKeyboard exception received. Exiting.')
+        universal['exit_status'] = 'Exited' #todo write dead case here to stop the threads in case of exitcheck exception
         exit()
     except Exception:
         logger.exception('Error Occured..')

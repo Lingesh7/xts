@@ -206,3 +206,1486 @@ Keyboard exception received. Exiting.
  [] 
 
 2021-03-05 15:02:04,419:__main__:INFO:Summary
+2021-03-05 20:56:41,103:__main__:INFO:Token file exists and created today
+2021-03-05 20:56:41,110:__main__:INFO:Initializing session with token..
+2021-03-05 21:38:05,991:__main__:INFO:Wednesday - {wed} is the week expiry
+2021-03-05 21:40:20,632:__main__:INFO:weekly expiry is : 11Mar2021, monthly expiry is: 25Mar2021
+2021-03-05 21:43:26,638:__main__:INFO:Wednesday - 10Mar2021 is the week expiry
+2021-03-05 21:50:37,234:__main__:INFO:Wednesday - 10Mar2021 is the week expiry
+2021-03-05 21:50:37,236:__main__:INFO:Thursday - 11Mar2021 is the moth expiry
+2021-03-05 21:51:14,230:__main__:INFO:Wednesday - 10Mar2021 is the week expiry
+2021-03-05 21:51:14,231:__main__:INFO:Thursday - 25Mar2021 is the month expiry
+2021-03-05 22:07:50,797:__main__:INFO:Wednesday - 10Mar2021 is the week expiry
+2021-03-05 22:07:50,797:__main__:INFO:Wednesday - 24Mar2021 is the month expiry
+2021-03-05 22:12:17,105:__main__:INFO:Token file exists and created today
+2021-03-05 22:12:17,110:__main__:INFO:Initializing session with token..
+2021-03-05 22:12:17,112:__main__:INFO:MasterDump already exists.. reading directly
+2021-03-05 22:12:18,254:__main__:INFO:Wednesday - 10Mar2021 is the week expiry
+2021-03-05 22:12:18,256:__main__:INFO:Thursday - 25Mar2021 is the month expiry
+2021-03-05 22:12:18,789:__main__:INFO:Starting a timer based thread to fetch LTP of traded instruments..
+2021-03-05 22:13:00,045:__main__:INFO:Placing orders for 2 at 22:13:00..
+2021-03-05 22:13:00,092:__main__:INFO:Placing orders for 1 at 22:13:00..
+2021-03-05 22:13:01,081:__main__:INFO:StrikePrice computed as : 15000
+2021-03-05 22:13:01,082:__main__:INFO:StrikePrice computed as : 15000
+2021-03-05 22:13:24,735:__main__:ERROR:
+
+Keyboard exception received. Exiting.
+2021-03-05 22:13:24,974:__main__:INFO:Cleaning up..
+2021-03-05 22:15:00,000:__main__:INFO:Placing orders for 3 at 22:15:00..
+2021-03-05 22:15:00,000:__main__:INFO:Placing orders for 4 at 22:15:00..
+2021-03-05 22:15:00,744:__main__:INFO:StrikePrice computed as : 35300
+2021-03-05 22:15:00,748:__main__:INFO:StrikePrice computed as : 35300
+2021-03-05 22:15:00,755:__main__:INFO:--------------------------------------------
+2021-03-05 22:15:00,757:__main__:INFO:Total Orders and its status: 
+ [] 
+
+2021-03-05 22:15:00,757:__main__:INFO:Summary
+2021-03-05 22:22:11,571:__main__:INFO:Token file exists and created today
+2021-03-05 22:22:11,574:__main__:INFO:Initializing session with token..
+2021-03-05 22:22:11,575:__main__:INFO:MasterDump already exists.. reading directly
+2021-03-05 22:22:12,590:__main__:INFO:Wednesday - 10Mar2021 is the week expiry
+2021-03-05 22:22:12,592:__main__:INFO:Thursday - 25Mar2021 is the month expiry
+2021-03-05 22:22:12,777:__main__:INFO:Starting a timer based thread to fetch LTP of traded instruments..
+2021-03-05 22:25:00,000:__main__:INFO:Placing orders for 4 at 22:25:00..
+2021-03-05 22:25:00,000:__main__:INFO:Placing orders for 2 at 22:25:00..
+2021-03-05 22:25:00,002:__main__:INFO:Placing orders for 1 at 22:25:00..
+2021-03-05 22:25:00,025:__main__:INFO:Placing orders for 3 at 22:25:00..
+2021-03-05 22:25:00,951:__main__:INFO:StrikePrice computed as : 35400
+2021-03-05 22:25:01,058:__main__:INFO: Instrument Name is : BANKNIFTY2131035350PE
+2021-03-05 22:25:01,090:__main__:INFO:StrikePrice computed as : 15050
+2021-03-05 22:25:01,152:__main__:INFO:Unable to get symbol from instrument Dump..exiting.
+2021-03-05 22:25:01,185:__main__:INFO:StrikePrice computed as : 15050
+2021-03-05 22:25:01,281:__main__:INFO:StrikePrice computed as : 35400
+2021-03-05 22:25:01,328:__main__:INFO: Instrument Name is : NIFTY2131015000PE
+2021-03-05 22:25:01,705:__main__:INFO: Instrument Name is : NIFTY2131015100CE
+2021-03-05 22:25:01,849:__main__:INFO: Instrument Name is : BANKNIFTY2131035450CE
+2021-03-05 22:25:01,944:__main__:INFO:Placing Orders..
+2021-03-05 22:25:02,132:__main__:INFO:Placing Orders..
+2021-03-05 22:25:02,238:__main__:INFO:Unable to get symbol from instrument Dump..exiting.
+2021-03-05 22:25:03,508:__main__:INFO:Order ID for SELL 41881 is: 10025373
+2021-03-05 22:25:03,509:__main__:INFO:Order ID for SELL 41877 is: 10025372
+2021-03-05 22:25:07,079:__main__:INFO:traded price is: 156.75 and ordered  time is: 2021-03-05 22:25:08
+2021-03-05 22:25:07,093:__main__:INFO:traded price is: 185.35 and ordered  time is: 2021-03-05 22:25:08
+2021-03-05 22:25:07,140:__main__:INFO:Entry order dtls: {'set': 1, 'txn_type': 'sell', 'strike': 15100, 'qty': 75, 'tr_qty': -75, 'expiry': '10Mar2021', 'optionType': 'CE', 'name': 'NIFTY2131015100CE', 'symbol': 41881, 'orderID': 10025373, 'tradedPrice': 156.75, 'dateTime': '2021-03-05 22:25:08', 'set_type': 'Entry'}
+2021-03-05 22:25:07,345:__main__:INFO:Entry order dtls: {'set': 2, 'txn_type': 'sell', 'strike': 15000, 'qty': 75, 'tr_qty': -75, 'expiry': '10Mar2021', 'optionType': 'PE', 'name': 'NIFTY2131015000PE', 'symbol': 41877, 'orderID': 10025372, 'tradedPrice': 185.35, 'dateTime': '2021-03-05 22:25:08', 'set_type': 'Entry'}
+2021-03-05 22:25:07,440:__main__:INFO:Placing SL Order..
+2021-03-05 22:25:07,551:__main__:INFO:Placing SL Order..
+2021-03-05 22:25:08,497:__main__:INFO:
+  StopLoss Order ID for BUYing -1 is: 10025374 
+
+2021-03-05 22:25:08,578:__main__:INFO:
+  StopLoss Order ID for BUYing -1 is: 10025375 
+
+2021-03-05 22:25:10,635:__main__:INFO:Checking StopLoss status..
+2021-03-05 22:25:10,692:__main__:INFO:Checking StopLoss status..
+2021-03-05 22:25:10,787:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:25:11,015:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount  ltp  cur_amount  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  NaN         NaN   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  NaN         NaN   
+
+   pnl  
+0  NaN  
+1  NaN  
+2021-03-05 22:25:11,028:__main__:INFO:
+
+Global PnL : 0.0
+2021-03-05 22:25:18,843:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:25:19,023:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  185.65   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  156.50   
+
+   cur_amount    pnl  
+0   -13923.75 -22.50  
+1   -11737.50  18.75  
+2021-03-05 22:25:19,197:__main__:INFO:
+
+Global PnL : -3.75
+2021-03-05 22:25:28,904:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:25:29,031:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  188.55   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  153.95   
+
+   cur_amount    pnl  
+0   -14141.25 -240.0  
+1   -11546.25  210.0  
+2021-03-05 22:25:29,076:__main__:INFO:
+
+Global PnL : -30.0
+2021-03-05 22:25:38,909:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:25:38,966:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount    ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  190.0   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  152.1   
+
+   cur_amount     pnl  
+0    -14250.0 -348.75  
+1    -11407.5  348.75  
+2021-03-05 22:25:39,056:__main__:INFO:
+
+Global PnL : 0.0
+2021-03-05 22:25:49,037:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:25:49,100:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  189.60   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  152.35   
+
+   cur_amount     pnl  
+0   -14220.00 -318.75  
+1   -11426.25  330.00  
+2021-03-05 22:25:49,161:__main__:INFO:
+
+Global PnL : 11.25
+2021-03-05 22:25:59,037:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:25:59,253:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  191.45   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  149.50   
+
+   cur_amount     pnl  
+0   -14358.75 -457.50  
+1   -11212.50  543.75  
+2021-03-05 22:25:59,376:__main__:INFO:
+
+Global PnL : 86.25
+2021-03-05 22:26:09,181:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:26:09,284:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  193.75   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  148.80   
+
+   cur_amount     pnl  
+0   -14531.25 -630.00  
+1   -11160.00  596.25  
+2021-03-05 22:26:09,401:__main__:INFO:
+
+Global PnL : -33.75
+2021-03-05 22:26:19,081:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:26:19,140:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  192.40   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  150.45   
+
+   cur_amount     pnl  
+0   -14430.00 -528.75  
+1   -11283.75  472.50  
+2021-03-05 22:26:19,326:__main__:INFO:
+
+Global PnL : -56.25
+2021-03-05 22:26:29,112:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:26:29,204:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  193.75   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  149.50   
+
+   cur_amount     pnl  
+0   -14531.25 -630.00  
+1   -11212.50  543.75  
+2021-03-05 22:26:29,372:__main__:INFO:
+
+Global PnL : -86.25
+2021-03-05 22:26:39,210:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:26:39,258:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  193.90   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  149.85   
+
+   cur_amount     pnl  
+0   -14542.50 -641.25  
+1   -11238.75  517.50  
+2021-03-05 22:26:39,271:__main__:INFO:
+
+Global PnL : -123.75
+2021-03-05 22:26:49,185:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:26:49,310:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount    ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  192.5   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  151.4   
+
+   cur_amount     pnl  
+0    -14437.5 -536.25  
+1    -11355.0  401.25  
+2021-03-05 22:26:49,561:__main__:INFO:
+
+Global PnL : -135.0
+2021-03-05 22:26:59,223:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:26:59,318:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  191.20   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  152.45   
+
+   cur_amount     pnl  
+0   -14340.00 -438.75  
+1   -11433.75  322.50  
+2021-03-05 22:26:59,454:__main__:INFO:
+
+Global PnL : -116.25
+2021-03-05 22:27:09,231:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:27:09,339:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  187.75   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  154.75   
+
+   cur_amount    pnl  
+0   -14081.25 -180.0  
+1   -11606.25  150.0  
+2021-03-05 22:27:09,509:__main__:INFO:
+
+Global PnL : -30.0
+2021-03-05 22:27:19,304:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:27:19,372:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  188.40   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  153.95   
+
+   cur_amount     pnl  
+0   -14130.00 -228.75  
+1   -11546.25  210.00  
+2021-03-05 22:27:19,608:__main__:INFO:
+
+Global PnL : -18.75
+2021-03-05 22:27:29,373:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:27:29,472:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount    ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  191.9   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  151.4   
+
+   cur_amount     pnl  
+0    -14392.5 -491.25  
+1    -11355.0  401.25  
+2021-03-05 22:27:29,531:__main__:INFO:
+
+Global PnL : -90.0
+2021-03-05 22:27:39,374:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:27:39,432:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  192.55   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  150.70   
+
+   cur_amount     pnl  
+0   -14441.25 -540.00  
+1   -11302.50  453.75  
+2021-03-05 22:27:39,540:__main__:INFO:
+
+Global PnL : -86.25
+2021-03-05 22:27:49,420:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:27:49,605:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  191.70   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  151.35   
+
+   cur_amount     pnl  
+0   -14377.50 -476.25  
+1   -11351.25  405.00  
+2021-03-05 22:27:49,711:__main__:INFO:
+
+Global PnL : -71.25
+2021-03-05 22:27:59,448:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:27:59,712:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  192.85   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  150.40   
+
+   cur_amount     pnl  
+0   -14463.75 -562.50  
+1   -11280.00  476.25  
+2021-03-05 22:27:59,756:__main__:INFO:
+
+Global PnL : -86.25
+2021-03-05 22:28:09,514:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:28:09,542:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount    ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  191.0   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  151.9   
+
+   cur_amount     pnl  
+0    -14325.0 -423.75  
+1    -11392.5  363.75  
+2021-03-05 22:28:09,587:__main__:INFO:
+
+Global PnL : -60.0
+2021-03-05 22:28:19,526:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:28:19,558:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  190.60   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  151.15   
+
+   cur_amount     pnl  
+0   -14295.00 -393.75  
+1   -11336.25  420.00  
+2021-03-05 22:28:19,570:__main__:INFO:
+
+Global PnL : 26.25
+2021-03-05 22:28:29,587:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:28:29,640:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  193.85   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  148.80   
+
+   cur_amount     pnl  
+0   -14538.75 -637.50  
+1   -11160.00  596.25  
+2021-03-05 22:28:29,733:__main__:INFO:
+
+Global PnL : -41.25
+2021-03-05 22:28:39,655:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:28:39,786:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  198.25   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  144.60   
+
+   cur_amount     pnl  
+0   -14868.75 -967.50  
+1   -10845.00  911.25  
+2021-03-05 22:28:39,990:__main__:INFO:
+
+Global PnL : -56.25
+2021-03-05 22:28:49,663:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:28:49,784:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  195.40   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  146.45   
+
+   cur_amount     pnl  
+0   -14655.00 -753.75  
+1   -10983.75  772.50  
+2021-03-05 22:28:49,905:__main__:INFO:
+
+Global PnL : 18.75
+2021-03-05 22:28:59,727:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:28:59,820:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  196.35   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  144.85   
+
+   cur_amount    pnl  
+0   -14726.25 -825.0  
+1   -10863.75  892.5  
+2021-03-05 22:28:59,886:__main__:INFO:
+
+Global PnL : 67.5
+2021-03-05 22:29:09,751:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:29:09,822:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount    ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  193.7   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  147.6   
+
+   cur_amount     pnl  
+0    -14527.5 -626.25  
+1    -11070.0  686.25  
+2021-03-05 22:29:09,951:__main__:INFO:
+
+Global PnL : 60.0
+2021-03-05 22:29:19,763:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:29:19,886:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  195.85   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  146.90   
+
+   cur_amount     pnl  
+0   -14688.75 -787.50  
+1   -11017.50  738.75  
+2021-03-05 22:29:19,946:__main__:INFO:
+
+Global PnL : -48.75
+2021-03-05 22:29:29,762:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:29:29,819:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount    ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  194.6   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  148.0   
+
+   cur_amount     pnl  
+0    -14595.0 -693.75  
+1    -11100.0  656.25  
+2021-03-05 22:29:29,992:__main__:INFO:
+
+Global PnL : -37.5
+2021-03-05 22:29:39,857:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:29:39,947:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  192.35   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  148.95   
+
+   cur_amount    pnl  
+0   -14426.25 -525.0  
+1   -11171.25  585.0  
+2021-03-05 22:29:40,055:__main__:INFO:
+
+Global PnL : 60.0
+2021-03-05 22:29:49,886:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:29:50,070:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  194.45   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  148.10   
+
+   cur_amount     pnl  
+0   -14583.75 -682.50  
+1   -11107.50  648.75  
+2021-03-05 22:29:50,297:__main__:INFO:
+
+Global PnL : -33.75
+2021-03-05 22:29:59,922:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41881  10025373       156.75  2021-03-05 22:25:08    Entry  -11756.25  
+1   41877  10025372       185.35  2021-03-05 22:25:08    Entry  -13901.25  
+2021-03-05 22:29:59,936:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  194.55   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  147.95   
+
+   cur_amount    pnl  
+0   -14591.25 -690.0  
+1   -11096.25  660.0  
+2021-03-05 22:30:00,000:__main__:INFO:Exit time condition passed. Squaring off all open positions
+2021-03-05 22:30:00,000:__main__:INFO:
+
+Global PnL : -30.0
+2021-03-05 22:30:00,004:__main__:INFO:gdf is :    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  194.55   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  147.95   
+
+   cur_amount    pnl  
+0   -14591.25 -690.0  
+1   -11096.25  660.0  
+2021-03-05 22:30:00,006:__main__:INFO:Placing Orders..
+2021-03-05 22:30:00,775:__main__:INFO:Order ID for BUY 41877 is: 10025376
+2021-03-05 22:30:03,547:__main__:INFO:traded price is: 195.75 and ordered  time is: 2021-03-05 22:30:05
+2021-03-05 22:30:03,549:__main__:INFO:Universal Exit order dtls: {'symbol': 41877, 'txn_type': 'buy', 'tr_qty': 75, 'qty': 75, 'name': 'NIFTY2131015000PE', 'orderID': 10025376, 'tradedPrice': 195.75, 'dateTime': '2021-03-05 22:30:05', 'set_type': 'Universal_Exit'}
+2021-03-05 22:30:03,558:__main__:INFO:gdf is :    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41877  NIFTY2131015000PE     -75       185.35  -13901.25  194.55   
+1   41881  NIFTY2131015100CE     -75       156.75  -11756.25  147.95   
+
+   cur_amount    pnl  
+0   -14591.25 -690.0  
+1   -11096.25  660.0  
+2021-03-05 22:30:03,559:__main__:INFO:Placing Orders..
+2021-03-05 22:30:05,212:__main__:INFO:Order ID for BUY 41881 is: 10025377
+2021-03-05 22:30:05,229:__main__:INFO:Cancelling the SL order. Since the universal exit closes all open positiions
+2021-03-05 22:30:05,231:__main__:INFO:Cancelling order: 10025374 
+2021-03-05 22:30:05,246:__main__:INFO:Cancelling the SL order. Since the universal exit closes all open positiions
+2021-03-05 22:30:05,248:__main__:INFO:Cancelling order: 10025375 
+2021-03-05 22:30:06,087:__main__:INFO:Cancelled SL order id : 10025375
+2021-03-05 22:30:06,090:__main__:INFO:Cancelled SL order id : 10025374
+2021-03-05 22:30:06,093:__main__:INFO:Stop Loss Order Triggered
+2021-03-05 22:30:06,094:__main__:INFO:Stop Loss Order Triggered
+2021-03-05 22:30:06,096:__main__:INFO:Repair order dtls: {'set': 2, 'txn_type': 'buy', 'strike': 15000, 'qty': 75, 'tr_qty': 75, 'expiry': '10Mar2021', 'optionType': 'pe', 'name': 'NIFTY2131015000PE', 'symbol': 41877, 'orderID': None, 'tradedPrice': None}
+2021-03-05 22:30:06,097:__main__:INFO:Repair order dtls: {'set': 1, 'txn_type': 'buy', 'strike': 15100, 'qty': 75, 'tr_qty': 75, 'expiry': '10Mar2021', 'optionType': 'ce', 'name': 'NIFTY2131015100CE', 'symbol': 41881, 'orderID': None, 'tradedPrice': None}
+2021-03-05 22:30:06,103:__main__:INFO:Orders must be square-off by Universal Exit Func
+2021-03-05 22:30:06,105:__main__:INFO:Orders must be square-off by Universal Exit Func
+2021-03-05 22:30:08,552:__main__:INFO:traded price is: 146.4 and ordered  time is: 2021-03-05 22:30:09
+2021-03-05 22:30:08,555:__main__:INFO:Universal Exit order dtls: {'symbol': 41881, 'txn_type': 'buy', 'tr_qty': 75, 'qty': 75, 'name': 'NIFTY2131015100CE', 'orderID': 10025377, 'tradedPrice': 146.4, 'dateTime': '2021-03-05 22:30:09', 'set_type': 'Universal_Exit'}
+2021-03-05 22:30:09,908:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    1     sell   15100   75     -75  10Mar2021         CE  NIFTY2131015100CE   
+1    2     sell   15000   75     -75  10Mar2021         PE  NIFTY2131015000PE   
+2    0      buy       0   75      75          0          0  NIFTY2131015100CE   
+3    2      buy   15000   75      75  10Mar2021         pe  NIFTY2131015000PE   
+4    1      buy   15100   75      75  10Mar2021         ce  NIFTY2131015100CE   
+5    0      buy       0   75      75          0          0  NIFTY2131015100CE   
+
+   symbol   orderID  tradedPrice             dateTime        set_type  \
+0   41881  10025373       156.75  2021-03-05 22:25:08           Entry   
+1   41877  10025372       185.35  2021-03-05 22:25:08           Entry   
+2   41881  10025377       146.40  2021-03-05 22:30:09  Universal_Exit   
+3   41877         0         0.00                    0               0   
+4   41881         0         0.00                    0               0   
+5   41881  10025377       146.40  2021-03-05 22:30:09  Universal_Exit   
+
+   tr_amount  
+0  -11756.25  
+1  -13901.25  
+2   10980.00  
+3       0.00  
+4       0.00  
+5   10980.00  
+2021-03-05 22:30:09,915:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41877  NIFTY2131015000PE       0       185.35  -13901.25  194.15   
+1   41881  NIFTY2131015100CE     150       449.55   10203.75  147.30   
+
+   cur_amount       pnl  
+0         0.0  13901.25  
+1     22095.0  11891.25  
+2021-03-05 22:30:09,917:__main__:INFO:
+
+Global PnL : 25792.5
+2021-03-05 22:30:13,560:__main__:INFO:Cleaning up..
+2021-03-05 22:40:30,579:__main__:INFO:Token file exists and created today
+2021-03-05 22:40:30,595:__main__:INFO:Initializing session with token..
+2021-03-05 22:40:30,595:__main__:INFO:MasterDump already exists.. reading directly
+2021-03-05 22:40:31,505:__main__:INFO:Wednesday - 10Mar2021 is the week expiry
+2021-03-05 22:40:31,505:__main__:INFO:Thursday - 25Mar2021 is the month expiry
+2021-03-05 22:40:31,844:__main__:INFO:Starting a timer based thread to fetch LTP of traded instruments..
+2021-03-05 22:42:00,000:__main__:INFO:Placing orders for 3 at 22:42:00..
+2021-03-05 22:42:00,000:__main__:INFO:Placing orders for 2 at 22:42:00..
+2021-03-05 22:42:00,025:__main__:INFO:Placing orders for 1 at 22:42:00..
+2021-03-05 22:42:00,025:__main__:INFO:Placing orders for 4 at 22:42:00..
+2021-03-05 22:42:00,895:__main__:INFO:StrikePrice computed as : 35300
+2021-03-05 22:42:00,941:__main__:INFO: Instrument Name is : BANKNIFTY2131035350CE
+2021-03-05 22:42:01,014:__main__:INFO:StrikePrice computed as : 15000
+2021-03-05 22:42:01,061:__main__:INFO:Unable to get symbol from instrument Dump..exiting.
+2021-03-05 22:42:01,108:__main__:INFO:StrikePrice computed as : 15000
+2021-03-05 22:42:01,140:__main__:INFO:StrikePrice computed as : 35300
+2021-03-05 22:42:01,259:__main__:INFO: Instrument Name is : NIFTY2131014950PE
+2021-03-05 22:42:01,680:__main__:INFO: Instrument Name is : NIFTY2131015050CE
+2021-03-05 22:42:01,821:__main__:INFO: Instrument Name is : BANKNIFTY2131035250PE
+2021-03-05 22:42:01,964:__main__:INFO:Placing Orders..
+2021-03-05 22:42:02,181:__main__:INFO:Unable to get symbol from instrument Dump..exiting.
+2021-03-05 22:42:02,226:__main__:INFO:Placing Orders..
+2021-03-05 22:42:03,293:__main__:INFO:Order ID for SELL 41878 is: 10025379
+2021-03-05 22:42:03,294:__main__:INFO:Order ID for SELL 41874 is: 10025378
+2021-03-05 22:42:06,665:__main__:INFO:traded price is: 179.6 and ordered  time is: 2021-03-05 22:42:07
+2021-03-05 22:42:06,666:__main__:INFO:traded price is: 161.5 and ordered  time is: 2021-03-05 22:42:07
+2021-03-05 22:42:06,818:__main__:INFO:Entry order dtls: {'set': 2, 'txn_type': 'sell', 'strike': 14950, 'qty': 75, 'tr_qty': -75, 'expiry': '10Mar2021', 'optionType': 'PE', 'name': 'NIFTY2131014950PE', 'symbol': 41874, 'orderID': 10025378, 'tradedPrice': 179.6, 'dateTime': '2021-03-05 22:42:07', 'set_type': 'Entry'}
+2021-03-05 22:42:06,880:__main__:INFO:Entry order dtls: {'set': 1, 'txn_type': 'sell', 'strike': 15050, 'qty': 75, 'tr_qty': -75, 'expiry': '10Mar2021', 'optionType': 'CE', 'name': 'NIFTY2131015050CE', 'symbol': 41878, 'orderID': 10025379, 'tradedPrice': 161.5, 'dateTime': '2021-03-05 22:42:07', 'set_type': 'Entry'}
+2021-03-05 22:42:07,099:__main__:INFO:Placing SL Order..
+2021-03-05 22:42:07,271:__main__:INFO:Placing SL Order..
+2021-03-05 22:42:08,231:__main__:INFO:
+  StopLoss Order ID for BUYing -1 is: 10025381 
+
+2021-03-05 22:42:08,249:__main__:INFO:
+  StopLoss Order ID for BUYing -1 is: 10025380 
+
+2021-03-05 22:42:10,392:__main__:INFO:Checking StopLoss status..
+2021-03-05 22:42:10,612:__main__:INFO:Checking StopLoss status..
+2021-03-05 22:42:17,535:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    2     sell   14950   75     -75  10Mar2021         PE  NIFTY2131014950PE   
+1    1     sell   15050   75     -75  10Mar2021         CE  NIFTY2131015050CE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41874  10025378        179.6  2021-03-05 22:42:07    Entry   -13470.0  
+1   41878  10025379        161.5  2021-03-05 22:42:07    Entry   -12112.5  
+2021-03-05 22:42:17,733:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41874  NIFTY2131014950PE     -75        179.6   -13470.0  181.10   
+1   41878  NIFTY2131015050CE     -75        161.5   -12112.5  160.55   
+
+   cur_amount     pnl  
+0   -13582.50 -112.50  
+1   -12041.25   71.25  
+2021-03-05 22:42:17,938:__main__:INFO:
+
+Global PnL : -41.25 
+
+2021-03-05 22:42:25,561:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    2     sell   14950   75     -75  10Mar2021         PE  NIFTY2131014950PE   
+1    1     sell   15050   75     -75  10Mar2021         CE  NIFTY2131015050CE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41874  10025378        179.6  2021-03-05 22:42:07    Entry   -13470.0  
+1   41878  10025379        161.5  2021-03-05 22:42:07    Entry   -12112.5  
+2021-03-05 22:42:25,623:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41874  NIFTY2131014950PE     -75        179.6   -13470.0  181.10   
+1   41878  NIFTY2131015050CE     -75        161.5   -12112.5  160.55   
+
+   cur_amount     pnl  
+0   -13582.50 -112.50  
+1   -12041.25   71.25  
+2021-03-05 22:42:25,637:__main__:INFO:
+
+Global PnL : -41.25 
+
+2021-03-05 22:42:35,558:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    2     sell   14950   75     -75  10Mar2021         PE  NIFTY2131014950PE   
+1    1     sell   15050   75     -75  10Mar2021         CE  NIFTY2131015050CE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41874  10025378        179.6  2021-03-05 22:42:07    Entry   -13470.0  
+1   41878  10025379        161.5  2021-03-05 22:42:07    Entry   -12112.5  
+2021-03-05 22:42:35,615:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41874  NIFTY2131014950PE     -75        179.6   -13470.0  189.50   
+1   41878  NIFTY2131015050CE     -75        161.5   -12112.5  152.35   
+
+   cur_amount     pnl  
+0   -14212.50 -742.50  
+1   -11426.25  686.25  
+2021-03-05 22:42:35,782:__main__:INFO:
+
+Global PnL : -56.25 
+
+2021-03-05 22:42:45,598:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    2     sell   14950   75     -75  10Mar2021         PE  NIFTY2131014950PE   
+1    1     sell   15050   75     -75  10Mar2021         CE  NIFTY2131015050CE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41874  10025378        179.6  2021-03-05 22:42:07    Entry   -13470.0  
+1   41878  10025379        161.5  2021-03-05 22:42:07    Entry   -12112.5  
+2021-03-05 22:42:45,656:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount    ltp  \
+0   41874  NIFTY2131014950PE     -75        179.6   -13470.0  187.8   
+1   41878  NIFTY2131015050CE     -75        161.5   -12112.5  154.4   
+
+   cur_amount    pnl  
+0    -14085.0 -615.0  
+1    -11580.0  532.5  
+2021-03-05 22:42:45,735:__main__:INFO:
+
+Global PnL : -82.5 
+
+2021-03-05 22:42:55,664:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    2     sell   14950   75     -75  10Mar2021         PE  NIFTY2131014950PE   
+1    1     sell   15050   75     -75  10Mar2021         CE  NIFTY2131015050CE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41874  10025378        179.6  2021-03-05 22:42:07    Entry   -13470.0  
+1   41878  10025379        161.5  2021-03-05 22:42:07    Entry   -12112.5  
+2021-03-05 22:42:55,753:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount    ltp  \
+0   41874  NIFTY2131014950PE     -75        179.6   -13470.0  189.9   
+1   41878  NIFTY2131015050CE     -75        161.5   -12112.5  153.9   
+
+   cur_amount    pnl  
+0    -14242.5 -772.5  
+1    -11542.5  570.0  
+2021-03-05 22:42:55,814:__main__:INFO:
+
+Global PnL : -202.5 
+
+2021-03-05 22:42:56,224:__main__:INFO:traded price is: 195.0 and ordered  time is: 2021-03-05 22:42:55
+2021-03-05 22:42:56,362:__main__:INFO:Stop Loss Order Triggered
+2021-03-05 22:42:56,486:__main__:INFO:Repair order dtls: {'set': 2, 'txn_type': 'buy', 'strike': 14950, 'qty': 75, 'tr_qty': 75, 'expiry': '10Mar2021', 'optionType': 'pe', 'name': 'NIFTY2131014950PE', 'symbol': 41874, 'orderID': None, 'tradedPrice': None, 'set_type': 'Repair'}
+2021-03-05 22:42:56,597:__main__:INFO:Repaired the Entry Order set: 2.
+2021-03-05 22:43:05,688:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType               name  \
+0    2     sell   14950   75     -75  10Mar2021         PE  NIFTY2131014950PE   
+1    1     sell   15050   75     -75  10Mar2021         CE  NIFTY2131015050CE   
+2    2      buy   14950   75      75  10Mar2021         pe  NIFTY2131014950PE   
+
+   symbol   orderID  tradedPrice             dateTime set_type  tr_amount  
+0   41874  10025378        179.6  2021-03-05 22:42:07    Entry   -13470.0  
+1   41878  10025379        161.5  2021-03-05 22:42:07    Entry   -12112.5  
+2   41874         0          0.0                    0   Repair        0.0  
+2021-03-05 22:43:05,734:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol               name  tr_qty  tradedPrice  tr_amount    ltp  \
+0   41874  NIFTY2131014950PE       0        179.6   -13470.0  195.1   
+1   41878  NIFTY2131015050CE     -75        161.5   -12112.5  149.7   
+
+   cur_amount      pnl  
+0         0.0  13470.0  
+1    -11227.5    885.0  
+2021-03-05 22:43:05,941:__main__:INFO:
+
+Global PnL : 14355.0 
+
+2021-03-05 22:43:05,941:__main__:INFO:Exit time condition passed. Squaring off all open positions
+2021-03-05 22:43:05,948:__main__:INFO:gdf is :    symbol               name  tr_qty  tradedPrice  tr_amount    ltp  \
+0   41874  NIFTY2131014950PE       0        179.6   -13470.0  195.1   
+1   41878  NIFTY2131015050CE     -75        161.5   -12112.5  149.7   
+
+   cur_amount      pnl  
+0         0.0  13470.0  
+1    -11227.5    885.0  
+2021-03-05 22:43:05,948:__main__:INFO:Placing Orders..
+2021-03-05 22:43:06,534:__main__:ERROR:Error Occured..
+Traceback (most recent call last):
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 249, in place_order
+    response = self._post('order.place', json.dumps(params))
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 639, in _post
+    return self._request(route, "POST", params)
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 691, in _request
+    message = "Description: " + data["description"] + " errors: " + data['result']["errors"]
+TypeError: can only concatenate str (not "list") to str
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\scripts\IndexOptionWriting.py", line 243, in placeOrder
+    order_resp = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 252, in place_order
+    return response['description']
+UnboundLocalError: local variable 'response' referenced before assignment
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\scripts\IndexOptionWriting.py", line 532, in <module>
+    exitCheck(universal)
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\scripts\IndexOptionWriting.py", line 441, in exitCheck
+    orderID, tradedPrice, dateTime = placeOrder(ext_inst['symbol'], ext_inst['txn_type'], ext_inst['qty'])
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\scripts\IndexOptionWriting.py", line 288, in placeOrder
+    except Exception():
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2021-03-05 22:43:06,541:__main__:INFO:Cleaning up..
+2021-03-05 23:10:03,118:__main__:INFO:Token file exists and created today
+2021-03-05 23:10:03,122:__main__:INFO:Initializing session with token..
+2021-03-05 23:10:03,123:__main__:INFO:MasterDump already exists.. reading directly
+2021-03-05 23:10:03,692:__main__:INFO:Wednesday - 10Mar2021 is the week expiry
+2021-03-05 23:10:03,694:__main__:INFO:Thursday - 25Mar2021 is the month expiry
+2021-03-05 23:10:03,698:__main__:INFO:Placing orders for 1 at 23:10:00..
+2021-03-05 23:10:03,702:__main__:INFO:Placing orders for 2 at 23:10:00..
+2021-03-05 23:10:03,704:__main__:INFO:Placing orders for 3 at 23:10:00..
+2021-03-05 23:10:03,704:__main__:INFO:Placing orders for 4 at 23:10:00..
+2021-03-05 23:10:03,704:__main__:INFO:Starting a timer based thread to fetch LTP of traded instruments..
+2021-03-05 23:10:04,349:__main__:INFO:StrikePrice computed as : 35100
+2021-03-05 23:10:04,350:__main__:INFO:StrikePrice computed as : 35100
+2021-03-05 23:10:04,410:__main__:INFO:StrikePrice computed as : 14900
+2021-03-05 23:10:04,440:__main__:INFO:StrikePrice computed as : 14900
+2021-03-05 23:10:04,471:__main__:INFO: Instrument Name is : BANKNIFTY2131035000PE
+2021-03-05 23:10:04,563:__main__:INFO: Instrument Name is : BANKNIFTY2131035200CE
+2021-03-05 23:10:04,752:__main__:INFO: Instrument Name is : NIFTY2131014850PE
+2021-03-05 23:10:04,908:__main__:INFO: Instrument Name is : NIFTY2131014950CE
+2021-03-05 23:10:05,242:__main__:INFO:Placing Orders..
+2021-03-05 23:10:05,291:__main__:INFO:Placing Orders..
+2021-03-05 23:10:05,466:__main__:INFO:Placing Orders..
+2021-03-05 23:10:05,582:__main__:INFO:Placing Orders..
+2021-03-05 23:10:06,582:__main__:INFO:Order ID for SELL 50104 is: 10025383
+2021-03-05 23:10:06,598:__main__:INFO:Order ID for SELL 41654 is: 10025382
+2021-03-05 23:10:06,645:__main__:INFO:Order ID for SELL 41868 is: 10025384
+2021-03-05 23:10:07,709:__main__:INFO:Order ID for SELL 41872 is: 10025385
+2021-03-05 23:10:09,462:__main__:INFO:traded price is: 583.7 and ordered  time is: 2021-03-05 23:10:11
+2021-03-05 23:10:09,518:__main__:INFO:traded price is: 570.7 and ordered  time is: 2021-03-05 23:10:10
+2021-03-05 23:10:09,569:__main__:INFO:traded price is: 160.0 and ordered  time is: 2021-03-05 23:10:11
+2021-03-05 23:10:09,569:__main__:INFO:Entry order dtls: {'set': 3, 'txn_type': 'sell', 'strike': 35200, 'qty': 25, 'tr_qty': -25, 'expiry': '10Mar2021', 'optionType': 'CE', 'name': 'BANKNIFTY2131035200CE', 'symbol': 50104, 'orderID': 10025383, 'tradedPrice': 583.7, 'dateTime': '2021-03-05 23:10:11', 'set_type': 'Entry'}
+2021-03-05 23:10:09,663:__main__:INFO:Entry order dtls: {'set': 4, 'txn_type': 'sell', 'strike': 35000, 'qty': 25, 'tr_qty': -25, 'expiry': '10Mar2021', 'optionType': 'PE', 'name': 'BANKNIFTY2131035000PE', 'symbol': 41654, 'orderID': 10025382, 'tradedPrice': 570.7, 'dateTime': '2021-03-05 23:10:10', 'set_type': 'Entry'}
+2021-03-05 23:10:09,789:__main__:INFO:Entry order dtls: {'set': 2, 'txn_type': 'sell', 'strike': 14850, 'qty': 75, 'tr_qty': -75, 'expiry': '10Mar2021', 'optionType': 'PE', 'name': 'NIFTY2131014850PE', 'symbol': 41868, 'orderID': 10025384, 'tradedPrice': 160.0, 'dateTime': '2021-03-05 23:10:11', 'set_type': 'Entry'}
+2021-03-05 23:10:09,870:__main__:INFO:Placing SL Order..
+2021-03-05 23:10:10,077:__main__:INFO:Placing SL Order..
+2021-03-05 23:10:10,305:__main__:INFO:Placing SL Order..
+2021-03-05 23:10:11,116:__main__:INFO:traded price is: 162.85 and ordered  time is: 2021-03-05 23:10:12
+2021-03-05 23:10:11,211:__main__:INFO:
+  StopLoss Order ID for BUYing -1 is: 10025386 
+
+2021-03-05 23:10:11,255:__main__:INFO:Entry order dtls: {'set': 1, 'txn_type': 'sell', 'strike': 14950, 'qty': 75, 'tr_qty': -75, 'expiry': '10Mar2021', 'optionType': 'CE', 'name': 'NIFTY2131014950CE', 'symbol': 41872, 'orderID': 10025385, 'tradedPrice': 162.85, 'dateTime': '2021-03-05 23:10:12', 'set_type': 'Entry'}
+2021-03-05 23:10:11,320:__main__:INFO:
+  StopLoss Order ID for BUYing -1 is: 10025387 
+
+2021-03-05 23:10:11,517:__main__:INFO:
+  StopLoss Order ID for BUYing -1 is: 10025388 
+
+2021-03-05 23:10:11,567:__main__:INFO:Placing SL Order..
+2021-03-05 23:10:12,915:__main__:INFO:
+  StopLoss Order ID for BUYing -1 is: 10025389 
+
+2021-03-05 23:10:13,455:__main__:INFO:Checking StopLoss status..
+2021-03-05 23:10:13,891:__main__:INFO:Checking StopLoss status..
+2021-03-05 23:10:14,101:__main__:INFO:Checking StopLoss status..
+2021-03-05 23:10:14,999:__main__:INFO:Checking StopLoss status..
+2021-03-05 23:10:15,820:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType  \
+0    3     sell   35200   25     -25  10Mar2021         CE   
+1    4     sell   35000   25     -25  10Mar2021         PE   
+2    2     sell   14850   75     -75  10Mar2021         PE   
+3    1     sell   14950   75     -75  10Mar2021         CE   
+
+                    name  symbol   orderID  tradedPrice             dateTime  \
+0  BANKNIFTY2131035200CE   50104  10025383       583.70  2021-03-05 23:10:11   
+1  BANKNIFTY2131035000PE   41654  10025382       570.70  2021-03-05 23:10:10   
+2      NIFTY2131014850PE   41868  10025384       160.00  2021-03-05 23:10:11   
+3      NIFTY2131014950CE   41872  10025385       162.85  2021-03-05 23:10:12   
+
+  set_type  tr_amount  
+0    Entry  -14592.50  
+1    Entry  -14267.50  
+2    Entry  -12000.00  
+3    Entry  -12213.75  
+2021-03-05 23:10:15,867:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol                   name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41654  BANKNIFTY2131035000PE     -25       570.70  -14267.50  569.65   
+1   50104  BANKNIFTY2131035200CE     -25       583.70  -14592.50  583.00   
+2   41868      NIFTY2131014850PE     -75       160.00  -12000.00  161.55   
+3   41872      NIFTY2131014950CE     -75       162.85  -12213.75  162.65   
+
+   cur_amount     pnl  
+0   -14241.25   26.25  
+1   -14575.00   17.50  
+2   -12116.25 -116.25  
+3   -12198.75   15.00  
+2021-03-05 23:10:16,083:__main__:INFO:
+
+Global PnL : -57.5 
+
+2021-03-05 23:10:24,008:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType  \
+0    3     sell   35200   25     -25  10Mar2021         CE   
+1    4     sell   35000   25     -25  10Mar2021         PE   
+2    2     sell   14850   75     -75  10Mar2021         PE   
+3    1     sell   14950   75     -75  10Mar2021         CE   
+
+                    name  symbol   orderID  tradedPrice             dateTime  \
+0  BANKNIFTY2131035200CE   50104  10025383       583.70  2021-03-05 23:10:11   
+1  BANKNIFTY2131035000PE   41654  10025382       570.70  2021-03-05 23:10:10   
+2      NIFTY2131014850PE   41868  10025384       160.00  2021-03-05 23:10:11   
+3      NIFTY2131014950CE   41872  10025385       162.85  2021-03-05 23:10:12   
+
+  set_type  tr_amount  
+0    Entry  -14592.50  
+1    Entry  -14267.50  
+2    Entry  -12000.00  
+3    Entry  -12213.75  
+2021-03-05 23:10:24,035:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol                   name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41654  BANKNIFTY2131035000PE     -25       570.70  -14267.50  569.65   
+1   50104  BANKNIFTY2131035200CE     -25       583.70  -14592.50  583.00   
+2   41868      NIFTY2131014850PE     -75       160.00  -12000.00  161.55   
+3   41872      NIFTY2131014950CE     -75       162.85  -12213.75  162.65   
+
+   cur_amount     pnl  
+0   -14241.25   26.25  
+1   -14575.00   17.50  
+2   -12116.25 -116.25  
+3   -12198.75   15.00  
+2021-03-05 23:10:24,221:__main__:INFO:
+
+Global PnL : -57.5 
+
+2021-03-05 23:10:34,073:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType  \
+0    3     sell   35200   25     -25  10Mar2021         CE   
+1    4     sell   35000   25     -25  10Mar2021         PE   
+2    2     sell   14850   75     -75  10Mar2021         PE   
+3    1     sell   14950   75     -75  10Mar2021         CE   
+
+                    name  symbol   orderID  tradedPrice             dateTime  \
+0  BANKNIFTY2131035200CE   50104  10025383       583.70  2021-03-05 23:10:11   
+1  BANKNIFTY2131035000PE   41654  10025382       570.70  2021-03-05 23:10:10   
+2      NIFTY2131014850PE   41868  10025384       160.00  2021-03-05 23:10:11   
+3      NIFTY2131014950CE   41872  10025385       162.85  2021-03-05 23:10:12   
+
+  set_type  tr_amount  
+0    Entry  -14592.50  
+1    Entry  -14267.50  
+2    Entry  -12000.00  
+3    Entry  -12213.75  
+2021-03-05 23:10:34,149:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol                   name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41654  BANKNIFTY2131035000PE     -25       570.70  -14267.50  595.30   
+1   50104  BANKNIFTY2131035200CE     -25       583.70  -14592.50  565.80   
+2   41868      NIFTY2131014850PE     -75       160.00  -12000.00  170.10   
+3   41872      NIFTY2131014950CE     -75       162.85  -12213.75  155.25   
+
+   cur_amount    pnl  
+0   -14882.50 -615.0  
+1   -14145.00  447.5  
+2   -12757.50 -757.5  
+3   -11643.75  570.0  
+2021-03-05 23:10:34,305:__main__:INFO:
+
+Global PnL : -355.0 
+
+2021-03-05 23:10:34,487:__main__:INFO:Stop Loss Order Triggered inside repair block
+2021-03-05 23:10:34,566:__main__:INFO:traded price is: 175.65 and ordered  time is: 2021-03-05 23:10:37
+2021-03-05 23:10:34,567:__main__:INFO:Repair order dtls: {'set_type': 'Repair', 'set': 2, 'txn_type': 'buy', 'strike': 14850, 'qty': 75, 'expiry': '10Mar2021', 'optionType': 'PE', 'name': 'NIFTY2131014850PE', 'symbol': 41868, 'orderID': None, 'tradedPrice': None, 'tr_qty': 75}
+2021-03-05 23:10:34,629:__main__:INFO:Repaired the Entry Order set: 2.
+2021-03-05 23:10:44,028:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType  \
+0    3     sell   35200   25     -25  10Mar2021         CE   
+1    4     sell   35000   25     -25  10Mar2021         PE   
+2    2     sell   14850   75     -75  10Mar2021         PE   
+3    1     sell   14950   75     -75  10Mar2021         CE   
+4    2      buy   14850   75      75  10Mar2021         PE   
+
+                    name  symbol   orderID  tradedPrice             dateTime  \
+0  BANKNIFTY2131035200CE   50104  10025383       583.70  2021-03-05 23:10:11   
+1  BANKNIFTY2131035000PE   41654  10025382       570.70  2021-03-05 23:10:10   
+2      NIFTY2131014850PE   41868  10025384       160.00  2021-03-05 23:10:11   
+3      NIFTY2131014950CE   41872  10025385       162.85  2021-03-05 23:10:12   
+4      NIFTY2131014850PE   41868         0         0.00                    0   
+
+  set_type  tr_amount  
+0    Entry  -14592.50  
+1    Entry  -14267.50  
+2    Entry  -12000.00  
+3    Entry  -12213.75  
+4   Repair       0.00  
+2021-03-05 23:10:44,195:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol                   name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41654  BANKNIFTY2131035000PE     -25       570.70  -14267.50  607.00   
+1   50104  BANKNIFTY2131035200CE     -25       583.70  -14592.50  562.00   
+2   41868      NIFTY2131014850PE       0       160.00  -12000.00  175.40   
+3   41872      NIFTY2131014950CE     -75       162.85  -12213.75  151.05   
+
+   cur_amount      pnl  
+0   -15175.00   -907.5  
+1   -14050.00    542.5  
+2        0.00  12000.0  
+3   -11328.75    885.0  
+2021-03-05 23:10:44,397:__main__:INFO:
+
+Global PnL : 12520.0 
+
+2021-03-05 23:10:44,397:__main__:INFO:Exit time condition passed. Squaring off all open positions
+2021-03-05 23:10:44,397:__main__:INFO:gdf is :    symbol                   name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41654  BANKNIFTY2131035000PE     -25       570.70  -14267.50  607.00   
+1   50104  BANKNIFTY2131035200CE     -25       583.70  -14592.50  562.00   
+2   41868      NIFTY2131014850PE       0       160.00  -12000.00  175.40   
+3   41872      NIFTY2131014950CE     -75       162.85  -12213.75  151.05   
+
+   cur_amount      pnl  
+0   -15175.00   -907.5  
+1   -14050.00    542.5  
+2        0.00  12000.0  
+3   -11328.75    885.0  
+2021-03-05 23:10:44,397:__main__:INFO:Placing Orders..
+2021-03-05 23:10:44,945:__main__:INFO:Order ID for BUY 41654 is: 10025390
+2021-03-05 23:10:48,332:__main__:INFO:traded price is: 621.25 and ordered  time is: 2021-03-05 23:10:49
+2021-03-05 23:10:48,334:__main__:INFO:Universal Exit order dtls: {'symbol': 41654, 'txn_type': 'buy', 'tr_qty': 25, 'qty': 25, 'name': 'BANKNIFTY2131035000PE', 'orderID': 10025390, 'tradedPrice': 621.25, 'dateTime': '2021-03-05 23:10:49', 'set_type': 'Universal_Exit'}
+2021-03-05 23:10:48,344:__main__:INFO:gdf is :    symbol                   name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41654  BANKNIFTY2131035000PE     -25       570.70  -14267.50  607.00   
+1   50104  BANKNIFTY2131035200CE     -25       583.70  -14592.50  562.00   
+2   41868      NIFTY2131014850PE       0       160.00  -12000.00  175.40   
+3   41872      NIFTY2131014950CE     -75       162.85  -12213.75  151.05   
+
+   cur_amount      pnl  
+0   -15175.00   -907.5  
+1   -14050.00    542.5  
+2        0.00  12000.0  
+3   -11328.75    885.0  
+2021-03-05 23:10:48,347:__main__:INFO:Placing Orders..
+2021-03-05 23:10:48,863:__main__:INFO:Order ID for BUY 50104 is: 10025391
+2021-03-05 23:10:49,943:__main__:INFO:Cancelling the SL order. Since the universal exit closes all open positiions
+2021-03-05 23:10:49,943:__main__:INFO:Cancelling order: 10025387 
+2021-03-05 23:10:50,261:__main__:INFO:Cancelling the SL order. Since the universal exit closes all open positiions
+2021-03-05 23:10:50,262:__main__:INFO:Cancelling order: 10025386 
+2021-03-05 23:10:50,441:__main__:INFO:Cancelled SL order id : 10025387
+2021-03-05 23:10:50,441:__main__:INFO:Repair order dtls: {'set_type': 'Repair', 'set': 4, 'txn_type': 'buy', 'strike': 35000, 'qty': 25, 'expiry': '10Mar2021', 'optionType': 'PE', 'name': 'BANKNIFTY2131035000PE', 'symbol': 41654, 'orderID': None, 'tradedPrice': None}
+2021-03-05 23:10:50,441:__main__:INFO:Orders must be square-off by Universal Exit Func
+2021-03-05 23:10:50,800:__main__:INFO:Cancelled SL order id : 10025386
+2021-03-05 23:10:50,800:__main__:INFO:Repair order dtls: {'set_type': 'Repair', 'set': 3, 'txn_type': 'buy', 'strike': 35200, 'qty': 25, 'expiry': '10Mar2021', 'optionType': 'CE', 'name': 'BANKNIFTY2131035200CE', 'symbol': 50104, 'orderID': None, 'tradedPrice': None}
+2021-03-05 23:10:50,800:__main__:INFO:Orders must be square-off by Universal Exit Func
+2021-03-05 23:10:52,257:__main__:INFO:traded price is: 557.3 and ordered  time is: 2021-03-05 23:10:54
+2021-03-05 23:10:52,273:__main__:INFO:Universal Exit order dtls: {'symbol': 50104, 'txn_type': 'buy', 'tr_qty': 25, 'qty': 25, 'name': 'BANKNIFTY2131035200CE', 'orderID': 10025391, 'tradedPrice': 557.3, 'dateTime': '2021-03-05 23:10:54', 'set_type': 'Universal_Exit'}
+2021-03-05 23:10:52,273:__main__:INFO:gdf is :    symbol                   name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41654  BANKNIFTY2131035000PE     -25       570.70  -14267.50  607.00   
+1   50104  BANKNIFTY2131035200CE     -25       583.70  -14592.50  562.00   
+2   41868      NIFTY2131014850PE       0       160.00  -12000.00  175.40   
+3   41872      NIFTY2131014950CE     -75       162.85  -12213.75  151.05   
+
+   cur_amount      pnl  
+0   -15175.00   -907.5  
+1   -14050.00    542.5  
+2        0.00  12000.0  
+3   -11328.75    885.0  
+2021-03-05 23:10:52,273:__main__:INFO:Placing Orders..
+2021-03-05 23:10:52,273:__main__:INFO:Cancelling the SL order. Since the universal exit closes all open positiions
+2021-03-05 23:10:52,273:__main__:INFO:Cancelling order: 10025389 
+2021-03-05 23:10:52,961:__main__:ERROR:Error Occured..
+Traceback (most recent call last):
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 249, in place_order
+    response = self._post('order.place', json.dumps(params))
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 639, in _post
+    return self._request(route, "POST", params)
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 691, in _request
+    message = "Description: " + data["description"] + " errors: " + data['result']["errors"]
+TypeError: can only concatenate str (not "list") to str
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\scripts\IndexOptionWriting.py", line 243, in placeOrder
+    order_resp = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
+  File "C:\Users\mling\anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 252, in place_order
+    return response['description']
+UnboundLocalError: local variable 'response' referenced before assignment
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\scripts\IndexOptionWriting.py", line 534, in <module>
+    exitCheck(universal)
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\scripts\IndexOptionWriting.py", line 443, in exitCheck
+    orderID, tradedPrice, dateTime = placeOrder(ext_inst['symbol'], ext_inst['txn_type'], ext_inst['qty'])
+  File "F:\Downloads\Python\First_Choice_Git\xts\strategy\scripts\IndexOptionWriting.py", line 288, in placeOrder
+    except Exception():
+TypeError: catching classes that do not inherit from BaseException is not allowed
+2021-03-05 23:10:52,961:__main__:INFO:Cleaning up..
+2021-03-05 23:10:52,961:__main__:INFO:Cancelled SL order id : 10025389
+2021-03-05 23:10:52,961:__main__:INFO:Repair order dtls: {'set_type': 'Repair', 'set': 1, 'txn_type': 'buy', 'strike': 14950, 'qty': 75, 'expiry': '10Mar2021', 'optionType': 'CE', 'name': 'NIFTY2131014950CE', 'symbol': 41872, 'orderID': None, 'tradedPrice': None}
+2021-03-05 23:10:52,977:__main__:INFO:Orders must be square-off by Universal Exit Func
+2021-03-05 23:10:53,981:__main__:INFO:
+
+PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType  \
+0    3     sell   35200   25     -25  10Mar2021         CE   
+1    4     sell   35000   25     -25  10Mar2021         PE   
+2    2     sell   14850   75     -75  10Mar2021         PE   
+3    1     sell   14950   75     -75  10Mar2021         CE   
+4    2      buy   14850   75      75  10Mar2021         PE   
+5    0      buy       0    0       0          0          0   
+6    4      buy   35000   25       0  10Mar2021         PE   
+7    3      buy   35200   25       0  10Mar2021         CE   
+8    0      buy       0    0       0          0          0   
+9    1      buy   14950   75       0  10Mar2021         CE   
+
+                    name  symbol   orderID  tradedPrice             dateTime  \
+0  BANKNIFTY2131035200CE   50104  10025383       583.70  2021-03-05 23:10:11   
+1  BANKNIFTY2131035000PE   41654  10025382       570.70  2021-03-05 23:10:10   
+2      NIFTY2131014850PE   41868  10025384       160.00  2021-03-05 23:10:11   
+3      NIFTY2131014950CE   41872  10025385       162.85  2021-03-05 23:10:12   
+4      NIFTY2131014850PE   41868         0         0.00                    0   
+5      NIFTY2131014850PE   41868         0         0.00  2021-03-05 23:10:54   
+6  BANKNIFTY2131035000PE   41654         0         0.00                    0   
+7  BANKNIFTY2131035200CE   50104         0         0.00                    0   
+8      NIFTY2131014850PE   41868         0         0.00  2021-03-05 23:10:54   
+9      NIFTY2131014950CE   41872         0         0.00                    0   
+
+         set_type  tr_amount  
+0           Entry  -14592.50  
+1           Entry  -14267.50  
+2           Entry  -12000.00  
+3           Entry  -12213.75  
+4          Repair       0.00  
+5  Universal_Exit       0.00  
+6          Repair       0.00  
+7          Repair       0.00  
+8  Universal_Exit       0.00  
+9          Repair       0.00  
+2021-03-05 23:10:53,986:__main__:INFO:
+
+CombinedPositionsLists: 
+    symbol                   name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41654  BANKNIFTY2131035000PE     -25       570.70  -14267.50  610.50   
+1   50104  BANKNIFTY2131035200CE     -25       583.70  -14592.50  563.35   
+2   41868      NIFTY2131014850PE       0       160.00  -12000.00  175.00   
+3   41872      NIFTY2131014950CE     -75       162.85  -12213.75  153.20   
+
+   cur_amount       pnl  
+0   -15262.50   -995.00  
+1   -14083.75    508.75  
+2        0.00  12000.00  
+3   -11490.00    723.75  
+2021-03-05 23:10:53,988:__main__:INFO:
+
+Global PnL : 12237.5 
+
+2021-03-05 23:10:53,988:__main__:INFO:--------------------------------------------
+2021-03-05 23:10:53,989:__main__:INFO:Total Orders and its status: 
+ [{'set': 3, 'txn_type': 'sell', 'strike': 35200, 'qty': 25, 'tr_qty': -25, 'expiry': '10Mar2021', 'optionType': 'CE', 'name': 'BANKNIFTY2131035200CE', 'symbol': 50104, 'orderID': 10025383, 'tradedPrice': 583.7, 'dateTime': '2021-03-05 23:10:11', 'set_type': 'Entry'}, {'set': 4, 'txn_type': 'sell', 'strike': 35000, 'qty': 25, 'tr_qty': -25, 'expiry': '10Mar2021', 'optionType': 'PE', 'name': 'BANKNIFTY2131035000PE', 'symbol': 41654, 'orderID': 10025382, 'tradedPrice': 570.7, 'dateTime': '2021-03-05 23:10:10', 'set_type': 'Entry'}, {'set': 2, 'txn_type': 'sell', 'strike': 14850, 'qty': 75, 'tr_qty': -75, 'expiry': '10Mar2021', 'optionType': 'PE', 'name': 'NIFTY2131014850PE', 'symbol': 41868, 'orderID': 10025384, 'tradedPrice': 160.0, 'dateTime': '2021-03-05 23:10:11', 'set_type': 'Entry'}, {'set': 1, 'txn_type': 'sell', 'strike': 14950, 'qty': 75, 'tr_qty': -75, 'expiry': '10Mar2021', 'optionType': 'CE', 'name': 'NIFTY2131014950CE', 'symbol': 41872, 'orderID': 10025385, 'tradedPrice': 162.85, 'dateTime': '2021-03-05 23:10:12', 'set_type': 'Entry'}, {'set_type': 'Repair', 'set': 2, 'txn_type': 'buy', 'strike': 14850, 'qty': 75, 'expiry': '10Mar2021', 'optionType': 'PE', 'name': 'NIFTY2131014850PE', 'symbol': 41868, 'orderID': None, 'tradedPrice': None, 'tr_qty': 75}, {'symbol': 41868, 'txn_type': 'buy', 'tr_qty': 0, 'qty': 0, 'name': 'NIFTY2131014850PE', 'orderID': None, 'tradedPrice': None, 'dateTime': '2021-03-05 23:10:54', 'set_type': 'Universal_Exit'}, {'set_type': 'Repair', 'set': 4, 'txn_type': 'buy', 'strike': 35000, 'qty': 25, 'expiry': '10Mar2021', 'optionType': 'PE', 'name': 'BANKNIFTY2131035000PE', 'symbol': 41654, 'orderID': None, 'tradedPrice': None}, {'set_type': 'Repair', 'set': 3, 'txn_type': 'buy', 'strike': 35200, 'qty': 25, 'expiry': '10Mar2021', 'optionType': 'CE', 'name': 'BANKNIFTY2131035200CE', 'symbol': 50104, 'orderID': None, 'tradedPrice': None}, {'symbol': 41868, 'txn_type': 'buy', 'tr_qty': 0, 'qty': 0, 'name': 'NIFTY2131014850PE', 'orderID': None, 'tradedPrice': None, 'dateTime': '2021-03-05 23:10:54', 'set_type': 'Universal_Exit'}, {'set_type': 'Repair', 'set': 1, 'txn_type': 'buy', 'strike': 14950, 'qty': 75, 'expiry': '10Mar2021', 'optionType': 'CE', 'name': 'NIFTY2131014950CE', 'symbol': 41872, 'orderID': None, 'tradedPrice': None}] 
+
+2021-03-05 23:10:53,990:__main__:INFO:Summary
+2021-03-05 23:10:53,997:__main__:INFO:
+
+ PositionList: 
+    set txn_type  strike  qty  tr_qty     expiry optionType  \
+0    3     sell   35200   25     -25  10Mar2021         CE   
+1    4     sell   35000   25     -25  10Mar2021         PE   
+2    2     sell   14850   75     -75  10Mar2021         PE   
+3    1     sell   14950   75     -75  10Mar2021         CE   
+4    2      buy   14850   75      75  10Mar2021         PE   
+5    0      buy       0    0       0          0          0   
+6    4      buy   35000   25       0  10Mar2021         PE   
+7    3      buy   35200   25       0  10Mar2021         CE   
+8    0      buy       0    0       0          0          0   
+9    1      buy   14950   75       0  10Mar2021         CE   
+
+                    name  symbol   orderID  tradedPrice             dateTime  \
+0  BANKNIFTY2131035200CE   50104  10025383       583.70  2021-03-05 23:10:11   
+1  BANKNIFTY2131035000PE   41654  10025382       570.70  2021-03-05 23:10:10   
+2      NIFTY2131014850PE   41868  10025384       160.00  2021-03-05 23:10:11   
+3      NIFTY2131014950CE   41872  10025385       162.85  2021-03-05 23:10:12   
+4      NIFTY2131014850PE   41868         0         0.00                    0   
+5      NIFTY2131014850PE   41868         0         0.00  2021-03-05 23:10:54   
+6  BANKNIFTY2131035000PE   41654         0         0.00                    0   
+7  BANKNIFTY2131035200CE   50104         0         0.00                    0   
+8      NIFTY2131014850PE   41868         0         0.00  2021-03-05 23:10:54   
+9      NIFTY2131014950CE   41872         0         0.00                    0   
+
+         set_type  tr_amount  
+0           Entry  -14592.50  
+1           Entry  -14267.50  
+2           Entry  -12000.00  
+3           Entry  -12213.75  
+4          Repair       0.00  
+5  Universal_Exit       0.00  
+6          Repair       0.00  
+7          Repair       0.00  
+8  Universal_Exit       0.00  
+9          Repair       0.00  
+2021-03-05 23:10:54,001:__main__:INFO:
+
+ CombinedPositionsLists: 
+    symbol                   name  tr_qty  tradedPrice  tr_amount     ltp  \
+0   41654  BANKNIFTY2131035000PE     -25       570.70  -14267.50  610.50   
+1   50104  BANKNIFTY2131035200CE     -25       583.70  -14592.50  563.35   
+2   41868      NIFTY2131014850PE       0       160.00  -12000.00  175.00   
+3   41872      NIFTY2131014950CE     -75       162.85  -12213.75  153.20   
+
+   cur_amount       pnl  
+0   -15262.50   -995.00  
+1   -14083.75    508.75  
+2        0.00  12000.00  
+3   -11490.00    723.75  
+2021-03-05 23:10:54,003:__main__:INFO:
+
+ Global PnL : 12237.5 
+
+2021-03-05 23:10:54,004:__main__:INFO:--------------------------------------------

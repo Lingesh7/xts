@@ -20,6 +20,7 @@ options = Options()
 options.add_argument("--disable-notifications")
 PATH = "C:\\Users\\mling\\Downloads\\chromedriver.exe"
 driver = webdriver.Chrome(PATH,chrome_options=options)
+driver.maximize_window()
 driver.get('https://tradetron.tech/')
 
 # signin = driver.find_element_by_id("Sign in")

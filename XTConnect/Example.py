@@ -221,7 +221,7 @@ print('Equity Symbol:', str(response))
 """Get Expiry Date Request"""
 response = xt.get_expiry_date(
     exchangeSegment=2,
-    series='FUTIDX',
+    series='OPTIDX',
     symbol='NIFTY')
 print('Expiry Date:', str(response))
 

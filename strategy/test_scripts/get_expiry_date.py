@@ -7,11 +7,9 @@ Created on Tue Dec 22 22:05:03 2020
 
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime
-from dateutil.relativedelta import relativedelta, TH
 
 
-#symbol="NIFTY"
+symbol="NIFTY"
 def get_expiry_from_option_chain (symbol):
 
     #url = "https://www1.nseindia.com/live_market/dynaContent/live_watch/option_chain/optionKeys.jsp?symbolCode=-10003&symbol=NIFTY&symbol=NIFTY&instrument=OPTIDX&date=-&segmentLink=17&segmentLink=17"
@@ -26,8 +24,18 @@ def get_expiry_from_option_chain (symbol):
     page = session.get(url, headers=headers, timeout=5, cookies=cookies)
 
     soup = BeautifulSoup(page.content, 'html.parser')
-    locate_expiry_point = soup.find(id="date")
-    expiry_rows = locate_expiry_point.find_all('option')
+    # locate_expiry_point = soup.select('option[value]')
+    # expiry_rows = locate_expiry_point.find_all('option')
+    # items = soup.select('[id=expirySelect] option[value]')
+    
+    subject_options = [i.findAll('option') for i in soup.findAll('select')]
+
+    
+    its = soup.select('select > option')
+    options = its.find_all('option')
+    values = [item.get('value') for item in options]
+    print(values)
+
 
     index = 0
     expiry_list = []
@@ -42,85 +50,70 @@ def get_expiry_from_option_chain (symbol):
 
     return expiry_list
 
-#expdate="24DEC2020"
-def get_strike_price_from_option_chain(symbol, expdate):
-    url="https://www1.nseindia.com/live_market/dynaContent/live_watch/option_chain/optionKeys.jsp?symbol="+symbol+"&date=-"
-    headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, '
-                             'like Gecko) '
-                             'Chrome/80.0.3987.149 Safari/537.36',
-               'accept-language': 'en,gu;q=0.9,hi;q=0.8', 'accept-encoding': 'gzip, deflate, br'}
-    session = requests.Session()
-    request = session.get(url, headers=headers, timeout=5)
-    cookies = dict(request.cookies)
-    page = session.get(url, headers=headers, timeout=5, cookies=cookies)
-
-    soup = BeautifulSoup(page.content, 'html.parser')
-
-    table_cls_2 = soup.find(id="octable")
-    req_row = table_cls_2.find_all('tr')
-    strike_price_list = []
-
-    for row_number, tr_nos in enumerate(req_row):
-        # This ensures that we use only the rows with values
-        if row_number <= 1 or row_number == len(req_row) - 1:
-            continue
-        td_columns = tr_nos.find_all('td')
-        strike_price = int(float(BeautifulSoup(str(td_columns[11]), 'html.parser').get_text()))
-        strike_price_list.append(strike_price)
-        # print (strike_price_list)
-    return strike_price_list
 
 
 
-def nextThu_and_lastThu_expiry_date ():
 
-    todayte = datetime.today()
-    
-    cmon = todayte.month
-    if_month_next=(todayte + relativedelta(weekday=TH(1))).month
-    next_thursday_expiry=todayte + relativedelta(weekday=TH(1))
-   
-    if (if_month_next!=cmon):
-        month_last_thu_expiry= todayte + relativedelta(weekday=TH(5))
-        if (month_last_thu_expiry.month!=if_month_next):
-            month_last_thu_expiry= todayte + relativedelta(weekday=TH(4))
-    else:
-        for i in range(1, 7):
-            t = todayte + relativedelta(weekday=TH(i))
-            if t.month != cmon:
-                # since t is exceeded we need last one  which we can get by subtracting -2 since it is already a Thursday.
-                t = t + relativedelta(weekday=TH(-2))
-                month_last_thu_expiry=t
-                break
-    str_month_last_thu_expiry=str(int(month_last_thu_expiry.strftime("%d")))+month_last_thu_expiry.strftime("%b").upper()+month_last_thu_expiry.strftime("%Y")
-    str_next_thursday_expiry=str(int(next_thursday_expiry.strftime("%d")))+next_thursday_expiry.strftime("%b").upper()+next_thursday_expiry.strftime("%Y")
-    return (str_next_thursday_expiry,str_month_last_thu_expiry)
+import time
+import sys
+from datetime import datetime as dt
+
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait as wait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException,NoSuchElementException
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import Select
 
 
-get_expiry_from_option_chain("NIFTY")
-exp =get_expiry_from_option_chain("NIFTY")
-a,b=(exp[:2])
-
-if 'JAN' in exp:
-    
-if len(b) != 9:
-    print(b)
-    b= "0"+b
-    print(b)
-    
-    
-c = a[:2] + a[2] + a[3:].swapcase()
-d = b[:2] + b[2] + b[3:].swapcase()
-d
+options = Options()
+options.add_argument("--disable-notifications")
+options.add_argument("user-agent={'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, ''like Gecko) ''Chrome/80.0.3987.149 Safari/537.36'}")
+PATH = "C:\\Users\\mling\\Downloads\\chromedriver.exe"
+driver = webdriver.Chrome(PATH,chrome_options=options)
+driver.maximize_window()
+url='https://www1.nseindia.com/live_market/dynaContent/live_watch/option_chain/optionKeys.jsp?symbol="NIFTY"&date=-'
+driver.get(url)
+wait_time = 60 # a very long wait time
+wait(driver, wait_time).until(EC.element_to_be_clickable(By.XPATH("//*[@id='expirySelect']"))).click()
 
 
 
-a.capitalize()
-type(a)
-get_strike_price_from_option_chain("NIFTY","24DEC2020")
+driver.
 
-str_next_thursday_expiry,str_month_last_thu_expiry=nextThu_and_lastThu_expiry_date()
-print("Next Expiry Date = " + str_next_thursday_expiry)
-print("Month End Expiry Date = " + str_month_last_thu_expiry)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

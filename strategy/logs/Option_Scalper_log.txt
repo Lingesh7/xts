@@ -1,0 +1,22 @@
+2021-03-07 17:37:37,664:__main__:INFO:Token file exists and created today
+2021-03-07 17:37:37,671:__main__:INFO:Initializing session with token..
+2021-03-07 17:37:37,671:__main__:INFO:MasterDump already exists.. reading directly
+2021-03-07 17:37:38,348:__main__:ERROR:Error getting Expiry dates..
+2021-03-07 17:37:38,354:__main__:ERROR:Failed to get masterDump/ expiryDates. Exiting..
+Traceback (most recent call last):
+  File "./OptionScalper.py", line 524, in <module>
+    get_expiry()
+  File "./OptionScalper.py", line 122, in get_expiry
+    raise ex.XTSDataException('Issue in getting expiry dates')
+XTConnect.Exception.XTSDataException: Issue in getting expiry dates
+2021-03-07 17:38:31,977:__main__:INFO:Token file exists and created today
+2021-03-07 17:38:31,992:__main__:INFO:Initializing session with token..
+2021-03-07 17:38:31,992:__main__:INFO:MasterDump already exists.. reading directly
+2021-03-07 17:38:32,679:__main__:ERROR:Error getting Expiry dates..
+2021-03-07 17:38:32,679:__main__:ERROR:Failed to get masterDump/ expiryDates. Exiting..
+Traceback (most recent call last):
+  File "./OptionScalper.py", line 524, in <module>
+    get_expiry()
+  File "./OptionScalper.py", line 122, in get_expiry
+    raise ex.XTSDataException('Issue in getting expiry dates')
+XTConnect.Exception.XTSDataException: Issue in getting expiry dates

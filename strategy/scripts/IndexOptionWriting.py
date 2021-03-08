@@ -434,7 +434,7 @@ def exitCheck(universal):
                     ext_inst['qty'] = abs(ext_inst['tr_qty'])
                     ext_inst['name'] = str(gdf['name'].values[i])
                     ext_inst['optionType'] = ext_inst['name'][-2:] 
-                    ext_inst['strikePrice'] = ext_inst['name'][-7:-2]
+                    ext_inst['strike'] = ext_inst['name'][-7:-2]
                     ext_inst['orderID'] = None
                     ext_inst['tradedPrice'] = None
                     orderID, tradedPrice, dateTime = placeOrder(ext_inst['symbol'], ext_inst['txn_type'], ext_inst['qty'])
@@ -500,7 +500,7 @@ def dataToExcel(pnl_dump):
     writer = pd.ExcelWriter('../pnl/Index_Option_Writing_PnL.xlsx',engine='openpyxl')
     writer.book = load_workbook('../pnl/Index_Option_Writing_PnL.xlsx')
     resampled_df.to_excel(writer, sheet_name=(cdate), index=True)
-    df.to_excel(writer, sheet_name=(cdate),startrow=25, startcol=7, index=False)
+    df.to_excel(writer, sheet_name=(cdate),startrow=15, startcol=7, index=False)
     gdf.to_excel(writer, sheet_name=(cdate),startrow=4, startcol=7, index=False)
     writer.sheets=dict((ws.title, ws) for ws in writer.book.worksheets)
     worksheet = writer.sheets[cdate]

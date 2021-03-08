@@ -4,14 +4,14 @@ Created on Thu Feb 01 2021 21:44:33 2021
 NFO Panther Strategy  - With Universal Exit - Array of Orders
 @author: mling
 """
-
+############## imports ##############
 from datetime import datetime,date
 from dateutil.relativedelta import relativedelta, TH, WE
 from XTConnect.Connect import XTSConnect
+import XTConnect.Exception as ex
 from pathlib import Path
 import time
 import json
-import os
 import logging
 import pandas as pd
 pd.set_option('display.max_rows', None)
@@ -23,10 +23,9 @@ import timer
 from threading import Thread
 from openpyxl import load_workbook
 from sys import exit
-from nsepy.derivatives import get_expiry_date
-
-############## logging configs ##############
+import os
 os.chdir(r'D:\Python\First_Choice_Git\xts\strategy\scripts')
+############## logging configs ##############
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
@@ -34,14 +33,14 @@ formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 filename='../logs/NFOPanther_log.txt'
 
 file_handler = logging.FileHandler(filename)
-# file_handler=logging.handlers.TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=5)
+# file_handler = logging.handlers.TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=5)
 file_handler.setLevel(logging.INFO)
 file_handler.setFormatter(formatter)
 
 stream_handler = logging.StreamHandler()
 stream_handler.setFormatter(formatter)
 
-logger.addHandler(file_handler)
+logger.addHandler(file_handler) 
 logger.addHandler(stream_handler)
 
 ############## XTS Initialisation ##############
@@ -76,6 +75,7 @@ ext_inst = None
 tr_insts = None
 ltp = {}
 gl_pnl = None
+pnl_dump = []
 idxs = ['NIFTY','BANKNIFTY']
 orders=[{'refId':10001, 'setno':1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"09:30:00"},
 		{'refId':10002, 'setno':2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"09:30:00"},
@@ -89,45 +89,48 @@ orders=[{'refId':10001, 'setno':1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy"
 		{'refId':10010, 'setno':10, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"11:30:00"},
 		{'refId':10011, 'setno':11, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"13:30:00"},
 		{'refId':10012, 'setno':12, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"13:30:00"}]
-universal = {'exit_status': 'Idle', 'minPrice': -12000, 'maxPrice': 24000, 'exitTime':'15:05:00', 'ext_txn_type':'buy'}
-# exitTime = datetime.strptime((cdate+" "+universal['exitTime']),"%d-%m-%Y %H:%M:%S")
+universal = {'exit_status': 'Idle', 'minPrice': -12000, 'maxPrice': 24000, 'exitTime':'15:05:00', 'ext_txn_type':'buy'}# exitTime = datetime.strptime((cdate+" "+universal['exitTime']),"%d-%m-%Y %H:%M:%S")
 
 ############## Functions ##############
-def nextThu_and_lastThu_expiry_date():
-    global weekly_exp, monthly_exp
-    logger.info('Calculating weekly and monthly expiry dates..')
-    todayte = datetime.today()
-    
-    cmon = todayte.month
-    if_month_next=(todayte + relativedelta(weekday=TH(1))).month
-    next_thursday_expiry=todayte + relativedelta(weekday=WE(1))
-   
-    if (if_month_next!=cmon):
-        month_last_thu_expiry= todayte + relativedelta(weekday=TH(5))
-        if (month_last_thu_expiry.month!=if_month_next):
-            month_last_thu_expiry= todayte + relativedelta(weekday=TH(4))
-    else:
-        for i in range(1, 7):
-            t = todayte + relativedelta(weekday=TH(i))
-            if t.month != cmon:
-                # since t is exceeded we need last one  which we can get by subtracting -2 since it is already a Thursday.
-                t = t + relativedelta(weekday=TH(-2))
-                month_last_thu_expiry=t
-                break
-    monthly_exp=str((month_last_thu_expiry.strftime("%d")))+month_last_thu_expiry.strftime("%b").capitalize()+month_last_thu_expiry.strftime("%Y")
-    weekly_exp=str((next_thursday_expiry.strftime("%d")))+next_thursday_expiry.strftime("%b").capitalize()+next_thursday_expiry.strftime("%Y")
-    logger.info(f'weekly expiry is : {weekly_exp}, monthly expiry is: {monthly_exp}')
 
 def get_expiry():
     global weekly_exp, monthly_exp
-    now = datetime.now()
-    expiry = get_expiry_date(year=now.year, month=now.month)
-    expiry = get_expiry_date(year=2021, month=4)
-    expiry = sorted(expiry)
-    weekly_exp1, *b, monthly_exp1 = expiry
-    weekly_exp = weekly_exp1.strftime('%d%b%Y')
-    monthly_exp = monthly_exp1.strftime('%d%b%Y')
-    logger.info(f'weekly expiry is : {weekly_exp}, monthly expiry is: {monthly_exp}')
+    now = datetime.today()
+    cmon = now.month
+    thu = (now + relativedelta(weekday=TH(1))).strftime('%d%b%Y')
+    wed = (now + relativedelta(weekday=WE(1))).strftime('%d%b%Y')
+    nxtmon = (now + relativedelta(weekday=TH(1))).month
+    if (nxtmon != cmon):
+        month_last_thu_expiry = now + relativedelta(weekday=TH(5))
+        if (month_last_thu_expiry.month!= nxtmon):
+            mon_thu = now + relativedelta(weekday=TH(4))
+            mon_wed = now + relativedelta(weekday=WE(4))
+    else:
+        for i in range(1, 7):
+            t = now + relativedelta(weekday=TH(i))
+            if t.month != cmon:
+                # since t is exceeded we need last one  which we can get by subtracting -2 since it is already a Thursday.
+                mon_thu = (t + relativedelta(weekday=TH(-2))).strftime('%d%b%Y')
+                mon_wed = (t + relativedelta(weekday=WE(-2))).strftime('%d%b%Y')
+                break
+    xpry_resp = xt.get_expiry_date(exchangeSegment=2, series='OPTIDX', symbol='NIFTY')
+    if 'result' in xpry_resp:
+        expiry_dates = xpry_resp['result']
+    else:
+        logger.error('Error getting Expiry dates..')
+        raise ex.XTSDataException('Issue in getting expiry dates')
+    if thu in expiry_dates:
+        weekly_exp = thu
+        logger.info(f'Thursday - {weekly_exp} is the week expiry')
+    elif wed in expiry_dates:
+        weekly_exp = wed
+        logger.info(f'Wednesday - {weekly_exp} is the week expiry')
+    if mon_thu in expiry_dates:
+        monthly_exp = mon_thu
+        logger.info(f'Thursday - {monthly_exp} is the month expiry')
+    elif mon_wed in expiry_dates:
+        monthly_exp = mon_wed
+        logger.info(f'Wednesday - {monthly_exp} is the month expiry')
 
 def strikePrice(idx):
     if idx in idxs[0]:
@@ -233,8 +236,8 @@ def getLTP():
                 ltp[symbol]=price
 
 def getGlobalPnL():
-    global gl_pnl,df,gdf
-    # gl_pnl = 0
+    global gl_pnl, df, gdf, pnl_dump
+    # pnl_dump = []
     if tr_insts:
         # logger.info('inside tr_insts cond - getGlobalLTP')
         df = pd.DataFrame(tr_insts)
@@ -247,10 +250,11 @@ def getGlobalPnL():
         gdf['ltp'] = gdf['symbol'].map(ltp)
         gdf['cur_amount'] = gdf['tr_qty']*gdf['ltp']
         gdf['pnl'] = gdf['cur_amount'] - gdf['tr_amount']
-        logger.info(f'PositionList: \n {df}')
-        logger.info(f'CombinedPositionsLists: \n {gdf}')
+        logger.info(f'\n\nPositionList: \n {df}')
+        logger.info(f'\n\nCombinedPositionsLists: \n {gdf}')
         gl_pnl = round(gdf['pnl'].sum(),2)
-        logger.info(f'Global PnL : {gl_pnl}')
+        logger.info(f'\n\nGlobal PnL : {gl_pnl} \n')
+        pnl_dump.append([time.strftime("%d-%m-%Y %H:%M:%S"),gl_pnl])
     else:
         gl_pnl = 0
  
@@ -284,7 +288,10 @@ def placeOrder(symbol,txn_type,qty):
                 if orderLists:
                     new_orders = [ol for ol in orderLists if ol['AppOrderID'] == orderID and ol['OrderStatus'] != 'Filled']  
                     if not new_orders:
-                        tradedPrice = float(next((orderList['OrderAverageTradedPrice'] for orderList in orderLists if orderList['AppOrderID'] == orderID and orderList['OrderStatus'] == 'Filled'),None))
+                        tradedPrice = float(next((orderList['OrderAverageTradedPrice'] \
+                                            for orderList in orderLists \
+                                                if orderList['AppOrderID'] == orderID and \
+                                                    orderList['OrderStatus'] == 'Filled'),None).replace(',', ''))
                         LastUpdateDateTime=datetime.fromisoformat(next((orderList['LastUpdateDateTime'] for orderList in orderLists if orderList['AppOrderID'] == orderID and orderList['OrderStatus'] == 'Filled'))[0:19])
                         dateTime = LastUpdateDateTime.strftime("%Y-%m-%d %H:%M:%S")
                         logger.info(f"traded price is: {tradedPrice} and ordered  time is: {dateTime}")
@@ -308,6 +315,7 @@ def placeOrder(symbol,txn_type,qty):
             logger.info(f'Order not placed for - {symbol} ')
             raise Exception('Order not placed - ')
     except Exception():
+        raise ex.XTSOrderException('Unable to place order in placeOrder func...')
         logger.exception('Unable to place order in placeOrder func...')
         time.sleep(1)
 
@@ -317,6 +325,7 @@ def execute(orders):
     etr_inst = {}
     rpr_inst = {}
     startTime = datetime.strptime((cdate+" "+orders['startTime']),"%d-%m-%Y %H:%M:%S")
+    
     while True:
         if orders['status'] == 'Idle':
             #Entry condition check
@@ -327,9 +336,11 @@ def execute(orders):
                 etr_inst['strike'] = strikePrice(orders['idx'])
                 etr_inst['qty'] = 75*orders['lot'] if orders['idx'] == 'NIFTY' else 25*orders['lot']
                 etr_inst['tr_qty'] = -etr_inst['qty'] if orders['ent_txn_type'] == 'sell' else etr_inst['qty']
+                
                 if orders['expiry'] == 'week':
                     etr_inst['expiry'] = weekly_exp
                 etr_inst['optionType'] = orders['otype'].upper()
+                
                 if weekly_exp == monthly_exp:
                     inst_name = orders['idx']+(datetime.strftime(datetime.strptime(etr_inst['expiry'], '%d%b%Y'),'%y%b')).upper()+str(etr_inst['strike'])+etr_inst['optionType']
                 else:
@@ -381,7 +392,6 @@ def execute(orders):
                         rpr_inst['dateTime'] = dateTime
                         if orderID and tradedPrice:
                             orders['status'] = 'Repaired'
-                            # orders['repairedAlready'] = True
                             rpr_inst['set_type'] = 'Repair'
                         logger.info(f'Repair order dtls: {rpr_inst}')
                         tr_insts.append(rpr_inst)
@@ -392,12 +402,12 @@ def execute(orders):
            break
         #breaking set loop if status repaired
         if orders['status'] == 'Repaired':
-            logger.info(f'Repaired the Entry Order set: {orders["setno"]}. Exit will taken care by universally.')
+            logger.info(f'Repaired the Entry Order set: {orders["setno"]}. Exiting the thread')
             break
           
 def exitCheck(universal):
     global tr_insts #todo add gl_pnl to global if the conditions didnt work
-    pnl_dump=[] 
+    # pnl_dump=[] 
     ext_inst = {}          
     exitTime = datetime.strptime((cdate+" "+universal['exitTime']),"%d-%m-%Y %H:%M:%S")
     # print('exitTime:', exitTime)
@@ -408,12 +418,17 @@ def exitCheck(universal):
             if (datetime.now() >= exitTime) or (gl_pnl <= universal['minPrice']) or (gl_pnl >= universal['maxPrice']):
                 logger.info('Exit time condition passed. Squaring off all open positions')
                 for i in range(len(gdf)):
-                    logger.info(f'gdf is : {gdf}')
+                    if gdf["tr_qty"].values[i] == 0:
+                        continue
                     ext_inst['symbol'] = int(gdf['symbol'].values[i])
-                    ext_inst['tr_qty'] = int(gdf['tr_qty'].values[i])
-                    ext_inst['qty'] = abs(ext_inst['tr_qty'])
+                    # ext_inst['tr_qty'] = -int(gdf['tr_qty'].values[i])
+                    # ext_inst['qty'] = abs(ext_inst['tr_qty'])
+                    ext_inst['qty'] = abs(int(gdf['tr_qty'].values[i]))
+                    ext_inst['tr_qty'] = -ext_inst['qty'] if universal['ext_txn_type'] == 'sell' else ext_inst['qty']
                     ext_inst['txn_type'] = universal['ext_txn_type'] 
                     ext_inst['name'] = str(gdf['name'].values[i])
+                    ext_inst['optionType'] = ext_inst['name'][-2:] 
+                    ext_inst['strikePrice'] = ext_inst['name'][-7:-2]
                     ext_inst['orderID'] = None
                     ext_inst['tradedPrice'] = None
                     orderID, tradedPrice, dateTime = placeOrder(ext_inst['symbol'], ext_inst['txn_type'], ext_inst['qty'])
@@ -422,18 +437,17 @@ def exitCheck(universal):
                     ext_inst['dateTime'] = dateTime
                     if orderID and tradedPrice:
                         ext_inst['set_type']='Universal_Exit'
-                        universal['exit_status'] = 'Exited'
+                        # universal['exit_status'] = 'Exited'
                     logger.info(f'Universal Exit order dtls: {ext_inst}')
-                    tr_insts.append(ext_inst)
+                    tr_insts.append(ext_inst.copy())
+                logger.info('Breaking the main loop')
+                universal['exit_status'] = 'Exited'
                 break
             else:
-                pnl_dump.append([time.strftime("%d-%m-%Y %H:%M:%S"),gl_pnl])
-                time.sleep(10)
-    logger.info('Returning pnl dump')
-    return pnl_dump
+                time.sleep(1)
 
-def dataToExcel(result):
-    pnl_df = pd.DataFrame(result,columns=['date','pl'])
+def dataToExcel(pnl_dump):
+    pnl_df = pd.DataFrame(pnl_dump,columns=['date','pl'])
     pnl_df = pnl_df.set_index(['date'])
     pnl_df.index = pd.to_datetime(pnl_df.index, format='%d-%m-%Y %H:%M:%S')
     resampled_df = pnl_df['pl'].resample('1min').ohlc()
@@ -454,65 +468,58 @@ def dataToExcel(result):
     writer.save()
     writer.close()             
 
-def main():
-    nextThu_and_lastThu_expiry_date()
-    masterDump()
-    logger.info('Starting a separate thread to fetch LTP of traded instruments..')
-    getGlobalPnL()
-    fetchLtp = timer.RepeatedTimer(10, getLTP)
-    fetchPnL = timer.RepeatedTimer(10, getGlobalPnL)
-    # chkExit = timer.RepeatedTimer(15,exitCheck)
+############## main ##############        
+  
+if __name__ == '__main__':
     threads=[]
-    logger.info('starting execution of orders parallely..')
+
+    try:
+        masterDump()
+        get_expiry()
+    except:
+        logger.exception('Failed to get masterDump/ expiryDates. Exiting..')
+        exit()
+    # all the sets will execute in parallel with threads
     for i in range(len(orders)):
         t = Thread(target=execute,args=(orders[i],))
         t.start()
         threads.append(t)
+    # below function runs in background
+    logger.info('Starting a timer based thread to fetch LTP of traded instruments..')
+    getGlobalPnL()
+    fetchLtp = timer.RepeatedTimer(10, getLTP)
+    fetchPnL = timer.RepeatedTimer(10, getGlobalPnL)
     try:
-        result = exitCheck(universal)
+        exitCheck(universal)
         time.sleep(5)
-        if result:
-            logger.info('Writing pnl dump to excel..')
-            dataToExcel(result)
-        time.sleep(5)
+    except KeyboardInterrupt:
+        logger.error('\n\nKeyboard exception received. Exiting.')
+        universal['exit_status'] = 'Exited' #todo write dead case here to stop the threads in case of exitcheck exception
+        exit()
     except Exception:
+        universal['exit_status'] = 'Exited'
         logger.exception('Error Occured..')
     finally:
+        logger.info('Cleaning up..')
         fetchLtp.stop()
         fetchPnL.stop()
-        # _ = [t.join() for t in threads] #anohter way to join threads
-        for thread in threads:
-            logger.info(thread.is_alive())
-            thread.join()
-        # if result:
-        #     dataToExcel(result)
+        _ = [t.join() for t in threads]
+        time.sleep(5)
+        #prints dump to excel
+        getGlobalPnL()      #getting latest data
+        dataToExcel(pnl_dump)
+        # logging the orders and data to log file
         logger.info('--------------------------------------------')
         logger.info(f'Total Orders and its status: \n {tr_insts} \n')
-        logger.info('Summary')
+        logger.info('********** Summary **********')
         logger.info(f'\n\n PositionList: \n {df}')
         logger.info(f'\n\n CombinedPositionsLists: \n {gdf}')
         logger.info(f'\n\n Global PnL : {gl_pnl} \n')
         logger.info('--------------------------------------------')
-        
-############## main ##############        
-if __name__ == '__main__':
-    main()
-    # starttime=time.time()
-    # timeout = time.time() + 60*60*6 #runs for 6 hours
-    # while time.time() <= timeout:
-    #     try:
-    #         time.sleep(5)
-    #     except KeyboardInterrupt:
-    #         print('\n\nKeyboard exception received. Exiting.')
-    #         exit() 
+
 ############# END ##############
 
-# tr_insts = [{'set': 1, 'txn_type': 'sell', 'strike': 14700, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10036280, 'tradedPrice': 111.9, 'dateTime': '2021-02-23 14:06:55', 'set_type': 'Entry'},
-#             {'set': 1, 'txn_type': 'buy', 'strike': 14700, 'qty': 75, 'tr_qty': 75, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10036285, 'tradedPrice': 117.8, 'dateTime': '2021-02-23 14:12:21', 'set_type': 'Repair'},
-#             {'set': 1, 'txn_type': 'buy', 'strike': 14700, 'qty': 0, 'tr_qty': 75, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB14700CE', 'symbol': 39607, 'orderID': 10036301, 'tradedPrice': 122.4, 'dateTime': '2021-02-23 14:14:28', 'set_type': 'Exit'},
-#             {'set': 2, 'txn_type': 'sell', 'strike': 14700, 'qty': 150, 'tr_qty': -150, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB14800CE', 'symbol': 39608, 'orderID': 10036280, 'tradedPrice': 7111.9, 'dateTime': '2021-02-23 14:06:55', 'set_type': 'Entry'},
-#             {'set': 2, 'txn_type': 'buy', 'strike': 14700, 'qty': 75, 'tr_qty': 75, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB14800CE', 'symbol': 39608, 'orderID': 10036285, 'tradedPrice': 6117.8, 'dateTime': '2021-02-23 14:12:21', 'set_type': 'Repair'},
-#             {'set': 3, 'txn_type': 'buy', 'strike': 14700, 'qty': 0, 'tr_qty': 75, 'expiry': '25Feb2021', 'optionType': 'ce', 'name': 'NIFTY21FEB14880CE', 'symbol': 39608, 'orderID': 10036301, 'tradedPrice': 5122.4, 'dateTime': '2021-02-23 14:14:28', 'set_type': 'Exit'}]
+
 # orders=[{'refId':10001, 'setno':1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"09:30:00"},
 # 		{'refId':10002, 'setno':2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"09:30:00"},
 # 		{'refId':10003, 'setno':3, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 2, 'startTime':"10:00:00"},

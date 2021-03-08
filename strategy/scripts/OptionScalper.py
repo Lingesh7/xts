@@ -19,7 +19,7 @@ pd.set_option('display.max_columns', None)
 # pd.set_option('display.width', None)
 # pd.set_option('display.max_colwidth', -1)
 import configparser
-import argparse
+# import argparse
 import timer
 from threading import Thread
 from openpyxl import load_workbook
@@ -27,20 +27,33 @@ from sys import exit
 
 ############## parsing args ##############
 
-parser = argparse.ArgumentParser(description='OptionScalper Script')
-parser.add_argument('-t', '--ticker',type=str, required=True, help='NIFTY or BANKNIFTY')
-parser.add_argument('-s', '--startTime',type=str, required=True, help='start time of the script')
-parser.add_argument('-e', '--endTime',type=str, default="15:05:00", help='end time')
-parser.add_argument('-sl', '--stopLoss',type=int, default=-1500, help='stopLoss amount')
-parser.add_argument('-tgt', '--target',type=int, default=3000, help='Target amount')
-args = parser.parse_args()
+# parser = argparse.ArgumentParser(description='OptionScalper Script')
+# parser.add_argument('-t', '--ticker',type=str, required=True, help='NIFTY or BANKNIFTY')
+# parser.add_argument('-s', '--startTime',type=str, required=True, help='start time of the script')
+# parser.add_argument('-e', '--endTime',type=str, default="15:05:00", help='end time')
+# parser.add_argument('-sl', '--stopLoss',type=int, default=-1500, help='stopLoss amount')
+# parser.add_argument('-tgt', '--target',type=int, default=3000, help='Target amount')
+# args = parser.parse_args()
+
+# ticker = args.ticker
+# startTime = args.startTime
+# endTime = args.endTime
+# stopLoss = args.stopLoss
+# target = args.target
+
+ticker = 'NIFTY'
+startTime = '15:05:00'
+endTime = '15:15:00'
+stopLoss = -1500
+target = 3000
+
 
 ############## logging configs ##############
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 
-filename='../logs/Option_Scalper_log.txt'
+filename='../logs/Option_Scalper_logdummy.txt'
 
 file_handler = logging.FileHandler(filename)
 # file_handler = logging.handlers.TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=5)
@@ -78,6 +91,11 @@ else:
     exit()
 
 ############## Variable Declarations ##############
+logger.info(f'{ticker}')
+logger.info(f'{startTime}')
+logger.info(f'{endTime}')
+logger.info(f'{stopLoss}')
+logger.info(f'{target}')
 multiplier=1
 etr_inst = None
 rpr_inst = None
@@ -87,11 +105,11 @@ ltp = {}
 gl_pnl = None
 pnl_dump = []
 idxs = ['NIFTY','BANKNIFTY']
-orders=[{'refId':10001, 'setno':1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':args.ticker, 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime':args.startTime, 'repairEndTime':"14:20:00", 'ptsChg': 40},
-		{'refId':10002, 'setno':2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':args.ticker, 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime':args.startTime, 'repairEndTime':"14:20:00", 'ptsChg': -40}]
-universal = {'exit_status': 'Idle', 'minPrice': args.stopLoss, 'maxPrice': args.target, 'exitTime':args.endTime, 'ext_txn_type':'buy'}
+orders=[{'refId':10001, 'setno':1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':ticker, 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime':startTime, 'repairEndTime':"15:09:00"},
+		{'refId':10002, 'setno':2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':ticker, 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime':startTime, 'repairEndTime':"15:09:00"}]
+universal = {'exit_status': 'Idle', 'minPrice': stopLoss, 'maxPrice': target, 'exitTime':endTime, 'ext_txn_type':'buy'}
 # exitTime = datetime.strptime((cdate+" "+universal['exitTime']),"%d-%m-%Y %H:%M:%S")
-
+# logger.info(f'args passed and orders become {orders}' )
 ############## Functions ##############
 
 def get_expiry():
@@ -143,6 +161,7 @@ def getSpot(idx):
         ids = 'NIFTY BANK'
     else:
         logger.info(f'Invalid Index name {idx} - Valid names are {idxs}')
+        # exit()
     try:
         idx_instruments = [{'exchangeSegment': 1, 'exchangeInstrumentID': ids}]
         spot_resp = xt.get_quote(
@@ -159,6 +178,7 @@ def getSpot(idx):
         logger.exception(f'Unable to getSpot from index {ids}')
         exit()
     else:
+        logger.info(f'spot is : {spot}')
         return spot
     
 def strikePrice(idx, spot):
@@ -166,11 +186,10 @@ def strikePrice(idx, spot):
         base = 50
     elif idx in idxs[1]:
         base = 100
-    else:
-        logger.info(f'Invalid Index name {idx} - Valid names are {idxs}')
-        strikePrice = base * round(spot/base)
-        logger.info(f'StrikePrice computed as : {strikePrice}')
-        return strikePrice   
+    logger.info(f'Invalid Index name {idx} - Valid names are {idxs}')
+    strikePrice = base * round(spot/base)
+    logger.info(f'StrikePrice computed as : {strikePrice}')
+    return strikePrice   
         
 def getOrderList():
     aa = 0
@@ -339,8 +358,9 @@ def execute(orders):
     
     orders['straddle_points'] = 50 if orders['idx'] == 'NIFTY' else 100
     orders['ptsChg'] = 40 if orders['idx'] == 'NIFTY' else 90
-    
+    logger.info(f'orders after spoints and ptschg: {orders}')
     while True:
+        time.sleep(5)
         if orders['status'] == 'Idle':
             #Entry condition check
             if (datetime.now() >= startTime):
@@ -385,6 +405,7 @@ def execute(orders):
                 if datetime.now() <= repairEndTime:
                     ltpOfIdx = spot
                     ptsChng = orders['ptsChg'] if orders['otype']  == 'ce' else -orders['ptsChg']
+                    logger.info(f'Points difference in {orders["otype"]} : {ltpOfIdx - etr_inst["spot"]}')
                     #repair condition check
                     if ltpOfIdx > (etr_inst['spot'] +  ptsChng):
                         logger.info(f'Repair condition met in set: {orders["setno"]}..')
@@ -518,7 +539,6 @@ def dataToExcel(pnl_dump):
   
 if __name__ == '__main__':
     threads=[]
-
     try:
         masterDump()
         get_expiry()
@@ -533,7 +553,7 @@ if __name__ == '__main__':
     # below function runs in background
     logger.info('Starting a timer based thread to fetch LTP of traded instruments..')
     getGlobalPnL()
-    fetchSpot = timer.RepeatedTimer(8, getSpot(),args=[args.ticker])
+    fetchSpot = timer.RepeatedTimer(8, getSpot,ticker)
     fetchLtp = timer.RepeatedTimer(9, getLTP)
     fetchPnL = timer.RepeatedTimer(10, getGlobalPnL)
     try:
@@ -555,7 +575,7 @@ if __name__ == '__main__':
         time.sleep(5)
         #prints dump to excel
         getGlobalPnL()      #getting latest data
-        dataToExcel(pnl_dump)
+        # dataToExcel(pnl_dump)
         # logging the orders and data to log file
         logger.info('--------------------------------------------')
         logger.info(f'Total Orders and its status: \n {tr_insts} \n')
@@ -567,4 +587,4 @@ if __name__ == '__main__':
 
 ############# END ##############
 
-# !python ./OptionScalper.py -t NIFTY 17:33:00
+# !python ./OptionScalper.py -t NIFTY -s 17:33:00

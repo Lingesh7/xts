@@ -52,7 +52,7 @@ def strkPrcCalc(spot,base):
     return strikePrice
 
 cdate = datetime.strftime(datetime.now(), "%b %d %Y")
-bankniftyAt920 = 35782
+bankniftyAt920 = 35588
 strikePrice = strkPrcCalc(bankniftyAt920, 100)
 
 if __name__ == '__main__':
@@ -66,7 +66,7 @@ if __name__ == '__main__':
             exchangeSegment=2,
             series='OPTIDX',
             symbol='BANKNIFTY',
-            expiryDate='04Mar2021',
+            expiryDate='10Mar2021',
             optionType=j,
             strikePrice=i)
             # alist.append([resp['result'][0]['ExchangeInstrumentID'],resp['result'][0]['DisplayName']])

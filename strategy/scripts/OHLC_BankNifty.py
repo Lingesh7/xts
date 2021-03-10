@@ -52,7 +52,7 @@ def strkPrcCalc(spot,base):
     return strikePrice
 
 cdate = datetime.strftime(datetime.now(), "%b %d %Y")
-bankniftyAt920 = 35588
+bankniftyAt920 = 36082
 strikePrice = strkPrcCalc(bankniftyAt920, 100)
 
 if __name__ == '__main__':

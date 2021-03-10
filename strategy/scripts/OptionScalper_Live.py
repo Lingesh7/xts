@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sun Mar  7 13:22:38 2021
-Option Scalper Script (Strategy-2)
+Option Scalper Live Script (Strategy-2)
 @author: mling
 """
 ############## imports ##############
@@ -23,29 +23,46 @@ import argparse
 import timer
 from threading import Thread
 from openpyxl import load_workbook
+from logging.handlers import TimedRotatingFileHandler
 from sys import exit
 import os
+
 os.chdir(r'D:\Python\First_Choice_Git\xts\strategy\scripts')
 
 ############## parsing args ##############
 
 parser = argparse.ArgumentParser(description='OptionScalper Script')
 parser.add_argument('-t', '--ticker',type=str, required=True, help='NIFTY or BANKNIFTY')
-parser.add_argument('-s', '--startTime',type=str, required=True, help='start time of the script')
-parser.add_argument('-e', '--endTime',type=str, default="15:05:00", help='end time')
+parser.add_argument('-st', '--startTime',type=str, required=True, help='start time of the script')
+parser.add_argument('-et', '--endTime',type=str, default="15:05:00", help='end time')
+parser.add_argument('-rt', '--repairTime',type=str, default="14:40:00", help='reapir time')
 parser.add_argument('-sl', '--stopLoss',type=int, default=-1500, help='stopLoss amount')
 parser.add_argument('-tgt', '--target',type=int, default=3000, help='Target amount')
 args = parser.parse_args()
+
+ticker = args.ticker
+startTime = args.startTime
+endTime = args.endTime
+repairTime = args.repairTime
+stopLoss = args.stopLoss
+target = args.target
+
+# ticker = 'NIFTY'
+# startTime = '11:53:00'
+# endTime = '12:00:00'
+# repairTime = '11:59:00'
+# stopLoss = -1500
+# target = 3000
 
 ############## logging configs ##############
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 
-filename='../logs/Option_Scalper_log.txt'
+filename=f"../logs/OptionScalper_Live_{ticker}_{startTime.replace(':','_')}_log.txt"
 
-file_handler = logging.FileHandler(filename)
-# file_handler = logging.handlers.TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=5)
+#file_handler = logging.FileHandler(filename)
+file_handler = TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=3)
 file_handler.setLevel(logging.INFO)
 file_handler.setFormatter(formatter)
 
@@ -80,6 +97,12 @@ else:
     exit()
 
 ############## Variable Declarations ##############
+logger.info(f'ticker - {ticker}')
+logger.info(f'startTime - {startTime}')
+logger.info(f'endTime - {endTime}')
+logger.info(f'repairTime - {repairTime}')
+logger.info(f'stopLoss - {stopLoss}')
+logger.info(f'target - {target}')
 multiplier=1
 etr_inst = None
 rpr_inst = None
@@ -89,11 +112,11 @@ ltp = {}
 gl_pnl = None
 pnl_dump = []
 idxs = ['NIFTY','BANKNIFTY']
-orders=[{'refId':10001, 'setno':1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':args.ticker, 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime':args.startTime, 'repairEndTime':"14:20:00", 'ptsChg': 40},
-		{'refId':10002, 'setno':2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':args.ticker, 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime':args.startTime, 'repairEndTime':"14:20:00", 'ptsChg': -40}]
-universal = {'exit_status': 'Idle', 'minPrice': args.stopLoss, 'maxPrice': args.target, 'exitTime':args.endTime, 'ext_txn_type':'buy'}
+orders=[{'refId':10001, 'setno':1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':ticker, 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime':startTime, 'repairEndTime':repairTime},
+        {'refId':10002, 'setno':2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':ticker, 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime':startTime, 'repairEndTime':repairTime}]
+universal = {'exit_status': 'Idle', 'repair_status': 'not_done', 'minPrice': stopLoss, 'maxPrice': target, 'exitTime':endTime, 'ext_txn_type':'buy'}
 # exitTime = datetime.strptime((cdate+" "+universal['exitTime']),"%d-%m-%Y %H:%M:%S")
-
+# logger.info(f'args passed and orders become {orders}' )
 ############## Functions ##############
 
 def get_expiry():
@@ -137,14 +160,22 @@ def get_expiry():
 
 def getSpot(idx):
     global spot
-    if idx in idxs[0]:
-        # base = 50
+    if idx == 'NIFTY':
         ids = 'NIFTY 50'
-    elif idx in idxs[1]:
-        # base = 100
+    elif idx == 'BANKNIFTY':
         ids = 'NIFTY BANK'
     else:
         logger.info(f'Invalid Index name {idx} - Valid names are {idxs}')
+        
+    # if idx in idxs[0]:
+    #     # base = 50
+    #     ids = 'NIFTY 50'
+    # elif idx in idxs[1]:
+    #     # base = 100
+    #     ids = 'NIFTY BANK'
+    # else:
+    #     logger.info(f'Invalid Index name {idx} - Valid names are {idxs}')
+        # exit()
     try:
         idx_instruments = [{'exchangeSegment': 1, 'exchangeInstrumentID': ids}]
         spot_resp = xt.get_quote(
@@ -161,6 +192,7 @@ def getSpot(idx):
         logger.exception(f'Unable to getSpot from index {ids}')
         exit()
     else:
+        # logger.info(f'spot is : {spot}')
         return spot
     
 def strikePrice(idx, spot):
@@ -168,11 +200,10 @@ def strikePrice(idx, spot):
         base = 50
     elif idx in idxs[1]:
         base = 100
-    else:
-        logger.info(f'Invalid Index name {idx} - Valid names are {idxs}')
-        strikePrice = base * round(spot/base)
-        logger.info(f'StrikePrice computed as : {strikePrice}')
-        return strikePrice   
+    logger.info(f'Invalid Index name {idx} - Valid names are {idxs}')
+    strikePrice = base * round(spot/base)
+    logger.info(f'StrikePrice computed as : {strikePrice}')
+    return strikePrice   
         
 def getOrderList():
     aa = 0
@@ -341,8 +372,9 @@ def execute(orders):
     
     orders['straddle_points'] = 50 if orders['idx'] == 'NIFTY' else 100
     orders['ptsChg'] = 40 if orders['idx'] == 'NIFTY' else 90
-    
+    logger.info(f'orders after spoints and ptschg: {orders}')
     while True:
+        time.sleep(5)
         if orders['status'] == 'Idle':
             #Entry condition check
             if (datetime.now() >= startTime):
@@ -381,14 +413,17 @@ def execute(orders):
                 logger.info(f'Entry order dtls of {etr_inst["set"]}: {etr_inst}')
                 tr_insts.append(etr_inst)
                 
-        if universal['exit_status'] == 'Idle':  #Checking wheather universal exit triggered or not
+        if universal['exit_status'] == 'Idle' and universal['repair_status'] == 'not_done':  #Checking wheather universal exit triggered or not
             if orders['status'] == 'Entered':
                 repairEndTime = datetime.strptime((cdate+" "+orders['repairEndTime']),"%d-%m-%Y %H:%M:%S")
                 if datetime.now() <= repairEndTime:
                     ltpOfIdx = spot
                     ptsChng = orders['ptsChg'] if orders['otype']  == 'ce' else -orders['ptsChg']
+                    # logger.info(f'Points difference in {orders["otype"]} : {round((ltpOfIdx - etr_inst["spot"]),2)}')
                     #repair condition check
-                    if ltpOfIdx > (etr_inst['spot'] +  ptsChng):
+                    if (ltpOfIdx > (etr_inst['spot'] +  ptsChng) and orders['otype']  == 'ce')\
+                        or (ltpOfIdx < (etr_inst['spot'] +  ptsChng) and orders['otype']  == 'pe'):
+                        logger.info(f'Points difference in {orders["otype"]} : {round((ltpOfIdx - etr_inst["spot"]),2)}')
                         logger.info(f'Repair condition met in set: {orders["setno"]}..')
                         #buy what sold in entry
                         rpr_inst['set']=orders['setno']
@@ -410,12 +445,12 @@ def execute(orders):
                         if orderID and tradedPrice:
                             # orders['status'] = '1Repaired'
                             rpr_inst['set_type'] = 'Repair'
-                        logger.info(f'Repair1 order dtls of set {rpr_inst2["set"]}: {rpr_inst}')
+                        logger.info(f'Repair1 order dtls of set {rpr_inst["set"]}: {rpr_inst}')
                         tr_insts.append(rpr_inst)
                         
                         # second repair 
                         if rpr_inst['set_type'] == 'Repair':
-                            logger.info('Second Repair condition met in set: {orders["setno"]}..')
+                            logger.info(f'Second Repair condition met in set: {orders["setno"]}..')
                             rpr_inst2['set'] = orders['setno']
                             rpr_inst2['txn_type'] = orders['ent_txn_type']
                             rpr_inst2['strike'] = etr_inst['strike'] + orders['straddle_points'] \
@@ -441,9 +476,10 @@ def execute(orders):
                             rpr_inst2['dateTime'] = dateTime
                             if orderID and tradedPrice:
                                 orders['status'] = 'Repaired'
-                                rpr_inst2['set_type'] = 'Repair'
+                                rpr_inst2['set_type'] = 'Entry'
                             logger.info(f'Repair2 order dtls of {rpr_inst2["set"]}: {rpr_inst2}')
                             tr_insts.append(rpr_inst2)
+                            universal['repair_status'] = 'Done'
                             continue
                 
         elif universal['exit_status'] == 'Exited':
@@ -471,12 +507,12 @@ def exitCheck(universal):
                     if gdf["tr_qty"].values[i] == 0:
                         continue
                     ext_inst['symbol'] = int(gdf['symbol'].values[i])
-                    ext_inst['tr_qty'] = int(gdf['tr_qty'].values[i])
-                    ext_inst['qty'] = abs(ext_inst['tr_qty'])
+                    ext_inst['qty'] = abs(int(gdf['tr_qty'].values[i]))
+                    ext_inst['tr_qty'] = -ext_inst['qty'] if universal['ext_txn_type'] == 'sell' else ext_inst['qty']
                     ext_inst['txn_type'] = universal['ext_txn_type'] 
                     ext_inst['name'] = str(gdf['name'].values[i])
                     ext_inst['optionType'] = ext_inst['name'][-2:] 
-                    ext_inst['strikePrice'] = ext_inst['name'][-7:-2]
+                    ext_inst['strike'] = ext_inst['name'][-7:-2]
                     ext_inst['orderID'] = None
                     ext_inst['tradedPrice'] = None
                     orderID, tradedPrice, dateTime = placeOrder(ext_inst['symbol'], ext_inst['txn_type'], ext_inst['qty'])
@@ -495,6 +531,7 @@ def exitCheck(universal):
                 time.sleep(1)
 
 def dataToExcel(pnl_dump):
+    sheetname = cdate+'_'+startTime.replace(':','_')
     pnl_df = pd.DataFrame(pnl_dump,columns=['date','pl'])
     pnl_df = pnl_df.set_index(['date'])
     pnl_df.index = pd.to_datetime(pnl_df.index, format='%d-%m-%Y %H:%M:%S')
@@ -502,11 +539,11 @@ def dataToExcel(pnl_dump):
     #writing the output to excel sheet
     writer = pd.ExcelWriter('../pnl/OptionScalper_PnL.xlsx',engine='openpyxl')
     writer.book = load_workbook('../pnl/OptionScalper_PnL.xlsx')
-    resampled_df.to_excel(writer, sheet_name=(cdate), index=True)
-    df.to_excel(writer, sheet_name=(cdate),startrow=20, startcol=7, index=False)
-    gdf.to_excel(writer, sheet_name=(cdate),startrow=4, startcol=7, index=False)
+    resampled_df.to_excel(writer, sheet_name=(cdate+'_'+startTime), index=True)
+    df.to_excel(writer, sheet_name=(sheetname),startrow=15, startcol=7, index=False)
+    gdf.to_excel(writer, sheet_name=(sheetname),startrow=4, startcol=7, index=False)
     writer.sheets=dict((ws.title, ws) for ws in writer.book.worksheets)
-    worksheet = writer.sheets[cdate]
+    worksheet = writer.sheets[sheetname]
     worksheet['G1'] = "MaxPnL"
     worksheet["G2"] = "=MAX(E:E)"
     worksheet['H1'] = "MinPnL"
@@ -514,13 +551,12 @@ def dataToExcel(pnl_dump):
     worksheet['I1'] = "FinalPnL"
     worksheet['I2'] = gl_pnl          
     writer.save()
-    writer.close()             
-
+    writer.close()
+    
 ############## main ##############        
   
 if __name__ == '__main__':
     threads=[]
-
     try:
         masterDump()
         get_expiry()
@@ -532,10 +568,11 @@ if __name__ == '__main__':
         t = Thread(target=execute,args=(orders[i],))
         t.start()
         threads.append(t)
+        
     # below function runs in background
     logger.info('Starting a timer based thread to fetch LTP of traded instruments..')
     getGlobalPnL()
-    fetchSpot = timer.RepeatedTimer(8, getSpot(), args.ticker)
+    fetchSpot = timer.RepeatedTimer(8, getSpot,ticker)
     fetchLtp = timer.RepeatedTimer(9, getLTP)
     fetchPnL = timer.RepeatedTimer(10, getGlobalPnL)
     try:
@@ -553,7 +590,8 @@ if __name__ == '__main__':
         fetchSpot.stop()
         fetchLtp.stop()
         fetchPnL.stop()
-        _ = [t.join() for t in threads]
+        # _ = [t.join() for t in threads]
+        t.join()
         time.sleep(5)
         #prints dump to excel
         getGlobalPnL()      #getting latest data
@@ -569,4 +607,4 @@ if __name__ == '__main__':
 
 ############# END ##############
 
-# !python ./OptionScalper.py -t NIFTY 17:33:00
+# !python ./OptionScalper.py -t NIFTY -s 17:33:00

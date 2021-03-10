@@ -21,7 +21,7 @@ secretKey = cfg.get('user', 'marketdata_secretkey')
 cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
 xt = XTSConnect(appKey, secretKey, source)
 
-token_file=f'access_token_{cdate}.txt'
+token_file=f'market_access_token_{cdate}.txt'
 file = Path(token_file)
 if file.exists() and (date.today() == date.fromtimestamp(file.stat().st_mtime)):
     print('Token file exists and created today')

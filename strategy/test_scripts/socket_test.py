@@ -39,6 +39,9 @@ class Example:
         self.set_marketDataToken = response['result']['token']
         self.set_muserID = response['result']['userID']
         print("Login: ", response)
+        
+        self.set_marketDataToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiJJSUZMMjhfTUFSS0VUREFUQSIsInB1YmxpY0tleSI6Ijk4YTI3YTVlMWI4MWE1OWE3ZGYyMjAiLCJpYXQiOjE2MTUzNjY1ODgsImV4cCI6MTYxNTQ1Mjk4OH0.sAOocIYvQMCstircnSZI8FkH8Lk49jAly_wRNZcLqrg'
+        self.set_muserID = 'IIFL28'
 
         # marketdata SOCKET STREAMING
         soc = MDSocket_io(self.set_marketDataToken, self.set_muserID)
@@ -50,14 +53,10 @@ class Example:
         # xt.marketdata_logout()
 
         # Instruments = [{'exchangeSegment': 51, 'exchangeInstrumentID': 217512}]
-        Instruments = [{'exchangeSegment': 1, 'exchangeInstrumentID': 2885}]
-        while True:
-            res=xt.send_unsubscription(Instruments, 1501)
-            res=xt.send_subscription(Instruments, 1501)
-
-            print("res: ", res)
-            time.sleep(5)
-
+        Instruments = [{'exchangeSegment': 1, 'exchangeInstrumentID': 22},
+                       {'exchangeSegment': 1, 'exchangeInstrumentID': 2885}]
+        res=xt.send_subscription(Instruments, 1501)
+        print(res)
       
         
 
@@ -66,38 +65,17 @@ class Example:
         today=now.strftime("%H:%M:%S")
         print(today,'in main 1501 Level1,Touchline message!' + data+' \n')
         new_file=open("newfile.txt",mode="a+",encoding="utf-8")
-        new_file.write( 'in main 1501 Level1,Touchline message!' + data+' \n'+today);
-
-    def on_message1501_json_partial(self, data):
-        now = datetime.now()
-        today=now.strftime("%H:%M:%S")
-        print(today,'in main 1501 partial Level1,Touchline message!' + data+' \n')
-        new_file=open("newfile.txt",mode="a+",encoding="utf-8")
-        new_file.write( 'in main 1501 partial Level1,Touchline message!' + data+' \n'+today);    
-
-    def on_message1502_json_full(self, data):
-        print(datetime.now())
-        print('in main 1502 Level1,Touchline message!' + data+' \n')
-        new_file=open("newfile.txt",mode="a+",encoding="utf-8")
-        new_file.write('in main 1502 Level1,Touchline message!' + data+' \n');
-        
-    
-
-    def on_message1504_json_full(self, data):
-        print('in main 1504 Index message!' + data)
+        new_file.write(today, data,'\n')
         
     def on_disconnect(self,reason):
         print('\033[93m Market Data Socket disconnected!  \033[0m'+reason)
         new_file=open("disconnect.txt",mode="a+",encoding="utf-8")
-        new_file.write('Market Data Socket disconnected!! \n');
-
-        
-
+        new_file.write('Market Data Socket disconnected!! \n');     
+ 
     def connectsocket(self):
         soc = MDSocket_io(self.set_marketDataToken, self.set_muserID)
         el = soc.get_emitter()
         el.on('1501-json-full', self.on_message1501_json_full)
-        el.on('1502-json-full', self.on_message1502_json_full)
        # el.on('disconnect', self.on_disconnect)
         socketconnect = soc.connect()
 

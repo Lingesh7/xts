@@ -22,8 +22,11 @@ import configparser
 import timer
 from threading import Thread
 from openpyxl import load_workbook
+from logging.handlers import TimedRotatingFileHandler
 from sys import exit
+import os
 
+os.chdir(r'D:\Python\First_Choice_Git\xts\strategy\scripts')
 ############## logging configs ##############
 
 logger = logging.getLogger(__name__)
@@ -32,8 +35,8 @@ formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 
 filename='../logs/Index_Option_Writing_log.txt'
 
-file_handler = logging.FileHandler(filename)
-# file_handler = logging.handlers.TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=5)
+#file_handler = logging.FileHandler(filename)
+file_handler = TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=3)
 file_handler.setLevel(logging.INFO)
 file_handler.setFormatter(formatter)
 

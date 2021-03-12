@@ -1,0 +1,2 @@
+2021-03-12 11:46:34,425:__main__:INFO:Token file exists and created today
+2021-03-12 11:46:34,439:__main__:INFO:Initializing session with token..

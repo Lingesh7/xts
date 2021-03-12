@@ -540,7 +540,7 @@ def dataToExcel(pnl_dump):
     #writing the output to excel sheet
     writer = pd.ExcelWriter('../pnl/OptionScalper_PnL.xlsx',engine='openpyxl')
     writer.book = load_workbook('../pnl/OptionScalper_PnL.xlsx')
-    resampled_df.to_excel(writer, sheet_name=(cdate+'_'+startTime), index=True)
+    resampled_df.to_excel(writer, sheet_name=(sheetname), index=True)
     df.to_excel(writer, sheet_name=(sheetname),startrow=15, startcol=7, index=False)
     gdf.to_excel(writer, sheet_name=(sheetname),startrow=4, startcol=7, index=False)
     writer.sheets=dict((ws.title, ws) for ws in writer.book.worksheets)

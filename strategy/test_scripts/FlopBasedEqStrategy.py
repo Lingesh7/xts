@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
 Created on Fri Mar 12 11:41:46 2021
-
+Flop Strategey on EQ
 @author: Welcome
 """
-
+############## imports ##############
 from datetime import datetime,date
 from dateutil.relativedelta import relativedelta, TH, WE
 from XTConnect.Connect import XTSConnect
@@ -28,16 +28,17 @@ from sys import exit
 import os
 import numpy as np
 
-try:
-    os.chdir(r'D:\Python\First_Choice_Git\xts\strategy\scripts')
-except:
-    pass
+# try:
+#     os.chdir(r'D:\Python\First_Choice_Git\xts\strategy\scripts')
+# except:
+#     pass
 
+############## logging ##############
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 
-filename='../logs/techTest_log.txt'
+filename='../logs/techTest_dev_log.txt'
 
 #file_handler = logging.FileHandler(filename)
 file_handler = TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=3)
@@ -75,8 +76,61 @@ else:
     logger.error('Wrong with token file. Generate separately.. Aborting script!..')
     exit()
 
-################ functions ###############
+################ variables ###############
+ticker = 'HDFCBANK'
 
+
+################ functions ###############
+def masterEqDump():
+    global instrument_df
+    filename=f'../ohlc/NSE_EQ_Instruments_{cdate}.csv'
+    file = Path(filename)
+    if file.exists() and (date.today() == date.fromtimestamp(file.stat().st_mtime)):
+        logger.info('MasterDump already exists.. reading directly')
+        instrument_df=pd.read_csv(filename,header='infer')
+    else:
+        logger.info('Creating MasterDump..')
+        exchangesegments = [xt.EXCHANGE_NSECM]
+        mastr_resp = xt.get_master(exchangeSegmentList=exchangesegments)
+        # print("Master: " + str(mastr_resp))
+        master=mastr_resp['result']
+        spl=master.split('\n')
+        mstr_df = pd.DataFrame([sub.split("|") for sub in spl],columns=(['ExchangeSegment','ExchangeInstrumentID','InstrumentType','Name','Description','Series','NameWithSeries','InstrumentID','PriceBand.High','PriceBand.Low','FreezeQty','TickSize',' LotSize']))
+        instrument_df = mstr_df[mstr_df.Series == 'EQ']
+        instrument_df.to_csv(f"../ohlc/NSE_EQ_Instruments_{cdate}.csv",index=False)        
+            
+def instrumentLookup(instrument_df,ticker):
+    """Looks up instrument token for a given script from instrument dump"""
+    try:
+        return instrument_df[instrument_df.Name==ticker].ExchangeInstrumentID.values[0]
+    except:
+        return -1
+
+def fetchOHLC(ticker,duration):
+    symbol = instrumentLookup(instrument_df,ticker)
+    cur_date = datetime.strftime(datetime.now(), "%b %d %Y")
+    nowtime = datetime.now().strftime('%H%M%S')
+    ohlc = xt.get_ohlc(exchangeSegment=xt.EXCHANGE_NSECM,
+                    exchangeInstrumentID=symbol,
+                    startTime=f'{cur_date} 091500',
+                    endTime=f'{cur_date} {nowtime}',
+                    compressionValue=duration)
+    dataresp= ohlc['result']['dataReponse']
+    data = dataresp.split(',')
+    data_df = pd.DataFrame([sub.split("|") for sub in data],columns=(['Timestamp','Open','High','Low','Close','Volume','OI','NA']))
+    data_df.drop(data_df.columns[[-1,-2]], axis=1, inplace=True)
+    data_df = data_df.astype(dtype={'Open': float, 'High': float, 'Low': float, 'Close': float, 'Volume': int})
+    data_df['Timestamp'] = pd.to_datetime(data_df['Timestamp'], format='%Y-%m-%d %H:%M:%S')
+    return data_df
+
+def vWAP(DF):
+    #calculating VWAP and UB , LB values
+    df = DF.copy()
+    df['vwap'] = (df.Volume*(df.High+df.Low+df.Close)/3).cumsum() / df.Volume.cumsum()
+    df['uB'] = df.vwap * 1.002
+    df['lB'] = df.vwap * 0.998
+    return df
+    
 def getOrderList():
     aa = 0
     logger.info('Checking OrderBook for order status..') 
@@ -168,104 +222,76 @@ def placeOrder(symbol,txn_type,qty):
         logger.exception('Unable to place order in placeOrder func...')
         time.sleep(1)
     
-nowtime= datetime.now().strftime('%H%M%S')
-
-
-ohlc=xt.get_ohlc(exchangeSegment=xt.EXCHANGE_NSECM,
-                    exchangeInstrumentID=1333,
-                    startTime='Mar 12 2021 091500',
-                    endTime=f'Mar 12 2021 {nowtime}',
-                    compressionValue=300)
-
-dataresp = ohlc['result']['dataReponse']
-spl = dataresp.split(',')
-spl_df = pd.DataFrame([sub.split("|") for sub in spl],columns=(['Timestamp','Open','High','Low','Close','Volume','OI','NA']))
-spl_df.drop(spl_df.columns[[-1,-2]], axis=1, inplace=True)
-
-# spl_df = pd.read_excel('hdfs_12Mar2021.xlsx')
-# spl_df = pd.read_excel('SBI_04Mar2021.xlsx')
-# spl_df = pd.read_excel('INFY_01Mar2021.xlsx')
-
-spl_df = spl_df.astype(dtype={'Open': float, 'High': float, 'Low': float, 'Close': float, 'Volume': int})
-spl_df['Timestamp'] = pd.to_datetime(spl_df['Timestamp'].astype('int'), unit='s')
-df = spl_df.copy()
-# df1 = df1.set_index(['Timestamp'])
-# df1.index = pd.to_datetime(df1.index, format='%d-%m-%Y %H:%M:%S')
-# df = pd.DataFrame()
-
-# df['Open'] = df1['Open'].resample('5min').first()
-# df['High'] = df1['High'].resample('5min').max()
-# df['Low'] = df1['Low'].resample('5min').min()
-# df['Close'] = df1['Close'].resample('5min').last()
-# df['Volume'] = df1['Volume'].resample('5min').sum()
-# df.reset_index(inplace=True)
-
-df['vwap'] = (df.Volume*(df.High+df.Low+df.Close)/3).cumsum() / df.Volume.cumsum()
-df['uB'] = df.vwap * 1.002
-df['lB'] = df.vwap * 0.998
-
-startTime = datetime.strptime(('01-03-2021 09:30:00' ),"%d-%m-%Y %H:%M:%S")
-startTime = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
-flop=[]
-mark=[]
-for i in range(len(df)):
-    print(i+1)
-    if pd.Timestamp(df['Timestamp'].values[i]) >= pd.Timestamp(startTime):
-        # print(f'Length of flop is: {len(flop)}')
-        idx = len(flop)-1
-        if df['Close'].values[i] >= df['uB'].values[i] :
-            # print('Long', df['Timestamp'].values[i])
-            if not flop:
-                flop.append('Long')
-                mark.append({'set':1, 'side': 'Long', 
-                                 'time': df['Timestamp'].values[i],
-                                    'price': df['Close'].values[i]})
-                print(flop)
-                print(mark)
-            elif flop[-1] != 'Long':
-                lowPriceAfterFlop = df[df.Timestamp.between(mark[idx]['time'],df['Timestamp'].values[i])]['Close'].min()
-                if (mark[idx]['price'] - lowPriceAfterFlop) < (mark[idx]['price'] * (0.5/100)):
-                    flop.append('Long')
-                    mark.append({'set':2, 'side': 'Long', 
-                                 'time': df['Timestamp'].values[i],
-                                    'price': df['Close'].values[i]})
-                    print(flop)
-                    print(mark)
-                    
-                    if len(flop) >= 3:
-                        print('placing Buy order')
-                        placeOrder()
-                        
-                else:
-                    flop=[]
-                    mark=[]
-           
-        if df['Close'].values[i] <= df['lB'].values[i]:
-            # print('Short', df['Timestamp'].values[i])
+if __name__ == '__main__':
+    masterEqDump()
+    date_df = fetchOHLC(ticker, 60)
+    df = vwap(data_df)
+    flop=[]
+    mark=[]
+    # for i in range(len(df)):
+        # print(i+1)
+        if pd.Timestamp(df['Timestamp'].values[i]) >= pd.Timestamp(cdate+" "+'09:30:00'):
             # print(f'Length of flop is: {len(flop)}')
             idx = len(flop)-1
-            if not flop:
-                flop.append('Short')
-                mark.append({'set':1, 'side': 'Short', 
-                                 'time': df['Timestamp'].values[i],
-                                    'price': df['Close'].values[i]})
-                print(flop)
-                print(mark)
-            elif flop[-1] != 'Short':
-                highPriceAfterFlop = df[df.Timestamp.between(mark[idx]['time'],df['Timestamp'].values[i])]['High'].max()
-                if ( highPriceAfterFlop - mark[idx]['price']) < (mark[idx]['price'] * (0.5/100)):
-                    flop.append('Short')
-                    mark.append({'set':2, 'side': 'Short', 
-                                 'time': df['Timestamp'].values[i],
-                                    'price': df['Close'].values[i]})
+            if df['Close'].values[i] >= df['uB'].values[i] :
+                # print('Long', df['Timestamp'].values[i])
+                if not flop:
+                    flop.append('Long')
+                    mark.append({'set':1, 'side': 'Long', 
+                                     'time': df['Timestamp'].values[i],
+                                        'price': df['Close'].values[i]})
                     print(flop)
                     print(mark)
-                    if len(flop) >= 3:
-                        print('placing Sell order')
-                else:
-                    flop=[]
-                    mark=[]
-        time.sleep(0.5)
-
-
-
+                elif flop[-1] != 'Long':
+                    lowPriceAfterFlop = df[df.Timestamp.between(mark[idx]['time'],df['Timestamp'].values[i])]['Close'].min()
+                    if (mark[idx]['price'] - lowPriceAfterFlop) < (mark[idx]['price'] * (0.5/100)):
+                        flop.append('Long')
+                        mark.append({'set':2, 'side': 'Long', 
+                                     'time': df['Timestamp'].values[i],
+                                        'price': df['Close'].values[i]})
+                        print(flop)
+                        print(mark)
+                        
+                        if len(flop) >= 3:
+                            print('placing Buy order')
+                            placeOrder()
+                            
+                    else:
+                        flop=[]
+                        mark=[]
+               
+            if df['Close'].values[i] <= df['lB'].values[i]:
+                # print('Short', df['Timestamp'].values[i])
+                # print(f'Length of flop is: {len(flop)}')
+                idx = len(flop)-1
+                if not flop:
+                    flop.append('Short')
+                    mark.append({'set':1, 'side': 'Short', 
+                                     'time': df['Timestamp'].values[i],
+                                        'price': df['Close'].values[i]})
+                    print(flop)
+                    print(mark)
+                elif flop[-1] != 'Short':
+                    highPriceAfterFlop = df[df.Timestamp.between(mark[idx]['time'],df['Timestamp'].values[i])]['High'].max()
+                    if ( highPriceAfterFlop - mark[idx]['price']) < (mark[idx]['price'] * (0.5/100)):
+                        flop.append('Short')
+                        mark.append({'set':2, 'side': 'Short', 
+                                     'time': df['Timestamp'].values[i],
+                                        'price': df['Close'].values[i]})
+                        print(flop)
+                        print(mark)
+                        if len(flop) >= 3:
+                            print('placing Sell order')
+                    else:
+                        flop=[]
+                        mark=[]
+            time.sleep(0.5)
+        
+        
+    
+    
+    
+    
+    
+    
+    

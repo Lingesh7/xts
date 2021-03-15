@@ -149,7 +149,7 @@ with pd.ExcelWriter("output.xlsx") as writer:
 
 Broker Name: SYMPHONY
 User ID: IIFL28
-Password: Xts@123456
+Password: Apr@123  - tr Apr@1234
 MarketData Key:98a27a5e1b81a59a7df220
 MarketData: secretKey: Naip137#fo
 Trading Key: 8a2c9c2c650b2334c0e432

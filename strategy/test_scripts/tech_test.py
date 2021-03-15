@@ -171,11 +171,13 @@ def placeOrder(symbol,txn_type,qty):
 nowtime= datetime.now().strftime('%H%M%S')
 
 
+
+
 ohlc=xt.get_ohlc(exchangeSegment=xt.EXCHANGE_NSECM,
                     exchangeInstrumentID=1333,
-                    startTime='Mar 12 2021 091500',
-                    endTime=f'Mar 12 2021 {nowtime}',
-                    compressionValue=300)
+                    startTime='Mar 15 2021 091500',
+                    endTime=f'Mar 15 2021 {nowtime}',
+                    compressionValue=60)
 
 dataresp = ohlc['result']['dataReponse']
 spl = dataresp.split(',')
@@ -204,68 +206,125 @@ df['vwap'] = (df.Volume*(df.High+df.Low+df.Close)/3).cumsum() / df.Volume.cumsum
 df['uB'] = df.vwap * 1.002
 df['lB'] = df.vwap * 0.998
 
-startTime = datetime.strptime(('01-03-2021 09:30:00' ),"%d-%m-%Y %H:%M:%S")
+startTime = datetime.strptime(('15-03-2021 09:30:00' ),"%d-%m-%Y %H:%M:%S")
 startTime = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
 flop=[]
 mark=[]
-for i in range(len(df)):
-    print(i+1)
-    if pd.Timestamp(df['Timestamp'].values[i]) >= pd.Timestamp(startTime):
-        # print(f'Length of flop is: {len(flop)}')
-        idx = len(flop)-1
-        if df['Close'].values[i] >= df['uB'].values[i] :
-            # print('Long', df['Timestamp'].values[i])
-            if not flop:
-                flop.append('Long')
-                mark.append({'set':1, 'side': 'Long', 
-                                 'time': df['Timestamp'].values[i],
-                                    'price': df['Close'].values[i]})
-                print(flop)
-                print(mark)
-            elif flop[-1] != 'Long':
-                lowPriceAfterFlop = df[df.Timestamp.between(mark[idx]['time'],df['Timestamp'].values[i])]['Close'].min()
-                if (mark[idx]['price'] - lowPriceAfterFlop) < (mark[idx]['price'] * (0.5/100)):
-                    flop.append('Long')
-                    mark.append({'set':2, 'side': 'Long', 
-                                 'time': df['Timestamp'].values[i],
-                                    'price': df['Close'].values[i]})
-                    print(flop)
-                    print(mark)
-                    
-                    if len(flop) >= 3:
-                        print('placing Buy order')
-                        placeOrder()
-                        
-                else:
-                    flop=[]
-                    mark=[]
-           
-        if df['Close'].values[i] <= df['lB'].values[i]:
-            # print('Short', df['Timestamp'].values[i])
-            # print(f'Length of flop is: {len(flop)}')
-            idx = len(flop)-1
-            if not flop:
-                flop.append('Short')
-                mark.append({'set':1, 'side': 'Short', 
-                                 'time': df['Timestamp'].values[i],
-                                    'price': df['Close'].values[i]})
-                print(flop)
-                print(mark)
-            elif flop[-1] != 'Short':
-                highPriceAfterFlop = df[df.Timestamp.between(mark[idx]['time'],df['Timestamp'].values[i])]['High'].max()
-                if ( highPriceAfterFlop - mark[idx]['price']) < (mark[idx]['price'] * (0.5/100)):
-                    flop.append('Short')
-                    mark.append({'set':2, 'side': 'Short', 
-                                 'time': df['Timestamp'].values[i],
-                                    'price': df['Close'].values[i]})
-                    print(flop)
-                    print(mark)
-                    if len(flop) >= 3:
-                        print('placing Sell order')
-                else:
-                    flop=[]
-                    mark=[]
-        time.sleep(0.5)
 
 
+def fetchOHLC(ticker,duration):
+    # symbol = instrumentLookup(instrument_df,ticker)
+    cur_date = datetime.strftime(datetime.now(), "%b %d %Y")
+    nowtime = datetime.now().strftime('%H%M%S')
+    ohlc = xt.get_ohlc(exchangeSegment=xt.EXCHANGE_NSECM,
+                    exchangeInstrumentID=ticker,
+                    startTime=f'{cur_date} 091500',
+                    endTime=f'{cur_date} {nowtime}',
+                    compressionValue=duration)
+    dataresp= ohlc['result']['dataReponse']
+    data = dataresp.split(',')
+    data_df = pd.DataFrame([sub.split("|") for sub in data],columns=(['Timestamp','Open','High','Low','Close','Volume','OI','NA']))
+    data_df.drop(data_df.columns[[-1,-2]], axis=1, inplace=True)
+    data_df = data_df.astype(dtype={'Open': float, 'High': float, 'Low': float, 'Close': float, 'Volume': int})
+    data_df['Timestamp'] = pd.to_datetime(data_df['Timestamp'].astype('int'), unit='s')
+    return data_df
 
+def vWAP(DF):
+    #calculating VWAP and UB , LB values
+    df = DF.copy()
+    df['vwap'] = (df.Volume*(df.High+df.Low+df.Close)/3).cumsum() / df.Volume.cumsum()
+    df['uB'] = df.vwap * 1.002
+    df['lB'] = df.vwap * 0.998
+    return df
+
+new_df = fetchOHLC(1333,60)
+df1 = vWAP(new_df)
+
+if pd.Timestamp(df['Timestamp'].values[i]) >= pd.Timestamp(startTime):
+    # print(f'Length of flop is: {len(flop)}')
+    idx = len(flop)-1
+    if df['Close'].iloc[-1] >= df['uB'].iloc[-1] :
+            
+         # print('Long', df['Timestamp'].values[i])
+         if not flop:
+             flop.append('Long')
+             mark.append({'set':1, 'side': 'Long', 
+                              'time': df['Timestamp'].values[i],
+                                 'price': df['Close'].values[i]})
+             print(flop)
+             print(mark)
+         elif flop[-1] != 'Long':
+             lowPriceAfterFlop = df[df.Timestamp.between(mark[idx]['time'],df['Timestamp'].values[i])]['Close'].min()
+             if (mark[idx]['price'] - lowPriceAfterFlop) < (mark[idx]['price'] * (0.5/100)):
+                 flop.append('Long')
+                 mark.append({'set':2, 'side': 'Long', 
+                              'time': df['Timestamp'].values[i],
+                                 'price': df['Close'].values[i]})
+                 print(flop)
+                 print(mark)
+                 
+                 if len(flop) >= 3:
+                     print('placing Buy order')
+                     placeOrder()
+                     
+             else:
+                 flop=[]
+                 mark=[]
+        
+     if df['Close'].values[i] <= df['lB'].values[i]:
+         # print('Short', df['Timestamp'].values[i])
+         # print(f'Length of flop is: {len(flop)}')
+         idx = len(flop)-1
+         if not flop:
+             flop.append('Short')
+             mark.append({'set':1, 'side': 'Short', 
+                              'time': df['Timestamp'].values[i],
+                                 'price': df['Close'].values[i]})
+             print(flop)
+             print(mark)
+         elif flop[-1] != 'Short':
+             highPriceAfterFlop = df[df.Timestamp.between(mark[idx]['time'],df['Timestamp'].values[i])]['High'].max()
+             if ( highPriceAfterFlop - mark[idx]['price']) < (mark[idx]['price'] * (0.5/100)):
+                 flop.append('Short')
+                 mark.append({'set':2, 'side': 'Short', 
+                              'time': df['Timestamp'].values[i],
+                                 'price': df['Close'].values[i]})
+                 print(flop)
+                 print(mark)
+                 if len(flop) >= 3:
+                     print('placing Sell order')
+             else:
+                 flop=[]
+                 mark=[]
+     time.sleep(0.5)
+    
+    
+    
+import time
+# import schedule
+import requests
+userids = ['1245301878','1647735620']
+
+def telegram_bot_sendtext(bot_message,userids):
+    for i in userids:
+        bot_token = '1635591509:AAFC3kNVnTONZ1NU4JJx_kqfFfCoJEoEJ50'
+        bot_chatID = i
+        send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + bot_message
+    
+        response = requests.get(send_text)
+    
+    return response.json()
+
+
+def report():
+    # my_balance = 10   ## Replace this number with an API call to fetch your account balance
+    my_message = "2nd message"   ## Customize your message
+    telegram_bot_sendtext(my_message,userids)
+
+
+report()   
+# schedule.every().day.at("12:00").do(report)
+
+# while True:
+#     schedule.run_pending()
+#     time.sleep(1)

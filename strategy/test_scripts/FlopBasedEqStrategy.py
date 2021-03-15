@@ -38,7 +38,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 
-filename='../logs/techTest_dev_log.txt'
+filename='../logs/techTest_testrun_log.txt'
 
 #file_handler = logging.FileHandler(filename)
 file_handler = TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=3)
@@ -78,8 +78,11 @@ else:
 
 ################ variables ###############
 ticker = 'HDFCBANK'
-
-
+refid=1
+flop=[]
+mark=[]
+tr_insts = []
+etr_inst = {}
 ################ functions ###############
 def masterEqDump():
     global instrument_df
@@ -120,7 +123,7 @@ def fetchOHLC(ticker,duration):
     data_df = pd.DataFrame([sub.split("|") for sub in data],columns=(['Timestamp','Open','High','Low','Close','Volume','OI','NA']))
     data_df.drop(data_df.columns[[-1,-2]], axis=1, inplace=True)
     data_df = data_df.astype(dtype={'Open': float, 'High': float, 'Low': float, 'Close': float, 'Volume': int})
-    data_df['Timestamp'] = pd.to_datetime(data_df['Timestamp'], format='%Y-%m-%d %H:%M:%S')
+    data_df['Timestamp'] = pd.to_datetime(data_df['Timestamp'].astype('int'), unit='s')
     return data_df
 
 def vWAP(DF):
@@ -221,77 +224,117 @@ def placeOrder(symbol,txn_type,qty):
         raise ex.XTSOrderException('Unable to place order in placeOrder func...')
         logger.exception('Unable to place order in placeOrder func...')
         time.sleep(1)
-    
-if __name__ == '__main__':
-    masterEqDump()
-    date_df = fetchOHLC(ticker, 60)
-    df = vwap(data_df)
-    flop=[]
-    mark=[]
-    # for i in range(len(df)):
-        # print(i+1)
-        if pd.Timestamp(df['Timestamp'].values[i]) >= pd.Timestamp(cdate+" "+'09:30:00'):
-            # print(f'Length of flop is: {len(flop)}')
+
+def main(capital):
+    global refid, flop, mark
+
+    logger.info(f"Checking for..{ticker} at {datetime.now().strftime('%d-%m-%Y %H:%M:%S')}")
+    try:
+        data_df = fetchOHLC(ticker, 60)
+        df = vWAP(data_df)
+        logger.info(f"tick {df['Timestamp'].iloc[-2]}")
+        quantity = int(capital/df["Close"].iloc[-1])
+        if pd.Timestamp(df['Timestamp'].iloc[-1]) >= pd.Timestamp(cdate+" "+'09:30:00'):
             idx = len(flop)-1
-            if df['Close'].values[i] >= df['uB'].values[i] :
+            if df['Close'].iloc[-2] >= df['uB'].iloc[-2] :
+                logger.info('Upper bound break..')
                 # print('Long', df['Timestamp'].values[i])
                 if not flop:
                     flop.append('Long')
-                    mark.append({'set':1, 'side': 'Long', 
-                                     'time': df['Timestamp'].values[i],
-                                        'price': df['Close'].values[i]})
-                    print(flop)
-                    print(mark)
+                    mark.append({'refid':refid, 'side': 'Long', 'time': df['Timestamp'].iloc[-2], 'price': df['Close'].iloc[-2]})
+                    refid += 1
+                    logger.info(flop)
+                    logger.info(mark)
                 elif flop[-1] != 'Long':
-                    lowPriceAfterFlop = df[df.Timestamp.between(mark[idx]['time'],df['Timestamp'].values[i])]['Close'].min()
+                    lowPriceAfterFlop = df[df.Timestamp.between(mark[idx]['time'],df['Timestamp'].values[-2])]['Close'].min()
                     if (mark[idx]['price'] - lowPriceAfterFlop) < (mark[idx]['price'] * (0.5/100)):
                         flop.append('Long')
-                        mark.append({'set':2, 'side': 'Long', 
-                                     'time': df['Timestamp'].values[i],
-                                        'price': df['Close'].values[i]})
-                        print(flop)
-                        print(mark)
-                        
+                        mark.append({'set':refid, 'side': 'Long', 'time': df['Timestamp'].values[-2], 'price': df['Close'].values[-2]})
+                        refid += 1
+                        logger.info(flop)
+                        logger.info(mark)
                         if len(flop) >= 3:
-                            print('placing Buy order')
-                            placeOrder()
-                            
+                            logger.info('===================')
+                            logger.info('placing Buy order')
+                            logger.info('===================')
+                            # placeOrder()
+                            etr_inst['txn_type'] = 'BUY'
+                            etr_inst['qty'] = quantity
+                            etr_inst['tr_qty'] = quantity
+                            etr_inst['name'] = ticker
+                            etr_inst['symbol'] = ticker #todo symbol should be calculated here
+                            etr_inst['orderID'] = None
+                            etr_inst['tradedPrice'] = None
+                            orderID, tradedPrice, dateTime = placeOrder(ticker, 'buy', quantity)
+                            etr_inst['orderID'] = orderID
+                            etr_inst['tradedPrice'] = tradedPrice
+                            etr_inst['dateTime'] = dateTime
+                            if orderID and tradedPrice:
+                                tr_insts.append(etr_inst)
                     else:
+                        logger.info('Previous break is not a flop.. strting from begining')
                         flop=[]
                         mark=[]
                
-            if df['Close'].values[i] <= df['lB'].values[i]:
-                # print('Short', df['Timestamp'].values[i])
-                # print(f'Length of flop is: {len(flop)}')
+            if df['Close'].values[-2] <= df['lB'].values[-2]:
                 idx = len(flop)-1
                 if not flop:
                     flop.append('Short')
-                    mark.append({'set':1, 'side': 'Short', 
-                                     'time': df['Timestamp'].values[i],
-                                        'price': df['Close'].values[i]})
-                    print(flop)
-                    print(mark)
+                    mark.append({'set':refid, 'side': 'Short', 'time': df['Timestamp'].values[-2], 'price': df['Close'].values[-2]})
+                    refid += 1
+                    logger.info(flop)
+                    logger.info(mark)
                 elif flop[-1] != 'Short':
-                    highPriceAfterFlop = df[df.Timestamp.between(mark[idx]['time'],df['Timestamp'].values[i])]['High'].max()
+                    highPriceAfterFlop = df[df.Timestamp.between(mark[idx]['time'],df['Timestamp'].values[-2])]['High'].max()
                     if ( highPriceAfterFlop - mark[idx]['price']) < (mark[idx]['price'] * (0.5/100)):
                         flop.append('Short')
-                        mark.append({'set':2, 'side': 'Short', 
-                                     'time': df['Timestamp'].values[i],
-                                        'price': df['Close'].values[i]})
-                        print(flop)
-                        print(mark)
+                        mark.append({'set':refid, 'side': 'Short', 'time': df['Timestamp'].values[-2], 'price': df['Close'].values[-2]})
+                        refid += 1
+                        logger.info(flop)
+                        logger.info(mark)
                         if len(flop) >= 3:
-                            print('placing Sell order')
+                            logger.info('===================')
+                            logger.info('placing Sell order')
+                            logger.info('===================')
+                            # placeOrder()
+                            placeOrder(ticker, 'sell', quantity)
                     else:
                         flop=[]
                         mark=[]
-            time.sleep(0.5)
-        
-        
+    except:
+        logger.info("API error for ticker :",ticker)
+
+if __name__ == '__main__':
+    masterEqDump()
+    startin=time.time()
+    timeout = time.time() + 60*60*1  # 60 seconds times 360 meaning 6 hrs
+    while time.time() <= timeout:
+        try:
+            main()
+            time.sleep(60 - ((time.time() - startin) % 60.0))
+        except KeyboardInterrupt:
+            print('\n\nKeyboard exception received. Exiting.')
+            exit()
     
-    
-    
-    
-    
-    
-    
+# AUROPHARMA
+# AXIS BANK
+# BPCL
+# BANDHANBNK
+# BAJFINANCE
+# DLF
+# HINDALCO
+# IBULHSGFIN
+# INDUSINDBK
+# ICICIBANK
+# INDIGO
+# JINDALSTEL
+# L&TFH
+# LICHSGFIN
+# MANAPPURAM
+# MARUTI
+# RBLBANK
+# SBIN
+# TATAMOTORS
+# TATASTEEL
+# VEDL
+

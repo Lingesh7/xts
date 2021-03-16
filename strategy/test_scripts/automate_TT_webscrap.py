@@ -25,8 +25,8 @@ audioToTextDelay = 10
 delayTime = 2
 audioFile = "\\payload.mp3"
 SpeechToTextURL = "https://speech-to-text-demo.ng.bluemix.net/"
-# PATH = "C:\\Users\\mling\\Downloads\\chromedriver.exe"
-PATH = "C:\\Users\\Welcome\\Downloads\\chromedriver.exe"
+PATH = "C:\\Users\\mling\\Downloads\\chromedriver.exe"
+#PATH = "C:\\Users\\Welcome\\Downloads\\chromedriver.exe"
 URL = 'https://tradetron.tech/'
 
 # options = Options()
@@ -67,8 +67,8 @@ try:
     option.add_argument('--disable-notifications')
     # option.add_argument('headless')
     # option.add_argument('--mute-audio')
-    # option.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4389.82 Safari/537.36")
-    option.add_argument("user_agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36")
+    option.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4389.82 Safari/537.36")
+    #option.add_argument("user_agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36")
     driver = webdriver.Chrome(PATH, options=option)
     driver.maximize_window()
     # delay()

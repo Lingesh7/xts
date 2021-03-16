@@ -12,7 +12,8 @@ import configparser
 
 cdate=datetime.now().strftime('%d-%m-%Y')
 
-token_file=f'market_access_token_{cdate}.txt'
+
+token_file=f'access_token_market_{cdate}.txt'
 file = Path(token_file)
 if file.exists() and (date.today() == date.fromtimestamp(file.stat().st_mtime)):
     print('Token file exists and created today')
@@ -32,4 +33,4 @@ else:
             file.write('{}\n{}\n'.format(response['result']['token'], response['result']['userID']
                                            ))
     else:
-        print('Issue with interactive login')
+        print('Issue with MarketData login')

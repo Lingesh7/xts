@@ -48032,3 +48032,79 @@ Global PnL : -1803.75
  Global PnL : -1803.75 
 
 2021-03-16 12:02:33,280:__main__:INFO:--------------------------------------------
+2021-03-17 11:25:06,194:__main__:INFO:Token file exists and created today
+2021-03-17 11:25:06,194:__main__:INFO:Initializing session with token..
+2021-03-17 11:25:06,194:__main__:INFO:ticker - NIFTY
+2021-03-17 11:25:06,194:__main__:INFO:startTime - 11:30:00
+2021-03-17 11:25:06,194:__main__:INFO:endTime - 15:05:00
+2021-03-17 11:25:06,194:__main__:INFO:repairTime - 14:40:00
+2021-03-17 11:25:06,194:__main__:INFO:stopLoss - -1500
+2021-03-17 11:25:06,194:__main__:INFO:target - 3000
+2021-03-17 11:25:06,194:__main__:INFO:MasterDump already exists.. reading directly
+2021-03-17 11:25:27,334:__main__:ERROR:Failed to get masterDump/ expiryDates. Exiting..
+Traceback (most recent call last):
+  File "C:\Users\Welcome\Anaconda3\lib\site-packages\urllib3\connection.py", line 159, in _new_conn
+    conn = connection.create_connection(
+  File "C:\Users\Welcome\Anaconda3\lib\site-packages\urllib3\util\connection.py", line 84, in create_connection
+    raise err
+  File "C:\Users\Welcome\Anaconda3\lib\site-packages\urllib3\util\connection.py", line 74, in create_connection
+    sock.connect(sa)
+TimeoutError: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Welcome\Anaconda3\lib\site-packages\urllib3\connectionpool.py", line 670, in urlopen
+    httplib_response = self._make_request(
+  File "C:\Users\Welcome\Anaconda3\lib\site-packages\urllib3\connectionpool.py", line 381, in _make_request
+    self._validate_conn(conn)
+  File "C:\Users\Welcome\Anaconda3\lib\site-packages\urllib3\connectionpool.py", line 978, in _validate_conn
+    conn.connect()
+  File "C:\Users\Welcome\Anaconda3\lib\site-packages\urllib3\connection.py", line 309, in connect
+    conn = self._new_conn()
+  File "C:\Users\Welcome\Anaconda3\lib\site-packages\urllib3\connection.py", line 171, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPSConnection object at 0x000000CC60F4C220>: Failed to establish a new connection: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Welcome\Anaconda3\lib\site-packages\requests\adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "C:\Users\Welcome\Anaconda3\lib\site-packages\urllib3\connectionpool.py", line 726, in urlopen
+    retries = retries.increment(
+  File "C:\Users\Welcome\Anaconda3\lib\site-packages\urllib3\util\retry.py", line 446, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='developers.symphonyfintech.in', port=443): Max retries exceeded with url: /marketdata/instruments/instrument/expiryDate?exchangeSegment=2&series=OPTIDX&symbol=NIFTY (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x000000CC60F4C220>: Failed to establish a new connection: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Welcome\Anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 567, in get_expiry_date
+    response = self._get('market.instruments.instrument.expirydate', params)
+  File "C:\Users\Welcome\Anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 635, in _get
+    return self._request(route, "GET", params)
+  File "C:\Users\Welcome\Anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 671, in _request
+    raise e
+  File "C:\Users\Welcome\Anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 663, in _request
+    r = self.reqsession.request(method,
+  File "C:\Users\Welcome\Anaconda3\lib\site-packages\requests\api.py", line 61, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "C:\Users\Welcome\Anaconda3\lib\site-packages\requests\sessions.py", line 530, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\Welcome\Anaconda3\lib\site-packages\requests\sessions.py", line 643, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\Welcome\Anaconda3\lib\site-packages\requests\adapters.py", line 516, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='developers.symphonyfintech.in', port=443): Max retries exceeded with url: /marketdata/instruments/instrument/expiryDate?exchangeSegment=2&series=OPTIDX&symbol=NIFTY (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x000000CC60F4C220>: Failed to establish a new connection: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Python\First_Choice_Git\xts\strategy\scripts\OptionScalper_Live.py", line 562, in <module>
+    get_expiry()
+  File "D:\Python\First_Choice_Git\xts\strategy\scripts\OptionScalper_Live.py", line 142, in get_expiry
+    xpry_resp = xt.get_expiry_date(exchangeSegment=2, series='OPTIDX', symbol='NIFTY')
+  File "C:\Users\Welcome\Anaconda3\lib\site-packages\xts-0.1-py3.8.egg\XTConnect\Connect.py", line 570, in get_expiry_date
+    return response['description']
+UnboundLocalError: local variable 'response' referenced before assignment

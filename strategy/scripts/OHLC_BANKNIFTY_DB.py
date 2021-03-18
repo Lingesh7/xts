@@ -9,6 +9,8 @@ from XTConnect import XTSConnect
 import configparser
 from pathlib import Path
 import sqlite3
+import nsetools
+nse = nsetools.Nse()
 
 cfg = configparser.ConfigParser()
 cfg.read('../../XTConnect/config.ini')
@@ -32,10 +34,6 @@ if file.exists() and (date.today() == date.fromtimestamp(file.stat().st_mtime)):
     xt._set_common_variables(access_token, userID)
 
 
-
-# niftyAt920 = 15037
-# strikePrice = strkPrcCalc(niftyAt920, 50)
-
 def masterDump():
     global instrument_df
     filename=f'../ohlc/NSE_Instruments_{cdate}.csv'
@@ -53,6 +51,19 @@ def masterDump():
         mstr_df = pd.DataFrame([sub.split("|") for sub in spl],columns=(['ExchangeSegment','ExchangeInstrumentID','InstrumentType','Name','Description','Series','NameWithSeries','InstrumentID','PriceBand.High','PriceBand.Low','FreezeQty','TickSize',' LotSize','UnderlyingInstrumentId','UnderlyingIndexName','ContractExpiration','StrikePrice','OptionType']))
         instrument_df = mstr_df[mstr_df.Series == 'OPTIDX']
         instrument_df.to_csv(f"../ohlc/NSE_Instruments_{cdate}.csv",index=False)        
+
+def strkPrcCalc(spot,base):
+    strikePrice = base * round(spot/base)
+    # logger.info(f'StrikePrice computed as : {strikePrice}')
+    print(f'StrikePrice computed as : {strikePrice}')
+    return strikePrice
+
+niftyjson = nse.get_index_quote('NIFTY BANK')
+niftybank =  niftyjson['lastPrice']
+strikePrice = strkPrcCalc(niftybank, 100)
+strikeRange = [str(i) for i in list(range(strikePrice-2000,strikePrice+2000,100))]
+# strikeRange = list(range(strikePrice-2000,strikePrice+2000,100))
+# strikeRangestr = [str(i) for i in strikeRange]
             
 #main
 masterDump()
@@ -60,7 +71,8 @@ cdate1 = datetime.strftime(datetime.now(), "%b %d %Y")
 df = instrument_df.copy()
 # symbol_list = (df[(df.Name == 'NIFTY') & (df.Description.str.contains(f'NIFTY21{datetime.now().strftime("%b").upper()}'))]['ExchangeInstrumentID']).tolist()
 filtrdf = df[(df.Name == 'BANKNIFTY') & (df.Description.str.contains(f'BANKNIFTY21{datetime.now().strftime("%b").upper()}'))]
-keyv = dict(zip(filtrdf.Description, filtrdf.ExchangeInstrumentID))
+nwfiltrdf = filtrdf[filtrdf.Description.str.contains('|'.join(strikeRange))]
+keyv = dict(zip(nwfiltrdf.Description, nwfiltrdf.ExchangeInstrumentID))
 
 db = sqlite3.connect(f'../ohlc/BANKNIFTY_{datetime.now().strftime("%B").upper()}_OHLC.db')
 cur = db.cursor()

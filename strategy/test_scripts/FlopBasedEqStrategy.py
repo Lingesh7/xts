@@ -77,12 +77,23 @@ else:
     exit()
 
 ################ variables ###############
-ticker = 'HDFCBANK'
+# tickers = ['HDFCBANK','SBIN']
+
+# orders = []
+
+# for ticker in tickers:
+#     orders.append({'ticker':ticker})
+
+
+# orders = [{ticker:HDFCBANK}]
+tickers=['HDFCBANK']
 refid=1
 flop=[]
 mark=[]
 tr_insts = []
 etr_inst = {}
+rpr_inst = {}
+ltp = {}
 ################ functions ###############
 def masterEqDump():
     global instrument_df
@@ -225,84 +236,161 @@ def placeOrder(symbol,txn_type,qty):
         logger.exception('Unable to place order in placeOrder func...')
         time.sleep(1)
 
+def preparePlaceOrders(ticker,txn_type,quantity):
+    global etr_inst,tr_insts
+    logger.info('===================')
+    logger.info(f'placing {txn_type} order')
+    logger.info('===================')
+    # placeOrder()
+    etr_inst['txn_type'] = txn_type
+    etr_inst['qty'] = quantity 
+    etr_inst['tr_qty'] = quantity if txn_type == 'buy' else -quantity
+    etr_inst['name'] = ticker
+    etr_inst['symbol'] = instrumentLookup(instrument_df,ticker) #todo symbol should be calculated here
+    etr_inst['orderID'] = None
+    etr_inst['tradedPrice'] = None
+    orderID, tradedPrice, dateTime = placeOrder(ticker, txn_type, quantity)
+    etr_inst['orderID'] = orderID
+    etr_inst['tradedPrice'] = tradedPrice
+    etr_inst['dateTime'] = dateTime
+    if orderID and tradedPrice:
+        etr_inst['set_type'] = 'Entry'
+        logger.info(f'Entry details : {tr_insts}')
+        tr_insts.append(etr_inst.copy())
+        logger.info(f'Entry tr_insts: {tr_insts}')
+        
+
+def getLTP():
+    global ltp
+    # ltp={}
+    if tr_insts:
+        # logger.info('inside tr_insts cond - getLTP')
+        symbols=[i['symbol'] for i in tr_insts]
+        instruments=[]
+        for symbol in symbols:
+            instruments.append({'exchangeSegment': 2, 'exchangeInstrumentID': symbol})
+        xt.send_unsubscription(Instruments=instruments,xtsMessageCode=1502)
+        subs_resp=xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
+        if subs_resp['type'] == 'success':
+            for symbol,i in zip(symbols,range(len(symbols))):
+                listQuotes = json.loads(subs_resp['result']['listQuotes'][i])
+                price=listQuotes['Touchline']['LastTradedPrice']
+                ltp[symbol]=price
+
+def slTgtCheck():
+    global tr_insts
+    if tr_insts:
+        for trade in tr_insts:
+            if trade['set_type'] == 'Entry':
+                if trade['symbol'] in ltp.keys():
+                    if  ((ltp[trade['symbol']] >= (trade['tradedPrice'] + trade['tradedPrice']*(1.5/100))) \
+                          or (ltp[trade['symbol']] <= (trade['tradedPrice'] - trade['tradedPrice']*(1/100)))) \
+                              and trade['txn_type'] == 'buy':
+                        logger.info(f'stoploss or targrt condition met in buy side. Closing the position {trade["name"]}')
+                        # side = 'sell' if trade['txn_type'] == 'buy' else 'buy'
+                        rpr_inst['txn_type'] = 'sell'
+                        rpr_inst['qty'] = trade['qty']
+                        rpr_inst['tr_qty'] = -rpr_inst['qty']
+                        rpr_inst['name'] = trade['name']
+                        rpr_inst['symbol'] = trade['symbol']
+                        rpr_inst['orderID'] = None
+                        rpr_inst['tradedPrice'] = None
+                        orderID, tradedPrice, dateTime = placeOrder(rpr_inst['symbol'],rpr_inst['qty'], rpr_inst['qty'])                   
+                        rpr_inst['orderID'] = orderID
+                        rpr_inst['tradedPrice'] = tradedPrice
+                        rpr_inst['dateTime'] = dateTime
+                        if orderID and tradedPrice:
+                            rpr_inst['set_type'] = 'Repair'
+                            trade['set_type'] = 'Repaired'
+                            logger.info(f'Repair details : {rpr_insts}')
+                            tr_insts.append(rpr_inst.copy())
+                            logger.info(f' Repair tr_insts: {tr_insts}')
+                        
+                    elif  ((ltp[trade['symbol']] <= (trade['tradedPrice'] - trade['tradedPrice']*(1.5/100))) \
+                          or (ltp[trade['symbol']] >= (trade['tradedPrice'] + trade['tradedPrice']*(1/100)))) \
+                              and trade['txn_type'] == 'sell':
+                        logger.info(f'stoploss or targrt condition met in sell side. Closing the position {trade["name"]}')
+                        # orderID, tradedPrice, dateTime = placeOrder(trade['symbol'], 'buy', trade['qty'])
+                        rpr_inst['txn_type'] = 'buy'
+                        rpr_inst['qty'] = trade['qty']
+                        rpr_inst['tr_qty'] = rpr_inst['qty']
+                        rpr_inst['name'] = trade['name']
+                        rpr_inst['symbol'] = trade['symbol']
+                        rpr_inst['orderID'] = None
+                        rpr_inst['tradedPrice'] = None
+                        orderID, tradedPrice, dateTime = placeOrder(rpr_inst['symbol'],rpr_inst['qty'], rpr_inst['qty'])                   
+                        rpr_inst['orderID'] = orderID
+                        rpr_inst['tradedPrice'] = tradedPrice
+                        rpr_inst['dateTime'] = dateTime
+                        if orderID and tradedPrice:
+                            rpr_inst['set_type'] = 'Repair'
+                            trade['set_type'] = 'Repaired'
+                            logger.info(f'Repair details : {rpr_insts}')
+                            tr_insts.append(rpr_inst.copy())
+                            logger.info(f'Repair tr_insts: {tr_insts}')
+
+
 def main(capital):
     global refid, flop, mark
-
-    logger.info(f"Checking for..{ticker} at {datetime.now().strftime('%d-%m-%Y %H:%M:%S')}")
     try:
-        data_df = fetchOHLC(ticker, 60)
-        df = vWAP(data_df)
-        logger.info(f"tick {df['Timestamp'].iloc[-2]}")
-        quantity = int(capital/df["Close"].iloc[-1])
-        if pd.Timestamp(df['Timestamp'].iloc[-1]) >= pd.Timestamp(cdate+" "+'09:30:00'):
-            idx = len(flop)-1
-            if df['Close'].iloc[-2] >= df['uB'].iloc[-2] :
-                logger.info('Upper bound break..')
-                # print('Long', df['Timestamp'].values[i])
-                if not flop:
-                    flop.append('Long')
-                    mark.append({'refid':refid, 'side': 'Long', 'time': df['Timestamp'].iloc[-2], 'price': df['Close'].iloc[-2]})
-                    refid += 1
-                    logger.info(flop)
-                    logger.info(mark)
-                elif flop[-1] != 'Long':
-                    lowPriceAfterFlop = df[df.Timestamp.between(mark[idx]['time'],df['Timestamp'].values[-2])]['Close'].min()
-                    if (mark[idx]['price'] - lowPriceAfterFlop) < (mark[idx]['price'] * (0.5/100)):
+        for ticker in tickers:
+            logger.info(f"Checking for..{ticker} at {datetime.now().strftime('%d-%m-%Y %H:%M:%S')}")
+            data_df = fetchOHLC(ticker, 60)
+            df = vWAP(data_df)
+            logger.info(f"tick {df['Timestamp'].iloc[-2]}")
+            quantity = int(capital/df["Close"].iloc[-1])
+            if pd.Timestamp(df['Timestamp'].iloc[-1]) >= pd.Timestamp(cdate+" "+'09:30:00'):
+                idx = len(flop)-1
+                if df['Close'].iloc[-2] >= df['uB'].iloc[-2] :
+                    logger.info('Upper bound break..')
+                    # print('Long', df['Timestamp'].values[i])
+                    if not flop:
                         flop.append('Long')
-                        mark.append({'set':refid, 'side': 'Long', 'time': df['Timestamp'].values[-2], 'price': df['Close'].values[-2]})
+                        mark.append({'refid':refid, 'side': 'Long', 'time': df['Timestamp'].iloc[-2], 'price': df['Close'].iloc[-2]})
                         refid += 1
                         logger.info(flop)
                         logger.info(mark)
-                        if len(flop) >= 3:
-                            logger.info('===================')
-                            logger.info('placing Buy order')
-                            logger.info('===================')
-                            # placeOrder()
-                            etr_inst['txn_type'] = 'BUY'
-                            etr_inst['qty'] = quantity
-                            etr_inst['tr_qty'] = quantity
-                            etr_inst['name'] = ticker
-                            etr_inst['symbol'] = ticker #todo symbol should be calculated here
-                            etr_inst['orderID'] = None
-                            etr_inst['tradedPrice'] = None
-                            orderID, tradedPrice, dateTime = placeOrder(ticker, 'buy', quantity)
-                            etr_inst['orderID'] = orderID
-                            etr_inst['tradedPrice'] = tradedPrice
-                            etr_inst['dateTime'] = dateTime
-                            if orderID and tradedPrice:
-                                tr_insts.append(etr_inst)
-                    else:
-                        logger.info('Previous break is not a flop.. strting from begining')
-                        flop=[]
-                        mark=[]
-               
-            if df['Close'].values[-2] <= df['lB'].values[-2]:
-                idx = len(flop)-1
-                if not flop:
-                    flop.append('Short')
-                    mark.append({'set':refid, 'side': 'Short', 'time': df['Timestamp'].values[-2], 'price': df['Close'].values[-2]})
-                    refid += 1
-                    logger.info(flop)
-                    logger.info(mark)
-                elif flop[-1] != 'Short':
-                    highPriceAfterFlop = df[df.Timestamp.between(mark[idx]['time'],df['Timestamp'].values[-2])]['High'].max()
-                    if ( highPriceAfterFlop - mark[idx]['price']) < (mark[idx]['price'] * (0.5/100)):
+                    elif flop[-1] != 'Long':
+                        lowPriceAfterFlop = df[df.Timestamp.between(mark[idx]['time'],df['Timestamp'].values[-2])]['Close'].min()
+                        if (mark[idx]['price'] - lowPriceAfterFlop) < (mark[idx]['price'] * (0.5/100)):
+                            flop.append('Long')
+                            mark.append({'set':refid, 'side': 'Long', 'time': df['Timestamp'].values[-2], 'price': df['Close'].values[-2]})
+                            refid += 1
+                            logger.info(flop)
+                            logger.info(mark)
+                            
+                            if len(flop) >= 3:
+                               preparePlaceOrders(ticker,'buy',quantity)
+                        else:
+                            logger.info('Previous break is not a flop.. starting from begining')
+                            flop=[]
+                            mark=[]
+                   
+                if df['Close'].values[-2] <= df['lB'].values[-2]:
+                    idx = len(flop)-1
+                    if not flop:
                         flop.append('Short')
                         mark.append({'set':refid, 'side': 'Short', 'time': df['Timestamp'].values[-2], 'price': df['Close'].values[-2]})
                         refid += 1
                         logger.info(flop)
                         logger.info(mark)
-                        if len(flop) >= 3:
-                            logger.info('===================')
-                            logger.info('placing Sell order')
-                            logger.info('===================')
-                            # placeOrder()
-                            placeOrder(ticker, 'sell', quantity)
-                    else:
-                        flop=[]
-                        mark=[]
+                    elif flop[-1] != 'Short':
+                        highPriceAfterFlop = df[df.Timestamp.between(mark[idx]['time'],df['Timestamp'].values[-2])]['High'].max()
+                        if ( highPriceAfterFlop - mark[idx]['price']) < (mark[idx]['price'] * (0.5/100)):
+                            flop.append('Short')
+                            mark.append({'set':refid, 'side': 'Short', 'time': df['Timestamp'].values[-2], 'price': df['Close'].values[-2]})
+                            refid += 1
+                            logger.info(flop)
+                            logger.info(mark)
+                            
+                            if len(flop) >= 3:
+                                preparePlaceOrders(ticker,'sell',quantity)
+                        else:
+                            logger.info('Previous break is not a flop.. starting from begining')
+                            flop=[]
+                            mark=[]
     except:
-        logger.info("API error for ticker :",ticker)
+        logger.error("API error for ticker :",ticker)
 
 if __name__ == '__main__':
     masterEqDump()

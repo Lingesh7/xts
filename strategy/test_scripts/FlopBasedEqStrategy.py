@@ -94,6 +94,8 @@ tr_insts = []
 etr_inst = {}
 rpr_inst = {}
 ltp = {}
+gl_pnl = None
+pnl_dump = []
 ################ functions ###############
 def masterEqDump():
     global instrument_df
@@ -116,7 +118,7 @@ def masterEqDump():
 def instrumentLookup(instrument_df,ticker):
     """Looks up instrument token for a given script from instrument dump"""
     try:
-        return instrument_df[instrument_df.Name==ticker].ExchangeInstrumentID.values[0]
+        return int(instrument_df[instrument_df.Name==ticker].ExchangeInstrumentID.values[0])
     except:
         return -1
 
@@ -183,7 +185,7 @@ def placeOrder(symbol,txn_type,qty):
     elif txn_type == "sell":
         t_type=xt.TRANSACTION_TYPE_SELL
     try:
-        order_resp = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
+        order_resp = xt.place_order(exchangeSegment=xt.EXCHANGE_NSECM,
                          exchangeInstrumentID= symbol ,
                          productType=xt.PRODUCT_MIS, 
                          orderType=xt.ORDER_TYPE_MARKET,                   
@@ -231,7 +233,7 @@ def placeOrder(symbol,txn_type,qty):
             logger.error(order_resp['description'])
             logger.info(f'Order not placed for - {symbol} ')
             raise Exception('Order not placed - ')
-    except Exception():
+    except:
         raise ex.XTSOrderException('Unable to place order in placeOrder func...')
         logger.exception('Unable to place order in placeOrder func...')
         time.sleep(1)
@@ -249,7 +251,7 @@ def preparePlaceOrders(ticker,txn_type,quantity):
     etr_inst['symbol'] = instrumentLookup(instrument_df,ticker) #todo symbol should be calculated here
     etr_inst['orderID'] = None
     etr_inst['tradedPrice'] = None
-    orderID, tradedPrice, dateTime = placeOrder(ticker, txn_type, quantity)
+    orderID, tradedPrice, dateTime = placeOrder(etr_inst['symbol'], etr_inst['txn_type'], etr_inst['qty'])
     etr_inst['orderID'] = orderID
     etr_inst['tradedPrice'] = tradedPrice
     etr_inst['dateTime'] = dateTime
@@ -258,7 +260,6 @@ def preparePlaceOrders(ticker,txn_type,quantity):
         logger.info(f'Entry details : {tr_insts}')
         tr_insts.append(etr_inst.copy())
         logger.info(f'Entry tr_insts: {tr_insts}')
-        
 
 def getLTP():
     global ltp
@@ -268,7 +269,7 @@ def getLTP():
         symbols=[i['symbol'] for i in tr_insts]
         instruments=[]
         for symbol in symbols:
-            instruments.append({'exchangeSegment': 2, 'exchangeInstrumentID': symbol})
+            instruments.append({'exchangeSegment': 1, 'exchangeInstrumentID': symbol})
         xt.send_unsubscription(Instruments=instruments,xtsMessageCode=1502)
         subs_resp=xt.send_subscription(Instruments=instruments,xtsMessageCode=1502)
         if subs_resp['type'] == 'success':
@@ -277,12 +278,36 @@ def getLTP():
                 price=listQuotes['Touchline']['LastTradedPrice']
                 ltp[symbol]=price
 
+def getGlobalPnL():
+    global gl_pnl, df, gdf, pnl_dump
+    # pnl_dump = []
+    if tr_insts:
+        # logger.info('inside tr_insts cond - getGlobalLTP')
+        df = pd.DataFrame(tr_insts)
+        df['tr_amount'] = df['tr_qty']*df['tradedPrice']
+        df = df.fillna(0)
+        df = df.astype(dtype={'txn_type': str, 'qty': int, 'tr_qty': int, \
+                                 'name': str, 'symbol': int, 'orderID': int, 'tradedPrice': float, 'dateTime': str, \
+                                 'set_type': str, 'tr_amount': float})
+        gdf = df.groupby(['name','symbol'],as_index=False).sum()[['symbol','name','tr_qty','tradedPrice','tr_amount']]
+        gdf['ltp'] = gdf['symbol'].map(ltp)
+        gdf['cur_amount'] = gdf['tr_qty']*gdf['ltp']
+        gdf['pnl'] = gdf['cur_amount'] - gdf['tr_amount']
+        logger.info(f'\n\nPositionList: \n {df}')
+        logger.info(f'\n\nCombinedPositionsLists: \n {gdf}')
+        gl_pnl = round(gdf['pnl'].sum(),2)
+        logger.info(f'\n\nGlobal PnL : {gl_pnl} \n')
+        pnl_dump.append([time.strftime("%d-%m-%Y %H:%M:%S"),gl_pnl])
+    else:
+        gl_pnl = 0
+
 def slTgtCheck():
     global tr_insts
     if tr_insts:
         for trade in tr_insts:
             if trade['set_type'] == 'Entry':
                 if trade['symbol'] in ltp.keys():
+                    logger.info(f'sl/tgt check on {trade["name"]}')
                     if  ((ltp[trade['symbol']] >= (trade['tradedPrice'] + trade['tradedPrice']*(1.5/100))) \
                           or (ltp[trade['symbol']] <= (trade['tradedPrice'] - trade['tradedPrice']*(1/100)))) \
                               and trade['txn_type'] == 'buy':
@@ -295,14 +320,14 @@ def slTgtCheck():
                         rpr_inst['symbol'] = trade['symbol']
                         rpr_inst['orderID'] = None
                         rpr_inst['tradedPrice'] = None
-                        orderID, tradedPrice, dateTime = placeOrder(rpr_inst['symbol'],rpr_inst['qty'], rpr_inst['qty'])                   
+                        orderID, tradedPrice, dateTime = placeOrder(rpr_inst['symbol'],rpr_inst['txn_type'], rpr_inst['qty'])                   
                         rpr_inst['orderID'] = orderID
                         rpr_inst['tradedPrice'] = tradedPrice
                         rpr_inst['dateTime'] = dateTime
                         if orderID and tradedPrice:
                             rpr_inst['set_type'] = 'Repair'
                             trade['set_type'] = 'Repaired'
-                            logger.info(f'Repair details : {rpr_insts}')
+                            logger.info(f'Repair details : {rpr_inst}')
                             tr_insts.append(rpr_inst.copy())
                             logger.info(f' Repair tr_insts: {tr_insts}')
                         
@@ -318,17 +343,16 @@ def slTgtCheck():
                         rpr_inst['symbol'] = trade['symbol']
                         rpr_inst['orderID'] = None
                         rpr_inst['tradedPrice'] = None
-                        orderID, tradedPrice, dateTime = placeOrder(rpr_inst['symbol'],rpr_inst['qty'], rpr_inst['qty'])                   
+                        orderID, tradedPrice, dateTime = placeOrder(rpr_inst['symbol'],rpr_inst['txn_type'], rpr_inst['qty'])                   
                         rpr_inst['orderID'] = orderID
                         rpr_inst['tradedPrice'] = tradedPrice
                         rpr_inst['dateTime'] = dateTime
                         if orderID and tradedPrice:
                             rpr_inst['set_type'] = 'Repair'
                             trade['set_type'] = 'Repaired'
-                            logger.info(f'Repair details : {rpr_insts}')
+                            logger.info(f'Repair details : {rpr_inst}')
                             tr_insts.append(rpr_inst.copy())
                             logger.info(f'Repair tr_insts: {tr_insts}')
-
 
 def main(capital):
     global refid, flop, mark
@@ -396,14 +420,34 @@ if __name__ == '__main__':
     masterEqDump()
     startin=time.time()
     timeout = time.time() + 60*60*1  # 60 seconds times 360 meaning 6 hrs
+    fetchLtp = timer.RepeatedTimer(5, getLTP)
+    slTgtTimer = timer.RepeatedTimer(7, slTgtCheck)
+    fetchPnL = timer.RepeatedTimer(10, getGlobalPnL)
+    # slTgtCheck()
+    ticker = 'HDFCBANK' #['HDFCBANK']
+    preparePlaceOrders(ticker,'buy',60)
+    
+    
+    
+    
     while time.time() <= timeout:
         try:
-            main()
+            # main()
             time.sleep(60 - ((time.time() - startin) % 60.0))
         except KeyboardInterrupt:
+            logger.info('stopping bg threads..')
+            fetchLtp.stop()
+            slTgtTimer.stop()
+            fetchPnL.stop()
             print('\n\nKeyboard exception received. Exiting.')
             exit()
-    
+
+
+
+
+
+
+
 # AUROPHARMA
 # AXIS BANK
 # BPCL

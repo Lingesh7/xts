@@ -11,6 +11,7 @@ from XTConnect import XTSConnect
 import configparser
 from pathlib import Path
 import sqlite3
+import time
 
 cfg = configparser.ConfigParser()
 cfg.read('../../XTConnect/config.ini')
@@ -60,33 +61,39 @@ def instrumentLookup(instrument_df,ticker):
     
 masterEqDump()
 cdate1 = datetime.strftime(datetime.now(), "%b %d %Y")   
-tickers = ['JSWSTEEL', 'TECHM', 'TATASTEEL', 'HINDALCO', 'INDUSINDBK', 'POWERGRID', 'EICHERMOT', 'HCLTECH', 'SBIN', 'NTPC', 'COALINDIA', 'TITAN', 'BPCL', 'BRITANNIA', 'NESTLEIND', 'SBILIFE', 'TATAMOTORS', 'WIPRO', 'HINDUNILVR', 'ITC', 'TCS', 'SHREECEM', 'GRASIM', 'UPL', 'INFY', 'MARUTI', 'IOC', 'BHARTIARTL', 'CIPLA', 'AXISBANK', 'ONGC', 'KOTAKBANK', 'HDFCLIFE', 'ULTRACEMCO', 'M&M', 'SUNPHARMA', 'HDFC', 'HDFCBANK', 'ICICIBANK', 'RELIANCE', 'ASIANPAINT', 'ADANIPORTS', 'DRREDDY', 'LT', 'BAJAJ-AUTO', 'HEROMOTOCO', 'BAJFINANCE', 'GAIL', 'BAJAJFINSV', 'DIVISLAB', 'ASHOKLEY','AUROPHARMA','DLF','DRREDDY','ESCORTS','IBULHSGFIN','INDIGO','JINDALSTEL','LICHSGFIN','L&TFH','RBLBANK','VEDL']
+# tickers = ['JSWSTEEL', 'TECHM', 'TATASTEEL', 'HINDALCO', 'INDUSINDBK', 'POWERGRID', 'EICHERMOT', 'HCLTECH', 'SBIN', 'NTPC', 'COALINDIA', 'TITAN', 'BPCL', 'BRITANNIA', 'NESTLEIND', 'SBILIFE', 'TATAMOTORS', 'WIPRO', 'HINDUNILVR', 'ITC', 'TCS', 'SHREECEM', 'GRASIM', 'UPL', 'INFY', 'MARUTI', 'IOC', 'BHARTIARTL', 'CIPLA', 'AXISBANK', 'ONGC', 'KOTAKBANK', 'HDFCLIFE', 'ULTRACEMCO', 'M&M', 'SUNPHARMA', 'HDFC', 'HDFCBANK', 'ICICIBANK', 'RELIANCE', 'ASIANPAINT', 'ADANIPORTS', 'DRREDDY', 'LT', 'BAJAJ-AUTO', 'HEROMOTOCO', 'BAJFINANCE', 'GAIL', 'BAJAJFINSV', 'DIVISLAB', 'ASHOKLEY','AUROPHARMA','DLF','DRREDDY','ESCORTS','IBULHSGFIN','INDIGO','JINDALSTEL','LICHSGFIN','L&TFH','RBLBANK','VEDL']
+tickers = [ 'UPL', 'INFY', 'MARUTI', 'IOC', 'BHARTIARTL', 'CIPLA', 'AXISBANK', 'ONGC', 'KOTAKBANK', 'HDFCLIFE', 'ULTRACEMCO', 'M&M', 'SUNPHARMA', 'HDFC', 'HDFCBANK', 'ICICIBANK', 'RELIANCE', 'ASIANPAINT', 'ADANIPORTS', 'DRREDDY', 'LT', 'BAJAJ-AUTO', 'HEROMOTOCO', 'BAJFINANCE', 'GAIL', 'BAJAJFINSV', 'DIVISLAB', 'ASHOKLEY','AUROPHARMA','DLF','DRREDDY','ESCORTS','IBULHSGFIN','INDIGO','JINDALSTEL','LICHSGFIN','L&TFH','RBLBANK','VEDL']
 # tickers = ['JSWSTEEL']
 symbols = [ instrumentLookup(instrument_df,ticker) for ticker in tickers ]
 
 ticker_dict = {}
 for ticker,symbol in zip(tickers,symbols):
     ticker_dict[ticker] = symbol
-
+skipped = []
     
 db = sqlite3.connect(f'../ohlc/EQ_{datetime.now().strftime("%B").upper()}_OHLC.db')
 cur = db.cursor()
 for ticker,symbol in ticker_dict.items():
-    print(ticker)
-    ohlc = xt.get_ohlc(
-                exchangeSegment=xt.EXCHANGE_NSECM,
-                exchangeInstrumentID=symbol,
-                startTime=cdate1+' 091500',
-                endTime=cdate1+' 153000',
-                compressionValue=60)
-    # print("OHLC: " + str(ohlc))
-    dataresp= ohlc['result']['dataReponse']
-    spl = dataresp.split(',')
-    df = pd.DataFrame([sub.split("|") for sub in spl],columns=(['Timestamp','Open','High','Low','Close','Volume','OI','NA']))
-    df.drop(df.columns[[-1,-2]], axis=1, inplace=True)
-    df['Timestamp'] = pd.to_datetime(df['Timestamp'].astype('int'), unit='s')
-    df = df.astype(dtype={'Open': float, 'High': float, 'Low': float, 'Close': float, 'Volume': int})
-    df.to_sql(ticker,db,if_exists='append',index=False)
+    try:
+        print(ticker)
+        ohlc = xt.get_ohlc(
+                    exchangeSegment=xt.EXCHANGE_NSECM,
+                    exchangeInstrumentID=symbol,
+                    startTime=cdate1+' 091500',
+                    endTime=cdate1+' 153000',
+                    compressionValue=60)
+        # print("OHLC: " + str(ohlc))
+        dataresp= ohlc['result']['dataReponse']
+        spl = dataresp.split(',')
+        df = pd.DataFrame([sub.split("|") for sub in spl],columns=(['Timestamp','Open','High','Low','Close','Volume','OI','NA']))
+        df.drop(df.columns[[-1,-2]], axis=1, inplace=True)
+        df['Timestamp'] = pd.to_datetime(df['Timestamp'].astype('int'), unit='s')
+        df = df.astype(dtype={'Open': float, 'High': float, 'Low': float, 'Close': float, 'Volume': int})
+        df.to_sql(ticker,db,if_exists='append',index=False)
+        time.sleep(2)
+    except ConnectionError:
+        skipped.append({ticker:symbol})
+        pass
     # pd.read_sql_query("SELECT * from JSWSTEEL", db)
 cur.close()
 db.close()

@@ -11,6 +11,7 @@ from pathlib import Path
 import sqlite3
 import nsetools
 nse = nsetools.Nse()
+import time
 
 cfg = configparser.ConfigParser()
 cfg.read('../../XTConnect/config.ini')
@@ -73,27 +74,32 @@ df = instrument_df.copy()
 filtrdf = df[(df.Name == 'NIFTY') & (df.Description.str.contains(f'NIFTY21{datetime.now().strftime("%b").upper()}'))]
 nwfiltrdf = filtrdf[filtrdf.Description.str.contains('|'.join(strikeRange))]
 keyv = dict(zip(nwfiltrdf.Description, nwfiltrdf.ExchangeInstrumentID))
-
+skipped = []
 db = sqlite3.connect(f'../ohlc/NIFTY_{datetime.now().strftime("%B").upper()}_OHLC.db')
 cur = db.cursor()
 for name,symbol in keyv.items():
-    print(name,symbol)
-    ohlc = xt.get_ohlc(
-            exchangeSegment=xt.EXCHANGE_NSEFO,
-            exchangeInstrumentID=symbol,
-            startTime=cdate1+' 091500',
-            endTime=cdate1+' 153000',
-            compressionValue=60)
-            # print("OHLC: " + str(ohlc))
-    dataresp= ohlc['result']['dataReponse']
-    if dataresp != '':
-        spl = dataresp.split(',')
-        datadf = pd.DataFrame([sub.split("|") for sub in spl],columns=(['Timestamp','Open','High','Low','Close','Volume','OI','NA']))
-        datadf.drop(datadf.columns[[-1,]], axis=1, inplace=True)
-        datadf['Timestamp'] = pd.to_datetime(datadf['Timestamp'].astype('int'), unit='s')
-        datadf.insert(0, 'Name', name)
-        datadf.to_sql((f'NIFTY_{datetime.now().strftime("%B").upper()}'),db,if_exists='append',index=False)
-        # pd.read_sql_query("SELECT * from NIFTY_MARCH", db)              
+    try:
+        print(name,symbol)
+        ohlc = xt.get_ohlc(
+                exchangeSegment=xt.EXCHANGE_NSEFO,
+                exchangeInstrumentID=symbol,
+                startTime=cdate1+' 091500',
+                endTime=cdate1+' 153000',
+                compressionValue=60)
+                # print("OHLC: " + str(ohlc))
+        dataresp= ohlc['result']['dataReponse']
+        if dataresp != '':
+            spl = dataresp.split(',')
+            datadf = pd.DataFrame([sub.split("|") for sub in spl],columns=(['Timestamp','Open','High','Low','Close','Volume','OI','NA']))
+            datadf.drop(datadf.columns[[-1,]], axis=1, inplace=True)
+            datadf['Timestamp'] = pd.to_datetime(datadf['Timestamp'].astype('int'), unit='s')
+            datadf.insert(0, 'Name', name)
+            datadf.to_sql((f'NIFTY_{datetime.now().strftime("%B").upper()}'),db,if_exists='append',index=False)
+            # pd.read_sql_query("SELECT * from NIFTY_MARCH", db) 
+            time.sleep(2)             
+    except ConnectionError:
+        skipped.append({name:symbol})
+        pass
 cur.close()
 db.close()
 print('==================END========================')

@@ -78,14 +78,11 @@ else:
 
 ################ variables ###############
 # tickers = ['HDFCBANK','SBIN']
-
 # orders = []
-
 # for ticker in tickers:
 #     orders.append({'ticker':ticker})
-
-
 # orders = [{ticker:HDFCBANK}]
+
 tickers=['HDFCBANK']
 refid=1
 flop=[]

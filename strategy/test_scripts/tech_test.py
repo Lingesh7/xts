@@ -304,7 +304,7 @@ import time
 # import schedule
 import requests
 userids = ['1245301878','1647735620']
-
+#https://api.telegram.org/bot1635591509:AAFC3kNVnTONZ1NU4JJx_kqfFfCoJEoEJ50/getUpdates
 def telegram_bot_sendtext(bot_message,userids):
     for i in userids:
         bot_token = '1635591509:AAFC3kNVnTONZ1NU4JJx_kqfFfCoJEoEJ50'

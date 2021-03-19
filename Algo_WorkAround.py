@@ -176,3 +176,5 @@ ECHO ============================
 
 PAUSE
 ==================
+
+git  to include new files/folders added to gitignore 'git rm --cached -r strategy'

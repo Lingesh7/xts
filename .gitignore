@@ -4,3 +4,4 @@ xts.egg-info/
 strategy/ohlc/
 strategy/pnl/
 strategy/logs/
+strategy/InstrumentDumps/

@@ -39,7 +39,7 @@ logger = logging.getLogger('__main__')
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 
-filename='../logs/retry_log.txt'
+filename='../logs/FlopBasedEqStrategy_log.txt'
 
 # file_handler = logging.FileHandler(filename)
 file_handler = TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=3)
@@ -79,7 +79,13 @@ else:
 
 ################ variables ###############
 # tickers = ['HDFCBANK','SBIN']
-tickers=['HDFCBANK']
+tickers= ['AUROPHARMA', 'AXIS BANK', 'BPCL', 
+          'BANDHANBNK', 'BAJFINANCE', 'DLF', 
+          'HINDALCO', 'IBULHSGFIN', 'INDUSINDBK', 
+          'ICICIBANK', 'INDIGO', 'JINDALSTEL', 
+          'L&TFH', 'LICHSGFIN', 'MANAPPURAM', 
+          'MARUTI', 'RBLBANK', 'SBIN', 
+          'TATAMOTORS', 'TATASTEEL', 'VEDL']
 refid=1
 flop=[]
 mark=[]
@@ -92,14 +98,25 @@ pnl_dump = []
 dead = False
 
 ################ functions ###############
-def telegram_bot_sendtext(bot_message):
+
+bot_file = f'../logs/bot_token.txt'
+fil = Path(bot_file)
+if fil.exists():
+    logger.info('Bot token file exists')
+    b_tok = open(bot_file,'r').read()
+else:
+    logger.info('Bot token missing.')
+
+def bot_sendtext(bot_message):
     userids = ['1245301878','1647735620','1089456737']
     for userid in userids:
-        bot_token = '1635591509:AAFC3kNVnTONZ1NU4JJx_kqfFfCoJEoEJ50'
+        bot_token = b_tok
         bot_chatID = userid
         send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + bot_message
         response = requests.get(send_text)
-    return response.json()
+        if response['ok']:
+            logger.info('Sent message to followers')
+    # return response.json()
 
 @retry(n_tries=10, delay=15, kill=True)
 def masterEqDump():
@@ -404,7 +421,7 @@ def main(capital):
 
                             if len(flop) >= 3:
                                 msg = f'Flop condition satisified in ==> {ticker} ==> Go Long'
-                                telegram_bot_sendtext(msg)
+                                bot_sendtext(msg)
                                 preparePlaceOrders(ticker,'buy',quantity)
                         else:
                             logger.info('Previous break is not a flop.. starting from begining')
@@ -434,7 +451,7 @@ def main(capital):
 
                             if len(flop) >= 3:
                                 msg = f'Flop condition satisified in ==> {ticker} ==> Go Short'
-                                telegram_bot_sendtext(msg)
+                                bot_sendtext(msg)
                                 preparePlaceOrders(ticker,'sell',quantity)
                         else:
                             logger.info('Previous break is not a flop.. starting from begining')
@@ -450,8 +467,8 @@ def dataToExcel(pnl_dump):
     pnl_df.index = pd.to_datetime(pnl_df.index, format='%d-%m-%Y %H:%M:%S')
     resampled_df = pnl_df['pl'].resample('1min').ohlc()
     #writing the output to excel sheet
-    writer = pd.ExcelWriter('../pnl/Index_Option_Writing_PnL.xlsx',engine='openpyxl')
-    writer.book = load_workbook('../pnl/Index_Option_Writing_PnL.xlsx')
+    writer = pd.ExcelWriter('../pnl/FlopBasedEqStrategy_PnL.xlsx',engine='openpyxl')
+    writer.book = load_workbook('../pnl/FlopBasedEqStrategy_PnL.xlsx')
     resampled_df.to_excel(writer, sheet_name=(cdate), index=True)
     df.to_excel(writer, sheet_name=(cdate),startrow=15, startcol=7, index=False)
     gdf.to_excel(writer, sheet_name=(cdate),startrow=4, startcol=7, index=False)
@@ -477,6 +494,7 @@ def dataToExcel(pnl_dump):
 
 if __name__ == '__main__':
     masterEqDump()
+
     fetchLtp = timer.RepeatedTimer(5, getLTP)
     fetchPnL = timer.RepeatedTimer(10, getGlobalPnL)
     # slTgtTimer = timer.RepeatedTimer(7, slTgtCheck)
@@ -515,25 +533,4 @@ if __name__ == '__main__':
 
 
 
-# AUROPHARMA
-# AXIS BANK
-# BPCL
-# BANDHANBNK
-# BAJFINANCE
-# DLF
-# HINDALCO
-# IBULHSGFIN
-# INDUSINDBK
-# ICICIBANK
-# INDIGO
-# JINDALSTEL
-# L&TFH
-# LICHSGFIN
-# MANAPPURAM
-# MARUTI
-# RBLBANK
-# SBIN
-# TATAMOTORS
-# TATASTEEL
-# VEDL
-
+# ['AUROPHARMA', 'AXIS BANK', 'BPCL', 'BANDHANBNK', 'BAJFINANCE', 'DLF', 'HINDALCO', 'IBULHSGFIN', 'INDUSINDBK', 'ICICIBANK', 'INDIGO', 'JINDALSTEL', 'L&TFH', 'LICHSGFIN', 'MANAPPURAM', 'MARUTI', 'RBLBANK', 'SBIN', 'TATAMOTORS', 'TATASTEEL', 'VEDL']

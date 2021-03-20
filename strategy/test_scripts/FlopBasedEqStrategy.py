@@ -23,8 +23,6 @@ from threading import Thread
 from openpyxl import load_workbook
 from logging.handlers import TimedRotatingFileHandler
 from sys import exit
-import os
-import numpy as np
 import requests
 from retry import retry
 
@@ -77,9 +75,17 @@ else:
     logger.error('Wrong with token file. Generate separately.. Aborting script!..')
     # exit()
 
+bot_file = f'../ohlc/bot_token.txt'
+fil = Path(bot_file)
+if fil.exists():
+    logger.info('Bot token file exists')
+    b_tok = open(bot_file,'r').read()
+else:
+    logger.info('Bot token missing.')
+    
 ################ variables ###############
 # tickers = ['HDFCBANK','SBIN']
-tickers= ['AUROPHARMA', 'AXIS BANK', 'BPCL', 
+tickers= ['AUROPHARMA', 'AXISBANK', 'BPCL', 
           'BANDHANBNK', 'BAJFINANCE', 'DLF', 
           'HINDALCO', 'IBULHSGFIN', 'INDUSINDBK', 
           'ICICIBANK', 'INDIGO', 'JINDALSTEL', 
@@ -92,20 +98,13 @@ mark=[]
 tr_insts = []
 etr_inst = {}
 rpr_inst = {}
+ext_inst = {}
 ltp = {}
 gl_pnl = None
 pnl_dump = []
 dead = False
 
 ################ functions ###############
-
-bot_file = f'../logs/bot_token.txt'
-fil = Path(bot_file)
-if fil.exists():
-    logger.info('Bot token file exists')
-    b_tok = open(bot_file,'r').read()
-else:
-    logger.info('Bot token missing.')
 
 def bot_sendtext(bot_message):
     userids = ['1245301878','1647735620','1089456737']
@@ -114,7 +113,8 @@ def bot_sendtext(bot_message):
         bot_chatID = userid
         send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + bot_message
         response = requests.get(send_text)
-        if response['ok']:
+        resp = response.json()
+        if resp['ok']:
             logger.info('Sent message to followers')
     # return response.json()
 
@@ -336,6 +336,7 @@ def getGlobalPnL():
 def slTgtCheck():
     global tr_insts, dead
     while not dead:
+        time.sleep(5)
         if tr_insts:
             for trade in tr_insts:
                 if trade['set_type'] == 'Entry':
@@ -387,7 +388,48 @@ def slTgtCheck():
                                 tr_insts.append(rpr_inst.copy())
                                 logger.info(f'Repair tr_insts: {tr_insts}')
 
-
+    logger.info('flop checker ends - squaring off remaining trades')
+    if tr_insts:
+        for trades in tr_insts:
+            if trade['set_type'] == 'Entry':
+                if trade['txn_type'] == 'buy':
+                    ext_inst['txn_type'] = 'sell'
+                    ext_inst['qty'] = trade['qty']
+                    ext_inst['tr_qty'] = -ext_inst['qty']
+                    ext_inst['name'] = trade['name']
+                    ext_inst['symbol'] = trade['symbol']
+                    ext_inst['orderID'] = None
+                    ext_inst['tradedPrice'] = None
+                    orderID, tradedPrice, dateTime = placeOrder(ext_inst['symbol'],ext_inst['txn_type'], ext_inst['qty'])
+                    ext_inst['orderID'] = orderID
+                    ext_inst['tradedPrice'] = tradedPrice
+                    ext_inst['dateTime'] = dateTime
+                    if orderID and tradedPrice:
+                        ext_inst['set_type'] = 'Exit'
+                        trade['set_type'] = 'Exited'
+                        logger.info(f'Repair details : {ext_inst}')
+                        tr_insts.append(ext_inst.copy())
+                        logger.info(f' Repair tr_insts: {tr_insts}')
+                if trade['txn_type'] == 'sell':
+                    ext_inst['txn_type'] = 'buy'
+                    ext_inst['qty'] = trade['qty']
+                    ext_inst['tr_qty'] = ext_inst['qty']
+                    ext_inst['name'] = trade['name']
+                    ext_inst['symbol'] = trade['symbol']
+                    ext_inst['orderID'] = None
+                    ext_inst['tradedPrice'] = None
+                    orderID, tradedPrice, dateTime = placeOrder(ext_inst['symbol'],ext_inst['txn_type'], ext_inst['qty'])
+                    ext_inst['orderID'] = orderID
+                    ext_inst['tradedPrice'] = tradedPrice
+                    ext_inst['dateTime'] = dateTime
+                    if orderID and tradedPrice:
+                        ext_inst['set_type'] = 'Exit'
+                        trade['set_type'] = 'Exited'
+                        logger.info(f'Exit Buy details : {ext_inst}')
+                        tr_insts.append(ext_inst.copy())
+                        logger.info(f'tr_insts: {tr_insts}')
+            
+    
 def main(capital):
     global refid, flop, mark
     for ticker in tickers:
@@ -462,26 +504,30 @@ def main(capital):
 
 
 def dataToExcel(pnl_dump):
-    pnl_df = pd.DataFrame(pnl_dump,columns=['date','pl'])
-    pnl_df = pnl_df.set_index(['date'])
-    pnl_df.index = pd.to_datetime(pnl_df.index, format='%d-%m-%Y %H:%M:%S')
-    resampled_df = pnl_df['pl'].resample('1min').ohlc()
-    #writing the output to excel sheet
-    writer = pd.ExcelWriter('../pnl/FlopBasedEqStrategy_PnL.xlsx',engine='openpyxl')
-    writer.book = load_workbook('../pnl/FlopBasedEqStrategy_PnL.xlsx')
-    resampled_df.to_excel(writer, sheet_name=(cdate), index=True)
-    df.to_excel(writer, sheet_name=(cdate),startrow=15, startcol=7, index=False)
-    gdf.to_excel(writer, sheet_name=(cdate),startrow=4, startcol=7, index=False)
-    writer.sheets=dict((ws.title, ws) for ws in writer.book.worksheets)
-    worksheet = writer.sheets[cdate]
-    worksheet['G1'] = "MaxPnL"
-    worksheet["G2"] = "=MAX(E:E)"
-    worksheet['H1'] = "MinPnL"
-    worksheet["H2"] = "=MIN(E:E)"
-    worksheet['I1'] = "FinalPnL"
-    worksheet['I2'] = gl_pnl
-    writer.save()
-    writer.close()
+    if pnl_dump:
+        try:
+            pnl_df = pd.DataFrame(pnl_dump,columns=['date','pl'])
+            pnl_df = pnl_df.set_index(['date'])
+            pnl_df.index = pd.to_datetime(pnl_df.index, format='%d-%m-%Y %H:%M:%S')
+            resampled_df = pnl_df['pl'].resample('1min').ohlc()
+            #writing the output to excel sheet
+            writer = pd.ExcelWriter('../pnl/FlopBasedEqStrategy_PnL.xlsx',engine='openpyxl')
+            writer.book = load_workbook('../pnl/FlopBasedEqStrategy_PnL.xlsx')
+            resampled_df.to_excel(writer, sheet_name=(cdate), index=True)
+            df.to_excel(writer, sheet_name=(cdate),startrow=15, startcol=7, index=False)
+            gdf.to_excel(writer, sheet_name=(cdate),startrow=4, startcol=7, index=False)
+            writer.sheets=dict((ws.title, ws) for ws in writer.book.worksheets)
+            worksheet = writer.sheets[cdate]
+            worksheet['G1'] = "MaxPnL"
+            worksheet["G2"] = "=MAX(E:E)"
+            worksheet['H1'] = "MinPnL"
+            worksheet["H2"] = "=MIN(E:E)"
+            worksheet['I1'] = "FinalPnL"
+            worksheet['I2'] = gl_pnl
+            writer.save()
+            writer.close()
+        except Exception:
+            logger.exception('Saving data to Excel Failed')
 
 
 # @retry(kill=True,delay=1)
@@ -494,19 +540,21 @@ def dataToExcel(pnl_dump):
 
 if __name__ == '__main__':
     masterEqDump()
-
-    fetchLtp = timer.RepeatedTimer(5, getLTP)
-    fetchPnL = timer.RepeatedTimer(10, getGlobalPnL)
-    # slTgtTimer = timer.RepeatedTimer(7, slTgtCheck)
-    sltgt_thread = Thread(target=slTgtCheck)
-    sltgt_thread.start()
-    # ticker = 'HDFCBANK' #['HDFCBANK']
-    # preparePlaceOrders(ticker,'buy',60)
+    logger.info('Waiting to start the script at 09:25 AM')
+    while datetime.now() >= pd.Timestamp(cdate+" "+'09:25:00'):
+        logger.info('Starting background threads to fetch ltps, pnl')
+        fetchLtp = timer.RepeatedTimer(5, getLTP)
+        fetchPnL = timer.RepeatedTimer(10, getGlobalPnL)
+        sltgt_thread = Thread(target=slTgtCheck)
+        sltgt_thread.start()
+        
+    # for ticker in tickers:
+    #     preparePlaceOrders(ticker,'buy',10)
     startin = time.time()
-    timeout = time.time() + 60*60*6  # 60 seconds times 360 meaning 6 hrs
+    timeout = time.time() + ((60*60*6) - 300) # 60 seconds times 360 meaning 6 hrs
     while time.time() <= timeout:
         try:
-            main() #flop checker
+            # main() #flop checker
             time.sleep(60 - ((time.time() - startin) % 60.0))
         except KeyboardInterrupt:
             logger.exception('\n\nKeyboard exception received. Exiting.')
@@ -532,5 +580,4 @@ if __name__ == '__main__':
 
 
 
-
-# ['AUROPHARMA', 'AXIS BANK', 'BPCL', 'BANDHANBNK', 'BAJFINANCE', 'DLF', 'HINDALCO', 'IBULHSGFIN', 'INDUSINDBK', 'ICICIBANK', 'INDIGO', 'JINDALSTEL', 'L&TFH', 'LICHSGFIN', 'MANAPPURAM', 'MARUTI', 'RBLBANK', 'SBIN', 'TATAMOTORS', 'TATASTEEL', 'VEDL']
+# ['AUROPHARMA', 'AXISBANK', 'BPCL', 'BANDHANBNK', 'BAJFINANCE', 'DLF', 'HINDALCO', 'IBULHSGFIN', 'INDUSINDBK', 'ICICIBANK', 'INDIGO', 'JINDALSTEL', 'L&TFH', 'LICHSGFIN', 'MANAPPURAM', 'MARUTI', 'RBLBANK', 'SBIN', 'TATAMOTORS', 'TATASTEEL', 'VEDL']

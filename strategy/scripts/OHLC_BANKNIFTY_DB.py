@@ -11,6 +11,12 @@ from pathlib import Path
 import sqlite3
 import nsetools
 nse = nsetools.Nse()
+import os
+
+try:
+    os.chdir(r'D:\Python\First_Choice_Git\xts\strategy\scripts')
+except:
+    pass
 
 cfg = configparser.ConfigParser()
 cfg.read('../../XTConnect/config.ini')

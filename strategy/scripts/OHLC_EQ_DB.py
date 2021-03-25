@@ -12,6 +12,12 @@ import configparser
 from pathlib import Path
 import sqlite3
 import time
+import os
+
+try:
+    os.chdir(r'D:\Python\First_Choice_Git\xts\strategy\scripts')
+except:
+    pass
 
 cfg = configparser.ConfigParser()
 cfg.read('../../XTConnect/config.ini')
@@ -69,6 +75,10 @@ symbols = [ instrumentLookup(instrument_df,ticker) for ticker in tickers ]
 ticker_dict = {}
 for ticker,symbol in zip(tickers,symbols):
     ticker_dict[ticker] = symbol
+
+ticker_dict['NIFTY_50']="NIFTY 50"
+ticker_dict['NIFTY_BANK']="NIFTY BANK"
+
 skipped = []
     
 db = sqlite3.connect(f'../ohlc/EQ_{datetime.now().strftime("%B").upper()}_OHLC.db')

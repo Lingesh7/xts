@@ -25,12 +25,12 @@ from logging.handlers import TimedRotatingFileHandler
 from sys import exit
 import requests
 from retry import retry
+import os
 
-
-# try:
-#     os.chdir(r'D:\Python\First_Choice_Git\xts\strategy\scripts')
-# except:
-#     pass
+try:
+    os.chdir(r'D:\Python\First_Choice_Git\xts\strategy\test_scripts')
+except:
+    pass
 
 ############## logging ##############
 logger = logging.getLogger('__main__')
@@ -109,7 +109,7 @@ dead = False
 ################ functions ###############
 
 def bot_sendtext(bot_message):
-    userids = ['1245301878','1647735620','1089456737']
+    userids = ['1647735620']#,'1245301878','1089456737']
     for userid in userids:
         bot_token = b_tok
         bot_chatID = userid
@@ -434,7 +434,8 @@ def slTgtCheck():
     
 def main(capital):
     global refid, flop, mark
-    for ticker in tickers:
+    try:
+        for ticker in tickers:
         try:
             logger.info(f"Checking for {ticker} at {datetime.now().strftime('%d-%m-%Y %H:%M:%S')}")
             if ticker not in flop:
@@ -445,7 +446,7 @@ def main(capital):
             df = vWAP(data_df)
             logger.info(f"tick {df['Timestamp'].iloc[-2]}")
             quantity = int(capital/df["Close"].iloc[-1])
-            if pd.Timestamp(df['Timestamp'].iloc[-1]) >= pd.Timestamp(cdate+" "+'09:30:00'):
+            if pd.Timestamp(df['Timestamp'].iloc[-1]) >= pd.Timestamp(cdate+" "+'12:01:00'):
                 idx = len(flop[ticker])-1
                 if df['Close'].iloc[-2] >= df['uB'].iloc[-2] :
                     logger.info(f'Upper bound break in {ticker}')
@@ -454,7 +455,7 @@ def main(capital):
                         flop[ticker].append('Long')
                         mark[ticker].append({'refid':refid, 'side': 'Long', 'time': df['Timestamp'].iloc[-2], 'price': df['Close'].iloc[-2]})
                         refid += 1
-                        logger.info(f'1st flop list of {ticker} is : {flop[ticker]}')
+                        logger.info(f'1st flop list of {ticker}          is : {flop[ticker]}')
                         logger.info(f'1st mark list of {ticker} is : {mark[ticker]}')
                     elif flop[ticker][-1] != 'Long':
                         lowPriceAfterFlop = df[df.Timestamp.between(mark[ticker][idx]['time'],df['Timestamp'].values[-2])]['Close'].min()
@@ -507,6 +508,9 @@ def main(capital):
                             mark[ticker]=[]
         except:
             logger.exception("API error for ticker :",ticker)
+    except KeyboardInterrupt:
+        raise
+        logger.error('\n\nKeyboard exception received. Exiting.')
 
 
 def dataToExcel(pnl_dump):

@@ -81,39 +81,86 @@ wait(driver, wait_time).until(EC.element_to_be_clickable(By.XPATH("//*[@id='expi
 
 
 
-driver.
 
+import requests
+import time
+import os
+import pandas as pd
+from datetime import datetime
+import shutil
+import json
 
+url = 'https://www.nseindia.com/api/option-chain-indices?symbol=NIFTY'
+headers={'user-agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36',
+     'accept-language':'en-US,en;q=0.9,bn;q=0.8','accept-encoding':'gzip, deflate, br'}
+r=requests.get(url,headers=headers).json()
+expiry_dates = r["records"]["expiryDates"]
+cmon_expiry_dates = [date for date in expiry_dates if "Apr" in date]
+cmon_expiry_dates = [date for date in expiry_dates if f'datetime.now().strftime('%B')' in date]
 
+def nextThu_and_lastThu_expiry_date ():
+    global weekly_exp, monthly_exp
+    print('Calculating weekly and monthly expiry dates..')
+    
+    todayte = datetime.today()
+    
+    cmon = todayte.month
+    if_month_next=(todayte + relativedelta(weekday=TH(1))).month
+    next_thursday_expiry=todayte + relativedelta(weekday=TH(1))
+   
+    if (if_month_next!=cmon):
+        month_last_thu_expiry= todayte + relativedelta(weekday=TH(5))
+        if (month_last_thu_expiry.month!=if_month_next):
+            month_last_thu_expiry= todayte + relativedelta(weekday=TH(4))
+    else:
+        for i in range(1, 7):
+            t = todayte + relativedelta(weekday=TH(i))
+            if t.month != cmon:
+                # since t is exceeded we need last one  which we can get by subtracting -2 since it is already a Thursday.
+                t = t + relativedelta(weekday=TH(-2))
+                month_last_thu_expiry=t
+                break
+    monthly_exp=str((month_last_thu_expiry.strftime("%d")))+month_last_thu_expiry.strftime("%b").capitalize()+month_last_thu_expiry.strftime("%Y")
+    weekly_exp=str((next_thursday_expiry.strftime("%d")))+next_thursday_expiry.strftime("%b").capitalize()+next_thursday_expiry.strftime("%Y")
+    print(f'weekly expiry is : {weekly_exp}, monthly expiry is: {monthly_exp}')
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+def get_expiry():
+    global weekly_exp, monthly_exp
+    now = datetime.today()
+    cmon = now.month
+    thu = (now + relativedelta(weekday=TH(1))).strftime('%d%b%Y')
+    wed = (now + relativedelta(weekday=WE(1))).strftime('%d%b%Y')
+    nxtmon = (now + relativedelta(weekday=TH(1))).month
+    if (nxtmon != cmon):
+        month_last_thu_expiry = now + relativedelta(weekday=TH(5))
+        if (month_last_thu_expiry.month!= nxtmon):
+            mon_thu = now + relativedelta(weekday=TH(4))
+            mon_wed = now + relativedelta(weekday=WE(4))
+    else:
+        for i in range(1, 7):
+            t = now + relativedelta(weekday=TH(i))
+            if t.month != cmon:
+                # since t is exceeded we need last one  which we can get by subtracting -2 since it is already a Thursday.
+                mon_thu = (t + relativedelta(weekday=TH(-2))).strftime('%d%b%Y')
+                mon_wed = (t + relativedelta(weekday=WE(-2))).strftime('%d%b%Y')
+                break
+    xpry_resp = xt.get_expiry_date(exchangeSegment=2, series='OPTIDX', symbol='NIFTY')
+    if 'result' in xpry_resp:
+        expiry_dates = xpry_resp['result']
+    else:
+        print('Error getting Expiry dates..')
+        raise ex.XTSDataException('Issue in getting expiry dates')
+    if thu in expiry_dates:
+        weekly_exp = thu
+        print(f'Thursday - {weekly_exp} is the week expiry')
+    elif wed in expiry_dates:
+        weekly_exp = wed
+        print(f'Wednesday - {weekly_exp} is the week expiry')
+    if mon_thu in expiry_dates:
+        monthly_exp = mon_thu
+        print(f'Thursday - {monthly_exp} is the month expiry')
+    elif mon_wed in expiry_dates:
+        monthly_exp = mon_wed
+        print(f'Wednesday - {monthly_exp} is the month expiry')
 
 

@@ -100,14 +100,27 @@ def get_expiry():
     global weekly_exp, monthly_exp
     now = datetime.today()
     cmon = now.month
+    xpry_resp = xt.get_expiry_date(exchangeSegment=2, series='OPTIDX', symbol='NIFTY')
+    if 'result' in xpry_resp:
+        expiry_dates = xpry_resp['result']
+    else:
+        logger.error('Error getting Expiry dates..')
+        raise ex.XTSDataException('Issue in getting expiry dates')
+
     thu = (now + relativedelta(weekday=TH(1))).strftime('%d%b%Y')
     wed = (now + relativedelta(weekday=WE(1))).strftime('%d%b%Y')
+    
+    weekly_exp = thu if thu in expiry_dates else wed
+    logger.info(f'{weekly_exp} is the week expiry')
+
     nxtmon = (now + relativedelta(weekday=TH(1))).month
     if (nxtmon != cmon):
         month_last_thu_expiry = now + relativedelta(weekday=TH(5))
+        mon_thu = (now + relativedelta(weekday=TH(5))).strftime('%d%b%Y')
+        mon_wed = (now + relativedelta(weekday=WE(5))).strftime('%d%b%Y')        
         if (month_last_thu_expiry.month!= nxtmon):
-            mon_thu = now + relativedelta(weekday=TH(4))
-            mon_wed = now + relativedelta(weekday=WE(4))
+            mon_thu = (now + relativedelta(weekday=TH(4))).strftime('%d%b%Y')
+            mon_wed = (now + relativedelta(weekday=WE(4))).strftime('%d%b%Y')
     else:
         for i in range(1, 7):
             t = now + relativedelta(weekday=TH(i))
@@ -116,24 +129,8 @@ def get_expiry():
                 mon_thu = (t + relativedelta(weekday=TH(-2))).strftime('%d%b%Y')
                 mon_wed = (t + relativedelta(weekday=WE(-2))).strftime('%d%b%Y')
                 break
-    xpry_resp = xt.get_expiry_date(exchangeSegment=2, series='OPTIDX', symbol='NIFTY')
-    if 'result' in xpry_resp:
-        expiry_dates = xpry_resp['result']
-    else:
-        logger.error('Error getting Expiry dates..')
-        raise ex.XTSDataException('Issue in getting expiry dates')
-    if thu in expiry_dates:
-        weekly_exp = thu
-        logger.info(f'Thursday - {weekly_exp} is the week expiry')
-    elif wed in expiry_dates:
-        weekly_exp = wed
-        logger.info(f'Wednesday - {weekly_exp} is the week expiry')
-    if mon_thu in expiry_dates:
-        monthly_exp = mon_thu
-        logger.info(f'Thursday - {monthly_exp} is the month expiry')
-    elif mon_wed in expiry_dates:
-        monthly_exp = mon_wed
-        logger.info(f'Wednesday - {monthly_exp} is the month expiry')
+    monthly_exp = mon_thu if mon_thu in expiry_dates else mon_wed
+    logger.info(f'{monthly_exp} is the month expiry')
 
 def strikePrice(idx):
     if idx in idxs[0]:
@@ -330,6 +327,7 @@ def execute(orders):
     startTime = datetime.strptime((cdate+" "+orders['startTime']),"%d-%m-%Y %H:%M:%S")
     
     while True:
+        time.sleep(1)
         if orders['status'] == 'Idle':
             #Entry condition check
             if (datetime.now() >= startTime):
@@ -431,7 +429,7 @@ def exitCheck(universal):
                     ext_inst['txn_type'] = universal['ext_txn_type'] 
                     ext_inst['name'] = str(gdf['name'].values[i])
                     ext_inst['optionType'] = ext_inst['name'][-2:] 
-                    ext_inst['strikePrice'] = ext_inst['name'][-7:-2]
+                    ext_inst['strike'] = ext_inst['name'][-7:-2]
                     ext_inst['orderID'] = None
                     ext_inst['tradedPrice'] = None
                     orderID, tradedPrice, dateTime = placeOrder(ext_inst['symbol'], ext_inst['txn_type'], ext_inst['qty'])

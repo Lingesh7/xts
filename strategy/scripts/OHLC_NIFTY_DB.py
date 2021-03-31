@@ -4,6 +4,7 @@ Spyder Editor
 
 """
 from datetime import datetime,date
+from dateutil.relativedelta import relativedelta, TH , WE
 import pandas as pd
 from XTConnect import XTSConnect
 import configparser
@@ -13,6 +14,7 @@ import nsetools
 nse = nsetools.Nse()
 import time
 import os
+import json
 
 try:
     os.chdir(r'D:\Python\First_Choice_Git\xts\strategy\scripts')
@@ -66,23 +68,86 @@ def strkPrcCalc(spot,base):
     print(f'StrikePrice computed as : {strikePrice}')
     return strikePrice
 
-niftyjson = nse.get_index_quote('NIFTY 50')
-nifty50 =  niftyjson['lastPrice']
+def get_expiry():
+    global weekly_exp, monthly_exp
+    now = datetime.today()
+    cmon = now.month
+    xpry_resp = xt.get_expiry_date(exchangeSegment=2, series='OPTIDX', symbol='NIFTY')
+    if 'result' in xpry_resp:
+        expiry_dates = xpry_resp['result']
+    else:
+        print('Error getting Expiry dates..')
+
+    thu = (now + relativedelta(weekday=TH(1))).strftime('%d%b%Y')
+    wed = (now + relativedelta(weekday=WE(1))).strftime('%d%b%Y')
+    
+    weekly_exp = thu if thu in expiry_dates else wed
+    print(f'{weekly_exp} is the week expiry')
+
+    nxtmon = (now + relativedelta(weekday=TH(1))).month
+    if (nxtmon != cmon):
+        month_last_thu_expiry = now + relativedelta(weekday=TH(5))
+        mon_thu = (now + relativedelta(weekday=TH(5))).strftime('%d%b%Y')
+        mon_wed = (now + relativedelta(weekday=WE(5))).strftime('%d%b%Y')        
+        if (month_last_thu_expiry.month!= nxtmon):
+            mon_thu = (now + relativedelta(weekday=TH(4))).strftime('%d%b%Y')
+            mon_wed = (now + relativedelta(weekday=WE(4))).strftime('%d%b%Y')
+    else:
+        for i in range(1, 7):
+            t = now + relativedelta(weekday=TH(i))
+            if t.month != cmon:
+                # since t is exceeded we need last one  which we can get by subtracting -2 since it is already a Thursday.
+                mon_thu = (t + relativedelta(weekday=TH(-2))).strftime('%d%b%Y')
+                mon_wed = (t + relativedelta(weekday=WE(-2))).strftime('%d%b%Y')
+                break
+    monthly_exp = mon_thu if mon_thu in expiry_dates else mon_wed
+    print(f'{monthly_exp} is the month expiry')
+    
+
+def get_index(idx):
+    nifty_ohlc = {}
+    instruments = [{'exchangeSegment': 1, 'exchangeInstrumentID': 'NIFTY 50'}]
+    q_resp = xt.get_quote(
+    Instruments=instruments,
+    xtsMessageCode=1504,
+    publishFormat='JSON')
+    # print('Quote :', response)
+    listQuotes = json.loads(q_resp['result']['listQuotes'][0])
+    for k,v in listQuotes.items():
+        if 'Index' in k:
+            nifty_ohlc[k] = v
+    return nifty_ohlc
+
+# niftyjson = nse.get_index_quote('NIFTY 50')
+# nifty50 =  niftyjson['lastPrice']
+
+nifty_ohlc = get_index('NIFTY 50')
+nifty50 = nifty_ohlc['IndexValue']
+niftyhigh = nifty_ohlc['HighIndexValue']
+niftylow = nifty_ohlc['LowIndexValue']
 strikePrice = strkPrcCalc(nifty50, 50)
-strikeRange = [str(i) for i in list(range(strikePrice-1000,strikePrice+1000,50))]
+# strikeRange = [str(i) for i in list(range(strikePrice-1000,strikePrice+1000,50))]
+strikeRange = [str(i) for i in list(range(strkPrcCalc(niftylow, 50) - 200, strkPrcCalc(niftyhigh, 50) + 200,50))]
 # strikeRange = list(range(strikePrice-2000,strikePrice+2000,100))
 # strikeRangestr = [str(i) for i in strikeRange]
 
-#main       
+#main   
+get_expiry()    
 masterDump()
 cdate1 = datetime.strftime(datetime.now(), "%b %d %Y")
 df = instrument_df.copy()
 # symbol_list = (df[(df.Name == 'NIFTY') & (df.Description.str.contains(f'NIFTY21{datetime.now().strftime("%b").upper()}'))]['ExchangeInstrumentID']).tolist()
-filtrdf = df[(df.Name == 'NIFTY') & (df.Description.str.contains(f'NIFTY21{datetime.now().strftime("%b").upper()}'))]
+# filtrdf = df[(df.Name == 'NIFTY') & (df.Description.str.contains(f'NIFTY21{datetime.now().strftime("%b").upper()}'))]
+# filtrdf = df[(df.Name == 'NIFTY') & (df.Description.str.contains(f'NIFTY21{monthly_exp[2:-4].upper()}'))]
+filtrdf1 = df[(df.Name == 'NIFTY') & (df.Description.str.contains(f'NIFTY21{monthly_exp[2:-4].upper()}')) ]
+filtrdf2 = df[(df.Name == 'NIFTY') & (df.Description.str.contains(f"NIFTY21{(datetime.strftime(datetime.strptime(weekly_exp, '%d%b%Y'),'%#m%d'))}")) ]
+filtrdf = pd.concat([filtrdf1, filtrdf2], ignore_index=True)
+
 nwfiltrdf = filtrdf[filtrdf.Description.str.contains('|'.join(strikeRange))]
 keyv = dict(zip(nwfiltrdf.Description, nwfiltrdf.ExchangeInstrumentID))
 skipped = []
-db = sqlite3.connect(f'../ohlc/NIFTY_{datetime.now().strftime("%B").upper()}_OHLC.db')
+# db = sqlite3.connect(f'../ohlc/NIFTY_{datetime.now().strftime("%B").upper()}_OHLC.db')
+db = sqlite3.connect(f'../ohlc/NIFTY_{monthly_exp[2:-4].upper()}_OHLC.db')
 cur = db.cursor()
 for name,symbol in keyv.items():
     try:

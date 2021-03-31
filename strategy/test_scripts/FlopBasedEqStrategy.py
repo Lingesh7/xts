@@ -436,78 +436,78 @@ def main(capital):
     global refid, flop, mark
     try:
         for ticker in tickers:
-        try:
-            logger.info(f"Checking for {ticker} at {datetime.now().strftime('%d-%m-%Y %H:%M:%S')}")
-            if ticker not in flop:
-                flop[ticker] = []
-            if ticker not in mark:
-                mark[ticker] = []
-            data_df = fetchOHLC(ticker, 60)
-            df = vWAP(data_df)
-            logger.info(f"tick {df['Timestamp'].iloc[-2]}")
-            quantity = int(capital/df["Close"].iloc[-1])
-            if pd.Timestamp(df['Timestamp'].iloc[-1]) >= pd.Timestamp(cdate+" "+'12:01:00'):
-                idx = len(flop[ticker])-1
-                if df['Close'].iloc[-2] >= df['uB'].iloc[-2] :
-                    logger.info(f'Upper bound break in {ticker}')
-                    # print('Long', df['Timestamp'].values[i])
-                    if not flop[ticker]:
-                        flop[ticker].append('Long')
-                        mark[ticker].append({'refid':refid, 'side': 'Long', 'time': df['Timestamp'].iloc[-2], 'price': df['Close'].iloc[-2]})
-                        refid += 1
-                        logger.info(f'1st flop list of {ticker}          is : {flop[ticker]}')
-                        logger.info(f'1st mark list of {ticker} is : {mark[ticker]}')
-                    elif flop[ticker][-1] != 'Long':
-                        lowPriceAfterFlop = df[df.Timestamp.between(mark[ticker][idx]['time'],df['Timestamp'].values[-2])]['Close'].min()
-                        if (mark[ticker][idx]['price'] - lowPriceAfterFlop) < (mark[ticker][idx]['price'] * (0.5/100)):
+            try:
+                logger.info(f"Checking for {ticker} at {datetime.now().strftime('%d-%m-%Y %H:%M:%S')}")
+                if ticker not in flop:
+                    flop[ticker] = []
+                if ticker not in mark:
+                    mark[ticker] = []
+                data_df = fetchOHLC(ticker, 60)
+                df = vWAP(data_df)
+                logger.info(f"tick {df['Timestamp'].iloc[-2]}")
+                quantity = int(capital/df["Close"].iloc[-1])
+                if pd.Timestamp(df['Timestamp'].iloc[-1]) >= pd.Timestamp(cdate+" "+'12:01:00'):
+                    idx = len(flop[ticker])-1
+                    if df['Close'].iloc[-2] >= df['uB'].iloc[-2] :
+                        logger.info(f'Upper bound break in {ticker}')
+                        # print('Long', df['Timestamp'].values[i])
+                        if not flop[ticker]:
                             flop[ticker].append('Long')
-                            mark[ticker].append({'set':refid, 'side': 'Long',
+                            mark[ticker].append({'refid':refid, 'side': 'Long', 'time': df['Timestamp'].iloc[-2], 'price': df['Close'].iloc[-2]})
+                            refid += 1
+                            logger.info(f'1st flop list of {ticker}          is : {flop[ticker]}')
+                            logger.info(f'1st mark list of {ticker} is : {mark[ticker]}')
+                        elif flop[ticker][-1] != 'Long':
+                            lowPriceAfterFlop = df[df.Timestamp.between(mark[ticker][idx]['time'],df['Timestamp'].values[-2])]['Close'].min()
+                            if (mark[ticker][idx]['price'] - lowPriceAfterFlop) < (mark[ticker][idx]['price'] * (0.5/100)):
+                                flop[ticker].append('Long')
+                                mark[ticker].append({'set':refid, 'side': 'Long',
+                                             'time': df['Timestamp'].values[-2],
+                                             'price': df['Close'].values[-2]})
+                                refid += 1
+                                logger.info(f'flop list of {ticker} is : {flop[ticker]}')
+                                logger.info(f'mark list of {ticker} is : {mark[ticker]}')
+    
+                                if len(flop[ticker]) >= 3:
+                                    msg = f'Flop condition satisified in ==> {ticker} ==> Go Long'
+                                    bot_sendtext(msg)
+                                    preparePlaceOrders(ticker,'buy',quantity)
+                            else:
+                                logger.info('Previous break is not a flop.. starting from begining')
+                                flop[ticker]=[]
+                                mark[ticker]=[]
+    
+                    if df['Close'].values[-2] <= df['lB'].values[-2]:
+                        idx = len(flop[ticker])-1
+                        if not flop[ticker]:
+                            flop[ticker].append('Short')
+                            mark[ticker].append({'set':refid, 'side': 'Short',
                                          'time': df['Timestamp'].values[-2],
                                          'price': df['Close'].values[-2]})
                             refid += 1
-                            logger.info(f'flop list of {ticker} is : {flop[ticker]}')
-                            logger.info(f'mark list of {ticker} is : {mark[ticker]}')
-
-                            if len(flop[ticker]) >= 3:
-                                msg = f'Flop condition satisified in ==> {ticker} ==> Go Long'
-                                bot_sendtext(msg)
-                                preparePlaceOrders(ticker,'buy',quantity)
-                        else:
-                            logger.info('Previous break is not a flop.. starting from begining')
-                            flop[ticker]=[]
-                            mark[ticker]=[]
-
-                if df['Close'].values[-2] <= df['lB'].values[-2]:
-                    idx = len(flop[ticker])-1
-                    if not flop[ticker]:
-                        flop[ticker].append('Short')
-                        mark[ticker].append({'set':refid, 'side': 'Short',
-                                     'time': df['Timestamp'].values[-2],
-                                     'price': df['Close'].values[-2]})
-                        refid += 1
-                        logger.info(f'1st flop list of {ticker} is : {flop[ticker]}')
-                        logger.info(f'1st mark list of {ticker} is : {mark[ticker]}')
-                    elif flop[ticker][-1] != 'Short':
-                        highPriceAfterFlop = df[df.Timestamp.between(mark[ticker][idx]['time'],df['Timestamp'].values[-2])]['High'].max()
-                        if (highPriceAfterFlop - mark[ticker][idx]['price']) < (mark[ticker][idx]['price'] * (0.5/100)):
-                            flop[ticker].append('Short')
-                            mark[ticker].append({'set':refid, 'side': 'Short',
-                                        'time': df['Timestamp'].values[-2],
-                                        'price': df['Close'].values[-2]})
-                            refid += 1
-                            logger.info(f'flop list of {ticker} is : {flop[ticker]}')
-                            logger.info(f'mark list of {ticker} is : {mark[ticker]}')
-
-                            if len(flop) >= 3:
-                                msg = f'Flop condition satisified in ==> {ticker} ==> Go Short'
-                                bot_sendtext(msg)
-                                preparePlaceOrders(ticker,'sell',quantity)
-                        else:
-                            logger.info('Previous break is not a flop.. starting from begining')
-                            flop[ticker]=[]
-                            mark[ticker]=[]
-        except:
-            logger.exception("API error for ticker :",ticker)
+                            logger.info(f'1st flop list of {ticker} is : {flop[ticker]}')
+                            logger.info(f'1st mark list of {ticker} is : {mark[ticker]}')
+                        elif flop[ticker][-1] != 'Short':
+                            highPriceAfterFlop = df[df.Timestamp.between(mark[ticker][idx]['time'],df['Timestamp'].values[-2])]['High'].max()
+                            if (highPriceAfterFlop - mark[ticker][idx]['price']) < (mark[ticker][idx]['price'] * (0.5/100)):
+                                flop[ticker].append('Short')
+                                mark[ticker].append({'set':refid, 'side': 'Short',
+                                            'time': df['Timestamp'].values[-2],
+                                            'price': df['Close'].values[-2]})
+                                refid += 1
+                                logger.info(f'flop list of {ticker} is : {flop[ticker]}')
+                                logger.info(f'mark list of {ticker} is : {mark[ticker]}')
+    
+                                if len(flop) >= 3:
+                                    msg = f'Flop condition satisified in ==> {ticker} ==> Go Short'
+                                    bot_sendtext(msg)
+                                    preparePlaceOrders(ticker,'sell',quantity)
+                            else:
+                                logger.info('Previous break is not a flop.. starting from begining')
+                                flop[ticker]=[]
+                                mark[ticker]=[]
+            except:
+                logger.exception("API error for ticker :",ticker)
     except KeyboardInterrupt:
         raise
         logger.error('\n\nKeyboard exception received. Exiting.')

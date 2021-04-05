@@ -12,9 +12,10 @@ from XTConnect import XTSConnect
 # XTS_API_BASE_URL = "https://xts-api.trading"
 # source = "WEBAPI"
 
-API_KEY = "15fc93db915525ec829191"
-API_SECRET = "Jwfr052#RY"
-XTS_API_BASE_URL = "https://developers.symphonyfintech.in"
+
+API_KEY = "53051399e954a1b599d112"
+API_SECRET = "Tuum275@DB"
+XTS_API_BASE_URL = "https://ttblaze.iifl.com"
 source = "WEBAPI"
 
 """Make XTSConnect object by passing your interactive API appKey, secretKey and source"""
@@ -153,8 +154,8 @@ print("Interactive Logout: ", response)
 # XTS_API_BASE_URL = "https://xts-api.trading"
 # source = "WEBAPI"
 
-API_KEY = "c2368d9aabcafe7a3e8529"
-API_SECRET = "Xogi551#V5"
+API_KEY = "98a27a5e1b81a59a7df220"
+API_SECRET = "Naip137#fo"
 XTS_API_BASE_URL = "https://developers.symphonyfintech.in"
 source = "WEBAPI"
 

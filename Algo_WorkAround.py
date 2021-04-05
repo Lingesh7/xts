@@ -46,7 +46,7 @@ Application Name :	IIFLXTS
 App Key :	2f899dc8ef15881e844463
 App Secret :	Ykyi834#tr
 
-https://xts-api.trading
+
 ---------------------------------------------------------
 
 Please find below test environment details:
@@ -109,7 +109,13 @@ https://nsetools.readthedocs.io/en/latest/usage.html#getting-a-stock-quote
  					 -40pts pe square off - sell pe next strike
 
 
-IIFL28 // login - Mar@123 // tranx - Mar@1234
+IIFL28 // login - May@123 // tranx - May@1234
+#Live Account -- 
+
+
+
+
+
 
 Thank you VERY much! Adding future.result() it seems to work just like expected: goes ok if the code is correct, prints the error if there's something wrong... Anyway I think it would be important to report this strange behaviour to users which are/will be in the same situation as me – Alessio Martorana Feb 20 '19 at 10:15
 future = executor.submit(f, vars) followed by print(f'{future.result()}') worked for me as well. My thanks to both of you for this solution!

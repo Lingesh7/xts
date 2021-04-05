@@ -434,6 +434,7 @@ def slTgtCheck():
     
 def main(capital):
     global refid, flop, mark
+    msg_sent = False
     try:
         for ticker in tickers:
             try:
@@ -470,7 +471,9 @@ def main(capital):
     
                                 if len(flop[ticker]) >= 3:
                                     msg = f'Flop condition satisified in ==> {ticker} ==> Go Long'
-                                    bot_sendtext(msg)
+                                    if msg_sent == False:
+                                        bot_sendtext(msg)
+                                        msg_sent = True
                                     preparePlaceOrders(ticker,'buy',quantity)
                             else:
                                 logger.info('Previous break is not a flop.. starting from begining')
@@ -500,7 +503,9 @@ def main(capital):
     
                                 if len(flop) >= 3:
                                     msg = f'Flop condition satisified in ==> {ticker} ==> Go Short'
-                                    bot_sendtext(msg)
+                                    if msg_sent == False:
+                                        bot_sendtext(msg)
+                                        msg_sent = True
                                     preparePlaceOrders(ticker,'sell',quantity)
                             else:
                                 logger.info('Previous break is not a flop.. starting from begining')

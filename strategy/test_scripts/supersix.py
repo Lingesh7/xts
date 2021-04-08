@@ -82,8 +82,35 @@ if fil.exists():
 else:
     logger.info('Bot token missing.')
     
-raw_df = pd.read_excel(
-    r'D:\Python\First_Choice_Git\xts\strategy\test_scripts\INFY_01Mar2021.xlsx')
+base_price = None
+header_list = ["date", "time", "open","high","low","close","volume"]
+raw_df = pd.read_csv(r'D:\TrueData\April_2021\EQ\NSE_EQT_1MIN_20210405\DLF.csv',
+                     names=header_list,
+                     header=None,
+                     index_col=False,
+                     parse_dates=[['date','time']]
+                     )
+# raw_df['date_time'] = pd.to_datetime(raw_df["date"].map(str) +'-'+ raw_df["time"])
+# del raw_df['date'],raw_df['time']
+raw_df = raw_df.astype(dtype={
+    'open': float, 'high': float, 'low': float, 'close': float, 'volume': int})
+
+df = raw_df.copy()
+startTime = datetime.strptime(('05-04-2021 09:20:01' ),"%d-%m-%Y %H:%M:%S")
+for i in range(len(df)):
+    if pd.Timestamp(df['date_time'].values[i]) >= pd.Timestamp(startTime):
+        base_price = float(df['close'].values[i])
+        print('Long', df['date_time'].values[i],df['close'].values[i])
+        break
+    if not base_price:
+        
+        
+
+
+
+
+
+
 
 raw_df.drop(raw_df.columns[[-1]], axis=1, inplace=True)
 raw_df = raw_df.astype(dtype={'Open': float, 'High': float, 'Low': float, 'Close': float, 'Volume': int})
@@ -97,7 +124,7 @@ mark=[]
 
 
 for i in range(len(df)):
-    if pd.Timestamp(df['Timestamp'].values[i]) >= pd.Timestamp(startTime):
+    if pd.Timestamp(df['date_time'].values[i]) >= pd.Timestamp(startTime):
         print('Long', df['Timestamp'].values[i],df['Close'].values[i])
         
 cur.execute("SELECT * from INFY where timestamp >= '2021-03-01' limit 5;").fetchall()

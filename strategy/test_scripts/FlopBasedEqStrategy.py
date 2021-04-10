@@ -85,13 +85,14 @@ else:
     
 ################ variables ###############
 # tickers = ['HDFCBANK','SBIN']
-tickers= ['AUROPHARMA', 'AXISBANK', 'BPCL', 
-          'BANDHANBNK', 'BAJFINANCE', 'DLF', 
-          'HINDALCO', 'IBULHSGFIN', 'INDUSINDBK', 
-          'ICICIBANK', 'INDIGO', 'JINDALSTEL', 
-          'L&TFH', 'LICHSGFIN', 'MANAPPURAM', 
-          'MARUTI', 'RBLBANK', 'SBIN', 
-          'TATAMOTORS', 'TATASTEEL', 'VEDL']
+# tickers= ['AUROPHARMA', 'AXISBANK', 'BPCL', 
+#           'BANDHANBNK', 'BAJFINANCE', 'DLF', 
+#           'HINDALCO', 'IBULHSGFIN', 'INDUSINDBK', 
+#           'ICICIBANK', 'INDIGO', 'JINDALSTEL', 
+#           'L&TFH', 'LICHSGFIN', 'MANAPPURAM', 
+#           'MARUTI', 'RBLBANK', 'SBIN', 
+#           'TATAMOTORS', 'TATASTEEL', 'VEDL']
+tickers=['TATAMOTORS']
 refid=1
 # flop=[]
 # mark=[]
@@ -447,7 +448,7 @@ def main(capital):
                 df = vWAP(data_df)
                 logger.info(f"tick {df['Timestamp'].iloc[-2]}")
                 quantity = int(capital/df["Close"].iloc[-1])
-                if pd.Timestamp(df['Timestamp'].iloc[-1]) >= pd.Timestamp(cdate+" "+'12:01:00'):
+                if pd.Timestamp(df['Timestamp'].iloc[-1]) >= pd.Timestamp(cdate+" "+'10:11:00'):
                     idx = len(flop[ticker])-1
                     if df['Close'].iloc[-2] >= df['uB'].iloc[-2] :
                         logger.info(f'Upper bound break in {ticker}')

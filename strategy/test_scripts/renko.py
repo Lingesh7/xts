@@ -1,10 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-import talib
+#import talib
 import pandas as pd
 
-class renko:      
+class renko(object):      
     def __init__(self):
         self.source_prices = []
         self.renko_prices = []
@@ -85,13 +85,14 @@ class renko:
         
         # If we have enough of data
         if HLC_history.shape[0] > atr_timeperiod:
-            brick_size = np.median(talib.ATR(high = np.double(HLC_history.iloc[:, 0]), 
-                                             low = np.double(HLC_history.iloc[:, 1]), 
-                                             close = np.double(HLC_history.iloc[:, 2]), 
-                                             timeperiod = atr_timeperiod)[atr_timeperiod:])
+            #brick_size = np.median(talib.ATR(high = np.double(HLC_history.iloc[:, 0]), 
+                                             #low = np.double(HLC_history.iloc[:, 1]), 
+                                             #close = np.double(HLC_history.iloc[:, 2]), 
+                                             #timeperiod = atr_timeperiod)[atr_timeperiod:])
         
-        return brick_size
-
+        # return brick_size
+           pass
+    
     def evaluate(self, method = 'simple'):
         balance = 0
         sign_changes = 0
@@ -156,39 +157,35 @@ class renko:
         plt.show()
         
 
-header_list = ["date", "time", "open","high","low","close","volume"]
-header_list = ["date", "open","high","low","close","volume"]
-raw_df = pd.read_csv(r'D:\TrueData\DLF_5s.csv',
-                     names=header_list,
-                     header="infer",
-                     index_col=False,
-                     #parse_dates=[['date','time']]
-                     )
-raw_df = raw_df.astype(dtype={
-    'open': float, 'high': float, 'low': float, 'close': float, 'volume': int})
+# header_list = ["date", "time", "open","high","low","close","volume"]
+# header_list = ["date", "open","high","low","close","volume"]
+# raw_df = pd.read_csv(r'D:\Python\First_Choice_Git\xts\strategy\test_scripts\sample.csv',
+#                       names=header_list,
+#                       header=None,
+#                       index_col=False,
+#                       #parse_dates=[['date','time']]
+#                       )
+# raw_df = raw_df.astype(dtype={
+#     'open': float, 'high': float, 'low': float, 'close': float, 'volume': int})
 
-raw_df['date_time'] = pd.to_datetime(raw_df['date'],unit='s')
-raw_df['date_time'] = raw_df['date_time'].dt.tz_localize('UTC').dt.tz_convert('Asia/Kolkata')
-
-
-
-
-
+# raw_df['date_time'] = pd.to_datetime(raw_df['date'],unit='s')
+# #raw_df['date_time'] = raw_df['date_time'].dt.tz_localize('UTC').dt.tz_convert('Asia/Kolkata')
 # data=raw_df.sort_values(by="date",ascending=False)
 
-data = raw_df.copy()    
-# optimal_brick = renko().set_brick_size(auto = True, HLC_history = data[["high", "low", "close"]])
+# data = raw_df.copy()    
+# # # optimal_brick = renko().set_brick_size(auto = True, HLC_history = data[["high", "low", "close"]])
 
-# Build Renko chart
-renko_obj_atr = renko()
-print('Set brick size to optimal: ', renko_obj_atr.set_brick_size(auto = False, brick_size = .50))
-renko_obj_atr.build_history(prices = data.close)
-print('Renko bar prices: ', renko_obj_atr.get_renko_prices())
-print('Renko bar directions: ', renko_obj_atr.get_renko_directions())
-print('Renko bar evaluation: ', renko_obj_atr.evaluate())
-
-if len(renko_obj_atr.get_renko_prices()) > 1:
-    renko_obj_atr.plot_renko()    
+# # # Build Renko chart
+# for i in range(len(data)):
+#     renko_obj_atr = renko()
+#     print('Set brick size to optimal: ', renko_obj_atr.set_brick_size(auto = False, brick_size = .50))
+#     renko_obj_atr.build_history(prices = data.close)
+#     print('Renko bar prices: ', renko_obj_atr.get_renko_prices())
+#     print('Renko bar directions: ', renko_obj_atr.get_renko_directions())
+#     # print('Renko bar evaluation: ', renko_obj_atr.evaluate())
+    
+#     if len(renko_obj_atr.get_renko_prices()) > 1:
+#         renko_obj_atr.plot_renko()    
     
     
     

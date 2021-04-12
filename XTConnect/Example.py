@@ -13,9 +13,9 @@ from XTConnect import XTSConnect
 # source = "WEBAPI"
 
 
-API_KEY = "53051399e954a1b599d112"
-API_SECRET = "Tuum275@DB"
-XTS_API_BASE_URL = "https://ttblaze.iifl.com"
+API_KEY = "8a2c9c2c650b2334c0e432"
+API_SECRET = "Yuis804$IK"
+XTS_API_BASE_URL = "https://developers.symphonyfintech.in"
 source = "WEBAPI"
 
 """Make XTSConnect object by passing your interactive API appKey, secretKey and source"""

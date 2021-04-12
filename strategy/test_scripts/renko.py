@@ -36,15 +36,15 @@ class renko(object):
                 is_new_brick = True
                 start_brick = 0
             # Backward direction (up -> down or down -> up)
-            elif np.abs(gap_div) >= 2: # Should be double gap at least
+            elif np.abs(gap_div) >= 1: # Should be double gap at least
                 num_new_bars = gap_div
                 num_new_bars -= np.sign(gap_div)
                 start_brick = 2
                 is_new_brick = True
                 self.renko_prices.append(self.renko_prices[-1] + 2 * self.brick_size * np.sign(gap_div))
                 self.renko_directions.append(np.sign(gap_div))
-            #else:
-                #num_new_bars = 0
+            else:
+                num_new_bars = 0
 
             if is_new_brick:
                 # Add each brick
@@ -156,52 +156,41 @@ class renko(object):
         
         plt.show()
         
-
+# \Python\First_Choice_Git\xts\strategy\test_scripts\sample.csv
 # header_list = ["date", "time", "open","high","low","close","volume"]
-# header_list = ["date", "open","high","low","close","volume"]
-# raw_df = pd.read_csv(r'D:\Python\First_Choice_Git\xts\strategy\test_scripts\sample.csv',
-#                       names=header_list,
-#                       header=None,
-#                       index_col=False,
-#                       #parse_dates=[['date','time']]
-#                       )
-# raw_df = raw_df.astype(dtype={
-#     'open': float, 'high': float, 'low': float, 'close': float, 'volume': int})
+header_list = ["date", "open","high","low","close","volume"]
+raw_df = pd.read_csv(r'D:\sample.csv',
+                      names=header_list,
+                      header=None,
+                      index_col=False,
+                      #parse_dates=[['date','time']]
+                      )
+raw_df = raw_df.astype(dtype={
+    'open': float, 'high': float, 'low': float, 'close': float, 'volume': int})
 
 # raw_df['date_time'] = pd.to_datetime(raw_df['date'],unit='s')
 # #raw_df['date_time'] = raw_df['date_time'].dt.tz_localize('UTC').dt.tz_convert('Asia/Kolkata')
 # data=raw_df.sort_values(by="date",ascending=False)
 
-# data = raw_df.copy()    
+data = data_df.copy()    
 # # # optimal_brick = renko().set_brick_size(auto = True, HLC_history = data[["high", "low", "close"]])
 
 # # # Build Renko chart
 # for i in range(len(data)):
-#     renko_obj_atr = renko()
-#     print('Set brick size to optimal: ', renko_obj_atr.set_brick_size(auto = False, brick_size = .50))
-#     renko_obj_atr.build_history(prices = data.close)
-#     print('Renko bar prices: ', renko_obj_atr.get_renko_prices())
-#     print('Renko bar directions: ', renko_obj_atr.get_renko_directions())
-#     # print('Renko bar evaluation: ', renko_obj_atr.evaluate())
+renko_obj_atr = renko()
+print('Set brick size to optimal: ', renko_obj_atr.set_brick_size(auto = False, brick_size = 3))
+renko_obj_atr.build_history(prices = data3.Close)
+print('Renko bar prices: ', renko_obj_atr.get_renko_prices())
+print('Renko bar directions: ', renko_obj_atr.get_renko_directions())
+# print('Renko bar evaluation: ', renko_obj_atr.evaluate())
+
+if len(renko_obj_atr.get_renko_prices()) > 1:
+    renko_obj_atr.plot_renko()    
     
-#     if len(renko_obj_atr.get_renko_prices()) > 1:
-#         renko_obj_atr.plot_renko()    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+data = data_2.copy() 
+
+data_1 = data.shift(1,axis=0)
+date = data_1.fillna(data.Open.iloc[0])
+
+
+data3 = date_2.copy() 

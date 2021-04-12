@@ -94,7 +94,8 @@ else:
 #           'L&TFH', 'LICHSGFIN', 'MANAPPURAM', 
 #           'MARUTI', 'RBLBANK', 'SBIN', 
 #           'TATAMOTORS', 'TATASTEEL', 'VEDL']
-tickers=['NIFTY2141514850CE','NIFTY2141514850PE']
+
+tickers=['NIFTY 50']
 refid=1
 side = None
 
@@ -119,24 +120,23 @@ def masterDump():
     filename=f'../ohlc/NSE_Instruments_{cdate}.csv'
     file = Path(filename)
     if file.exists() and (date.today() == date.fromtimestamp(file.stat().st_mtime)):
-        logger.info('MasterDump already exists.. reading directly')
-        instrument_df = pd.read_csv(filename,header='infer')
+        print('MasterDump already exists.. reading directly')
+        instrument_df=pd.read_csv(filename,header='infer')
     else:
-        logger.info('Creating MasterDump..')
+        print('Creating MasterDump..')
         exchangesegments = [xt.EXCHANGE_NSEFO]
         mastr_resp = xt.get_master(exchangeSegmentList=exchangesegments)
         # print("Master: " + str(mastr_resp))
         master=mastr_resp['result']
         spl=master.split('\n')
-        mstr_df = pd.DataFrame([sub.split("|") for sub in spl],columns=(['ExchangeSegment','ExchangeInstrumentID','InstrumentType','Name','Description','Series','NameWithSeries','InstrumentID','PriceBand.High','PriceBand.Low','FreezeQty','TickSize',' LotSize']))
-        instrument_df = mstr_df[mstr_df.Series == 'EQ']
+        mstr_df = pd.DataFrame([sub.split("|") for sub in spl],columns=(['ExchangeSegment','ExchangeInstrumentID','InstrumentType','Name','Description','Series','NameWithSeries','InstrumentID','PriceBand.High','PriceBand.Low','FreezeQty','TickSize',' LotSize','UnderlyingInstrumentId','UnderlyingIndexName','ContractExpiration','StrikePrice','OptionType']))
+        instrument_df = mstr_df[mstr_df.Series == 'OPTIDX']
         instrument_df.to_csv(f"../ohlc/NSE_Instruments_{cdate}.csv",index=False)
-
 
 def instrumentLookup(instrument_df,ticker):
     """Looks up instrument token for a given script from instrument dump"""
     try:
-        return int(instrument_df[instrument_df.Name==ticker].ExchangeInstrumentID.values[0])
+        return int(instrument_df[instrument_df.Description==ticker].ExchangeInstrumentID.values[0])
     except:
         return -1
 
@@ -146,7 +146,7 @@ def fetchOHLC(ticker,duration):
     cur_date = datetime.strftime(datetime.now(), "%b %d %Y")
     nowtime = datetime.now().strftime('%H%M%S')
     ohlc = xt.get_ohlc(exchangeSegment=xt.EXCHANGE_NSECM,
-                    exchangeInstrumentID=symbol,
+                    exchangeInstrumentID=3045,
                     startTime=f'{cur_date} 091500',
                     endTime=f'{cur_date} {nowtime}',
                     compressionValue=duration)
@@ -157,18 +157,17 @@ def fetchOHLC(ticker,duration):
     data_df = data_df.astype(dtype={'Open': float, 'High': float, 'Low': float, 'Close': float, 'Volume': int})
     data_df['Timestamp'] = pd.to_datetime(data_df['Timestamp'].astype('int'), unit='s')
     return data_df
-
+# data_df.to_csv(r'D:\sample13400ce.csv',header=False,index=None)
 def main():
     global side
     for ticker in tickers:
         data = fetchOHLC(ticker, 60)
         renko_obj_atr = renko()
-        renko_obj_atr.set_brick_size(auto = False, brick_size = .50)
-        renko_obj_atr.build_history(prices = data.close)
+        renko_obj_atr.set_brick_size(auto = False, brick_size = 2)
+        renko_obj_atr.build_history(prices = data.Close)
         renko_box = renko_obj_atr.get_renko_directions()
         print('Renko bar directions: ', renko_box)
         if len(renko_box) > 3:
-            print('quali')
             box_three = renko_box[-3:]
             if len(set(box_three)) == 1:
                 if renko_box[-1] == 1:
@@ -176,11 +175,12 @@ def main():
                     bot_sendtext(f'Renko - go Long in {ticker}')
                 elif renko_box[-1] == -1:
                     side = 'Short'
+                    bot_sendtext(f'Renko - go Short in {ticker}')
      
         
 
 if __name__ == '__main__':
-    masterDump()
+    masterEqDump()
     logger.info('Waiting to start the script at 09:16 AM')
     while datetime.now() >= pd.Timestamp(cdate+" "+'09:16:01'):
         main()

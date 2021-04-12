@@ -112,7 +112,9 @@ https://nsetools.readthedocs.io/en/latest/usage.html#getting-a-stock-quote
 IIFL28 // login - May@123 // tranx - May@1234
 #Live Account -- 
 
-
+iiflxts
+53051399e954a1b599d112
+Tuum275@DB
 
 
 
@@ -184,3 +186,16 @@ PAUSE
 ==================
 
 git  to include new files/folders added to gitignore 'git rm --cached -r strategy'
+
+
+
+https://ttblaze.iifl.com/dashboard#!/app
+interactive:
+53051399e954a1b599d112
+Tuum275@DB
+
+market:
+5e231aa3ba41dc751be459
+
+
+kite.historical_data(instrument_token=54743047,from_date='2017-01-01', to_date='2019-01-01', interval="day",continuous=1)

@@ -1,4 +1,15 @@
-"""Retry decorator with exponential backoff.
+import time
+from functools import partial, wraps
+import logging
+from sys import exit
+
+# this is referring the main script logger
+logger = logging.getLogger('__main__')
+
+
+def retry(func=None, exception=Exception, n_tries=5, delay=5, backoff=1, tolog=True, kill=False):
+    # logger.info('Retry function from another file')
+    """Retry decorator with exponential backoff.
 
     Parameters
     ----------
@@ -35,18 +46,6 @@
     >>> test_random("It works!")
     """
 
-import time
-from functools import partial, wraps
-import logging
-from sys import exit
-
-# this is referring the main script logger
-logger = logging.getLogger('__main__')
-
-
-def retry(func=None, exception=Exception, n_tries=5, delay=5, backoff=1, tolog=True, kill=False):
-    # logger.info('Retry function from another file')
-
     if func is None:
         return partial(retry, exception=exception,
                        n_tries=n_tries, delay=delay,
@@ -75,3 +74,4 @@ def retry(func=None, exception=Exception, n_tries=5, delay=5, backoff=1, tolog=T
         return func(*args, **kwargs)
 
     return wrapper
+

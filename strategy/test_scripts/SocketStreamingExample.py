@@ -1,11 +1,11 @@
 import configparser
 import json
 from threading import Thread
-from MarketDataSocketClient import MDSocket_io
-from InteractiveSocketClient import OrderSocket_io
+from XTConnect.MarketDataSocketClient import MDSocket_io
+from XTConnect.InteractiveSocketClient import OrderSocket_io
 from datetime import datetime
 
-from Connect import XTSConnect
+from XTConnect.Connect import XTSConnect
 
 global response
 

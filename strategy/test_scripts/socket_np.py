@@ -36,7 +36,7 @@ soc = MDSocket_io(set_marketDataToken, set_muserID)
 
 # Thread(target=connectsocket).start()
 
-Instruments = [{'exchangeSegment': 1, 'exchangeInstrumentID': 22},
+Instruments = [
                {'exchangeSegment': 1, 'exchangeInstrumentID': 2885}]
 res=xt.send_subscription(Instruments, 1501)
 print("res: ", res)

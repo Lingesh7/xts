@@ -26,7 +26,7 @@ from sys import exit
 import requests
 from retry import retry
 from renko import renko
-# from stocktrends import Renko
+import get_db_data
 import os
 
 try:
@@ -158,6 +158,8 @@ def fetchOHLC(ticker,duration):
     data_df['Timestamp'] = pd.to_datetime(data_df['Timestamp'].astype('int'), unit='s')
     return data_df
 # data_df.to_csv(r'D:\sample13400ce.csv',header=False,index=None)
+    
+
 def main():
     global side
     for ticker in tickers:

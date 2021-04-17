@@ -13,6 +13,7 @@ from pathlib import Path
 import time
 import json
 import logging
+import argparse
 import pandas as pd
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
@@ -22,12 +23,27 @@ import configparser
 import timer
 from threading import Thread
 from openpyxl import load_workbook
+from openpyxl.styles import Font, PatternFill
 from logging.handlers import TimedRotatingFileHandler
 from sys import exit
 import os
+from random import randint
 
 os.chdir(r'D:\Python\First_Choice_Git\xts\strategy\scripts')
 
+############## parsing args ##############
+
+parser = argparse.ArgumentParser(description='OptionScalper Script')
+parser.add_argument('-st', '--startTime',type=str, required=True, help='start time of the script')
+parser.add_argument('-et', '--endTime',type=str, default="15:05:00", help='end time')
+parser.add_argument('-sl', '--stopLoss',type=int, default=-3000, help='stopLoss amount')
+parser.add_argument('-tgt', '--target',type=int, default=6000, help='Target amount')
+args = parser.parse_args()
+
+startTime = args.startTime
+endTime = args.endTime
+stopLoss = args.stopLoss
+target = args.target
 
 ############## logging configs ##############
 
@@ -83,11 +99,11 @@ ltp = {}
 gl_pnl = None
 pnl_dump = []
 idxs = ['NIFTY','BANKNIFTY']
-orders=[{'refId':10001, 'setno':1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'straddle_points':50, 'stoplosstrig': 15.25, 'startTime':"09:59:00"},
-		{'refId':10002, 'setno':2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'straddle_points':50, 'stoplosstrig': 15.25, 'startTime':"09:59:00"},
-        {'refId':10003, 'setno':3, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'straddle_points':100, 'stoplosstrig': 60.25, 'startTime':"09:59:00"},
-		{'refId':10004, 'setno':4, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'straddle_points':100, 'stoplosstrig': 60.25, 'startTime':"09:59:00"}]
-universal = {'exit_status': 'Idle', 'minPrice': -3000, 'maxPrice': 6900, 'exitTime':'15:05:00', 'ext_txn_type':'buy'}
+orders=[{'refId':10001, 'setno':1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'straddle_points':50, 'stoplosstrig': 15.25, 'startTime':startTime},
+		{'refId':10002, 'setno':2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"NIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'straddle_points':50, 'stoplosstrig': 15.25, 'startTime':startTime},
+        {'refId':10003, 'setno':3, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'straddle_points':100, 'stoplosstrig': 60.25, 'startTime':startTime},
+		{'refId':10004, 'setno':4, 'ent_txn_type': "sell", 'rpr_txn_type': "buy", 'idx':"BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'straddle_points':100, 'stoplosstrig': 60.25, 'startTime':startTime}]
+universal = {'exit_status': 'Idle', 'minPrice': stopLoss, 'maxPrice': target, 'exitTime':endTime, 'ext_txn_type':'buy'}
 
 ############## Functions ##############
 
@@ -104,7 +120,7 @@ def get_expiry():
 
     thu = (now + relativedelta(weekday=TH(1))).strftime('%d%b%Y')
     wed = (now + relativedelta(weekday=WE(1))).strftime('%d%b%Y')
-    
+
     weekly_exp = thu if thu in expiry_dates else wed
     logger.info(f'{weekly_exp} is the week expiry')
 
@@ -112,7 +128,7 @@ def get_expiry():
     if (nxtmon != cmon):
         month_last_thu_expiry = now + relativedelta(weekday=TH(5))
         mon_thu = (now + relativedelta(weekday=TH(5))).strftime('%d%b%Y')
-        mon_wed = (now + relativedelta(weekday=WE(5))).strftime('%d%b%Y')        
+        mon_wed = (now + relativedelta(weekday=WE(5))).strftime('%d%b%Y')
         if (month_last_thu_expiry.month!= nxtmon):
             mon_thu = (now + relativedelta(weekday=TH(4))).strftime('%d%b%Y')
             mon_wed = (now + relativedelta(weekday=WE(4))).strftime('%d%b%Y')
@@ -126,7 +142,7 @@ def get_expiry():
                 break
     monthly_exp = mon_thu if mon_thu in expiry_dates else mon_wed
     logger.info(f'{monthly_exp} is the month expiry')
-                    
+
 def masterDump():
     global instrument_df
     filename=f'../ohlc/NSE_Instruments_{cdate}.csv'
@@ -143,7 +159,7 @@ def masterDump():
         spl=master.split('\n')
         mstr_df = pd.DataFrame([sub.split("|") for sub in spl],columns=(['ExchangeSegment','ExchangeInstrumentID','InstrumentType','Name','Description','Series','NameWithSeries','InstrumentID','PriceBand.High','PriceBand.Low','FreezeQty','TickSize',' LotSize','UnderlyingInstrumentId','UnderlyingIndexName','ContractExpiration','StrikePrice','OptionType']))
         instrument_df = mstr_df[mstr_df.Series == 'OPTIDX']
-        instrument_df.to_csv(f"../ohlc/NSE_Instruments_{cdate}.csv",index=False)  
+        instrument_df.to_csv(f"../ohlc/NSE_Instruments_{cdate}.csv",index=False)
 
 def strikePrice(idx):
     if idx == idxs[0]:
@@ -185,7 +201,7 @@ def instrumentLookup(instrument_df,symbol):
 
 def getOrderList():
     aa = 0
-    # logger.info('Checking OrderBook for order status..') 
+    # logger.info('Checking OrderBook for order status..')
     while aa < 5:
         try:
            oBook_resp = xt.get_order_book()
@@ -195,7 +211,7 @@ def getOrderList():
                return orderList
                break
            else:
-               raise Exception("Unkonwn error in getOrderList func")           
+               raise Exception("Unkonwn error in getOrderList func")
         except Exception:
             logger.exception("Can't extract order data..retrying")
             # traceback.print_exc()
@@ -206,7 +222,7 @@ def cancelOrder(OrderID):
     logger.info(f'Cancelling order: {OrderID} ')
     cancel_resp = xt.cancel_order(
         appOrderID=OrderID,
-        orderUniqueIdentifier='FC_Cancel_Orders_1') 
+        orderUniqueIdentifier='FC_Cancel_Orders_1')
     if cancel_resp['type'] != 'error':
         cancelled_SL_orderID = cancel_resp['result']['AppOrderID']
         logger.info(f'Cancelled SL order id : {cancelled_SL_orderID}')
@@ -223,8 +239,8 @@ def placeOrder(symbol,txn_type,qty):
     try:
         order_resp = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
                          exchangeInstrumentID= symbol ,
-                         productType=xt.PRODUCT_MIS, 
-                         orderType=xt.ORDER_TYPE_MARKET,                   
+                         productType=xt.PRODUCT_MIS,
+                         orderType=xt.ORDER_TYPE_MARKET,
                          orderSide=t_type,
                          timeInForce=xt.VALIDITY_DAY,
                          disclosedQuantity=0,
@@ -241,7 +257,7 @@ def placeOrder(symbol,txn_type,qty):
             while a<12:
                 orderLists = getOrderList()
                 if orderLists:
-                    new_orders = [ol for ol in orderLists if ol['AppOrderID'] == orderID and ol['OrderStatus'] != 'Filled']  
+                    new_orders = [ol for ol in orderLists if ol['AppOrderID'] == orderID and ol['OrderStatus'] != 'Filled']
                     if not new_orders:
                         tradedPrice = float(next((orderList['OrderAverageTradedPrice'] \
                                             for orderList in orderLists \
@@ -284,8 +300,8 @@ def placeSLOrder(symbol, txn_type, qty, slTrigger):
     try:
         sl_order_resp = xt.place_order(exchangeSegment=xt.EXCHANGE_NSEFO,
                              exchangeInstrumentID= symbol ,
-                             productType=xt.PRODUCT_MIS, 
-                             orderType="StopMarket",                   
+                             productType=xt.PRODUCT_MIS,
+                             orderType="StopMarket",
                              orderSide=t_type,
                              timeInForce=xt.VALIDITY_DAY,
                              disclosedQuantity=0,
@@ -305,7 +321,7 @@ def placeSLOrder(symbol, txn_type, qty, slTrigger):
             time.sleep(5)
             orderLists = getOrderList()
             if orderLists:
-                new_sl_orders = [ol for ol in orderLists if ol['AppOrderID'] == orderID and ol['OrderStatus'] != 'Filled']  
+                new_sl_orders = [ol for ol in orderLists if ol['AppOrderID'] == orderID and ol['OrderStatus'] != 'Filled']
                 if not new_sl_orders:
                     logger.info('Stop Loss Order Triggered inside repair block')
                     tradedPrice = float(next((orderList['OrderAverageTradedPrice'] \
@@ -341,19 +357,19 @@ def execute(orders):
                 etr_inst['set']=orders['setno']
                 etr_inst['txn_type'] = orders['ent_txn_type']
                 sp = strikePrice(orders['idx'])
-                
+
                 if weekday != 3: #if not thursday, take straddle
                     etr_inst['strike'] = sp + orders['straddle_points'] if orders['otype'] == 'ce' else sp - orders['straddle_points']
                 else:
                     etr_inst['strike'] = sp
-                
+
                 etr_inst['qty'] = 75*orders['lot'] if orders['idx'] == 'NIFTY' else 25*orders['lot']
                 etr_inst['tr_qty'] = -etr_inst['qty'] if orders['ent_txn_type'] == 'sell' else etr_inst['qty']
-                
+
                 if orders['expiry'] == 'week':
                     etr_inst['expiry'] = weekly_exp
                 etr_inst['optionType'] = orders['otype'].upper()
-                
+
                 if weekly_exp == monthly_exp:
                     inst_name = orders['idx']+(datetime.strftime(datetime.strptime(etr_inst['expiry'], '%d%b%Y'),'%y%b')).upper()+str(etr_inst['strike'])+etr_inst['optionType']
                 else:
@@ -376,7 +392,7 @@ def execute(orders):
                     orders['status'] = 'Entered'
                 logger.info(f'Entry order dtls: {etr_inst}')
                 tr_insts.append(etr_inst)
-                
+
         if universal['exit_status'] == 'Idle':  #Checking wheather universal exit triggered or not
             if orders['status'] == 'Entered':
                 ename = next(i['name'] for i in tr_insts if i['set_type']=='Entry' and i['set']==orders['setno'])
@@ -395,7 +411,7 @@ def execute(orders):
                 rpr_inst['optionType'] = orders['otype'].upper()
                 rpr_inst['name'] = ename
                 rpr_inst['symbol'] = esymbol
-                rpr_inst['orderID'] = None 
+                rpr_inst['orderID'] = None
                 rpr_inst['tradedPrice'] = None
                 orderID, tradedPrice, dateTime = placeSLOrder(rpr_inst['symbol'], rpr_inst['txn_type'], rpr_inst['qty'], slt)
                 rpr_inst['orderID'] = orderID
@@ -411,7 +427,7 @@ def execute(orders):
            orders['status'] = 'Universal_Exit'
            logger.info('Orders must be square-off by Universal Exit Func')
            break
-            
+
         if orders['status'] == 'Repaired':
             logger.info(f'Repaired the Entry Order set: {orders["setno"]}.Exiting the thread')
             break
@@ -419,7 +435,7 @@ def execute(orders):
 def exitCheck(universal):
     global tr_insts , univ_exits
     # univ_exits = []
-    # ext_inst = {}          
+    # ext_inst = {}
     exitTime = datetime.strptime((cdate+" "+universal['exitTime']),"%d-%m-%Y %H:%M:%S")
     while True:
         if universal['exit_status'] == 'Idle':
@@ -431,12 +447,12 @@ def exitCheck(universal):
                 for i in range(len(gdf)):
                     if gdf["tr_qty"].values[i] == 0:
                         continue
-                    ext_inst['symbol'] = int(gdf['symbol'].values[i])                    
-                    ext_inst['txn_type'] = universal['ext_txn_type'] 
+                    ext_inst['symbol'] = int(gdf['symbol'].values[i])
+                    ext_inst['txn_type'] = universal['ext_txn_type']
                     ext_inst['tr_qty'] = -int(gdf['tr_qty'].values[i])
                     ext_inst['qty'] = abs(ext_inst['tr_qty'])
                     ext_inst['name'] = str(gdf['name'].values[i])
-                    ext_inst['optionType'] = ext_inst['name'][-2:] 
+                    ext_inst['optionType'] = ext_inst['name'][-2:]
                     ext_inst['strike'] = ext_inst['name'][-7:-2]
                     ext_inst['orderID'] = None
                     ext_inst['tradedPrice'] = None
@@ -447,7 +463,7 @@ def exitCheck(universal):
                     if orderID and tradedPrice:
                         ext_inst['set_type']='Universal_Exit'
                     logger.info(f'Universal Exit order dtls: {ext_inst}')
-                    tr_insts.append(ext_inst.copy())    
+                    tr_insts.append(ext_inst.copy())
                 logger.info('Breaking the main loop')
                 universal['exit_status'] = 'Exited'
                 break
@@ -494,25 +510,58 @@ def getGlobalPnL():
     else:
         gl_pnl = 0
 
+# def dataToExcel(pnl_dump):
+#     pnl_df = pd.DataFrame(pnl_dump,columns=['date','pl'])
+#     pnl_df = pnl_df.set_index(['date'])
+#     pnl_df.index = pd.to_datetime(pnl_df.index, format='%d-%m-%Y %H:%M:%S')
+#     resampled_df = pnl_df['pl'].resample('1min').ohlc()
+#     #writing the output to excel sheet
+#     writer = pd.ExcelWriter('../pnl/Index_Option_Writing_PnL.xlsx',engine='openpyxl')
+#     writer.book = load_workbook('../pnl/Index_Option_Writing_PnL.xlsx')
+#     resampled_df.to_excel(writer, sheet_name=(cdate), index=True)
+#     df.to_excel(writer, sheet_name=(cdate),startrow=15, startcol=7, index=False)
+#     gdf.to_excel(writer, sheet_name=(cdate),startrow=4, startcol=7, index=False)
+#     writer.sheets=dict((ws.title, ws) for ws in writer.book.worksheets)
+#     worksheet = writer.sheets[cdate]
+#     worksheet['G1'] = "MaxPnL"
+#     worksheet["G2"] = "=MAX(E:E)"
+#     worksheet['H1'] = "MinPnL"
+#     worksheet["H2"] = "=MIN(E:E)"
+#     worksheet['I1'] = "FinalPnL"
+#     worksheet['I2'] = gl_pnl
+#     writer.save()
+#     writer.close()
+
 def dataToExcel(pnl_dump):
+    blueFill = PatternFill(start_color='000000FF', end_color='000000FF',
+                   fill_type='solid')
+    time.sleep(randint(3,9))
+    filename = os.path.basename(__file__).split('.')[0]
+    sheetname = cdate+'_'+startTime.replace(':','_')
     pnl_df = pd.DataFrame(pnl_dump,columns=['date','pl'])
     pnl_df = pnl_df.set_index(['date'])
-    pnl_df.index = pd.to_datetime(pnl_df.index, format='%d-%m-%Y %H:%M:%S')
+    pnl_df.index = pd.to_datetime(pnl_df.index, format='%Y-%m-%d %H:%M:%S')
     resampled_df = pnl_df['pl'].resample('1min').ohlc()
     #writing the output to excel sheet
-    writer = pd.ExcelWriter('../pnl/Index_Option_Writing_PnL.xlsx',engine='openpyxl')
-    writer.book = load_workbook('../pnl/Index_Option_Writing_PnL.xlsx')
-    resampled_df.to_excel(writer, sheet_name=(cdate), index=True)
-    df.to_excel(writer, sheet_name=(cdate),startrow=15, startcol=7, index=False)
-    gdf.to_excel(writer, sheet_name=(cdate),startrow=4, startcol=7, index=False)
+    writer = pd.ExcelWriter(f'..\\pnl\\{filename}.xlsx',engine='openpyxl')
+    writer.book = load_workbook(f'..\\pnl\\{filename}.xlsx')
+    resampled_df.to_excel(writer, sheet_name=(sheetname), index=True)
+    df.to_excel(writer, sheet_name=(sheetname),startrow=11, startcol=6, index=False)
+    gdf.to_excel(writer, sheet_name=(sheetname),startrow=5, startcol=6, index=False)
     writer.sheets=dict((ws.title, ws) for ws in writer.book.worksheets)
-    worksheet = writer.sheets[cdate]
-    worksheet['G1'] = "MaxPnL"
-    worksheet["G2"] = "=MAX(E:E)"
-    worksheet['H1'] = "MinPnL"
-    worksheet["H2"] = "=MIN(E:E)"
-    worksheet['I1'] = "FinalPnL"
-    worksheet['I2'] = gl_pnl          
+    worksheet = writer.sheets[sheetname]
+    worksheet['G1'] = f"{filename} - {sheetname}"
+    worksheet['G1'].font = Font(bold=True)
+    worksheet['G1'].fill = blueFill
+    worksheet['G3'] = "MaxPnL"
+    worksheet['G3'].font = Font(bold=True)
+    worksheet["G4"] = "=MAX(E:E)"
+    worksheet['H3'] = "MinPnL"
+    worksheet['H3'].font = Font(bold=True)
+    worksheet["H4"] = "=MIN(E:E)"
+    worksheet['I3'] = "FinalPnL"
+    worksheet['I3'].font = Font(bold=True)
+    worksheet['I4'] = gl_pnl
     writer.save()
     writer.close()
 
@@ -564,5 +613,5 @@ if __name__ == '__main__':
         logger.info(f'\n\n CombinedPositionsLists: \n {gdf}')
         logger.info(f'\n\n Global PnL : {gl_pnl} \n')
         logger.info('--------------------------------------------')
-        
-############## END ##############    
+
+############## END ##############

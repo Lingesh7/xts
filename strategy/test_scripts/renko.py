@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 #import talib
 import pandas as pd
+from get_db_data import get_db_data
 
 class renko(object):      
     def __init__(self):
@@ -168,18 +169,23 @@ raw_df = pd.read_csv(r'D:\sample.csv',
 raw_df = raw_df.astype(dtype={
     'open': float, 'high': float, 'low': float, 'close': float, 'volume': int})
 
+
 # raw_df['date_time'] = pd.to_datetime(raw_df['date'],unit='s')
 # #raw_df['date_time'] = raw_df['date_time'].dt.tz_localize('UTC').dt.tz_convert('Asia/Kolkata')
 # data=raw_df.sort_values(by="date",ascending=False)
 
-data = data_df.copy()    
+# data = data_df.copy()    
 # # # optimal_brick = renko().set_brick_size(auto = True, HLC_history = data[["high", "low", "close"]])
+
+data = get_db_data('ITC','2021-04-13')
+data = data.shift(1,axis=0)
+data = data.fillna(data.open.iloc[1])
 
 # # # Build Renko chart
 # for i in range(len(data)):
 renko_obj_atr = renko()
-print('Set brick size to optimal: ', renko_obj_atr.set_brick_size(auto = False, brick_size = 3))
-renko_obj_atr.build_history(prices = data3.Close)
+print('Set brick size to optimal: ', renko_obj_atr.set_brick_size(auto = False, brick_size = 1))
+renko_obj_atr.build_history(prices = data.close)
 print('Renko bar prices: ', renko_obj_atr.get_renko_prices())
 print('Renko bar directions: ', renko_obj_atr.get_renko_directions())
 # print('Renko bar evaluation: ', renko_obj_atr.evaluate())
@@ -187,10 +193,3 @@ print('Renko bar directions: ', renko_obj_atr.get_renko_directions())
 if len(renko_obj_atr.get_renko_prices()) > 1:
     renko_obj_atr.plot_renko()    
     
-data = data_2.copy() 
-
-data_1 = data.shift(1,axis=0)
-date = data_1.fillna(data.Open.iloc[0])
-
-
-data3 = date_2.copy() 

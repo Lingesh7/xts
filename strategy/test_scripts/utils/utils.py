@@ -4,7 +4,6 @@ Created on Fri Apr 16 14:21:49 2021
 General UTILITIES USED FOR ALGO
 @author: WELCOME
 """
-
 import time
 from functools import partial, wraps
 import logging
@@ -15,6 +14,11 @@ from XTConnect.Connect import XTSConnect
 from datetime import datetime,date
 from pathlib import Path
 import pandas as pd
+from random import randint
+import os
+from openpyxl import load_workbook
+
+
 
 
 # this is referring the main script logger
@@ -45,7 +49,7 @@ def xts_init(interactive=None, market=None):
         secretKey = cfg.get('user', key_sec)
         xt = XTSConnect(appKey, secretKey, source)
         
-        global cdate
+        # global cdate
         cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
         token_file=f'../scripts/access_token_{cdate}.txt'
         file = Path(token_file)
@@ -136,6 +140,7 @@ def retry(func=None, exception=Exception, n_tries=5, delay=5, backoff=1, tolog=T
 @retry(n_tries=10, delay=15, kill=True)
 def masterEqDump():
     # global instrument_df
+    cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
     filename=f'../ohlc/NSE_EQ_Instruments_{cdate}.csv'
     file = Path(filename)
     if file.exists() and (date.today() == date.fromtimestamp(file.stat().st_mtime)):
@@ -177,3 +182,31 @@ def ltp(symbol=None,ltp=None):
     else:
         logger.info('UTILS: pass valid symbol or id')
     return ltp
+
+
+def dataToExcel(pnl_dump,startTime,df,gdf):
+    time.sleep(randint(3,9))
+    filename = os.path.basename(__file__).split('.')[0]
+    cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
+    sheetname = cdate+'_'+startTime.replace(':','_')
+    pnl_df = pd.DataFrame(pnl_dump,columns=['date','pl'])
+    pnl_df = pnl_df.set_index(['date'])
+    pnl_df.index = pd.to_datetime(pnl_df.index, format='%d-%m-%Y %H:%M:%S')
+    resampled_df = pnl_df['pl'].resample('1min').ohlc()
+    #writing the output to excel sheet
+    writer = pd.ExcelWriter(f'..\\pnl\\{filename}.xlsx',engine='openpyxl')
+    writer.book = load_workbook(f'..\\pnl\\{filename}.xlsx')
+    resampled_df.to_excel(writer, sheet_name=(sheetname), index=True)
+    df.to_excel(writer, sheet_name=(sheetname),startrow=11, startcol=6, index=False)
+    gdf.to_excel(writer, sheet_name=(sheetname),startrow=4, startcol=6, index=False)
+    writer.sheets=dict((ws.title, ws) for ws in writer.book.worksheets)
+    worksheet = writer.sheets[cdate]
+    worksheet['G1'] = f"{filename} - {sheetname}"
+    worksheet['G2'] = "MaxPnL"
+    worksheet["G3"] = "=MAX(E:E)"
+    worksheet['H2'] = "MinPnL"
+    worksheet["H3"] = "=MIN(E:E)"
+    worksheet['I2'] = "FinalPnL"
+    worksheet['I3'] = gl_pnl
+    writer.save()
+    writer.close()

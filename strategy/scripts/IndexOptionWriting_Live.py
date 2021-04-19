@@ -51,7 +51,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 
-filename='../logs/IndexOptionWriting_Live_log.txt'
+filename=f"../logs/IndexOptionWriting_Live_{startTime.replace(':','_')}_log.txt"
 
 #file_handler = logging.FileHandler(filename)
 file_handler = TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=3)
@@ -540,7 +540,7 @@ def dataToExcel(pnl_dump):
     sheetname = cdate+'_'+startTime.replace(':','_')
     pnl_df = pd.DataFrame(pnl_dump,columns=['date','pl'])
     pnl_df = pnl_df.set_index(['date'])
-    pnl_df.index = pd.to_datetime(pnl_df.index, format='%Y-%m-%d %H:%M:%S')
+    pnl_df.index = pd.to_datetime(pnl_df.index, format='d-%m-%Y %H:%M:%S')
     resampled_df = pnl_df['pl'].resample('1min').ohlc()
     #writing the output to excel sheet
     writer = pd.ExcelWriter(f'..\\pnl\\{filename}.xlsx',engine='openpyxl')

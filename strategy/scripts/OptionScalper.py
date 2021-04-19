@@ -543,8 +543,8 @@ def dataToExcel(pnl_dump):
     pnl_df.index = pd.to_datetime(pnl_df.index, format='%Y-%m-%d %H:%M:%S')
     resampled_df = pnl_df['pl'].resample('1min').ohlc()
     #writing the output to excel sheet
-    writer = pd.ExcelWriter(f'..\\pnl\\{filename}.xlsx',engine='openpyxl')
-    writer.book = load_workbook(f'..\\pnl\\{filename}.xlsx')
+    writer = pd.ExcelWriter(f'..\\pnl\\{filename}_PnL.xlsx',engine='openpyxl')
+    writer.book = load_workbook(f'..\\pnl\\{filename}_PnL.xlsx')
     resampled_df.to_excel(writer, sheet_name=(sheetname), index=True)
     df.to_excel(writer, sheet_name=(sheetname),startrow=11, startcol=6, index=False)
     gdf.to_excel(writer, sheet_name=(sheetname),startrow=5, startcol=6, index=False)

@@ -50,7 +50,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
 
-filename='../logs/Index_Option_Writing_log.txt'
+filename=f"../logs/IndexOptionWriting_Live_{startTime.replace(':','_')}_log.txt"
 
 #file_handler = logging.FileHandler(filename)
 file_handler = TimedRotatingFileHandler(filename, when='d', interval=1, backupCount=3)

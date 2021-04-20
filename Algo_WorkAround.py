@@ -64,24 +64,24 @@ Trading secretKey: Ojre664@S9
 
 
 Following are the urls to connect to the API server :
- 
-https://developers.symphonyfintech.in/interactive
-https://developers.symphonyfintech.in/marketdata  
- 
-Interactive API Document :
-https://developers.symphonyfintech.in/doc/interactive/  
 
- 
+https://developers.symphonyfintech.in/interactive
+https://developers.symphonyfintech.in/marketdata
+
+Interactive API Document :
+https://developers.symphonyfintech.in/doc/interactive/
+
+
 
 MarketData API Document :
-https://developers.symphonyfintech.in/doc/marketdata/  
- 
+https://developers.symphonyfintech.in/doc/marketdata/
+
 Git Hub link :
 ttps://github.com/symphonyfintech
 
 
-Regards, 
-. 
+Regards,
+.
 Keval Shah
 Product Manager | Algo Desk
 IP - 536405 | 022 61086405 | +91 8879610532
@@ -98,7 +98,7 @@ https://www.capitalzone.in/python-code-to-read-data-scrapping-strike-price-expir
 https://blog.quantinsti.com/stock-market-data-analysis-python/#futures
 
 https://www.datacamp.com/community/tutorials/finance-python-trading
-https://nsetools.readthedocs.io/en/latest/usage.html#getting-a-stock-quote  
+https://nsetools.readthedocs.io/en/latest/usage.html#getting-a-stock-quote
 
 
 
@@ -110,7 +110,7 @@ https://nsetools.readthedocs.io/en/latest/usage.html#getting-a-stock-quote
 
 
 IIFL28 // login - May@123 // tranx - May@1234
-#Live Account -- 
+#Live Account --
 
 iiflxts
 53051399e954a1b599d112
@@ -164,7 +164,7 @@ Trading Key: 8a2c9c2c650b2334c0e432
 Trading :secretKey: Yuis804$IK
 
 =============
-@ECHO OFF 
+@ECHO OFF
 TITLE Execute python script on anaconda environment
 ECHO Please Wait...
 :: Section 1: Activate the environment.
@@ -199,3 +199,38 @@ market:
 
 
 kite.historical_data(instrument_token=54743047,from_date='2017-01-01', to_date='2019-01-01', interval="day",continuous=1)
+
+POSTGRESSQL:
+-----------
+PS D:\Python\PG\pgsql\bin> .\initdb.exe -D D:\Python\PG\pgsql\data -U postgres
+The files belonging to this database system will be owned by user "lmahendran".
+This user must also own the server process.
+
+The database cluster will be initialized with locale "English_United States.1252".
+The default database encoding has accordingly been set to "WIN1252".
+The default text search configuration will be set to "english".
+
+Data page checksums are disabled.
+
+fixing permissions on existing directory D:/Python/PG/pgsql/data ... ok
+creating subdirectories ... ok
+selecting dynamic shared memory implementation ... windows
+selecting default max_connections ... 100
+selecting default shared_buffers ... 128MB
+selecting default time zone ... Asia/Calcutta
+creating configuration files ... ok
+running bootstrap script ... ok
+performing post-bootstrap initialization ... ok
+syncing data to disk ... ok
+
+initdb: warning: enabling "trust" authentication for local connections
+You can change this by editing pg_hba.conf or using the option -A, or
+--auth-local and --auth-host, the next time you run initdb.
+
+Success. You can now start the database server using:
+
+    D:/Python/PG/pgsql/bin/pg_ctl -D ^"D^:^\Python^\PG^\pgsql^\data^" -l logfile start
+
+PS D:\Python\PG\pgsql\bin> D:/Python/PG/pgsql/bin/pg_ctl -D "D:\Python\PG\pgsql\data" -l logfile start
+waiting for server to start.... done
+server started\

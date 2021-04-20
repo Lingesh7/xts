@@ -435,7 +435,7 @@ def slTgtCheck():
     
 def main(capital):
     global refid, flop, mark
-    msg_sent = False
+    #msg_sent = False
     try:
         for ticker in tickers:
             try:
@@ -447,9 +447,9 @@ def main(capital):
                 data_df = fetchOHLC(ticker, 60)
                 df = vWAP(data_df)
                 logger.info(f"tick {df['Timestamp'].iloc[-2]}")
-                logger.info(f"{df.iloc[-2]}")
+                #logger.info(f"{df.iloc[-2]}")
                 quantity = int(capital/df["Close"].iloc[-1])
-                if pd.Timestamp(df['Timestamp'].iloc[-1]) >= pd.Timestamp(cdate+" "+'09:30:00'):
+                if pd.Timestamp(df['Timestamp'].iloc[-1]) >= pd.Timestamp(cdate+" "+'09:31:00'):
                     idx = len(flop[ticker])-1
                     if df['Close'].iloc[-2] >= df['uB'].iloc[-2] :
                         logger.info(f'Upper bound break in {ticker}')
@@ -473,9 +473,9 @@ def main(capital):
     
                                 if len(flop[ticker]) >= 3:
                                     msg = f'Flop condition satisified in ==> {ticker} ==> Go Long'
-                                    if msg_sent == False:
-                                        bot_sendtext(msg)
-                                        msg_sent = True
+                                    #if msg_sent == False:
+                                    bot_sendtext(msg)
+                                    #    msg_sent = True
                                     preparePlaceOrders(ticker,'buy',quantity)
                             else:
                                 logger.info('Previous break is not a flop.. starting from begining')
@@ -547,18 +547,11 @@ def dataToExcel(pnl_dump):
             logger.exception('Saving data to Excel Failed')
 
 
-# @retry(kill=True,delay=1)
-# def err_func():
-#     # logger.info('in err func')
-#     a = 10
-#     b = '200'
-#     c = a+b
-#     return c
 
 if __name__ == '__main__':
     masterEqDump()
-    logger.info('Waiting to start the script at 09:25 AM')
-    while datetime.now() >= pd.Timestamp(cdate+" "+'09:25:00'):
+    logger.info('Waiting to start the script at 09:29 AM')
+    while datetime.now() >= pd.Timestamp(cdate+" "+'09:29:00'):
         logger.info('Starting background threads to fetch ltps, pnl')
         fetchLtp = timer.RepeatedTimer(5, getLTP)
         fetchPnL = timer.RepeatedTimer(10, getGlobalPnL)
@@ -568,9 +561,11 @@ if __name__ == '__main__':
         
     # for ticker in tickers:
     #     preparePlaceOrders(ticker,'buy',10)
+    while datetime.now() >= pd.Timestamp(cdate+" "+'09:29:00'):
+        
     startin = time.time()
-    timeout = time.time() + ((60*60*6) - 300) # 60 seconds times 360 meaning 6 hrs
-    while time.time() <= timeout:
+    #timeout = time.time() + ((60*60*6) - 300) # 60 seconds times 360 meaning 6 hrs
+    while datetime.now() >= pd.Timestamp(cdate+" "+'15:05:00')::
         try:
             main(100000) #flop checker
             time.sleep(60 - ((time.time() - startin) % 60.0))

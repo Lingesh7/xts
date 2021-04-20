@@ -13,7 +13,8 @@ def get_db_data(ticker, date_str):
     # date_str = '2019-4-7'
     date = datetime.strptime(date_str, "%Y-%m-%d")
     try:    
-        db = sqlite3.connect(f'../ohlc/EQ_{date.strftime("%B").upper()}_OHLC.db')
+        db = sqlite3.connect(f'../ohlc/EQ_{date.strftime("%B")[0:3].upper()}_OHLC.db')
+        # print(f'../ohlc/EQ_{date.strftime("%B")[0:3].upper()}_OHLC.db')
         cur = db.cursor()
         # df = pd.read_sql_query(f"SELECT * from {ticker}", db)
         # df = cur.execute(f"SELECT * FROM {ticker}").fetchall()
@@ -39,4 +40,4 @@ def get_db_data(ticker, date_str):
         cur.close()
         db.close()  
         
-# df = get_db_data('UPL','2021-04-12')
+# df = get_db_data('ZEEL','2021-04-20')

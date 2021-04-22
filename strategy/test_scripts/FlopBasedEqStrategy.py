@@ -550,22 +550,22 @@ def dataToExcel(pnl_dump):
 
 if __name__ == '__main__':
     masterEqDump()
-    logger.info('Waiting to start the script at 09:29 AM')
-    while datetime.now() >= pd.Timestamp(cdate+" "+'09:29:00'):
-        logger.info('Starting background threads to fetch ltps, pnl')
-        fetchLtp = timer.RepeatedTimer(5, getLTP)
-        fetchPnL = timer.RepeatedTimer(10, getGlobalPnL)
-        sltgt_thread = Thread(target=slTgtCheck)
-        sltgt_thread.start()
-        break
+    #logger.info('Waiting to start the script at 09:29 AM')
+    #while datetime.now() >= pd.Timestamp(cdate+" "+'09:29:00'):
+    logger.info('Starting background threads to fetch ltps, pnl')
+    fetchLtp = timer.RepeatedTimer(5, getLTP)
+    fetchPnL = timer.RepeatedTimer(10, getGlobalPnL)
+    sltgt_thread = Thread(target=slTgtCheck)
+    sltgt_thread.start()
+        #break
         
     # for ticker in tickers:
     #     preparePlaceOrders(ticker,'buy',10)
-    while datetime.now() >= pd.Timestamp(cdate+" "+'09:29:00'):
+    #while datetime.now() >= pd.Timestamp(cdate+" "+'09:29:00'):
         
     startin = time.time()
     #timeout = time.time() + ((60*60*6) - 300) # 60 seconds times 360 meaning 6 hrs
-    while datetime.now() >= pd.Timestamp(cdate+" "+'15:05:00')::
+    while datetime.now()<= pd.Timestamp(cdate+" "+'15:05:00'):
         try:
             main(100000) #flop checker
             time.sleep(60 - ((time.time() - startin) % 60.0))
@@ -591,7 +591,3 @@ if __name__ == '__main__':
     logger.info(f'\n\n Global PnL : {gl_pnl} \n')
     logger.info('--------------------------------------------')
     logger.info('============================== END =================================')
-
-
-
-# ['AUROPHARMA', 'AXISBANK', 'BPCL', 'BANDHANBNK', 'BAJFINANCE', 'DLF', 'HINDALCO', 'IBULHSGFIN', 'INDUSINDBK', 'ICICIBANK', 'INDIGO', 'JINDALSTEL', 'L&TFH', 'LICHSGFIN', 'MANAPPURAM', 'MARUTI', 'RBLBANK', 'SBIN', 'TATAMOTORS', 'TATASTEEL', 'VEDL']

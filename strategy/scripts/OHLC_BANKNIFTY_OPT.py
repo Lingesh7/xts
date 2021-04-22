@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Apr 22 01:58:19 2021
-OHLC_FUT
+OHLC_OPT for BankNifty 1min candle 
 @author: lmahendran
 """
 from datetime import datetime
@@ -28,7 +28,7 @@ from utils.utils import xts_init, configure_logging
 # this is referring the main script logger
 log_name = os.path.basename(__file__).split('.')[0]
 # print(log_name)
-logger = configure_logging(log_name)
+logger = configure_logging('log_name')
 
 xt = xts_init(market=True)
 
@@ -36,7 +36,7 @@ xt = xts_init(market=True)
 def get_index(idx):
     try:
         nifty_ohlc = {}
-        instruments = [{'exchangeSegment': 1, 'exchangeInstrumentID': 'NIFTY 50'}]
+        instruments = [{'exchangeSegment': 1, 'exchangeInstrumentID': idx}]
         q_resp = xt.get_quote(
         Instruments=instruments,
         xtsMessageCode=1504,
@@ -66,29 +66,29 @@ if __name__ == '__main__':
                      .strftime('%b').upper())
     next_month = (datetime.strptime(monthly_exp,'%d%b%Y') + 
                   relativedelta(months=+1)).strftime('%b').upper()
-    df = xt.master_fo_dump()
-    
-    cur_month_filter = df[(df.Name == 'NIFTY') & \
-                        (df.Description.str.contains(f'NIFTY21{cur_month}'))]
-    next_month_filter = df[(df.Name == 'NIFTY') & \
-                         (df.Description.str.contains(f'NIFTY21{next_month}'))]
-    cur_week_filter = df[(df.Name == 'NIFTY') & \
-                       (df.Description.str.contains(f"NIFTY21{cur_week.month}"))]
+    df_dump = xt.master_fo_dump()
+    df = df_dump[df_dump.Series == 'OPTIDX']
+    cur_month_filter = df[(df.Name == 'BANKNIFTY') & \
+                        (df.Description.str.contains(f'BANKNIFTY21{cur_month}'))]
+    next_month_filter = df[(df.Name == 'BANKNIFTY') & \
+                         (df.Description.str.contains(f'BANKNIFTY21{next_month}'))]
+    cur_week_filter = df[(df.Name == 'BANKNIFTY') & \
+                       (df.Description.str.contains(f"BANKNIFTY21{cur_week.month}"))]
     # next_week_filter = df[(df.Name == 'NIFTY') & \
     #                    (df.Description.str.contains(f"NIFTY21{cur_week}"))]
     expiry_filter = pd.concat([cur_month_filter, next_month_filter, cur_week_filter], ignore_index=True)
     
-    nifty_ohlc = get_index('NIFTY 50')
-    nifty_spot = nifty_ohlc['IndexValue']
-    nifty_h = nifty_ohlc['HighIndexValue']
-    nifty_l = nifty_ohlc['LowIndexValue']
+    banknifty_ohlc = get_index('NIFTY BANK')
+    banknifty_spot = banknifty_ohlc['IndexValue']
+    banknifty_h = banknifty_ohlc['HighIndexValue']
+    banknifty_l = banknifty_ohlc['LowIndexValue']
     # strikeRange = [str(i) for i in list(range(strikePrice-1000,strikePrice+1000,50))]
     new_strike_range = [str(i) for i in 
-                    list(range(strike_prc_calc(nifty_l, 50) - 500,
-                               strike_prc_calc(nifty_h, 50) + 500
-                               ,50))]
+                    list(range(strike_prc_calc(banknifty_l, 100) - 1000,
+                               strike_prc_calc(banknifty_h, 100) + 1000
+                               ,100))]
     #new_strike_range = [11,22,33,44,55]
-    strike_range_file = f'../ohlc/nifty50_strike_range_file_{cur_month}.txt'
+    strike_range_file = f'../ohlc/banknifty_strike_range_file_{cur_month}.txt'
     if not os.path.exists(strike_range_file):
          with open(strike_range_file, 'w'): pass
     f = open(strike_range_file,'r')
@@ -107,7 +107,7 @@ if __name__ == '__main__':
     logger.info(f'old strike range : {old_strike_range}')
     logger.info(f'new strike range : {new_strike_range}')
     logger.info(f'strike range for today calulated as : {strike_range}')
-    db = sqlite3.connect(f'../ohlc/NIFTY_{cur_month}_OHLC.db')
+    db = sqlite3.connect(f'../ohlc/BANKNIFTY_{cur_month}_OHLC.db')
     cur = db.cursor()
     for name,symbol in keyv.items():
         try:

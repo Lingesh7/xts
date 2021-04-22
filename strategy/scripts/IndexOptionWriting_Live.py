@@ -540,7 +540,7 @@ def dataToExcel(pnl_dump):
     sheetname = cdate+'_'+startTime.replace(':','_')
     pnl_df = pd.DataFrame(pnl_dump,columns=['date','pl'])
     pnl_df = pnl_df.set_index(['date'])
-    pnl_df.index = pd.to_datetime(pnl_df.index, format='d-%m-%Y %H:%M:%S')
+    pnl_df.index = pd.to_datetime(pnl_df.index, format='%d-%m-%Y %H:%M:%S')
     resampled_df = pnl_df['pl'].resample('1min').ohlc()
     #writing the output to excel sheet
     writer = pd.ExcelWriter(f'..\\pnl\\{filename}.xlsx',engine='openpyxl')

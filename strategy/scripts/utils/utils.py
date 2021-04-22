@@ -50,7 +50,7 @@ def xts_init(interactive=None, market=None):
         xt = XTSConnect(appKey, secretKey, source)
         # global cdate
         cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-        token_file = f'../scripts/access_token_{cdate}.txt'
+        token_file = f'../scripts/access_token_{cdate}.txt' if interactive else f'../scripts/access_token_market_{cdate}.txt'
         file = Path(token_file)
         if file.exists() and (date.today() == date.fromtimestamp(file.stat().st_mtime)):
             logger.info('Token file exists and created today')
@@ -66,10 +66,11 @@ def xts_init(interactive=None, market=None):
         else:
             logger.error(
                 'UTILS: Wrong with token file. Generate separately..!..')
+            raise Exception
             #print('UTILS: Wrong with token file. Generate separately..!..')
             # exit()
-    except exception:
-        logger.error('UTILS:  Error in creating XT initialization')
+    except Exception:
+        logger.exception('UTILS:  Error in creating XT initialization')
         #print('UTILS:  Error in creating XT initialization')
 
 

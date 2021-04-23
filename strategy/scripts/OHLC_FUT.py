@@ -46,7 +46,7 @@ if __name__ == '__main__':
     for name in fut_names:
         filtered_names.append(name+'21'+cur_month+'FUT')
         filtered_names.append(name+'21'+next_month+'FUT')
-        
+
     filtered_df = df[df.Description.isin(filtered_names)]
     keyv = dict(zip(filtered_df.Description,
                     filtered_df.ExchangeInstrumentID))
@@ -79,6 +79,5 @@ if __name__ == '__main__':
     logger.warning(f'OHLC data import failed for : {skipped}')
     cur.close()
     db.close()
-    logger.info('==================END========================')
-        
-    
+    logger.info('==================END=======================')
+

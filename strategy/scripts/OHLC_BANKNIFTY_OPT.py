@@ -28,7 +28,7 @@ from utils.utils import xts_init, configure_logging
 # this is referring the main script logger
 log_name = os.path.basename(__file__).split('.')[0]
 # print(log_name)
-logger = configure_logging('log_name')
+logger = configure_logging(log_name)
 
 xt = xts_init(market=True)
 

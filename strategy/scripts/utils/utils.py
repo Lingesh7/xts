@@ -74,7 +74,7 @@ def xts_init(interactive=None, market=None):
         #print('UTILS:  Error in creating XT initialization')
 
 
-def configure_logging(name, startTime='00:00:00'):
+def configure_logging(name, startTime='00:00'):
     logger = logging.getLogger('__main__')
     logger.setLevel(logging.INFO)
     formatter = logging.Formatter(

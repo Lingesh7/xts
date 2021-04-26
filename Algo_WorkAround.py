@@ -438,21 +438,123 @@ mycursor.execute(
 stopid = mycursor.fetchone()
 
 
+--------------------------------
+SQLs 
+--------------------------------
+CREATE OR REPLACE FUNCTION trigger_set_timestamp()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+----------------
+CUSTOMER
+----------------
+
+DROP TABLE CUSTOMER;
+CREATE TABLE "public".customer ( id smallserial NOT NULL , 
+								first_name varchar(100) , 
+								last_name varchar(100) , 
+								mobile bigint , 
+								mail varchar(50) , 
+								address varchar(200) , 
+								active boolean , 
+								telegram_id integer , 
+								created_at TIMESTAMP(0) DEFAULT current_timestamp ,
+								updated_at TIMESTAMP(0) DEFAULT current_timestamp ,
+								CONSTRAINT pk_customer_id PRIMARY KEY ( id ) ); 
 
 
 
+CREATE TRIGGER set_timestamp
+BEFORE UPDATE ON customer
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
+CREATE SEQUENCE "public".customer_id_seq START WITH 10000 INCREMENT BY 1; 
+ALTER SEQUENCE customer_id_seq RESTART WITH 10000 INCREMENT BY 1;
+
+INSERT INTO "public".customer ( id, first_name, last_name, mobile, mail) VALUES ( nextval('customer_id_seq'), 'Linges', 'M', 6382860148, 'nerus.q8@gmail.com' ); 
+INSERT INTO "public".customer ( id, first_name, last_name, mobile, mail) VALUES ( nextval('customer_id_seq'),'Raja', 'YOGI', 9884411611, 'acumeraja@yahoo.co.in' );
+
+select * from customer;
+--delete from customer;
+
+UPDATE public.customer SET address='Chennai' WHERE ID = '10000';
+UPDATE public.customer SET address='Cbe' WHERE ID = '10001';
 
 
-CREATE DATABASE fcdb 
-CREATE TABLE "public".customer ( id smallserial NOT NULL , first_name varchar(100) , last_name varchar(100) , mobile integer , mail varchar(50) , address varchar(200) , active boolean , telegram_id integer , created_date timestamp DEFAULT current_timestamp , modified_date timestamp DEFAULT current_timestamp , CONSTRAINT pk_customer_id PRIMARY KEY ( id ) ) 
-COMMENT ON TABLE "public".customer IS 'saves the customer information.'
-COMMENT ON COLUMN "public".customer.id IS 'customer_id'
-CREATE SEQUENCE "public".user_id_seq START WITH 10000 INCREMENT BY 1 
-ALTER SEQUENCE user_id_seq RESTART WITH 10000 INCREMENT BY 1
-INSERT INTO "public".customer ( id, first_name, last_name, mobile, mail) VALUES ( nextval('user_id_seq'), 'Linges', 'M', 6382860148, 'nerus.q8@gmail.com' ); 
-INSERT INTO "public".customer ( id, first_name, last_name, mobile, mail) VALUES ( nextval('user_id_seq'),'Raja', 'YOGI', 9884411611, 'acumeraja@yahoo.co.in' )
+----------------
+BROKER
+----------------
+
+CREATE  TABLE "public".broker ( 
+	id                   integer  NOT NULL ,
+	name                 varchar(100)  NOT NULL ,
+	customer_id          smallserial DEFAULT nextval('broker_customer_id_seq'::regclass) NOT NULL ,
+	CONSTRAINT pk_broker_id PRIMARY KEY ( id )
+ );
+
+ALTER TABLE "public".broker ADD CONSTRAINT fk_broker_customer FOREIGN KEY ( customer_id ) REFERENCES "public".customer( id );
+
+INSERT INTO "public".broker	( id, name, customer_id) VALUES (nextval('broker_id_seq'), 'IIFL', 10000);
+INSERT INTO "public".broker	( id, name, customer_id) VALUES (nextval('broker_id_seq'), 'Alice Blue', 10001);
+
+----------------
+STRATEGY
+----------------
+DROP TABLE "public".strategy;
+CREATE TABLE "public".strategy ( id integer NOT NULL , 
+                                name varchar(100) NOT NULL , 
+                                min_multiplier integer DEFAULT 1 NOT NULL , 
+                                capital_required decimal(12,2) , 
+                                price_per_month decimal(10,2) DEFAULT 0 NOT NULL , 
+                                description text DEFAULT 'FirstChoice Strategy' ,
+                                strategy_params_id SERIAL,
+                                created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP ,
+								updated_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP ,
+                                CONSTRAINT pk_strategy_id PRIMARY KEY ( id ) )
 
 
+CREATE TRIGGER set_timestamp
+BEFORE UPDATE ON strategy
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
+INSERT INTO "public".strategy
+	( id, name, min_multiplier, capital_required, price_per_month, description) VALUES 
+	( nextval('strategy_id_seq'), 'NFO Panther', 1, 700000, 1000, 'BUY 2 lots and SELL 1 lot at SL, Same cont for every 1 hour');
 
 
+UPDATE public.strategy SET capital_required=500 WHERE ID = 500;
 
+
+----------------
+SUBSCRIBERS
+----------------
+
+CREATE  TABLE "public".SUBSCRIBERS ( 
+	id                   serial  NOT NULL ,
+	customer_id          smallserial  NOT NULL ,
+	strategy_id          integer  NOT NULL ,
+	run_counter          serial  NOT NULL ,
+	is_active            char(1)  NOT NULL ,
+	start_date           DATE ,
+	end_date             DATE ,
+	created_at           TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP  ,
+	updated_at           TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP  ,
+	CONSTRAINT pk_subscribers_id PRIMARY KEY ( id )
+ );
+
+CREATE TRIGGER set_timestamp
+BEFORE UPDATE ON subscribers
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
+INSERT INTO "public".subscribers
+	( id, customer_id, strategy_id, is_active, start_date, end_date) VALUES
+ (nextval('subscriber_id_seq'), 10000, 504, 'Y',  CURRENT_DATE ,CURRENT_DATE + INTERVAL '30 day' );
+ 
+ 

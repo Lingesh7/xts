@@ -234,3 +234,225 @@ Success. You can now start the database server using:
 PS D:\Python\PG\pgsql\bin> D:/Python/PG/pgsql/bin/pg_ctl -D "D:\Python\PG\pgsql\data" -l logfile start
 waiting for server to start.... done
 server started\
+==========================================
+fcdb
+
+user table -
+    user_id, first_name, last_name, broker_id, mobile, mail, telegram_id, created
+broker table -
+    broker_id, broker_name
+
+subscriber table - 
+    subscriber_id, strategy_id, 
+
+strategy table - 
+    strategy_id, strategy_name, strategy_params, min_multiple, capital_required, strategy_created, strategy_modified,
+        deployment_date, deployment_type
+
+deployed table -
+     strategy_id, Instrument_name, quantity, price, underlying , option_type, exchange,
+                        dateTime, ltp, 
+
+
+
+
+my values that i have -- {strategy_id, user_id, 'set': 2, 'txn_type': 'sell', 'strike': 14350, 
+                            'qty': 150, 'tr_qty': -150, 'expiry': '29Apr2021', 'optionType': 'PE', 
+                            'name': 'NIFTY21APR14350PE', 'symbol': 66585, 'orderID': 10036948, 
+                            'tradedPrice': None, 'dateTime': None} 
+
+positions_table - userid, counter = 10,
+    strategy_id, Instrument, quantity, price, underlying, option_type, exchange entry_date, 
+
+
+
+
+
+in tradetron - when i give deployed/all/strategy_id this return 
+    date
+    0----
+        |___created_at  :   2021-02-26T03:52:38.000000Z
+            created_by_id   :   12073                               --> user_id
+            deployment_date :   2021-02-26T00:00:00.000000Z
+            deployment_type :   LIVE OFFLINE
+            id  :   1587191                                         --> users-strategy_id
+            run_counter :   36
+            status  :   Active
+            display_run_counter_pnl :   true
+            sum_of_pnl  :   4605.000750000008
+            strategy_broker     {3}
+                id  :   1580303
+                exchange    :   NFO
+                broker      {2}
+                    id  :   8
+                    name    :   AliceBlue
+            strategy_template_id    :   389444
+            subscriber_id   :   12073
+            user        {2}
+                id  :   12073
+                name    :   FirstChoice Investments Consultant
+            template        {10}
+                id  :   389444
+                name    :   NFO  Panther
+                user        {2}
+                    id  :   12073
+                    name    :   FirstChoice Investments Consultant
+                created_by_id   :   12073
+                strategy_params :   
+                min_multiple    :   1
+                country :   IN
+                capital_required    :   900000
+                variable_fee    :   10.00
+                display_positions_to_non_subscribers    :   0
+            user_notes  :   null
+            calculated_positions        [4]                                                     --> this has all the entry exit details
+            calculated_positions        [4]
+                0       {17}
+                    strategy_id :   1587191
+                    Instrument  :   OPTIDX_NIFTY_29APR2021_PE_14350
+                    quantity    :   0
+                    price   :   170.8
+                    underlying  :   NIFTY 50
+                    option_type :   PE
+                    exchange    :   NFO
+                    entry_date  :   2021-04-23 09:35:05
+                    ltp :   177
+                    gamma   :   0.0009432833377726571
+                    delta   :   -0.5101464365623238
+                    iv  :   23.00703731827822
+                    vega    :   7.328857634422564
+                    theta   :   -14.051247986261508
+                    pnl :   3101.2499999999973
+                    exp :   0
+                    entry_value :   -3101.25
+            max_run_counter :   35
+            has_zero_quantity   :   null
+            blocked_term    :   null
+            minimum_multiple    :   1
+            deployed_display_type   :   1
+            max_multiple    :   100
+            exchange    :   NFO
+            market_open :   null
+            is_blur :   false
+            globalPt    :   null
+            filtered_run_counter        [35]
+                0       {3}
+                    strategy_id :   1587191
+                    run_counter :   35
+                    pnl :   4605.002975463867
+            currency    :   ₹ 
+            country :   IN
+            all_pnl :   227621.2518721819
+
+    1
+    2
+    3
+
+
+
+position table: 
+
+
+
+id  :   164241198
+strategy_id :   2059063
+broker_id   :   167
+order_id    :   906300211619170518.456
+exchange    :   NFO
+Instrument  :   OPTIDX_NIFTY_29APR2021_PE_14350
+underlying  :   NIFTY 50
+expiry  :   2021-04-29
+instrument_type :   OPTIDX
+strike  :   14350
+option_type :   PE
+txn_type    :   B
+condition_type  :   Exit
+condition_category  :   NORMAL
+entry_date  :   2021-04-23 09:35:18
+quantity    :   75
+quantity_pending    :   0
+quantity_limit  :   0
+price   :   166.95
+underlying_price    :   14337.6
+atm_strike  :   14350
+amount  :   12521.2
+type_of_position    :   None
+itm_otm :   ITM
+condition_parent_id :   2430014
+condition_id    :   2430021
+leg_id  :   0
+run_counter :   10
+created :   2021-04-23 15:05:18
+product :   MIS
+deployment  :   LIVE AUTO
+edit_price  :   true
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+mydict =  {'user': 'Bot1', 'version': 0.11, 'items': 23, 'methods': 'standard', 
+           'time': 1536304833437, 'logs': 'no', 'status': 'completed'}
+
+placeholders = ', '.join(['%s'] * len(mydict))
+columns = ', '.join(mydict.keys())
+sql = "INSERT INTO %s ( %s ) VALUES ( %s )" % ('mytable', columns, placeholders)
+cursor.execute(sql, mydict.values())
+
+def database_retrieve(db_file, id):
+    try:
+        conn = sqlite3.connect(db_file)
+
+        with conn:
+            sql_command = "SELECT * FROM my_table WHERE id = "+id
+
+            cur = conn.cursor()
+            cur.execute(sql_command)
+            result = cur.fetchall()
+
+            return result
+
+    except Exception as e:
+        print(e)
+
+db_file = 'testdb.db'
+print(database_retrieve(db_file, 'subject1'))
+
+-----------------------
+mycursor.execute(
+    "SELECT stop_id FROM stops WHERE stop_name=%s",
+    [station],
+)
+stopid = mycursor.fetchone()
+
+
+
+
+
+
+
+CREATE DATABASE fcdb 
+CREATE TABLE "public".customer ( id smallserial NOT NULL , first_name varchar(100) , last_name varchar(100) , mobile integer , mail varchar(50) , address varchar(200) , active boolean , telegram_id integer , created_date timestamp DEFAULT current_timestamp , modified_date timestamp DEFAULT current_timestamp , CONSTRAINT pk_customer_id PRIMARY KEY ( id ) ) 
+COMMENT ON TABLE "public".customer IS 'saves the customer information.'
+COMMENT ON COLUMN "public".customer.id IS 'customer_id'
+CREATE SEQUENCE "public".user_id_seq START WITH 10000 INCREMENT BY 1 
+ALTER SEQUENCE user_id_seq RESTART WITH 10000 INCREMENT BY 1
+INSERT INTO "public".customer ( id, first_name, last_name, mobile, mail) VALUES ( nextval('user_id_seq'), 'Linges', 'M', 6382860148, 'nerus.q8@gmail.com' ); 
+INSERT INTO "public".customer ( id, first_name, last_name, mobile, mail) VALUES ( nextval('user_id_seq'),'Raja', 'YOGI', 9884411611, 'acumeraja@yahoo.co.in' )
+
+
+
+
+

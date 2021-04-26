@@ -376,6 +376,9 @@ def execute(orders):
                 if orderID and tradedPrice:
                     etr_inst['set_type'] = 'Entry'
                     orders['status'] = 'Entered'
+                else:
+                    etr_inst['set_type'] = 'Entry'
+                    orders['status'] = 'Entry_Failed'
                 logger.info(f'Entry order dtls: {etr_inst}')
                 tr_insts.append(etr_inst)
                 
@@ -413,6 +416,9 @@ def execute(orders):
                         if orderID and tradedPrice:
                             orders['status'] = 'Repaired'
                             rpr_inst['set_type'] = 'Repair'
+                        else:
+                            orders['status'] = 'Repair_Failed'
+                            rpr_inst['set_type'] = 'Repair'
                         logger.info(f'Repair order dtls: {rpr_inst}')
                         tr_insts.append(rpr_inst)
                         continue
@@ -424,7 +430,14 @@ def execute(orders):
         if orders['status'] == 'Repaired':
             logger.info(f'Repaired the Entry Order set: {orders["setno"]}. Exiting the thread')
             break
-          
+        elif orders['status'] == 'Entry_Failed':
+            logger.error(f"Error in plaing Orders for {orders['setno']}. Placed order \
+                         {etr_inst['orderID']} might already cancelled.")
+            break
+        elif orders['status'] == 'Repair_Failed':
+            logger.error(f"Error in repairing orders for {orders['setno']}. Exit manually")
+            break
+            
 def exitCheck(universal):
     global tr_insts #todo add gl_pnl to global if the conditions didnt work
     # pnl_dump=[] 
@@ -459,9 +472,13 @@ def exitCheck(universal):
                     if orderID and tradedPrice:
                         ext_inst['set_type']='Universal_Exit'
                         # universal['exit_status'] = 'Exited'
+                    else:
+                        ext_inst['set_type']='Universal_Exit'
+                        logger.error(f"Error while exiting the order set \
+                                     {orders['setno']}, Exit Immediately")
                     logger.info(f'Universal Exit order dtls: {ext_inst}')
                     tr_insts.append(ext_inst.copy())
-                logger.info('Breaking the main loop')
+                logger.info('Universal exit func completed. Breaking the main loop')
                 universal['exit_status'] = 'Exited'
                 break
             else:

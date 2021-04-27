@@ -81,7 +81,11 @@ logger = configure_logging(script_name)
 # else:
 #     logger.error('Wrong with token file. Generate separately.. Aborting script!..')
 #     exit()
-xt = xts_init(interactive=True)
+try:
+    xt = xts_init(interactive=True)
+except Exception:
+    logger.exception('XT initialization failed. Exiting..')
+    exit()
 cdate= xt.CDATE
 ############## Variable Declarations ##############
 multiplier=1

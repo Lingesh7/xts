@@ -558,3 +558,27 @@ INSERT INTO "public".subscribers
  (nextval('subscriber_id_seq'), 10000, 504, 'Y',  CURRENT_DATE ,CURRENT_DATE + INTERVAL '30 day' );
  
  
+ -------------------
+ --STRATEGY_PARAMS
+ -------------------
+ 
+ DROP TABLE strategy_params;
+ CREATE TABLE "public".strategy_params (
+	id serial NOT NULL , 
+	name varchar(100) NOT NULL ,
+	strategy_id integer, 
+	script_name varchar(100) , 
+	start_time text[] , 
+	repair_time time , 
+	end_time time DEFAULT '15:05:00' , 
+	target decimal(7,2) , 
+	stop_loss decimal(7,2) , 
+	created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP ,
+	updated_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP ,
+	CONSTRAINT pk_strategy_params_id PRIMARY KEY ( id ) )
+
+CREATE TRIGGER set_timestamp
+BEFORE UPDATE ON strategy_params
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+

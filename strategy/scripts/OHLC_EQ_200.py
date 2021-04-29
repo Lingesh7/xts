@@ -75,7 +75,7 @@ if __name__ == '__main__':
     ticker_dict['NIFTY_BANK']="NIFTY BANK"
     
     skipped = []
-    logger.info(f'Connecting to DB ../ohlc/EQ_{datetime.now().strftime("%B").upper()}_OHLC.db')
+    logger.info(f'Connecting to DB ../ohlc/EQ_{datetime.now().strftime("%b").upper()}_OHLC.db')
     db = sqlite3.connect(f'../ohlc/EQ_{datetime.now().strftime("%B").upper()}_OHLC.db')
     cur = db.cursor()
     for ticker,symbol in ticker_dict.items():

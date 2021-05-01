@@ -242,33 +242,33 @@ user table -
 broker table -
     broker_id, broker_name
 
-subscriber table - 
-    subscriber_id, strategy_id, 
+subscriber table -
+    subscriber_id, strategy_id,
 
-strategy table - 
+strategy table -
     strategy_id, strategy_name, strategy_params, min_multiple, capital_required, strategy_created, strategy_modified,
         deployment_date, deployment_type
 
 deployed table -
      strategy_id, Instrument_name, quantity, price, underlying , option_type, exchange,
-                        dateTime, ltp, 
+                        dateTime, ltp,
 
 
 
 
-my values that i have -- {strategy_id, user_id, 'set': 2, 'txn_type': 'sell', 'strike': 14350, 
-                            'qty': 150, 'tr_qty': -150, 'expiry': '29Apr2021', 'optionType': 'PE', 
-                            'name': 'NIFTY21APR14350PE', 'symbol': 66585, 'orderID': 10036948, 
-                            'tradedPrice': None, 'dateTime': None} 
+my values that i have -- {strategy_id, user_id, 'set': 2, 'txn_type': 'sell', 'strike': 14350,
+                            'qty': 150, 'tr_qty': -150, 'expiry': '29Apr2021', 'optionType': 'PE',
+                            'name': 'NIFTY21APR14350PE', 'symbol': 66585, 'orderID': 10036948,
+                            'tradedPrice': None, 'dateTime': None}
 
 positions_table - userid, counter = 10,
-    strategy_id, Instrument, quantity, price, underlying, option_type, exchange entry_date, 
+    strategy_id, Instrument, quantity, price, underlying, option_type, exchange entry_date,
 
 
 
 
 
-in tradetron - when i give deployed/all/strategy_id this return 
+in tradetron - when i give deployed/all/strategy_id this return
     date
     0----
         |___created_at  :   2021-02-26T03:52:38.000000Z
@@ -298,7 +298,7 @@ in tradetron - when i give deployed/all/strategy_id this return
                     id  :   12073
                     name    :   FirstChoice Investments Consultant
                 created_by_id   :   12073
-                strategy_params :   
+                strategy_params :
                 min_multiple    :   1
                 country :   IN
                 capital_required    :   900000
@@ -340,7 +340,7 @@ in tradetron - when i give deployed/all/strategy_id this return
                     strategy_id :   1587191
                     run_counter :   35
                     pnl :   4605.002975463867
-            currency    :   ₹ 
+            currency    :   ₹
             country :   IN
             all_pnl :   227621.2518721819
 
@@ -350,9 +350,7 @@ in tradetron - when i give deployed/all/strategy_id this return
 
 
 
-position table: 
-
-
+position table:
 
 id  :   164241198
 strategy_id :   2059063
@@ -388,6 +386,56 @@ deployment  :   LIVE AUTO
 edit_price  :   true
 
 
+orderbook sample from iifl api:
+
+{'LoginID': 'IIFL28', 'ClientID': 'IIFL28', 'AppOrderID': 10028944, 'OrderReferenceID': '', 'GeneratedBy': 'TWSAPI', 'ExchangeOrderID': 'X_41846564', 'OrderCategoryType': 'NORMAL', 'ExchangeSegment': 'NSEFO', 'ExchangeInstrumentID': 66658, 'OrderSide': 'Sell', 'OrderType': 'Market', 'ProductType': 'MIS', 'TimeInForce': 'DAY', 'OrderPrice': 0, 'OrderQuantity': 75, 'OrderStopPrice': 0, 'OrderStatus': 'Filled', 'OrderAverageTradedPrice': '47.80', 'LeavesQuantity': 0, 'CumulativeQuantity': 75, 'OrderDisclosedQuantity': 0, 'OrderGeneratedDateTime': '2021-04-29T09:48:05.9745602', 'ExchangeTransactTime': '2021-04-29T09:48:06+05:30', 'LastUpdateDateTime': '2021-04-29T09:48:06.3075864', 'OrderExpiryDate': '1980-01-01T00:00:00', 'CancelRejectReason': '', 'OrderUniqueIdentifier': 'FC_MarketOrder', 'OrderLegStatus': 'SingleOrderLeg', 'IsSpread': False, 'MessageCode': 9004, 'MessageVersion': 4, 'TokenID': 0, 'ApplicationType': 0, 'SequenceNumber': 418486279571208}
+
+id  :   21043001840271
+subscriber_id :   1587191
+strategy_position_id    :   21043001840271
+order_id    :   719157991619771678.023
+broker_id   :   8
+broker_order_id :   null
+exchange    :   NFO
+instrument  :   OPTIDX_NIFTY_06MAY2021_PE_14800
+quantity    :   225
+price_old   :   null
+price   :   227.95
+trade_price :   0
+executed_quantity   :   0
+trade_price_old :   0.00
+status  :   Initiated
+Description :   null
+tranch_id   :   1e2bdeaf-c0d4-477c-8f1e-c506ac4206f5
+tranch_sequence :   1
+run_state   :   1
+cmd :   null
+
+{strategy: 1587191,
+deployment_type: LIVE OFFLINE,
+broker_id_sb: 8,
+user_id: 12073,
+txn_type: B,
+broker_binary: /tradetron/scripts/aliceblue,
+exchange_symbol: OPTIDX_NIFTY_06MAY2021_PE_14800,
+exchange_broker: NFO,
+order_id: 719157991619771678.023,
+quantity: 225.0,
+order_type: MKT,
+broker_id: 8,
+exchange: NFO,
+instrument: OPTIDX_NIFTY_06MAY2021_PE_14800,
+underlying: NIFTY 50,
+instrument_type: OPTIDX,
+option_type: PE,
+expiry: null,
+strike: 14800.0,
+condition_type: Universal Exit,
+type_of_position: None,
+condition_id: 3825799, condition_parent_id: 0,
+price: 227.95, underlying_price: 14684.5, run_counter: 40, leg_id: 0, tranch_size: 100, tranch_wait_secs: 10, final_action: MARKET,
+tick_size: 0.05, price_revision_attempts: 1, price_revision_timeout: 0, price_execution: Market Price, price_ticks_multiple: 1,
+product: MIS, tranch: null, limit_price: 0, multiplier: 1, strategy_position: 21043001840271}
 
 
 
@@ -395,15 +443,7 @@ edit_price  :   true
 
 
 
-
-
-
-
-
-
-
-
-mydict =  {'user': 'Bot1', 'version': 0.11, 'items': 23, 'methods': 'standard', 
+mydict =  {'user': 'Bot1', 'version': 0.11, 'items': 23, 'methods': 'standard',
            'time': 1536304833437, 'logs': 'no', 'status': 'completed'}
 
 placeholders = ', '.join(['%s'] * len(mydict))
@@ -439,7 +479,10 @@ stopid = mycursor.fetchone()
 
 
 --------------------------------
-SQLs 
+--SQLS
+--------------------------------
+--------------------------------
+SQLs
 --------------------------------
 CREATE OR REPLACE FUNCTION trigger_set_timestamp()
 RETURNS TRIGGER AS $$
@@ -454,17 +497,17 @@ CUSTOMER
 ----------------
 
 DROP TABLE CUSTOMER;
-CREATE TABLE "public".customer ( id smallserial NOT NULL , 
-								first_name varchar(100) , 
-								last_name varchar(100) , 
-								mobile bigint , 
-								mail varchar(50) , 
-								address varchar(200) , 
-								active boolean , 
-								telegram_id integer , 
-								created_at TIMESTAMP(0) DEFAULT current_timestamp ,
-								updated_at TIMESTAMP(0) DEFAULT current_timestamp ,
-								CONSTRAINT pk_customer_id PRIMARY KEY ( id ) ); 
+CREATE TABLE "public".customer ( id smallserial NOT NULL ,
+                                first_name varchar(100) ,
+                                last_name varchar(100) ,
+                                mobile bigint ,
+                                mail varchar(50) ,
+                                address varchar(200) ,
+                                active boolean ,
+                                telegram_id integer ,
+                                created_at TIMESTAMP(0) DEFAULT current_timestamp ,
+                                updated_at TIMESTAMP(0) DEFAULT current_timestamp ,
+                                CONSTRAINT pk_customer_id PRIMARY KEY ( id ) );
 
 
 
@@ -473,10 +516,10 @@ BEFORE UPDATE ON customer
 FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
 
-CREATE SEQUENCE "public".customer_id_seq START WITH 10000 INCREMENT BY 1; 
+CREATE SEQUENCE "public".customer_id_seq START WITH 10000 INCREMENT BY 1;
 ALTER SEQUENCE customer_id_seq RESTART WITH 10000 INCREMENT BY 1;
 
-INSERT INTO "public".customer ( id, first_name, last_name, mobile, mail) VALUES ( nextval('customer_id_seq'), 'Linges', 'M', 6382860148, 'nerus.q8@gmail.com' ); 
+INSERT INTO "public".customer ( id, first_name, last_name, mobile, mail) VALUES ( nextval('customer_id_seq'), 'Linges', 'M', 6382860148, 'nerus.q8@gmail.com' );
 INSERT INTO "public".customer ( id, first_name, last_name, mobile, mail) VALUES ( nextval('customer_id_seq'),'Raja', 'YOGI', 9884411611, 'acumeraja@yahoo.co.in' );
 
 select * from customer;
@@ -490,31 +533,31 @@ UPDATE public.customer SET address='Cbe' WHERE ID = '10001';
 BROKER
 ----------------
 
-CREATE  TABLE "public".broker ( 
-	id                   integer  NOT NULL ,
-	name                 varchar(100)  NOT NULL ,
-	customer_id          smallserial DEFAULT nextval('broker_customer_id_seq'::regclass) NOT NULL ,
-	CONSTRAINT pk_broker_id PRIMARY KEY ( id )
+CREATE  TABLE "public".broker (
+    id                   integer  NOT NULL ,
+    name                 varchar(100)  NOT NULL ,
+    --customer_id          smallserial DEFAULT nextval('broker_customer_id_seq'::regclass) NOT NULL ,
+    CONSTRAINT pk_broker_id PRIMARY KEY ( id )
  );
 
 ALTER TABLE "public".broker ADD CONSTRAINT fk_broker_customer FOREIGN KEY ( customer_id ) REFERENCES "public".customer( id );
 
-INSERT INTO "public".broker	( id, name, customer_id) VALUES (nextval('broker_id_seq'), 'IIFL', 10000);
-INSERT INTO "public".broker	( id, name, customer_id) VALUES (nextval('broker_id_seq'), 'Alice Blue', 10001);
+INSERT INTO "public".broker ( id, name, customer_id) VALUES (nextval('broker_id_seq'), 'IIFL', 10000);
+INSERT INTO "public".broker ( id, name, customer_id) VALUES (nextval('broker_id_seq'), 'Alice Blue', 10001);
 
 ----------------
 STRATEGY
 ----------------
 DROP TABLE "public".strategy;
-CREATE TABLE "public".strategy ( id integer NOT NULL , 
-                                name varchar(100) NOT NULL , 
-                                min_multiplier integer DEFAULT 1 NOT NULL , 
-                                capital_required decimal(12,2) , 
-                                price_per_month decimal(10,2) DEFAULT 0 NOT NULL , 
+CREATE TABLE "public".strategy ( id integer NOT NULL ,
+                                name varchar(100) NOT NULL ,
+                                min_multiplier integer DEFAULT 1 NOT NULL ,
+                                capital_required decimal(12,2) ,
+                                price_per_month decimal(10,2) DEFAULT 0 NOT NULL ,
                                 description text DEFAULT 'FirstChoice Strategy' ,
-                                strategy_params_id SERIAL,
+                                --strategy_params_id SERIAL,
                                 created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP ,
-								updated_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP ,
+                                updated_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP ,
                                 CONSTRAINT pk_strategy_id PRIMARY KEY ( id ) )
 
 
@@ -524,8 +567,8 @@ FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
 
 INSERT INTO "public".strategy
-	( id, name, min_multiplier, capital_required, price_per_month, description) VALUES 
-	( nextval('strategy_id_seq'), 'NFO Panther', 1, 700000, 1000, 'BUY 2 lots and SELL 1 lot at SL, Same cont for every 1 hour');
+    ( id, name, min_multiplier, capital_required, price_per_month, description) VALUES
+    ( nextval('strategy_id_seq'), 'NFO Panther', 1, 700000, 1000, 'BUY 2 lots and SELL 1 lot at SL, Same cont for every 1 hour');
 
 
 UPDATE public.strategy SET capital_required=500 WHERE ID = 500;
@@ -535,17 +578,18 @@ UPDATE public.strategy SET capital_required=500 WHERE ID = 500;
 SUBSCRIBERS
 ----------------
 
-CREATE  TABLE "public".SUBSCRIBERS ( 
-	id                   serial  NOT NULL ,
-	customer_id          smallserial  NOT NULL ,
-	strategy_id          integer  NOT NULL ,
-	run_counter          serial  NOT NULL ,
-	is_active            char(1)  NOT NULL ,
-	start_date           DATE ,
-	end_date             DATE ,
-	created_at           TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP  ,
-	updated_at           TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP  ,
-	CONSTRAINT pk_subscribers_id PRIMARY KEY ( id )
+CREATE  TABLE "public".SUBSCRIBERS (
+    id                   serial  NOT NULL ,
+    customer_id          smallserial  NOT NULL ,
+    strategy_id          integer  NOT NULL ,
+    broker_id            integer,
+    run_counter          serial  NOT NULL ,
+    is_active            char(1)  NOT NULL ,
+    start_date           DATE ,
+    end_date             DATE ,
+    created_at           TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP  ,
+    updated_at           TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP  ,
+    CONSTRAINT pk_subscribers_id PRIMARY KEY ( id )
  );
 
 CREATE TRIGGER set_timestamp
@@ -554,7 +598,47 @@ FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
 
 INSERT INTO "public".subscribers
-	( id, customer_id, strategy_id, is_active, start_date, end_date) VALUES
+    ( id, customer_id, strategy_id, is_active, start_date, end_date) VALUES
  (nextval('subscriber_id_seq'), 10000, 504, 'Y',  CURRENT_DATE ,CURRENT_DATE + INTERVAL '30 day' );
- 
- 
+
+
+ -------------------
+ --STRATEGY_PARAMS
+ -------------------
+
+ DROP TABLE strategy_params;
+ CREATE TABLE "public".strategy_params (
+    id serial NOT NULL ,
+    name varchar(100) NOT NULL ,
+    strategy_id integer,
+    script_name varchar(100) ,
+    start_time text[] ,
+    repair_time time ,
+    end_time time DEFAULT '15:05:00' ,
+    target decimal(7,2) ,
+    stop_loss decimal(7,2) ,
+    created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP ,
+    updated_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP ,
+    CONSTRAINT pk_strategy_params_id PRIMARY KEY ( id ) )
+
+CREATE TRIGGER set_timestamp
+BEFORE UPDATE ON strategy_params
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
+
+INSERT INTO "public".strategy_params(  name, strategy_id, script_name, start_time, repair_time, target, stop_loss) VALUES
+                                    ( 'nfo_params', 500, 'NFO_Panther_Live', '{"09:30:00","10:00:00"}', '14:40:00', 24000, -12000 );
+
+select start_time[1] from strategy_params;
+delete from strategy_params;
+select * from strategy_params;
+
+
+INSERT INTO "public".strategy_params
+    (  name, strategy_id, script_name, start_time, repair_time, target, stop_loss) VALUES
+    ( 'os_params', 501, 'NFO_Panther_Live', '{"09:45:00"}', '14:40:00', 3000, -1500 );
+select start_time[1] from strategy_params;
+delete from strategy_params;
+select * from strategy_params;
+

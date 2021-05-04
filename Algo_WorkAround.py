@@ -356,7 +356,7 @@ id  :   164241198
 strategy_id :   2059063
 broker_id   :   167
 order_id    :   906300211619170518.456
-exchange    :   NFO
+exchange    :   NFo
 Instrument  :   OPTIDX_NIFTY_29APR2021_PE_14350
 underlying  :   NIFTY 50
 expiry  :   2021-04-29

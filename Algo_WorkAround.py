@@ -200,6 +200,13 @@ market:
 
 kite.historical_data(instrument_token=54743047,from_date='2017-01-01', to_date='2019-01-01', interval="day",continuous=1)
 
+
+pd.read_sql_query("SELECT * from ADANIPORTS  where date(Timestamp) = '2021-05-24'", db)
+
+
+cur.execute("delete from ACC where date(Timestamp) = '2021-05-24'")
+
+
 POSTGRESSQL:
 -----------
 PS D:\Python\PG\pgsql\bin> .\initdb.exe -D D:\Python\PG\pgsql\data -U postgres

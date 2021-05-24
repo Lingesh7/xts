@@ -137,7 +137,7 @@ if __name__ == '__main__':
                     (f'BANKNIFTY_{datetime.now().strftime("%B").upper()}'), db, if_exists='append', index=False)
                 # pd.read_sql_query("SELECT * from BANKNIFTY_MARCH", db)
                 time.sleep(1)
-        except ConnectionError:
+        except Exception:
             skipped.append({name: symbol})
             pass
     logger.warning(f'OHLC data import failed for : {skipped}')

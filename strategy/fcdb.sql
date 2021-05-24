@@ -173,3 +173,20 @@ ALTER TABLE "public".positions ADD CONSTRAINT fk_positions_strategy FOREIGN KEY 
 ALTER TABLE "public".positions ADD CONSTRAINT fk_positions_broker FOREIGN KEY ( broker_id ) REFERENCES "public".broker( id );
 
 ALTER TABLE "public".positions ADD CONSTRAINT fk_positions_order_book FOREIGN KEY ( order_id ) REFERENCES "public".order_book( order_id );
+
+
+CREATE  TABLE "public".api ( 
+	customer_id          integer   ,
+	api_key              char(30)   ,
+	api_secret           char(30)   ,
+	token                char(50)   ,
+	broker_id            integer   ,
+	login_id             integer   ,
+	login_password       char(50)   
+ );
+
+ALTER TABLE "public".api ADD CONSTRAINT fk_api_customer FOREIGN KEY ( customer_id ) REFERENCES "public".customer( id );
+
+ALTER TABLE "public".api ADD CONSTRAINT fk_api_broker FOREIGN KEY ( broker_id ) REFERENCES "public".broker( id );
+
+

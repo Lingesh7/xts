@@ -96,7 +96,7 @@ if __name__ == '__main__':
             df = df.astype(dtype={'Open': float, 'High': float, 'Low': float, 'Close': float, 'Volume': int})
             df.to_sql(ticker,db,if_exists='append',index=False)
             time.sleep(1)
-        except ConnectionError:
+        except Exception:
             skipped.append({ticker:symbol})
             pass
         # pd.read_sql_query("SELECT * from JSWSTEEL", db)

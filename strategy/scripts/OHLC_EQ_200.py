@@ -106,3 +106,4 @@ if __name__ == '__main__':
     logger.info('==================END========================')
 
 
+pd.read_sql_query("SELECT * from NIFTY_50", db)

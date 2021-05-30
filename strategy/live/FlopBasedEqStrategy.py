@@ -393,7 +393,7 @@ def slTgtCheck():
 
     logger.info('flop checker ends - squaring off remaining trades')
     if tr_insts:
-        for trades in tr_insts:
+        for trade in tr_insts:
             if trade['set_type'] == 'Entry':
                 if trade['txn_type'] == 'buy':
                     ext_inst['txn_type'] = 'sell'

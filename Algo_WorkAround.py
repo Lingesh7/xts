@@ -109,7 +109,7 @@ https://nsetools.readthedocs.io/en/latest/usage.html#getting-a-stock-quote
                      -40pts pe square off - sell pe next strike
 
 
-IIFL28 // login - May@123 // tranx - May@1234
+IIFL28 // login - Jun@123 // tranx - Jun@1234 updated on May 30
 #Live Account --
 
 iiflxts

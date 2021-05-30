@@ -65,13 +65,13 @@ def xts_init(interactive=None, market=None):
             return xt
         else:
             logger.error(
-                'UTILS: Wrong with token file. Generate separately..!..')
-            raise Exception
-            #print('UTILS: Wrong with token file. Generate separately..!..')
-            # exit()
+                'UTILS: Token file missing. Generate separately..!..')
+            return None
+            # raise Exception
     except Exception:
         logger.exception('UTILS:  Error in creating XT initialization')
         #print('UTILS:  Error in creating XT initialization')
+        return None
 
 
 def configure_logging(name, startTime='00:00'):

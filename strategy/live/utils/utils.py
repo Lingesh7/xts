@@ -50,11 +50,12 @@ def xts_init(interactive=None, market=None):
         xt = XTSConnect(appKey, secretKey, source)
         # global cdate
         cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-        token_file = f'../access_token/interactive_access_token_{cdate}.txt' if interactive else f'../access_token/market_access_token_{cdate}.txt'
+        # token_file = f'../access_token/interactive_access_token_{cdate}.txt' if interactive else f'../access_token/market_access_token_{cdate}.txt'
+        token_file = f'../access_token/access_token_{cdate}.txt' if interactive else f'../access_token/access_token_market_{cdate}.txt'
         file = Path(token_file)
         if file.exists() and (date.today() == date.fromtimestamp(file.stat().st_mtime)):
-            logger.info('Token file exists and created today')
-            #print('Token file exists and created today')
+            # logger.info('Token file exists and created today')
+            print('Token file exists and created today')
             in_file = open(token_file, 'r').read().split()
             access_token = in_file[0]
             userID = in_file[1]

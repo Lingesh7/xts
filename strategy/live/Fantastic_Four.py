@@ -40,7 +40,7 @@ from utils.utils import xts_init, \
 
 #logger settings
 script_name = os.path.basename(__file__).split('.')[0]
-logger = configure_logging('script_name')
+logger = configure_logging(script_name)
 
 
 #inits
@@ -51,24 +51,22 @@ if not xt:
 
 cdate = xt.CDATE
 # tickers = ['JINDALSTEL','IBULHSGFIN','TATASTEEL','TATAMOTORS']
-instrument_df = xt.master_eq_dump()
-weekly_exp, monthly_exp = xt.get_expiry()
-startTime = '09:20:00'
-# orders = {'refId':10001, 'setno':1, 'name':"TATAMOTORS", 'symbol':3456, 'status': "Idle", 
-#           'startTime':"09:20:01", 'endTime':'15:06:00'}
+# startTime = '09:20:00'
+# orders = [{'refId':10001, 'setno':1, 'name':"TATAMOTORS", 'symbol':3456, 'status': "Idle", 
+#           'startTime':"09:20:01", 'capital':50000}]
 
 orders = [{'refId':10001, 'setno':1, 'name':"TATAMOTORS", 'symbol':3456, 'status': "Idle", 
           'startTime':"09:20:01", 'capital':50000}, 
           {'refId':10002, 'setno':2, 'name':"TATASTEEL", 'symbol':3499, 'status': "Idle", 
           'startTime':"09:20:01", 'capital':50000},
-          {'refId':10003, 'setno':3, 'name':"IBULHSGFIN", 'symbol':3499, 'status': "Idle", 
+          {'refId':10003, 'setno':3, 'name':"IBULHSGFIN", 'symbol':30125, 'status': "Idle", 
           'startTime':"09:20:01", 'capital':50000},
-          {'refId':10004, 'setno':4, 'name':"JINDALSTEL", 'symbol':3499, 'status': "Idle", 
+          {'refId':10004, 'setno':4, 'name':"JINDALSTEL", 'symbol':6733, 'status': "Idle", 
           'startTime':"09:20:01", 'capital':50000}]
-tr_insts = []
-etr_inst = {}
-rpr_inst = {}
-ext_inst = {}
+etr_inst = None
+rpr_inst = None
+ext_inst = None
+tr_insts = None
 universal = {'exit_status': 'Idle', 'exitTime':'15:06:00'}
 ltp = {}
 gl_pnl = None
@@ -136,13 +134,20 @@ def fetchOHLC(symbol,duration):
 
 
 def execute(orders):
+    global tr_insts
+    tr_insts = []
+    etr_inst = {}
+    rpr_inst = {}
     while True:
-        time.sleep(2)
-        if orders['status'] == 'idle':
-            if (datetime.now() >= pd.Timestamp(cdate+" "+ startTime)):
-                symbol = orders['symbol']
-                df = fetchOHLC(symbol, 60)
-                logger.info(df)
+        time.sleep(5)
+        print(f'{orders["name"]}: {ltp[orders["symbol"]]}')
+        # logger.info(f'{orders["status"]}')
+        if orders['status'] == 'Idle':
+            logger.info('idle block')
+            if (datetime.now() >= pd.Timestamp(cdate+" "+ orders['startTime'])):
+                # symbol = orders['symbol']
+                df = fetchOHLC(orders["symbol"], 60)
+                # logger.info(df)
                 logger.info(df['Timestamp'].iloc[-1])
                 mark_price = round(float(df['Close'].iloc[-1]),2)
                 le = round(mark_price*1.01,2)
@@ -152,10 +157,13 @@ def execute(orders):
                 st1 = round(mark_price*0.98,2)
                 st2 = round(mark_price*0.97,2)
                 orders['status'] = 'active'
+                logger.info(f'{orders["status"]} , {orders["symbol"]} {orders["name"]} {mark_price} {le} {lt1} {lt2} {se} {st1} {st2} ')
+                
                 
         if orders['status'] == 'active':
-            if symbol in ltp.keys():
-                ltpsymbol = ltp[symbol]
+            # logger.info('active block')
+            if orders["symbol"] in ltp.keys():
+                ltpsymbol = ltp[orders["symbol"]]
                 etr_inst['set'] = orders['setno']
                 etr_inst['qty'] = int(orders['capital']/le)
                 etr_inst['name'] = orders['name']
@@ -164,10 +172,10 @@ def execute(orders):
                 etr_inst['tradedPrice'] = None
                 if ltpsymbol > le or ltpsymbol < se:
                     if ltpsymbol > le:
-                        logger.info(f'Placing buy order for {orders["setno"]} {orders["ticker"]}..')
+                        logger.info(f'Placing buy order for {orders["setno"]} {orders["name"]}..')
                         etr_inst['txn_type'] = 'buy'
                     if ltpsymbol < se:
-                        logger.info(f'Placing sell order for {orders["setno"]} {orders["ticker"]}..')
+                        logger.info(f'Placing sell order for {orders["setno"]} {orders["name"]}..')
                         etr_inst['txn_type'] = 'sell'
                     etr_inst['tr_qty'] = -etr_inst['qty'] if etr_inst['txn_type'] == 'sell' else etr_inst['qty']
                     orderID = xt.place_order_id(etr_inst['symbol'],etr_inst['txn_type'], etr_inst['qty'], xseg='eq')
@@ -183,10 +191,12 @@ def execute(orders):
                         orders['status'] = 'Entry_Failed'
                     logger.info(f'Entry order dtls: {etr_inst}')
                     tr_insts.append(etr_inst)
+                    logger.info(f'tr_insts order dtls: {tr_insts}')
                     
+                   
         if orders['status'] == 'Entered':
             rpr_inst['set'] = orders['setno']
-            rpr_inst['txn_type'] == 'sell' if etr_inst['txn_type'] == 'buy' else 'buy'
+            rpr_inst['txn_type'] = 'sell' if etr_inst['txn_type'] == 'buy' else 'buy'
             rpr_inst['qty'] = etr_inst['qty']
             rpr_inst['tr_qty'] = -rpr_inst['qty'] if rpr_inst['txn_type'] == 'sell' else rpr_inst['qty']
             rpr_inst['name'] = orders['name']
@@ -196,7 +206,7 @@ def execute(orders):
             orderID = xt.place_order_id(rpr_inst['symbol'],rpr_inst['txn_type'], rpr_inst['qty'], sl=mark_price, xseg='eq')
             rpr_inst['orderID'] = orderID
             orders['status'] = 'SL_Placed'
-                
+        
         if universal['exit_status'] == 'Idle':
             if orders['status'] == 'SL_Placed' or orders['status'] == 'SL_Modified':
                 orderLists = xt.get_order_list
@@ -206,8 +216,8 @@ def execute(orders):
                         logger.info(f'Stop Loss Order Triggered for {orders["ticker"]}')
                         sl_tradedPrice = float(next((orderList['OrderAverageTradedPrice'] \
                                             for orderList in orderLists\
-                                                 if orderList['AppOrderID'] == rpr_inst['orderID'] and\
-                                                     orderList['OrderStatus'] == 'Filled'),None).replace(',', ''))
+                                                  if orderList['AppOrderID'] == rpr_inst['orderID'] and\
+                                                      orderList['OrderStatus'] == 'Filled'),None).replace(',', ''))
                         LastUpdateDateTime=datetime.fromisoformat(next((orderList['LastUpdateDateTime'] for orderList in orderLists if orderList['AppOrderID'] == rpr_inst['orderID'] and orderList['OrderStatus'] == 'Filled'))[0:19])
                         sl_dateTime = LastUpdateDateTime.strftime("%Y-%m-%d %H:%M:%S")
                         logger.info(f"traded price is: {tradedPrice} and ordered time is: {sl_dateTime}")
@@ -219,12 +229,24 @@ def execute(orders):
                         tr_insts.append(rpr_inst)
                         continue
             
-            if ltp[symbol] > lt1 and orders['status'] == 'SL_Placed':
-                xt.modify_order(rpr_inst['orderID'],modifiedStopPrice=lt1)
-                orders['status'] = 'SL_Modified'
+            if ltp[orders['symbol']] > lt1 and orders['status'] == 'SL_Placed':
+                # xt.modify_order(rpr_inst['orderID'],modifiedStopPrice=lt1)
+                sl_mod_resp = xt.modify_order(
+                            appOrderID=rpr_inst['orderID'],
+                            modifiedProductType=xt.PRODUCT_MIS,
+                            modifiedOrderType='StopMarket',
+                            modifiedOrderQuantity=rpr_inst['qty'],
+                            modifiedDisclosedQuantity=0,
+                            modifiedLimitPrice=0,
+                            modifiedStopPrice=lt1,
+                            modifiedTimeInForce=xt.VALIDITY_DAY,
+                            orderUniqueIdentifier="SL_modify"
+                            )
+                if sl_mod_resp['type'] == 'success':
+                    orders['status'] = 'SL_Modified'
                 continue
             
-            if ltp[symbol] >= lt2 and (orders['status'] == 'SL_Placed' or orders['status'] == 'SL_Modified'):
+            if ltp[orders['symbol']] >= lt2 and (orders['status'] == 'SL_Placed' or orders['status'] == 'SL_Modified'):
                 ext_inst['set'] = orders['setno']
                 ext_inst['symbol'] = orders['symbol']
                 ext_inst['qty'] = etr_inst['qty']
@@ -244,16 +266,16 @@ def execute(orders):
                 else:
                     ext_inst['set_type']='Target_Hit'
                     logger.error(f"Error while exiting the order set \
-                                 {orders['setno']}, Exit Immediately")
+                                  {orders['setno']}, Exit Immediately")
                 logger.info(f'Target exit order dtls: {ext_inst}')
                 tr_insts.append(ext_inst)
                 orders['status'] = 'Target_Hit'
                 continue
                     
         elif universal['exit_status'] == 'Exited':
-           orders['status'] = 'Universal_Exit'
-           logger.info('Orders must be square-off by Universal Exit Func')
-           break
+            orders['status'] = 'Universal_Exit'
+            logger.info('Orders must be square-off by Universal Exit Func')
+            break
         
         if orders['status'] == 'SL_Hit' or orders['status'] == 'Target_Hit' or \
             orders['status'] == 'Entry_Failed':

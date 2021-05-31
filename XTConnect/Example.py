@@ -267,3 +267,47 @@ print('Search By Symbol :', str(response))
 """Marketdata Logout Request"""
 response = xt.marketdata_logout()
 print('Marketdata Logout :', str(response))
+
+
+response = xt.modify_order(
+        appOrderID=10029073,
+        modifiedProductType=xt.PRODUCT_MIS,
+        modifiedOrderType='StopMarket',
+        modifiedOrderQuantity=10,
+        modifiedDisclosedQuantity=0,
+        modifiedLimitPrice=0,
+        modifiedStopPrice=2161,
+        modifiedTimeInForce=xt.VALIDITY_DAY,
+        orderUniqueIdentifier="454845"
+    )
+print("Place Order: ", response)
+
+
+
+response1 = xt.place_order(
+    exchangeSegment=xt.EXCHANGE_NSECM,
+    exchangeInstrumentID=2885,
+    productType=xt.PRODUCT_MIS,
+    orderType=xt.ORDER_TYPE_MARKET,
+    orderSide=xt.TRANSACTION_TYPE_BUY,
+    timeInForce=xt.VALIDITY_DAY,
+    disclosedQuantity=0,
+    orderQuantity=10,
+    limitPrice=0,
+    stopPrice=0,
+    orderUniqueIdentifier="454845")
+print("Place Order: ", response1)
+
+response2 = xt.place_order(
+    exchangeSegment=xt.EXCHANGE_NSECM,
+    exchangeInstrumentID=2885,
+    productType=xt.PRODUCT_MIS,
+    orderType="StopMarket",
+    orderSide=xt.TRANSACTION_TYPE_SELL,
+    timeInForce=xt.VALIDITY_DAY,
+    disclosedQuantity=0,
+    orderQuantity=10,
+    limitPrice=0,
+    stopPrice=2155,
+    orderUniqueIdentifier="454845")
+print("Place Order: ", response2)

@@ -105,5 +105,3 @@ if __name__ == '__main__':
     db.close()
     logger.info('==================END========================')
 
-
-pd.read_sql_query("SELECT * from NIFTY_50", db)

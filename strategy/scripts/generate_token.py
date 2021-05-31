@@ -8,7 +8,7 @@ from XTConnect.Connect import XTSConnect
 from pathlib import Path
 from datetime import date,datetime
 import configparser
-import os
+import os, shutil
 try:
     os.chdir(r'D:\Python\First_Choice_Git\xts\strategy\scripts')
 except:
@@ -36,3 +36,5 @@ else:
                                            response['result']['isInvestorClient']))
     else:
         print('Issue with interactive login')
+
+shutil.copy2(token_file, r'D:\Python\First_Choice_Git\xts\strategy\access_token')

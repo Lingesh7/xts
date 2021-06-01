@@ -20,15 +20,17 @@ try:
 except:
     pass
 
-from utils.utils import xts_init, configure_logging
+from utils.utils import xts_init, configure_logging, bot_init, bot_sendtext 
 
 
 # this is referring the main script logger
 log_name = os.path.basename(__file__).split('.')[0]
 # print(log_name)
-logger = configure_logging(log_name)
+# logger = configure_logging(log_name)
+logger = configure_logging('testrun')
 
 xt = xts_init(market=True)
+b_tok = bot_init()
 
 if __name__ == '__main__':
     ins_df = xt.master_eq_dump()
@@ -101,6 +103,10 @@ if __name__ == '__main__':
             pass
         # pd.read_sql_query("SELECT * from JSWSTEEL", db)
     logger.warning(f'OHLC data import failed for : {skipped}')
+    if len(skipped) != 0:
+        bot_sendtext(f'EQ OHLC not ran for instreuments: {skipped}', b_tok)
+    else:
+        bot_sendtext(f'EQ OHLC ran successfully today', b_tok)
     cur.close()
     db.close()
     logger.info('==================END========================')

@@ -52,16 +52,16 @@ if not xt:
 cdate = xt.CDATE
 # tickers = ['JINDALSTEL','IBULHSGFIN','TATASTEEL','TATAMOTORS']
 # startTime = '09:20:00'
-# orders = [{'refId':10001, 'setno':1, 'name':"TATAMOTORS", 'symbol':3456, 'status': "Idle", 
+# orders = [{'refId':10001, 'setno':1, 'name':"TATAMOTORS", 'symbol':3456, 'status': "Idle",
 #           'startTime':"09:20:01", 'capital':50000}]
 
-orders = [{'refId':10001, 'setno':1, 'name':"TATAMOTORS", 'symbol':3456, 'status': "Idle", 
-          'startTime':"09:20:01", 'capital':50000}, 
-          {'refId':10002, 'setno':2, 'name':"TATASTEEL", 'symbol':3499, 'status': "Idle", 
+orders = [{'refId':10001, 'setno':1, 'name':"TATAMOTORS", 'symbol':3456, 'status': "Idle",
           'startTime':"09:20:01", 'capital':50000},
-          {'refId':10003, 'setno':3, 'name':"IBULHSGFIN", 'symbol':30125, 'status': "Idle", 
+          {'refId':10002, 'setno':2, 'name':"TATASTEEL", 'symbol':3499, 'status': "Idle",
           'startTime':"09:20:01", 'capital':50000},
-          {'refId':10004, 'setno':4, 'name':"JINDALSTEL", 'symbol':6733, 'status': "Idle", 
+          {'refId':10003, 'setno':3, 'name':"IBULHSGFIN", 'symbol':30125, 'status': "Idle",
+          'startTime':"09:20:01", 'capital':50000},
+          {'refId':10004, 'setno':4, 'name':"JINDALSTEL", 'symbol':6733, 'status': "Idle",
           'startTime':"09:20:01", 'capital':50000}]
 etr_inst = None
 rpr_inst = None
@@ -118,8 +118,8 @@ def getGlobalPnL():
         pnl_dump.append([time.strftime("%d-%m-%Y %H:%M:%S"),gl_pnl])
     else:
         gl_pnl = 0
-        
-        
+
+
 def fetchOHLC(symbol,duration):
     # symbol = xt.eq_lookup(ticker,instrument_df)
     cur_date = datetime.strftime(datetime.now(), "%b %d %Y")
@@ -163,8 +163,8 @@ def execute(orders):
                 st2 = round_nearest(mark_price*0.97)
                 orders['status'] = 'active'
                 logger.info(f'{orders["status"]} , {orders["symbol"]} {orders["name"]} {mark_price} {le} {lt1} {lt2} {se} {st1} {st2} ')
-                
-                
+
+
         if orders['status'] == 'active':
             # logger.info('active block')
             if orders["symbol"] in ltp.keys():
@@ -177,11 +177,11 @@ def execute(orders):
                 etr_inst['tradedPrice'] = None
                 if ltpsymbol > le or ltpsymbol < se:
                     if ltpsymbol > le:
-                        logger.info(f'orders["name"] ltp {ltpsymbol} crossed above {le}')
+                        logger.info(f'{orders["name"]} ltp {ltpsymbol} crossed above {le}')
                         logger.info(f'Placing buy order for {orders["setno"]} {orders["name"]}..')
                         etr_inst['txn_type'] = 'buy'
                     if ltpsymbol < se:
-                        logger.info(f'orders["name"] ltp {ltpsymbol} crossed below {se}')
+                        logger.info(f'{orders["name"]} ltp {ltpsymbol} crossed below {se}')
                         logger.info(f'Placing sell order for {orders["setno"]} {orders["name"]}..')
                         etr_inst['txn_type'] = 'sell'
                     etr_inst['tr_qty'] = -etr_inst['qty'] if etr_inst['txn_type'] == 'sell' else etr_inst['qty']
@@ -199,8 +199,8 @@ def execute(orders):
                     logger.info(f'Entry order dtls: {etr_inst}')
                     tr_insts.append(etr_inst)
                     logger.info(f'tr_insts order dtls: {tr_insts}')
-                    
-                   
+
+
         if orders['status'] == 'Entered':
             rpr_inst['set'] = orders['setno']
             rpr_inst['txn_type'] = 'sell' if etr_inst['txn_type'] == 'buy' else 'buy'
@@ -213,7 +213,7 @@ def execute(orders):
             orderID = xt.place_order_id(rpr_inst['symbol'],rpr_inst['txn_type'], rpr_inst['qty'], sl=mark_price, xseg='eq')
             rpr_inst['orderID'] = orderID
             orders['status'] = 'SL_Placed'
-        
+
         if universal['exit_status'] == 'Idle':
             if orders['status'] == 'SL_Placed' or orders['status'] == 'SL_Modified':
                 logger.info(f'inside sl chking if cond. cur status is {orders["status"]}')
@@ -236,7 +236,7 @@ def execute(orders):
                         logger.info(f'Repair order dtls: {rpr_inst}')
                         tr_insts.append(rpr_inst)
                         continue
-            
+
             if (ltp[orders['symbol']] > lt1 or ltp[orders['symbol']] < st1) and \
                                                     orders['status'] == 'SL_Placed':
                 # xt.modify_order(rpr_inst['orderID'],modifiedStopPrice=lt1)
@@ -247,7 +247,7 @@ def execute(orders):
                 elif ltp[orders['symbol']] < st1:
                     logger.info(f'{orders["name"]} ltp {ltpsymbol} crossed below {st1}, \
                                 Hence modifying the SL')
-                    modifiedStopPrice = st1  
+                    modifiedStopPrice = st1
                 sl_mod_resp = xt.modify_order(
                             appOrderID=rpr_inst['orderID'],
                             modifiedProductType=xt.PRODUCT_MIS,
@@ -263,7 +263,7 @@ def execute(orders):
                     logger.info('Modify order success {rpr_inst["orderID"]} - {orders["name"]}')
                     orders['status'] = 'SL_Modified'
                 continue
-            
+
             if (ltp[orders['symbol']] >= lt2 or ltp[orders['symbol']] <= st2) and \
                 (orders['status'] == 'SL_Placed' or orders['status'] == 'SL_Modified'):
                 logger.info(f'{orders["name"]} ltp {ltpsymbol} crossed target2 {lt2}/{st2}')
@@ -291,24 +291,25 @@ def execute(orders):
                 tr_insts.append(ext_inst)
                 orders['status'] = 'Target_Hit'
                 continue
-                    
+
         elif universal['exit_status'] == 'Exited':
             orders['status'] = 'Universal_Exit'
             logger.info('Orders must be square-off by Universal Exit Func')
             break
-        
+
         if orders['status'] == 'SL_Hit' or orders['status'] == 'Entry_Failed':
             logger.info(f'Order must hit SL/Tgt. Exiting. Reason: {orders["status"]}')
             logger.info(f'Completed - Order set: {orders["setno"]}. Exiting the thread')
             break
-         
+
         if orders['status'] == 'Target_Hit':
             logger.info(f'Target Hit for {orders["name"]}, cancelling SL order')
             xt.cancel_order_id(rpr_inst['orderID'])
-            
-        
+            break
+
+
 def exitCheck(universal):
-    global tr_insts 
+    global tr_insts
     # pnl_dump=[]
     ext_inst = {}
     exitTime = datetime.strptime((cdate+" "+universal['exitTime']),"%d-%m-%Y %H:%M:%S")
@@ -359,10 +360,10 @@ def exitCheck(universal):
                                 tr_insts.append(ext_inst.copy())
                                 logger.info(f'tr_insts: {tr_insts}')
                 logger.info('breaking from exitCheck function loop')
-                break                
+                break
             else:
                 time.sleep(1)
-                
+
 
 if __name__ == '__main__':
     threads=[]

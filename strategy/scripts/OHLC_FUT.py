@@ -22,7 +22,7 @@ try:
 except:
     pass
 
-from utils.utils import xts_init, configure_logging
+from utils.utils import xts_init, configure_logging, bot_init, bot_sendtext
 
 
 # this is referring the main script logger
@@ -31,6 +31,7 @@ log_name = os.path.basename(__file__).split('.')[0]
 logger = configure_logging(log_name)
 
 xt = xts_init(market=True)
+b_tok = bot_init()
 
 if __name__ == '__main__':
     filtered_names = []
@@ -77,6 +78,10 @@ if __name__ == '__main__':
             skipped.append({name:symbol})
             pass
     logger.warning(f'OHLC data import failed for : {skipped}')
+    if len(skipped) != 0:
+        bot_sendtext(f'FUT OHLC not ran for instreuments: {skipped}', b_tok)
+    else:
+        bot_sendtext(f'FUT OHLC ran successfully today', b_tok)
     cur.close()
     db.close()
     logger.info('==================END=======================')

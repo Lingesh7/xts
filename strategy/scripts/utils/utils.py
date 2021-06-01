@@ -19,8 +19,8 @@ import os
 from openpyxl import load_workbook
 from logging.handlers import TimedRotatingFileHandler
 import sqlite3
-
-
+from threading import Timer
+import requests
 # this is referring the main script logger
 logger = logging.getLogger('__main__')
 
@@ -50,11 +50,12 @@ def xts_init(interactive=None, market=None):
         xt = XTSConnect(appKey, secretKey, source)
         # global cdate
         cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-        token_file = f'../scripts/access_token_{cdate}.txt' if interactive else f'../scripts/access_token_market_{cdate}.txt'
+        # token_file = f'../access_token/interactive_access_token_{cdate}.txt' if interactive else f'../access_token/market_access_token_{cdate}.txt'
+        token_file = f'../access_token/access_token_{cdate}.txt' if interactive else f'../access_token/access_token_market_{cdate}.txt'
         file = Path(token_file)
         if file.exists() and (date.today() == date.fromtimestamp(file.stat().st_mtime)):
-            logger.info('Token file exists and created today')
-            #print('Token file exists and created today')
+            # logger.info('Token file exists and created today')
+            print('Token file exists and created today')
             in_file = open(token_file, 'r').read().split()
             access_token = in_file[0]
             userID = in_file[1]
@@ -65,13 +66,13 @@ def xts_init(interactive=None, market=None):
             return xt
         else:
             logger.error(
-                'UTILS: Wrong with token file. Generate separately..!..')
-            raise Exception
-            #print('UTILS: Wrong with token file. Generate separately..!..')
-            # exit()
+                'UTILS: Token file missing. Generate separately..!..')
+            return None
+            # raise Exception
     except Exception:
         logger.exception('UTILS:  Error in creating XT initialization')
         #print('UTILS:  Error in creating XT initialization')
+        return None
 
 
 def configure_logging(name, startTime='00:00'):
@@ -130,34 +131,96 @@ def get_db_data(ticker, date_str):
         db.close()
 
 
-def dataToExcel(pnl_dump, startTime, df, gdf):
-    time.sleep(randint(3, 9))
-    filename = os.path.basename(__file__).split('.')[0]
-    cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
-    sheetname = cdate + '_' + startTime.replace(':', '_')
-    pnl_df = pd.DataFrame(pnl_dump, columns=['date', 'pl'])
-    pnl_df = pnl_df.set_index(['date'])
-    pnl_df.index = pd.to_datetime(pnl_df.index, format='%d-%m-%Y %H:%M:%S')
-    resampled_df = pnl_df['pl'].resample('1min').ohlc()
-    # writing the output to excel sheet
-    writer = pd.ExcelWriter(f'..\\pnl\\{filename}.xlsx', engine='openpyxl')
-    writer.book = load_workbook(f'..\\pnl\\{filename}.xlsx')
-    resampled_df.to_excel(writer, sheet_name=(sheetname), index=True)
-    df.to_excel(writer, sheet_name=(sheetname),
-                startrow=11, startcol=6, index=False)
-    gdf.to_excel(writer, sheet_name=(sheetname),
-                 startrow=4, startcol=6, index=False)
-    writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
-    worksheet = writer.sheets[cdate]
-    worksheet['G1'] = f"{filename} - {sheetname}"
-    worksheet['G2'] = "MaxPnL"
-    worksheet["G3"] = "=MAX(E:E)"
-    worksheet['H2'] = "MinPnL"
-    worksheet["H3"] = "=MIN(E:E)"
-    worksheet['I2'] = "FinalPnL"
-    worksheet['I3'] = gl_pnl
-    writer.save()
-    writer.close()
+def data_to_excel(pnl_dump, df, gdf, gl_pnl, script_name, startTime='00:00'):
+    try:
+        time.sleep(randint(3, 9))
+        # filename = os.path.basename(__file__).split('.')[0]
+        cdate = datetime.strftime(datetime.now(), "%d-%m-%Y")
+        sheetname = cdate + '_' + startTime.replace(':', '_')
+        pnl_df = pd.DataFrame(pnl_dump, columns=['date', 'pl'])
+        pnl_df = pnl_df.set_index(['date'])
+        pnl_df.index = pd.to_datetime(pnl_df.index, format='%d-%m-%Y %H:%M:%S')
+        resampled_df = pnl_df['pl'].resample('1min').ohlc()
+        # writing the output to excel sheet
+        filename = f'..\\pnl\\{script_name}_PnL.xlsx'
+        if not os.path.exists(filename):
+             with open(filename, 'w'): pass #creating excel book if not exists
+        writer = pd.ExcelWriter(filename, engine='openpyxl')
+        writer.book = load_workbook(filename)
+        resampled_df.to_excel(writer, sheet_name=(sheetname), index=True)
+        df.to_excel(writer, sheet_name=(sheetname),
+                    startrow=11, startcol=6, index=False)
+        gdf.to_excel(writer, sheet_name=(sheetname),
+                     startrow=4, startcol=6, index=False)
+        writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
+        worksheet = writer.sheets[sheetname]
+        worksheet['G1'] = f"{script_name} - {sheetname}"
+        worksheet['G2'] = "MaxPnL"
+        worksheet["G3"] = "=MAX(E:E)"
+        worksheet['H2'] = "MinPnL"
+        worksheet["H3"] = "=MIN(E:E)"
+        worksheet['I2'] = "FinalPnL"
+        worksheet['I3'] = gl_pnl
+        writer.save()
+        writer.close()
+    except Exception as e:
+        logger.exception(f'Error while saving dump to excel. Reason -> {e}')
+
+
+def bot_init():
+    b_tok = None
+    bot_file = '../access_token/bot_noti_token.txt'
+    fil = Path(bot_file)
+    if fil.exists():
+        logger.info('UTIL: Bot token file exists')
+        b_tok = open(bot_file,'r').read()
+    else:
+        logger.info('UTIL: Bot token missing.')
+    return b_tok
+
+
+def bot_sendtext(bot_message,b_tok):
+    if b_tok:
+        userids = ['1647735620']#,'1245301878','1089456737']
+        for userid in userids:
+            bot_token = b_tok
+            bot_chatID = userid
+            send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + bot_message
+            response = requests.get(send_text)
+            resp = response.json()
+            if resp['ok']:
+                logger.info('Sent message to followers')
+    else:
+        logger.error('UTIL: Token Missing')
+
+
+
+class RepeatedTimer(object):
+    def __init__(self, interval, function, *args, **kwargs):
+        self._timer     = None
+        self.interval   = interval
+        self.function   = function
+        self.args       = args
+        self.kwargs     = kwargs
+        self.is_running = False
+        self.start()
+
+    def _run(self):
+        self.is_running = False
+        self.start()
+        self.function(*self.args, **self.kwargs)
+
+    def start(self):
+        if not self.is_running:
+            self._timer = Timer(self.interval, self._run)
+            self._timer.start()
+            self.is_running = True
+
+    def stop(self):
+        self._timer.cancel()
+        self.is_running = False
+
+
 
 # def retry(func=None, exception=Exception, n_tries=5, delay=5, backoff=1, tolog=True, kill=False):
 #     # logger.info('Retry function from another file')
@@ -249,27 +312,3 @@ def dataToExcel(pnl_dump, startTime, df, gdf):
 #         instrument_df = mstr_df[mstr_df.Series == 'EQ']
 #         instrument_df.to_csv(f"../ohlc/NSE_EQ_Instruments_{cdate}.csv",index=False)
 #     return instrument_df
-
-
-# def eq_Lookup(ticker,instrument_df=None):
-#     """Looks up instrument token for a given script from instrument dump"""
-#     instrument_df = masterEqDump()
-#     try:
-#         return int(instrument_df[instrument_df.Name==ticker].ExchangeInstrumentID.values[0])
-#     except:
-#         return -1
-
-
-# def ltp(symbol=None,ltp=None):
-#     if symbol != None:
-#         id1 = symbol if str(symbol).isdigit() else instrumentLookup(symbol)
-#         if id1 != -1:
-#             instruments=[]
-#             instruments.append({'exchangeSegment': 1, 'exchangeInstrumentID': id1})
-#             xt = xts_init(market=True)
-#             quote_resp = xt.get_quote(Instruments=instruments,xtsMessageCode=1501,
-#                 publishFormat='JSON')
-#             ltp = json.loads(quote_resp['result']['listQuotes'][0])['LastTradedPrice']
-#     else:
-#         logger.info('UTILS: pass valid symbol or id')
-#     return ltp

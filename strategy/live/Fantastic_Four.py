@@ -70,8 +70,13 @@ tr_insts = None
 universal = {'exit_status': 'Idle', 'exitTime':'15:06:00'}
 ltp = {}
 gl_pnl = None
+pnl_dump = []
 
 #functions
+
+def round_nearest(x,a=0.05):
+  return round(round(x/a)*a ,2)
+
 
 def getLTP():
     global ltp
@@ -99,9 +104,9 @@ def getGlobalPnL():
         df = pd.DataFrame(tr_insts)
         df['tr_amount'] = df['tr_qty']*df['tradedPrice']
         df = df.fillna(0)
-        df = df.astype(dtype={'set': int, 'txn_type': str, 'strike': int, 'qty': int, 'tr_qty': int, 'expiry': str, \
+        df = df.astype(dtype={'set': int, 'txn_type': str, 'qty': int, 'tr_qty': int,  \
                                  'name': str, 'symbol': int, 'orderID': int, 'tradedPrice': float, 'dateTime': str, \
-                                 'set_type': str, 'tr_amount': float, 'optionType': str})
+                                 'set_type': str, 'tr_amount': float})
         gdf = df.groupby(['name','symbol'],as_index=False).sum()[['symbol','name','tr_qty','tradedPrice','tr_amount']]
         gdf['ltp'] = gdf['symbol'].map(ltp)
         gdf['cur_amount'] = gdf['tr_qty']*gdf['ltp']
@@ -140,7 +145,7 @@ def execute(orders):
     rpr_inst = {}
     while True:
         time.sleep(5)
-        print(f'{orders["name"]}: {ltp[orders["symbol"]]}')
+        # print(f'{orders["name"]}: {ltp[orders["symbol"]]}')
         # logger.info(f'{orders["status"]}')
         if orders['status'] == 'Idle':
             logger.info('idle block')
@@ -150,12 +155,12 @@ def execute(orders):
                 # logger.info(df)
                 logger.info(df['Timestamp'].iloc[-1])
                 mark_price = round(float(df['Close'].iloc[-1]),2)
-                le = round(mark_price*1.01,2)
-                lt1 = round(mark_price*1.02,2)
-                lt2 = round(mark_price*1.03,2)
-                se = round(mark_price*0.99,2)
-                st1 = round(mark_price*0.98,2)
-                st2 = round(mark_price*0.97,2)
+                le = round_nearest(mark_price*1.01)
+                lt1 = round_nearest(mark_price*1.02)
+                lt2 = round_nearest(mark_price*1.03)
+                se = round_nearest(mark_price*0.99)
+                st1 = round_nearest(mark_price*0.98)
+                st2 = round_nearest(mark_price*0.97)
                 orders['status'] = 'active'
                 logger.info(f'{orders["status"]} , {orders["symbol"]} {orders["name"]} {mark_price} {le} {lt1} {lt2} {se} {st1} {st2} ')
                 
@@ -172,9 +177,11 @@ def execute(orders):
                 etr_inst['tradedPrice'] = None
                 if ltpsymbol > le or ltpsymbol < se:
                     if ltpsymbol > le:
+                        logger.info(f'orders["name"] ltp {ltpsymbol} crossed above {le}')
                         logger.info(f'Placing buy order for {orders["setno"]} {orders["name"]}..')
                         etr_inst['txn_type'] = 'buy'
                     if ltpsymbol < se:
+                        logger.info(f'orders["name"] ltp {ltpsymbol} crossed below {se}')
                         logger.info(f'Placing sell order for {orders["setno"]} {orders["name"]}..')
                         etr_inst['txn_type'] = 'sell'
                     etr_inst['tr_qty'] = -etr_inst['qty'] if etr_inst['txn_type'] == 'sell' else etr_inst['qty']
@@ -209,7 +216,8 @@ def execute(orders):
         
         if universal['exit_status'] == 'Idle':
             if orders['status'] == 'SL_Placed' or orders['status'] == 'SL_Modified':
-                orderLists = xt.get_order_list
+                logger.info(f'inside sl chking if cond. cur status is {orders["status"]}')
+                orderLists = xt.get_order_list()
                 if orderLists:
                     new_sl_orders = [ol for ol in orderLists if ol['AppOrderID'] == rpr_inst['orderID'] and ol['OrderStatus'] != 'Filled']
                     if not new_sl_orders:
@@ -229,8 +237,17 @@ def execute(orders):
                         tr_insts.append(rpr_inst)
                         continue
             
-            if ltp[orders['symbol']] > lt1 and orders['status'] == 'SL_Placed':
+            if (ltp[orders['symbol']] > lt1 or ltp[orders['symbol']] < st1) and \
+                                                    orders['status'] == 'SL_Placed':
                 # xt.modify_order(rpr_inst['orderID'],modifiedStopPrice=lt1)
+                if ltp[orders['symbol']] > lt1:
+                    logger.info(f'{orders["name"]} ltp {ltpsymbol} crossed above {lt1}, \
+                                Hence modifying the SL')
+                    modifiedStopPrice = lt1
+                elif ltp[orders['symbol']] < st1:
+                    logger.info(f'{orders["name"]} ltp {ltpsymbol} crossed below {st1}, \
+                                Hence modifying the SL')
+                    modifiedStopPrice = st1  
                 sl_mod_resp = xt.modify_order(
                             appOrderID=rpr_inst['orderID'],
                             modifiedProductType=xt.PRODUCT_MIS,
@@ -238,15 +255,18 @@ def execute(orders):
                             modifiedOrderQuantity=rpr_inst['qty'],
                             modifiedDisclosedQuantity=0,
                             modifiedLimitPrice=0,
-                            modifiedStopPrice=lt1,
+                            modifiedStopPrice=modifiedStopPrice,
                             modifiedTimeInForce=xt.VALIDITY_DAY,
                             orderUniqueIdentifier="SL_modify"
                             )
                 if sl_mod_resp['type'] == 'success':
+                    logger.info('Modify order success {rpr_inst["orderID"]} - {orders["name"]}')
                     orders['status'] = 'SL_Modified'
                 continue
             
-            if ltp[orders['symbol']] >= lt2 and (orders['status'] == 'SL_Placed' or orders['status'] == 'SL_Modified'):
+            if (ltp[orders['symbol']] >= lt2 or ltp[orders['symbol']] <= st2) and \
+                (orders['status'] == 'SL_Placed' or orders['status'] == 'SL_Modified'):
+                logger.info(f'{orders["name"]} ltp {ltpsymbol} crossed target2 {lt2}/{st2}')
                 ext_inst['set'] = orders['setno']
                 ext_inst['symbol'] = orders['symbol']
                 ext_inst['qty'] = etr_inst['qty']
@@ -277,17 +297,20 @@ def execute(orders):
             logger.info('Orders must be square-off by Universal Exit Func')
             break
         
-        if orders['status'] == 'SL_Hit' or orders['status'] == 'Target_Hit' or \
-            orders['status'] == 'Entry_Failed':
+        if orders['status'] == 'SL_Hit' or orders['status'] == 'Entry_Failed':
             logger.info(f'Order must hit SL/Tgt. Exiting. Reason: {orders["status"]}')
             logger.info(f'Completed - Order set: {orders["setno"]}. Exiting the thread')
             break
+         
+        if orders['status'] == 'Target_Hit':
+            logger.info(f'Target Hit for {orders["name"]}, cancelling SL order')
+            xt.cancel_order_id(rpr_inst['orderID'])
             
-
+        
 def exitCheck(universal):
     global tr_insts 
     # pnl_dump=[]
-    # ext_inst = {}
+    ext_inst = {}
     exitTime = datetime.strptime((cdate+" "+universal['exitTime']),"%d-%m-%Y %H:%M:%S")
     # print('exitTime:', exitTime)
     while True:
@@ -353,7 +376,7 @@ if __name__ == '__main__':
     logger.info('Starting a timer based thread to fetch LTP of traded instruments..')
     getGlobalPnL()
     fetchLtp = RepeatedTimer(5, getLTP)
-    fetchPnL = RepeatedTimer(10, getGlobalPnL)
+    fetchPnL = RepeatedTimer(60, getGlobalPnL)
     try:
         exitCheck(universal)
         time.sleep(5)
@@ -372,7 +395,7 @@ if __name__ == '__main__':
         time.sleep(5)
         #prints dump to excel
         getGlobalPnL()      #getting latest data
-        data_to_excel(pnl_dump, df, gdf, gl_pnl, script_name, '09:20')
+        data_to_excel(pnl_dump, df, gdf, gl_pnl, script_name,'09:20')
         # logging the orders and data to log file
         logger.info('--------------------------------------------')
         logger.info(f'Total Orders and its status: \n {tr_insts} \n')

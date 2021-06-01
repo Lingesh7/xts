@@ -153,8 +153,8 @@ def data_to_excel(pnl_dump, df, gdf, gl_pnl, script_name, startTime='00:00'):
         gdf.to_excel(writer, sheet_name=(sheetname),
                      startrow=4, startcol=6, index=False)
         writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
-        worksheet = writer.sheets[cdate]
-        worksheet['G1'] = f"{filename} - {sheetname}"
+        worksheet = writer.sheets[sheetname]
+        worksheet['G1'] = f"{script_name} - {sheetname}"
         worksheet['G2'] = "MaxPnL"
         worksheet["G3"] = "=MAX(E:E)"
         worksheet['H2'] = "MinPnL"

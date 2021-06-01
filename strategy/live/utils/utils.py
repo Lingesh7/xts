@@ -20,7 +20,7 @@ from openpyxl import load_workbook
 from logging.handlers import TimedRotatingFileHandler
 import sqlite3
 from threading import Timer
-
+import requests
 # this is referring the main script logger
 logger = logging.getLogger('__main__')
 
@@ -167,6 +167,33 @@ def data_to_excel(pnl_dump, df, gdf, gl_pnl, script_name, startTime='00:00'):
         logger.exception(f'Error while saving dump to excel. Reason -> {e}')
 
 
+def bot_init():
+    b_tok = None
+    bot_file = '../access_token/bot_noti_token.txt'
+    fil = Path(bot_file)
+    if fil.exists():
+        logger.info('UTIL: Bot token file exists')
+        b_tok = open(bot_file,'r').read()
+    else:
+        logger.info('UTIL: Bot token missing.')    
+    return b_tok
+    
+    
+def bot_sendtext(bot_message,b_tok):
+    if b_tok:
+        userids = ['1647735620']#,'1245301878','1089456737']
+        for userid in userids:
+            bot_token = b_tok
+            bot_chatID = userid
+            send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + bot_message
+            response = requests.get(send_text)
+            resp = response.json()
+            if resp['ok']:
+                logger.info('Sent message to followers')
+    else:
+        logger.error('UTIL: Token Missing')
+        
+
 
 class RepeatedTimer(object):
     def __init__(self, interval, function, *args, **kwargs):
@@ -285,27 +312,3 @@ class RepeatedTimer(object):
 #         instrument_df = mstr_df[mstr_df.Series == 'EQ']
 #         instrument_df.to_csv(f"../ohlc/NSE_EQ_Instruments_{cdate}.csv",index=False)
 #     return instrument_df
-
-
-# def eq_Lookup(ticker,instrument_df=None):
-#     """Looks up instrument token for a given script from instrument dump"""
-#     instrument_df = masterEqDump()
-#     try:
-#         return int(instrument_df[instrument_df.Name==ticker].ExchangeInstrumentID.values[0])
-#     except:
-#         return -1
-
-
-# def ltp(symbol=None,ltp=None):
-#     if symbol != None:
-#         id1 = symbol if str(symbol).isdigit() else instrumentLookup(symbol)
-#         if id1 != -1:
-#             instruments=[]
-#             instruments.append({'exchangeSegment': 1, 'exchangeInstrumentID': id1})
-#             xt = xts_init(market=True)
-#             quote_resp = xt.get_quote(Instruments=instruments,xtsMessageCode=1501,
-#                 publishFormat='JSON')
-#             ltp = json.loads(quote_resp['result']['listQuotes'][0])['LastTradedPrice']
-#     else:
-#         logger.info('UTILS: pass valid symbol or id')
-#     return ltp

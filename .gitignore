@@ -5,3 +5,4 @@ strategy/ohlc/
 strategy/pnl/
 strategy/logs/
 strategy/InstrumentDumps/
+strategy/access_token/bot_noti_token.txt

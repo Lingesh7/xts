@@ -71,6 +71,7 @@ universal = {'exit_status': 'Idle', 'exitTime':'15:06:00'}
 ltp = {}
 gl_pnl = None
 pnl_dump = []
+df = None
 
 #functions
 
@@ -123,7 +124,7 @@ def getGlobalPnL():
 def fetchOHLC(symbol,duration):
     # symbol = xt.eq_lookup(ticker,instrument_df)
     cur_date = datetime.strftime(datetime.now(), "%b %d %Y")
-    nowtime = datetime.now().strftime('%H%M%S')
+    # nowtime = datetime.now().strftime('%H%M%S')
     ohlc = xt.get_ohlc(exchangeSegment=xt.EXCHANGE_NSECM,
                     exchangeInstrumentID=symbol,
                     startTime=f'{cur_date} 091500',
@@ -144,11 +145,11 @@ def execute(orders):
     etr_inst = {}
     rpr_inst = {}
     while True:
-        time.sleep(5)
+        time.sleep(2)
         # print(f'{orders["name"]}: {ltp[orders["symbol"]]}')
         # logger.info(f'{orders["status"]}')
         if orders['status'] == 'Idle':
-            logger.info('idle block')
+            # logger.info('idle block')
             if (datetime.now() >= pd.Timestamp(cdate+" "+ orders['startTime'])):
                 # symbol = orders['symbol']
                 df = fetchOHLC(orders["symbol"], 60)
@@ -196,6 +197,7 @@ def execute(orders):
                     else:
                         etr_inst['set_type'] = 'Entry'
                         orders['status'] = 'Entry_Failed'
+                    logger.info(f'order status of {orders["name"]} is {orders["status"]}')
                     logger.info(f'Entry order dtls: {etr_inst}')
                     tr_insts.append(etr_inst)
                     logger.info(f'tr_insts order dtls: {tr_insts}')
@@ -213,15 +215,16 @@ def execute(orders):
             orderID = xt.place_order_id(rpr_inst['symbol'],rpr_inst['txn_type'], rpr_inst['qty'], sl=mark_price, xseg='eq')
             rpr_inst['orderID'] = orderID
             orders['status'] = 'SL_Placed'
+            logger.info(f'order status of {orders["name"]} is {orders["status"]}')
 
         if universal['exit_status'] == 'Idle':
             if orders['status'] == 'SL_Placed' or orders['status'] == 'SL_Modified':
-                logger.info(f'inside sl chking if cond. cur status is {orders["status"]}')
+                # logger.info(f'checking SL_Hit condtions for {orders["name"]}')
                 orderLists = xt.get_order_list()
                 if orderLists:
                     new_sl_orders = [ol for ol in orderLists if ol['AppOrderID'] == rpr_inst['orderID'] and ol['OrderStatus'] != 'Filled']
                     if not new_sl_orders:
-                        logger.info(f'Stop Loss Order Triggered for {orders["ticker"]}')
+                        logger.info(f'Stop Loss Order Triggered for {orders["name"]}')
                         sl_tradedPrice = float(next((orderList['OrderAverageTradedPrice'] \
                                             for orderList in orderLists\
                                                   if orderList['AppOrderID'] == rpr_inst['orderID'] and\
@@ -233,6 +236,7 @@ def execute(orders):
                         rpr_inst['dateTime'] = sl_dateTime
                         rpr_inst['set_type'] = 'Repair'
                         orders['status'] = 'SL_Hit'
+                        logger.info(f'order status of {orders["name"]} is {orders["status"]}')                        
                         logger.info(f'Repair order dtls: {rpr_inst}')
                         tr_insts.append(rpr_inst)
                         continue
@@ -260,8 +264,9 @@ def execute(orders):
                             orderUniqueIdentifier="SL_modify"
                             )
                 if sl_mod_resp['type'] == 'success':
-                    logger.info('Modify order success {rpr_inst["orderID"]} - {orders["name"]}')
+                    logger.info(f'Modify order success {rpr_inst["orderID"]} - {orders["name"]}')
                     orders['status'] = 'SL_Modified'
+                    logger.info(f'order status of {orders["name"]} is {orders["status"]}')                    
                 continue
 
             if (ltp[orders['symbol']] >= lt2 or ltp[orders['symbol']] <= st2) and \
@@ -290,6 +295,7 @@ def execute(orders):
                 logger.info(f'Target exit order dtls: {ext_inst}')
                 tr_insts.append(ext_inst)
                 orders['status'] = 'Target_Hit'
+                logger.info(f'order status of {orders["name"]} is {orders["status"]}')                
                 continue
 
         elif universal['exit_status'] == 'Exited':
@@ -322,6 +328,7 @@ def exitCheck(universal):
                 for trade in tr_insts:
                     if trade['set_type'] == 'Entry':
                         if trade['txn_type'] == 'buy':
+                            ext_inst['set'] = trade['set']
                             ext_inst['txn_type'] = 'sell'
                             ext_inst['qty'] = trade['qty']
                             ext_inst['tr_qty'] = -ext_inst['qty']
@@ -360,9 +367,11 @@ def exitCheck(universal):
                                 tr_insts.append(ext_inst.copy())
                                 logger.info(f'tr_insts: {tr_insts}')
                 logger.info('breaking from exitCheck function loop')
+                universal['exit_status'] = 'Exited'
+                logger.info(f'Universal exit status : {universal["exit_status"]}')
                 break
             else:
-                time.sleep(1)
+                time.sleep(5)
 
 
 if __name__ == '__main__':

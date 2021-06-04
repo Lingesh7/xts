@@ -14,6 +14,7 @@ import os
 # from pathlib import Path
 from logging.handlers import TimedRotatingFileHandler
 import logging
+from sys import exit
 
 try:
     os.chdir(r'D:\Python\First_Choice_Git\xts\strategy\test_scripts')
@@ -27,10 +28,13 @@ from utils.utils import xts_init, configure_logging, bot_init, bot_sendtext
 log_name = os.path.basename(__file__).split('.')[0]
 # print(log_name)
 # logger = configure_logging(log_name)
-logger = configure_logging('testrun')
+logger = configure_logging(log_name)
 
-xt = xts_init(market=True)
+xt = xts_init(interactive=True)
 b_tok = bot_init()
+if not xt:
+    logger.exception('XT initialization failed. Exiting..')
+    exit()
 
 if __name__ == '__main__':
     ins_df = xt.master_eq_dump()
@@ -106,7 +110,7 @@ if __name__ == '__main__':
     if len(skipped) != 0:
         bot_sendtext(f'EQ OHLC not ran for instreuments: {skipped}', b_tok)
     else:
-        bot_sendtext(f'EQ OHLC ran successfully today', b_tok)
+        bot_sendtext('EQ OHLC ran successfully today', b_tok)
     cur.close()
     db.close()
     logger.info('==================END========================')

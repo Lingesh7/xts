@@ -215,10 +215,7 @@ def execute(orders):
             orderID = xt.place_order_id(rpr_inst['symbol'],rpr_inst['txn_type'], rpr_inst['qty'], sl=mark_price, xseg='eq')
             rpr_inst['orderID'] = orderID
             orders['status'] = 'SL_Placed'
-<<<<<<< HEAD
             logger.info(f'order status of {orders["name"]} is {orders["status"]}')
-=======
->>>>>>> 74a6eca441ca6e1cd02d8c7b94123d6327c642d4
 
         if universal['exit_status'] == 'Idle':
             if orders['status'] == 'SL_Placed' or orders['status'] == 'SL_Modified':
@@ -370,17 +367,11 @@ def exitCheck(universal):
                                 tr_insts.append(ext_inst.copy())
                                 logger.info(f'tr_insts: {tr_insts}')
                 logger.info('breaking from exitCheck function loop')
-<<<<<<< HEAD
                 universal['exit_status'] = 'Exited'
                 logger.info(f'Universal exit status : {universal["exit_status"]}')
                 break
             else:
                 time.sleep(5)
-=======
-                break
-            else:
-                time.sleep(1)
->>>>>>> 74a6eca441ca6e1cd02d8c7b94123d6327c642d4
 
 
 if __name__ == '__main__':

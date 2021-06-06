@@ -30,7 +30,7 @@ log_name = os.path.basename(__file__).split('.')[0]
 # logger = configure_logging(log_name)
 logger = configure_logging(log_name)
 
-xt = xts_init(interactive=True)
+xt = xts_init(market=True)
 b_tok = bot_init()
 if not xt:
     logger.exception('XT initialization failed. Exiting..')
@@ -94,15 +94,24 @@ if __name__ == '__main__':
                         endTime=cdate1+' 153000',
                         compressionValue=60)
             # print("OHLC: " + str(ohlc))
-            dataresp= ohlc['result']['dataReponse']
-            spl = dataresp.split(',')
-            df = pd.DataFrame([sub.split("|") for sub in spl],columns=(['Timestamp','Open','High','Low','Close','Volume','OI','NA']))
-            df.drop(df.columns[[-1,-2]], axis=1, inplace=True)
-            df['Timestamp'] = pd.to_datetime(df['Timestamp'].astype('int'), unit='s')
-            df = df.astype(dtype={'Open': float, 'High': float, 'Low': float, 'Close': float, 'Volume': int})
-            df.to_sql(ticker,db,if_exists='append',index=False)
-            time.sleep(1)
+            if 'result 'in ohlc:
+                if ohlc['result']['dataReponse'] != '':
+                    dataresp= ohlc['result']['dataReponse']
+                    spl = dataresp.split(',')
+                    df = pd.DataFrame([sub.split("|") for sub in spl],columns=(['Timestamp','Open','High','Low','Close','Volume','OI','NA']))
+                    df.drop(df.columns[[-1,-2]], axis=1, inplace=True)
+                    df['Timestamp'] = pd.to_datetime(df['Timestamp'].astype('int'), unit='s')
+                    df = df.astype(dtype={'Open': float, 'High': float, 'Low': float, 'Close': float, 'Volume': int})
+                    df.to_sql(ticker,db,if_exists='append',index=False)
+                    time.sleep(1)
+                else:
+                    # logger.error(f'No dataResponse returned from the API hit')
+                    raise Exception('No dataResponse returned from the API hit')
+            else:
+                # logger.error('Error in API hit: ohlc["description"]')
+                raise Exception(f'Error in API hit: {ohlc["description"]}')
         except Exception:
+            logger.exception('error')
             skipped.append({ticker:symbol})
             pass
         # pd.read_sql_query("SELECT * from JSWSTEEL", db)

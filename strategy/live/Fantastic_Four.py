@@ -49,6 +49,7 @@ if not xt:
     logger.exception('XT initialization failed. Exiting..')
     exit()
 
+
 cdate = xt.CDATE
 # tickers = ['JINDALSTEL','IBULHSGFIN','TATASTEEL','TATAMOTORS']
 # startTime = '09:20:00'
@@ -236,7 +237,7 @@ def execute(orders):
                         rpr_inst['dateTime'] = sl_dateTime
                         rpr_inst['set_type'] = 'Repair'
                         orders['status'] = 'SL_Hit'
-                        logger.info(f'order status of {orders["name"]} is {orders["status"]}')                        
+                        logger.info(f'order status of {orders["name"]} is {orders["status"]}')
                         logger.info(f'Repair order dtls: {rpr_inst}')
                         tr_insts.append(rpr_inst)
                         continue
@@ -266,7 +267,7 @@ def execute(orders):
                 if sl_mod_resp['type'] == 'success':
                     logger.info(f'Modify order success {rpr_inst["orderID"]} - {orders["name"]}')
                     orders['status'] = 'SL_Modified'
-                    logger.info(f'order status of {orders["name"]} is {orders["status"]}')                    
+                    logger.info(f'order status of {orders["name"]} is {orders["status"]}')
                 continue
 
             if (ltp[orders['symbol']] >= lt2 or ltp[orders['symbol']] <= st2) and \
@@ -295,7 +296,7 @@ def execute(orders):
                 logger.info(f'Target exit order dtls: {ext_inst}')
                 tr_insts.append(ext_inst)
                 orders['status'] = 'Target_Hit'
-                logger.info(f'order status of {orders["name"]} is {orders["status"]}')                
+                logger.info(f'order status of {orders["name"]} is {orders["status"]}')
                 continue
 
         elif universal['exit_status'] == 'Exited':

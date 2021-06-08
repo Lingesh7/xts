@@ -67,18 +67,20 @@ orders = [{'refId': 10001, 'setno': 1, 'ent_txn_type': "sell", 'rpr_txn_type': "
            'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "09:20:00" },
           {'refId': 10002, 'setno': 2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
            'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "09:20:00"}]
-universal = {'exit_status': 'Idle', 'exitTime': '15:06:00', 'ext_txn_type': 'buy','minPrice': -3000, 'maxPrice': 7500}
+universal = {'exit_status': 'Idle', 'exitTime': '15:06:00', 'ext_txn_type': 'buy'}
 
 etr_inst = None
 rpr_inst = None
 ext_inst = None
 tr_insts = None
 universal = {'exit_status': 'Idle',
-             'ext_txn_type': 'buy', 'exitTime': '15:05:00'}
+             'ext_txn_type': 'buy', 'exitTime': '15:05:00','minPrice': -3000, 'maxPrice': 7500}
 ltp = {}
 gl_pnl = None
 pnl_dump = []
 df = None
+data_df = None
+gdf = None
 
 # functions
 
@@ -129,29 +131,24 @@ def getGlobalPnL():
 
 
 def fetchOHLC(ticker, duration):
-    data_df = None
-    if ticker == 'BANKNIFTY':
-        symbol = 'NIFTY BANK'
-    elif ticker == 'NIFTY':
-        symbol - 'NIFTY 50'
+    global data_df
     try:
-        # symbol = instrumentLookup(instrument_df,ticker)
+        symbol = xt.fo_lookup(ticker, instrument_df)
         cur_date = datetime.strftime(datetime.now(), "%b %d %Y")
         nowtime = datetime.now().strftime('%H%M%S')
-        ohlc = xt.get_ohlc(exchangeSegment=xt.EXCHANGE_NSECM,
+        ohlc = xt.get_ohlc(exchangeSegment=xt.EXCHANGE_NSEFO,
                         exchangeInstrumentID=symbol,
                         startTime=f'{cur_date} 091500',
                         endTime=f'{cur_date} {nowtime}',
                         compressionValue=duration)
         dataresp= ohlc['result']['dataReponse']
         data = dataresp.split(',')
-        data_df = pd.DataFrame([sub.split("|") for sub in data],columns=(['timestamp','open','high','low','close','volume','oi','na']))
+        data_df = pd.DataFrame([sub.split("|") for sub in data],columns=(['Timestamp','open','high','low','close','volume','oi','na']))
         data_df.drop(data_df.columns[[-1,-2]], axis=1, inplace=True)
         data_df = data_df.astype(dtype={'open': float, 'high': float, 'low': float, 'close': float, 'volume': int})
-        data_df['Timestamp'] = pd.to_datetime(data_df['timestamp'].astype('int'), unit='s')
+        data_df['timestamp'] = pd.to_datetime(data_df['Timestamp'].astype('int'), unit='s')
     except Exception:
         logger.exception(f'Error in fetching OHLC for {symbol}')
-
     return data_df
 
 
@@ -165,29 +162,33 @@ def vWAP(DF):
 
 
 def execute(orders):
-    global tr_insts
+    global tr_insts, data_df
     tr_insts = []
     etr_inst = {}
     rpr_inst = {}
-    idx = orders['idx']
+    # idx = orders['idx']
+    # cur_month = (datetime.strptime(monthly_exp,'%d%b%Y').strftime('%b').upper())
+    # fut_symbol = 'BANKNIFTY21'+cur_month+'FUT' if idx == 'NIFTYBANK' else 'NIFTY21'+cur_month+'FUT'
     startTime = datetime.strptime((cdate + " " + orders['startTime']), "%d-%m-%Y %H:%M:%S")
     weekday = datetime.today().weekday()
     while True:
         try:
-            time.sleep(1)
+            time.sleep(30)
             if startTime >= datetime.now():
                 continue
+            # logger.info('Time window attained..')
             if orders['status'] == 'Idle' and universal['exit_status'] == 'Idle':
-                data_df = fetchOHLC(idx, 60)
+                # data_df = fetchOHLC(fut_symbol, 60)
                 df = vWAP(data_df)
                 sma_8 = df.rolling(window=8).mean()
-                strike_price = xt.strike_price(orders['idx'])
+                # strike_price = xt.strike_price(orders['idx'])
+                logger.info(f"{df['uB'].iloc[-2]} - {sma_8['close'].iloc[-2]}")
                 if (df['uB'].iloc[-2] < sma_8['close'].iloc[-2]):
-                    logger.info(f'SMA-8 breaks Upper bound of VWAP in {etr_inst["name"]}')
+                    logger.info(f'SMA-8 breaks Upper bound of VWAP in {spot}')
                     strike_price = xt.strike_price(orders['idx'])
                     etr_inst['strike'] = strike_price + 300 if weekday != 3 else strike_price + 200
                 elif (df['lB'].iloc[-2] > sma_8['close'].iloc[-2]):
-                    logger.info(f'SMA-8 breaks Lower bound of VWAP in {etr_inst["name"]}')
+                    logger.info(f'SMA-8 breaks Lower bound of VWAP in {spot}')
                     strike_price = xt.strike_price(orders['idx'])
                     etr_inst['strike'] = strike_price - 300 if weekday != 3 else strike_price - 200
                 else:
@@ -209,16 +210,21 @@ def execute(orders):
                 etr_inst['orderID'] = None
                 etr_inst['tradedPrice'] = None
                 logger.info(f'Placing orders for {etr_inst["set"]}. {etr_inst["name"]} at {orders["startTime"]}..')
-                orderID = xt.place_order_id(etr_inst['symbol'], etr_inst['txn_type'], etr_inst['qty'])
+                if etr_inst['symbol'] != -1:
+                    orderID = xt.place_order_id(etr_inst['symbol'], etr_inst['txn_type'], etr_inst['qty'])
+                else:
+                    logger.error(f'Symbol is not valid: {etr_inst["symbol"]}')
+                    raise Exception('Symbol is not valid')
                 etr_inst['orderID'] = orderID
                 tradedPrice, dateTime = xt.get_traded_price(orderID)
                 etr_inst['tradedPrice'] = tradedPrice
                 etr_inst['dateTime'] = dateTime
+                etr_inst['set_type'] = 'Entry'
                 if orderID and tradedPrice:
-                    etr_inst['set_type'] = 'Entry'
+                    etr_inst['status'] = 'Entry'
                     orders['status'] = 'Entered'
                 else:
-                    etr_inst['set_type'] = 'Entry'
+                    etr_inst['status'] = 'Failed'
                     orders['status'] = 'Entry_Failed'
                 logger.info(f'Entry order dtls: {etr_inst}')
                 tr_insts.append(etr_inst)
@@ -226,7 +232,7 @@ def execute(orders):
                 continue
     
             elif universal['exit_status'] == 'Exited':
-                logger.info(f'Universal exit condition passed. Exiting the loop')
+                logger.info('Universal exit condition passed. Exiting the loop')
                 break
     
             if orders['status'] == 'Entered':
@@ -239,7 +245,7 @@ def execute(orders):
                 break
 
         except Exception:
-            logger.exception(f'API Error in MultiThread -set no: {orders["setno"]}')
+            logger.exception(f'API Error in MultiThread - set no: {orders["setno"]}')
             break
 
 def exitCheck(universal):
@@ -291,6 +297,11 @@ if __name__ == '__main__':
     except Exception as e:
         logger.exception(f'Failed to get masterDump/ expiryDates. Reason --> {e} \n Exiting..')
         exit()
+    
+    spot = 'BANKNIFTY'
+    cur_month = (datetime.strptime(monthly_exp,'%d%b%Y').strftime('%b').upper())
+    fut_symbol = 'BANKNIFTY21'+cur_month+'FUT' if spot == 'BANKNIFTY' else 'NIFTY21'+cur_month+'FUT'
+    fetch_ohlc = RepeatedTimer(29, fetchOHLC, fut_symbol, 60)
     # all the sets will execute in parallel with threads
     for i in range(len(orders)):
         t = Thread(target=execute, args=(orders[i],))
@@ -301,9 +312,14 @@ if __name__ == '__main__':
     getGlobalPnL()
     fetchLtp = RepeatedTimer(5, getLTP)
     fetchPnL = RepeatedTimer(5, getGlobalPnL)
+    
     try:
         exitCheck(universal)
         time.sleep(5)
+    except KeyboardInterrupt:
+        logger.error('\n\nKeyboard exception received. Exiting.')
+        universal['exit_status'] = 'Exited' #todo write dead case here to stop the threads in case of exitcheck exception
+        # exit()
     except Exception:
         universal['exit_status'] = 'Exited'
         logger.exception('Error Occured..')

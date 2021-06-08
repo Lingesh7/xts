@@ -73,6 +73,7 @@ ltp = {}
 gl_pnl = None
 pnl_dump = []
 df = None
+gdf = None
 
 #functions
 
@@ -155,7 +156,7 @@ def execute(orders):
                 # symbol = orders['symbol']
                 df = fetchOHLC(orders["symbol"], 60)
                 # logger.info(df)
-                logger.info(df['Timestamp'].iloc[-1])
+                logger.info(f"{orders['name']} - Entered at {df['Timestamp'].iloc[-1]}")
                 mark_price = round(float(df['Close'].iloc[-1]),2)
                 le = round_nearest(mark_price*1.01)
                 lt1 = round_nearest(mark_price*1.02)
@@ -163,10 +164,12 @@ def execute(orders):
                 se = round_nearest(mark_price*0.99)
                 st1 = round_nearest(mark_price*0.98)
                 st2 = round_nearest(mark_price*0.97)
-                orders['status'] = 'active'
-                logger.info(f'{orders["status"]} , {orders["symbol"]} {orders["name"]} {mark_price} {le} {lt1} {lt2} {se} {st1} {st2} ')
-
-
+                if all([le,se,st1,st2,lt1,lt2,mark_price]):
+                    orders['status'] = 'active'
+                    logger.info(f'{orders["status"]} , {orders["symbol"]} {orders["name"]} {mark_price} {le} {lt1} {lt2} {se} {st1} {st2} ')
+                else:
+                    continue
+        
         if orders['status'] == 'active':
             # logger.info('active block')
             if orders["symbol"] in ltp.keys():
@@ -218,7 +221,7 @@ def execute(orders):
             orders['status'] = 'SL_Placed'
             logger.info(f'order status of {orders["name"]} is {orders["status"]}')
 
-        if universal['exit_status'] == 'Idle':
+        if universal['exit_status'] == 'Idle' and orders['status'] != 'active':
             if orders['status'] == 'SL_Placed' or orders['status'] == 'SL_Modified':
                 # logger.info(f'checking SL_Hit condtions for {orders["name"]}')
                 orderLists = xt.get_order_list()

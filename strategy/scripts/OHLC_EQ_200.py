@@ -94,7 +94,7 @@ if __name__ == '__main__':
                         endTime=cdate1+' 153000',
                         compressionValue=60)
             # print("OHLC: " + str(ohlc))
-            if 'result 'in ohlc:
+            if 'result' in ohlc:
                 if ohlc['result']['dataReponse'] != '':
                     dataresp= ohlc['result']['dataReponse']
                     spl = dataresp.split(',')

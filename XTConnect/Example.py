@@ -202,9 +202,9 @@ print("Master: " + str(response))
 """Get OHLC Request"""
 response = xt.get_ohlc(
     exchangeSegment=xt.EXCHANGE_NSECM,
-    exchangeInstrumentID='NIFTY 50',
-    startTime='Jun 04 2021 091500',
-    endTime='Jun 04 2021 153000',
+    exchangeInstrumentID=22,
+    startTime='Jun 07 2021 091500',
+    endTime='Jun 07 2021 103000',
     compressionValue=1)
 print("OHLC: " + str(response))
 

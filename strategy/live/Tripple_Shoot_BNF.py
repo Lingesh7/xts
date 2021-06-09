@@ -1,13 +1,20 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Jun 3 23:50:22 2021
-Strategy : ATM Short Straddle at 09:59 AM
-Banknifty ATM short straddle
-Entry time 9.59 Am
+Strategy : TRIPLE SHOOT - BANKNIFTY
+Intraday
+BANKNifty ATM short straddle
+Number of short straddles = 3
+Entry time 9.30 Am
 Exit time 3.06
-SL 50 points in CE
-SL 60 points in PE
-Strategy-1
+1st leg SL @ 27% of premium in CE
+2nd leg SL @ 55% of premium in CE
+3rd leg SL @ 75% of premium in CE
+1st leg SL @ 27% of premium in PE
+2nd leg SL @ 55% of premium in PE
+3rd leg SL @ 75% of premium in PE
+Max loss per day = Rs 6000
+Strategy-2
 @author: lmahendran
 """
 from datetime import datetime
@@ -55,13 +62,27 @@ cdate = xt.CDATE
 # orders = [{'refId':10001, 'setno':1, 'name':"TATAMOTORS", 'symbol':3456, 'status': "Idle",
 #           'startTime':"09:20:01", 'capital':50000}]
 
-orders = [{'refId': 10001, 'setno': 1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-           'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "09:30:00", 'sl_points': 50},
-          {'refId': 10002, 'setno': 2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-           'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "09:30:00", 'sl_points': 60}]
-
-universal = {'exit_status': 'Idle',
-             'exitTime': '15:06:00', 'ext_txn_type': 'buy'}
+orders = [
+        {'refId': 10001, 'setno': 1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
+           'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1,
+            'startTime': "09:59:00", 'sl_points': 1.27},
+        {'refId': 10002, 'setno': 2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
+           'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1,
+            'startTime': "09:59:00", 'sl_points': 1.27},
+        {'refId': 10003, 'setno': 3, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
+           'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1,
+            'startTime': "09:59:00", 'sl_points': 1.55},
+        {'refId': 10004, 'setno': 4, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
+           'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1,
+            'startTime': "09:59:00", 'sl_points': 1.55},
+        {'refId': 10005, 'setno': 5, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
+           'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1,
+            'startTime': "09:59:00", 'sl_points': 1.75},
+        {'refId': 10006, 'setno': 6, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
+           'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1,
+            'startTime': "09:59:00", 'sl_points': 1.75}
+            ]
+universal = {'exit_status': 'Idle', 'exitTime': '15:06:00', 'min_price': -6000, 'ext_txn_type': 'buy'}
 
 etr_inst = None
 rpr_inst = None
@@ -130,10 +151,10 @@ def execute(orders):
     startTime = datetime.strptime(
         (cdate + " " + orders['startTime']), "%d-%m-%Y %H:%M:%S")
     while True:
-        # print(f'{orders["name"]}: {ltp[orders["symbol"]]}')
-        # logger.info(f'{orders["status"]}')
-        if orders['status'] == 'Idle':
-            if (datetime.now() >= startTime):
+        try:
+            if startTime >= datetime.now():
+                continue
+            if orders['status'] == 'Idle':
                 etr_inst['set'] = orders['setno']
                 etr_inst['txn_type'] = orders['ent_txn_type']
                 etr_inst['strike'] = xt.strike_price(orders['idx'])
@@ -176,75 +197,77 @@ def execute(orders):
                 logger.info(
                     f'order status of {rpr_inst["set"]}.{rpr_inst["name"]} is {orders["status"]}')
 
-        if orders['status'] == 'Entered':
-            logger.info(
-                f'Placing SL order for {etr_inst["set"]}. {etr_inst["name"]}')
-            rpr_inst['set'] = orders['setno']
-            rpr_inst['txn_type'] = orders['rpr_txn_type']
-            # rpr_inst['strike'] = strikePrice(orders['idx'])
-            rpr_inst['strike'] = etr_inst['strike']
-            rpr_inst['qty'] = etr_inst['qty']
-            rpr_inst['tr_qty'] = - \
-                rpr_inst['qty'] if orders['rpr_txn_type'] == 'sell' else rpr_inst['qty']
-            if orders['expiry'] == 'week':
-                rpr_inst['expiry'] = weekly_exp
-            rpr_inst['optionType'] = orders['otype']
-            rpr_inst['name'] = etr_inst["name"]
-            rpr_inst['symbol'] = etr_inst["symbol"]
-            rpr_inst['orderID'] = None
-            rpr_inst['tradedPrice'] = None
-            orderID = xt.place_order_id(
-                rpr_inst['symbol'], rpr_inst['txn_type'], rpr_inst['qty'], sl=orders["sl_points"])
-            rpr_inst['orderID'] = orderID
-            orders['status'] = 'SL_Placed'
-            logger.info(
-                f'order status of {rpr_inst["set"]}.{rpr_inst["name"]} is {orders["status"]}')
-            continue
+            if orders['status'] == 'Entered':
+                logger.info(
+                    f'Placing SL order for {etr_inst["set"]}. {etr_inst["name"]}')
+                rpr_inst['set'] = orders['setno']
+                rpr_inst['txn_type'] = orders['rpr_txn_type']
+                # rpr_inst['strike'] = strikePrice(orders['idx'])
+                rpr_inst['strike'] = etr_inst['strike']
+                rpr_inst['qty'] = etr_inst['qty']
+                rpr_inst['tr_qty'] = - \
+                    rpr_inst['qty'] if orders['rpr_txn_type'] == 'sell' else rpr_inst['qty']
+                if orders['expiry'] == 'week':
+                    rpr_inst['expiry'] = weekly_exp
+                rpr_inst['optionType'] = orders['otype']
+                rpr_inst['name'] = etr_inst["name"]
+                rpr_inst['symbol'] = etr_inst["symbol"]
+                rpr_inst['orderID'] = None
+                rpr_inst['tradedPrice'] = None
+                orderID = xt.place_order_id(
+                    rpr_inst['symbol'], rpr_inst['txn_type'], rpr_inst['qty'], sl=(etr_inst['tradedPrice']*orders["sl_points"]))
+                rpr_inst['orderID'] = orderID
+                orders['status'] = 'SL_Placed'
+                logger.info(
+                    f'order status of {rpr_inst["set"]}.{rpr_inst["name"]} is {orders["status"]}')
+                continue
 
-        if universal['exit_status'] == 'Idle':
-            if orders['status'] == 'SL_Placed':
-                orderLists = xt.get_order_list()
-                if orderLists:
-                    new_sl_orders = [ol for ol in orderLists if ol['AppOrderID']
-                                     == rpr_inst['orderID'] and ol['OrderStatus'] != 'Filled']
-                    if not new_sl_orders:
-                        logger.info(
-                            f'Stop Loss Order Triggered for {rpr_inst["set"]}. {rpr_inst["name"]}')
-                        sl_tradedPrice = float(next((orderList['OrderAverageTradedPrice']
-                                                     for orderList in orderLists
-                                                     if orderList['AppOrderID'] == rpr_inst['orderID'] and
-                                                     orderList['OrderStatus'] == 'Filled'), None).replace(',', ''))
-                        LastUpdateDateTime = datetime.fromisoformat(next(
-                            (orderList['LastUpdateDateTime'] for orderList in orderLists if orderList['AppOrderID'] == rpr_inst['orderID'] and orderList['OrderStatus'] == 'Filled'))[0:19])
-                        sl_dateTime = LastUpdateDateTime.strftime(
-                            "%Y-%m-%d %H:%M:%S")
-                        logger.info(
-                            f"Stop Loss traded price is: {tradedPrice} and ordered time is: {sl_dateTime}")
-                        rpr_inst['tradedPrice'] = sl_tradedPrice
-                        rpr_inst['dateTime'] = sl_dateTime
-                        rpr_inst['set_type'] = 'Repair'
-                        orders['status'] = 'SL_Hit'
-                        logger.info(f'Repair order dtls: {rpr_inst}')
-                        tr_insts.append(rpr_inst)
-                        logger.info(
-                            f'order status of {rpr_inst["set"]}.{rpr_inst["name"]} is {orders["status"]}')
-                        continue
+            if universal['exit_status'] == 'Idle':
+                if orders['status'] == 'SL_Placed':
+                    orderLists = xt.get_order_list()
+                    if orderLists:
+                        new_sl_orders = [ol for ol in orderLists if ol['AppOrderID']
+                                         == rpr_inst['orderID'] and ol['OrderStatus'] != 'Filled']
+                        if not new_sl_orders:
+                            logger.info(
+                                f'Stop Loss Order Triggered for {rpr_inst["set"]}. {rpr_inst["name"]}')
+                            sl_tradedPrice = float(next((orderList['OrderAverageTradedPrice']
+                                                         for orderList in orderLists
+                                                         if orderList['AppOrderID'] == rpr_inst['orderID'] and
+                                                         orderList['OrderStatus'] == 'Filled'), None).replace(',', ''))
+                            LastUpdateDateTime = datetime.fromisoformat(next(
+                                (orderList['LastUpdateDateTime'] for orderList in orderLists if orderList['AppOrderID'] == rpr_inst['orderID'] and orderList['OrderStatus'] == 'Filled'))[0:19])
+                            sl_dateTime = LastUpdateDateTime.strftime(
+                                "%Y-%m-%d %H:%M:%S")
+                            logger.info(
+                                f"Stop Loss traded price is: {tradedPrice} and ordered time is: {sl_dateTime}")
+                            rpr_inst['tradedPrice'] = sl_tradedPrice
+                            rpr_inst['dateTime'] = sl_dateTime
+                            rpr_inst['set_type'] = 'Repair'
+                            orders['status'] = 'SL_Hit'
+                            logger.info(f'Repair order dtls: {rpr_inst}')
+                            tr_insts.append(rpr_inst)
+                            logger.info(
+                                f'order status of {rpr_inst["set"]}.{rpr_inst["name"]} is {orders["status"]}')
+                            continue
 
-        elif universal['exit_status'] == 'Exited':
-            orders['status'] = 'Universal_Exit'
-            logger.info(
-                f'Univ Exit cond passed for {etr_inst["set"]}. {etr_inst["name"]}, hence cancelling SL order')
-            xt.cancel_order_id(rpr_inst['orderID'])
+            elif universal['exit_status'] == 'Exited':
+                orders['status'] = 'Universal_Exit'
+                logger.info(
+                    f'Univ Exit cond passed for {etr_inst["set"]}. {etr_inst["name"]}, hence cancelling SL order')
+                xt.cancel_order_id(rpr_inst['orderID'])
+                break
+
+            if orders['status'] == 'SL_Hit' or orders['status'] == 'Entry_Failed':
+                logger.info(
+                    f'Order must hit SL/Tgt. Exiting. Reason: {orders["status"]}')
+                logger.info(
+                    f'Completed - Order set: {orders["setno"]}. Exiting the thread')
+                break
+            time.sleep(2)
+        except Exception:
+            logger.exception(f'API Error in MultiThread - set no: {orders["setno"]}')
             break
-
-        if orders['status'] == 'SL_Hit' or orders['status'] == 'Entry_Failed':
-            logger.info(
-                f'Order must hit SL/Tgt. Exiting. Reason: {orders["status"]}')
-            logger.info(
-                f'Completed - Order set: {orders["setno"]}. Exiting the thread')
-            break
-        time.sleep(2)
-
 
 def exitCheck(universal):
     global tr_insts
@@ -256,7 +279,7 @@ def exitCheck(universal):
         if universal['exit_status'] == 'Idle':
             # Exit condition check
             # logger.info(f'exitcheck - {gl_pnl}') #todo comment this line after execution
-            if (datetime.now() >= exitTime):
+            if (datetime.now() >= exitTime) or gl_pnl <= universal['minPrice']:
                 logger.info(
                     'Exit time condition passed. Squaring off all open positions')
                 for i in range(len(gdf)):

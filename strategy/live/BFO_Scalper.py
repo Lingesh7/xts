@@ -64,17 +64,15 @@ cdate = xt.CDATE
 #           'startTime':"09:20:01", 'capital':50000}]
 
 orders = [{'refId': 10001, 'setno': 1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-           'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "09:20:00" },
+           'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "09:59:00" },
           {'refId': 10002, 'setno': 2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-           'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "09:20:00"}]
-universal = {'exit_status': 'Idle', 'exitTime': '15:06:00', 'ext_txn_type': 'buy'}
+           'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "09:59:00"}]
+universal = {'exit_status': 'Idle', 'exitTime': '15:06:00', 'ext_txn_type': 'buy','minPrice': -3000, 'maxPrice': 7500}
 
 etr_inst = None
 rpr_inst = None
 ext_inst = None
 tr_insts = None
-universal = {'exit_status': 'Idle',
-             'ext_txn_type': 'buy', 'exitTime': '15:05:00','minPrice': -3000, 'maxPrice': 7500}
 ltp = {}
 gl_pnl = None
 pnl_dump = []
@@ -83,6 +81,12 @@ data_df = None
 gdf = None
 
 # functions
+
+def wait():
+    now = datetime.datetime.now()
+    sec = now.second
+    if sec != 0:
+        time.sleep(60-sec)
 
 
 def getLTP():
@@ -133,11 +137,11 @@ def getGlobalPnL():
 def fetchOHLC(ticker, duration):
     global data_df
     try:
-        symbol = xt.fo_lookup(ticker, instrument_df)
+        # symbol = xt.fo_lookup(ticker, instrument_df)
         cur_date = datetime.strftime(datetime.now(), "%b %d %Y")
         nowtime = datetime.now().strftime('%H%M%S')
         ohlc = xt.get_ohlc(exchangeSegment=xt.EXCHANGE_NSEFO,
-                        exchangeInstrumentID=symbol,
+                        exchangeInstrumentID=ticker,
                         startTime=f'{cur_date} 091500',
                         endTime=f'{cur_date} {nowtime}',
                         compressionValue=duration)
@@ -148,7 +152,7 @@ def fetchOHLC(ticker, duration):
         data_df = data_df.astype(dtype={'open': float, 'high': float, 'low': float, 'close': float, 'volume': int})
         data_df['timestamp'] = pd.to_datetime(data_df['Timestamp'].astype('int'), unit='s')
     except Exception:
-        logger.exception(f'Error in fetching OHLC for {symbol}')
+        logger.exception(f'Error in fetching OHLC for {ticker}')
     return data_df
 
 
@@ -173,7 +177,7 @@ def execute(orders):
     weekday = datetime.today().weekday()
     while True:
         try:
-            time.sleep(30)
+            # time.sleep(30)
             if startTime >= datetime.now():
                 continue
             # logger.info('Time window attained..')
@@ -207,8 +211,8 @@ def execute(orders):
                     etr_inst['name'] = orders['idx'] + (datetime.strftime(datetime.strptime(
                         etr_inst['expiry'], '%d%b%Y'), '%y%#m%d')) + str(etr_inst['strike']) + etr_inst['optionType']
                 etr_inst['symbol'] = xt.fo_lookup(etr_inst['name'], instrument_df)
-                etr_inst['orderID'] = None
-                etr_inst['tradedPrice'] = None
+                orderID = None
+                tradedPrice = None
                 logger.info(f'Placing orders for {etr_inst["set"]}. {etr_inst["name"]} at {orders["startTime"]}..')
                 if etr_inst['symbol'] != -1:
                     orderID = xt.place_order_id(etr_inst['symbol'], etr_inst['txn_type'], etr_inst['qty'])
@@ -216,15 +220,16 @@ def execute(orders):
                     logger.error(f'Symbol is not valid: {etr_inst["symbol"]}')
                     raise Exception('Symbol is not valid')
                 etr_inst['orderID'] = orderID
-                tradedPrice, dateTime = xt.get_traded_price(orderID)
+                if orderID:
+                    tradedPrice, dateTime = xt.get_traded_price(orderID)
                 etr_inst['tradedPrice'] = tradedPrice
                 etr_inst['dateTime'] = dateTime
                 etr_inst['set_type'] = 'Entry'
                 if orderID and tradedPrice:
-                    etr_inst['status'] = 'Entry'
+                    etr_inst['status'] = 'Sucess'
                     orders['status'] = 'Entered'
                 else:
-                    etr_inst['status'] = 'Failed'
+                    etr_inst['status'] = 'Fail'
                     orders['status'] = 'Entry_Failed'
                 logger.info(f'Entry order dtls: {etr_inst}')
                 tr_insts.append(etr_inst)
@@ -243,7 +248,7 @@ def execute(orders):
                 logger.info(f'Exiting todays trade as entry missed. Reason: {orders["status"]}')
                 logger.info(f'Order Failed - Order set: {orders["setno"]}. Exiting the thread')
                 break
-
+            time.sleep(30)
         except Exception:
             logger.exception(f'API Error in MultiThread - set no: {orders["setno"]}')
             break
@@ -256,6 +261,8 @@ def exitCheck(universal):
     while universal['exit_status'] == 'Idle':
         if (datetime.now() >= exitTime) or (gl_pnl <= universal['minPrice']) or (gl_pnl >= universal['maxPrice']):
             logger.info('Exit time condition passed. Squaring off all open positions')
+            if gdf is None:
+                continue
             for i in range(len(gdf)):
                 if gdf["tr_qty"].values[i] == 0:
                     continue
@@ -300,8 +307,11 @@ if __name__ == '__main__':
     
     spot = 'BANKNIFTY'
     cur_month = (datetime.strptime(monthly_exp,'%d%b%Y').strftime('%b').upper())
-    fut_symbol = 'BANKNIFTY21'+cur_month+'FUT' if spot == 'BANKNIFTY' else 'NIFTY21'+cur_month+'FUT'
-    fetch_ohlc = RepeatedTimer(29, fetchOHLC, fut_symbol, 60)
+    fut_name = 'BANKNIFTY21'+cur_month+'FUT' if spot == 'BANKNIFTY' else 'NIFTY21'+cur_month+'FUT'
+    fut_symbol = xt.fo_lookup(fut_name, instrument_df)
+    wait()
+    fetchOHLC(fut_symbol, 60)
+    fetch_ohlc = RepeatedTimer(59, fetchOHLC, fut_symbol, 60)
     # all the sets will execute in parallel with threads
     for i in range(len(orders)):
         t = Thread(target=execute, args=(orders[i],))
@@ -327,6 +337,7 @@ if __name__ == '__main__':
         logger.info('Cleaning up..')
         fetchLtp.stop()
         fetchPnL.stop()
+        fetch_ohlc.stop()
         _ = [t.join() for t in threads]
         time.sleep(5)
         # prints dump to excel
@@ -339,3 +350,5 @@ if __name__ == '__main__':
         logger.info(f'\n\n CombinedPositionsLists: \n {gdf}')
         logger.info(f'\n\n Global PnL : {gl_pnl} \n')
         logger.info('--------------------------------------------')
+
+

@@ -188,6 +188,12 @@ PAUSE
 git  to include new files/folders added to gitignore 'git rm --cached -r strategy'
 
 
+db = sqlite3.connect(f'../ohlc/BANKNIFTY_JUN_OHLC.db')
+cur = db.cursor()
+pd.read_sql("SELECT * FROM BANKNIFTY_JUNE WHERE date(Timestamp) = date('2021-06-08')" , db)
+cur.execute("DELETE FROM BANKNIFTY_JUNE WHERE date(Timestamp) = date('2021-06-09');")
+db.commit()
+
 
 https://ttblaze.iifl.com/dashboard#!/app
 interactive:

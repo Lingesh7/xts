@@ -81,7 +81,7 @@ if __name__ == '__main__':
     if len(skipped) != 0:
         bot_sendtext(f'FUT OHLC not ran for instreuments: {skipped}', b_tok)
     else:
-        bot_sendtext(f'FUT OHLC ran successfully today', b_tok)
+        bot_sendtext('FUT OHLC ran successfully today', b_tok)
     cur.close()
     db.close()
     logger.info('==================END=======================')

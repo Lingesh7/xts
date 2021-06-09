@@ -83,7 +83,7 @@ gdf = None
 # functions
 
 def wait():
-    now = datetime.datetime.now()
+    now = datetime.now()
     sec = now.second
     if sec != 0:
         time.sleep(60-sec)
@@ -93,12 +93,12 @@ def getLTP():
     global ltp
     # ltp={}
     if tr_insts:
-        logger.info('inside tr_insts cond - getLTP')
-        symbols = [i['symbol'] for i in orders]
+        # logger.info('inside tr_insts cond - getLTP')
+        symbols = [i['symbol'] for i in tr_insts if i['set_type'] == 'Entry']
         instruments = []
         for symbol in symbols:
             instruments.append(
-                {'exchangeSegment': 1, 'exchangeInstrumentID': symbol})
+                {'exchangeSegment': 2, 'exchangeInstrumentID': symbol})
         xt.send_unsubscription(Instruments=instruments, xtsMessageCode=1502)
         subs_resp = xt.send_subscription(
             Instruments=instruments, xtsMessageCode=1502)
@@ -169,7 +169,6 @@ def execute(orders):
     global tr_insts, data_df
     tr_insts = []
     etr_inst = {}
-    rpr_inst = {}
     # idx = orders['idx']
     # cur_month = (datetime.strptime(monthly_exp,'%d%b%Y').strftime('%b').upper())
     # fut_symbol = 'BANKNIFTY21'+cur_month+'FUT' if idx == 'NIFTYBANK' else 'NIFTY21'+cur_month+'FUT'
@@ -233,7 +232,7 @@ def execute(orders):
                     orders['status'] = 'Entry_Failed'
                 logger.info(f'Entry order dtls: {etr_inst}')
                 tr_insts.append(etr_inst)
-                logger.info(f'order status of {rpr_inst["set"]}.{rpr_inst["name"]} is {orders["status"]}')
+                logger.info(f'order status of {etr_inst["set"]}.{etr_inst["name"]} is {orders["status"]}')
                 continue
     
             elif universal['exit_status'] == 'Exited':
@@ -252,6 +251,7 @@ def execute(orders):
         except Exception:
             logger.exception(f'API Error in MultiThread - set no: {orders["setno"]}')
             break
+
 
 def exitCheck(universal):
     global tr_insts
@@ -273,18 +273,19 @@ def exitCheck(universal):
                 ext_inst['name'] = str(gdf['name'].values[i])
                 ext_inst['optionType'] = ext_inst['name'][-2:]
                 ext_inst['strike'] = ext_inst['name'][-7:-2]
-                ext_inst['orderID'] = None
-                ext_inst['tradedPrice'] = None
+                # ext_inst['orderID'] = None
+                # ext_inst['tradedPrice'] = None
                 orderID = xt.place_order_id(ext_inst['symbol'], ext_inst['txn_type'], ext_inst['qty'])
                 ext_inst['orderID'] = orderID
                 tradedPrice, dateTime = xt.get_traded_price(orderID)
                 ext_inst['tradedPrice'] = tradedPrice
                 ext_inst['dateTime'] = dateTime
+                ext_inst['set_type'] = 'Universal_Exit'
                 if orderID and tradedPrice:
-                    ext_inst['set_type'] = 'Universal_Exit'
+                    ext_inst['status'] = 'Success'
                     # universal['exit_status'] = 'Exited'
                 else:
-                    ext_inst['set_type'] = 'Universal_Exit'
+                    ext_inst['status'] = 'Fail'
                     logger.error(f"Error while exiting the order set {orders['setno']}, Exit Immediately")
                 logger.info(f'Universal Exit order dtls: {ext_inst}')
                 tr_insts.append(ext_inst.copy())
@@ -342,7 +343,8 @@ if __name__ == '__main__':
         time.sleep(5)
         # prints dump to excel
         getGlobalPnL()  # getting latest data
-        data_to_excel(pnl_dump, df, gdf, gl_pnl, script_name, '09:59')
+        if isinstance(df, pd.DataFrame):
+            data_to_excel(pnl_dump, df, gdf, gl_pnl, script_name, '09:59')
         logger.info('--------------------------------------------')
         logger.info(f'Total Orders and its status: \n {tr_insts} \n')
         logger.info('********** Summary **********')

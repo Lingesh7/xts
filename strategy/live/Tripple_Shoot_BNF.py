@@ -3,7 +3,7 @@
 Created on Thu Jun 3 23:50:22 2021
 Strategy : TRIPLE SHOOT - BANKNIFTY
 Intraday
-BANKNifty ATM short straddle
+BANKNIFTY ATM short straddle
 Number of short straddles = 3
 Entry time 9.30 Am
 Exit time 3.06
@@ -14,7 +14,7 @@ Exit time 3.06
 2nd leg SL @ 55% of premium in PE
 3rd leg SL @ 75% of premium in PE
 Max loss per day = Rs 6000
-Strategy-2
+Strategy-3
 @author: lmahendran
 """
 from datetime import datetime
@@ -34,6 +34,7 @@ from openpyxl import load_workbook
 from logging.handlers import TimedRotatingFileHandler
 from sys import exit
 import os
+from pprint import pformat as pp
 
 try:
     os.chdir(r'D:\Python\First_Choice_Git\xts\strategy\live')
@@ -57,57 +58,54 @@ if not xt:
     exit()
 
 cdate = xt.CDATE
-# tickers = ['JINDALSTEL','IBULHSGFIN','TATASTEEL','TATAMOTORS']
-# startTime = '09:20:00'
-# orders = [{'refId':10001, 'setno':1, 'name':"TATAMOTORS", 'symbol':3456, 'status': "Idle",
-#           'startTime':"09:20:01", 'capital':50000}]
 
 orders = [
-        {'refId': 10001, 'setno': 1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-           'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1,
-            'startTime': "09:59:00", 'sl_points': 1.27},
-        {'refId': 10002, 'setno': 2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-           'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1,
-            'startTime': "09:59:00", 'sl_points': 1.27},
-        {'refId': 10003, 'setno': 3, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-           'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1,
-            'startTime': "09:59:00", 'sl_points': 1.55},
-        {'refId': 10004, 'setno': 4, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-           'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1,
-            'startTime': "09:59:00", 'sl_points': 1.55},
-        {'refId': 10005, 'setno': 5, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-           'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1,
-            'startTime': "09:59:00", 'sl_points': 1.75},
-        {'refId': 10006, 'setno': 6, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-           'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1,
-            'startTime': "09:59:00", 'sl_points': 1.75}
-            ]
-universal = {'exit_status': 'Idle', 'exitTime': '15:06:00', 'min_price': -6000, 'ext_txn_type': 'buy'}
+    {'refId': 10001, 'setno': 1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
+     'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1,
+     'startTime': "09:30:00", 'sl_points': 1.27},
+    {'refId': 10002, 'setno': 2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
+     'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1,
+     'startTime': "09:30:00", 'sl_points': 1.27},
+    {'refId': 10003, 'setno': 3, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
+      'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1,
+      'startTime': "09:30:00", 'sl_points': 1.55},
+    {'refId': 10004, 'setno': 4, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
+      'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1,
+      'startTime': "09:30:00", 'sl_points': 1.55},
+    {'refId': 10005, 'setno': 5, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
+      'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1,
+      'startTime': "09:30:00", 'sl_points': 1.75},
+    {'refId': 10006, 'setno': 6, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
+      'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1,
+      'startTime': "09:30:00", 'sl_points': 1.75}
+]
+universal = {'exit_status': 'Idle', 'exitTime': '15:06:00',
+             'minPrice': -6000, 'ext_txn_type': 'buy'}
 
 etr_inst = None
 rpr_inst = None
 ext_inst = None
 tr_insts = None
-universal = {'exit_status': 'Idle',
-             'ext_txn_type': 'buy', 'exitTime': '15:06:00'}
 ltp = {}
 gl_pnl = None
 pnl_dump = []
 df = None
+gdf = None
 
 # functions
-
+def round_nearest(x,a=0.05):
+  return round(round(x/a)*a ,2)
 
 def getLTP():
     global ltp
     # ltp={}
     if tr_insts:
-        logger.info('inside tr_insts cond - getLTP')
-        symbols = [i['symbol'] for i in orders]
+        # logger.info('inside tr_insts cond - getLTP')
+        symbols=[i['symbol'] for i in tr_insts if i['set_type'] == 'Entry']
         instruments = []
         for symbol in symbols:
             instruments.append(
-                {'exchangeSegment': 1, 'exchangeInstrumentID': symbol})
+                {'exchangeSegment': 2, 'exchangeInstrumentID': symbol})
         xt.send_unsubscription(Instruments=instruments, xtsMessageCode=1502)
         subs_resp = xt.send_subscription(
             Instruments=instruments, xtsMessageCode=1502)
@@ -176,26 +174,28 @@ def execute(orders):
                         etr_inst['expiry'], '%d%b%Y'), '%y%#m%d')) + str(etr_inst['strike']) + etr_inst['optionType']
                 etr_inst['symbol'] = xt.fo_lookup(
                     etr_inst['name'], instrument_df)
-                etr_inst['orderID'] = None
-                etr_inst['tradedPrice'] = None
+                # orderID = None
+                # tradedPrice = None
                 logger.info(
                     f'Placing orders for {etr_inst["set"]}. {etr_inst["name"]} at {orders["startTime"]}..')
                 orderID = xt.place_order_id(
-                    etr_inst['symbol'], etr_inst['txn_type'], etr_inst['qty'], xseg='eq')
+                    etr_inst['symbol'], etr_inst['txn_type'], etr_inst['qty'])
                 etr_inst['orderID'] = orderID
                 tradedPrice, dateTime = xt.get_traded_price(orderID)
                 etr_inst['tradedPrice'] = tradedPrice
                 etr_inst['dateTime'] = dateTime
+                etr_inst['set_type'] = 'Entry'
                 if orderID and tradedPrice:
-                    etr_inst['set_type'] = 'Entry'
+                    etr_inst['status'] = 'Sucess'
                     orders['status'] = 'Entered'
                 else:
-                    etr_inst['set_type'] = 'Entry'
+                    etr_inst['status'] = 'Fail'
                     orders['status'] = 'Entry_Failed'
-                logger.info(f'Entry order dtls: {etr_inst}')
+                # logger.info(f'Entry order dtls: {etr_inst}')
+                logger.info(f"\nEntry order dtls:\n {pp(etr_inst)}")
                 tr_insts.append(etr_inst)
                 logger.info(
-                    f'order status of {rpr_inst["set"]}.{rpr_inst["name"]} is {orders["status"]}')
+                    f'order status of {etr_inst["set"]}.{etr_inst["name"]} is {orders["status"]}')
 
             if orders['status'] == 'Entered':
                 logger.info(
@@ -207,17 +207,17 @@ def execute(orders):
                 rpr_inst['qty'] = etr_inst['qty']
                 rpr_inst['tr_qty'] = - \
                     rpr_inst['qty'] if orders['rpr_txn_type'] == 'sell' else rpr_inst['qty']
-                if orders['expiry'] == 'week':
-                    rpr_inst['expiry'] = weekly_exp
-                rpr_inst['optionType'] = orders['otype']
+                rpr_inst['expiry'] = etr_inst['expiry']
+                rpr_inst['optionType'] = etr_inst['optionType']
                 rpr_inst['name'] = etr_inst["name"]
                 rpr_inst['symbol'] = etr_inst["symbol"]
-                rpr_inst['orderID'] = None
-                rpr_inst['tradedPrice'] = None
-                orderID = xt.place_order_id(
-                    rpr_inst['symbol'], rpr_inst['txn_type'], rpr_inst['qty'], sl=(etr_inst['tradedPrice']*orders["sl_points"]))
-                rpr_inst['orderID'] = orderID
-                orders['status'] = 'SL_Placed'
+                orderID_sl = None
+                sl_tradedPrice = None
+                sl = round_nearest(etr_inst['tradedPrice'] * orders["sl_points"])
+                orderID_sl = xt.place_order_id(
+                    rpr_inst['symbol'], rpr_inst['txn_type'], rpr_inst['qty'], sl=sl)
+                rpr_inst['orderID'] = orderID_sl
+                orders['status'] = 'SL_Placed' if orderID else 'SL_Failed'
                 logger.info(
                     f'order status of {rpr_inst["set"]}.{rpr_inst["name"]} is {orders["status"]}')
                 continue
@@ -244,13 +244,18 @@ def execute(orders):
                             rpr_inst['tradedPrice'] = sl_tradedPrice
                             rpr_inst['dateTime'] = sl_dateTime
                             rpr_inst['set_type'] = 'Repair'
+                            rpr_inst['status'] = 'Sucess' if sl_tradedPrice else 'Fail'
                             orders['status'] = 'SL_Hit'
-                            logger.info(f'Repair order dtls: {rpr_inst}')
+                            # logger.info(f'Repair order dtls: {rpr_inst}')
+                            logger.info(f"\nRepair order dtls:\n {pp(rpr_inst)}")
                             tr_insts.append(rpr_inst)
                             logger.info(
                                 f'order status of {rpr_inst["set"]}.{rpr_inst["name"]} is {orders["status"]}')
                             continue
-
+                elif orders['status'] == 'SL_Failed':
+                    logger.error(f'Error in placing stoloss order. Exiting from the set \
+                                 {orders["setno"]} place sl manually.')
+                    break
             elif universal['exit_status'] == 'Exited':
                 orders['status'] = 'Universal_Exit'
                 logger.info(
@@ -266,8 +271,10 @@ def execute(orders):
                 break
             time.sleep(2)
         except Exception:
-            logger.exception(f'API Error in MultiThread - set no: {orders["setno"]}')
+            logger.exception(
+                f'API Error in MultiThread - set no: {orders["setno"]}')
             break
+
 
 def exitCheck(universal):
     global tr_insts
@@ -295,22 +302,25 @@ def exitCheck(universal):
                     ext_inst['name'] = str(gdf['name'].values[i])
                     ext_inst['optionType'] = ext_inst['name'][-2:]
                     ext_inst['strike'] = ext_inst['name'][-7:-2]
-                    ext_inst['orderID'] = None
-                    ext_inst['tradedPrice'] = None
+                    # ext_inst['orderID'] = None
+                    # ext_inst['tradedPrice'] = None
                     orderID = xt.place_order_id(
                         ext_inst['symbol'], ext_inst['txn_type'], ext_inst['qty'])
                     ext_inst['orderID'] = orderID
-                    tradedPrice, dateTime = xt.get_traded_price(orderID)
+                    if orderID:
+                        tradedPrice, dateTime = xt.get_traded_price(orderID)
                     ext_inst['tradedPrice'] = tradedPrice
                     ext_inst['dateTime'] = dateTime
+                    ext_inst['set_type'] = 'Universal_Exit'
                     if orderID and tradedPrice:
-                        ext_inst['set_type'] = 'Universal_Exit'
+                        ext_inst['status'] = 'Success'
                         # universal['exit_status'] = 'Exited'
                     else:
-                        ext_inst['set_type'] = 'Universal_Exit'
+                        ext_inst['status'] = 'Fail'
                         logger.error(f"Error while exiting the order set \
                                      {orders['setno']}, Exit Immediately")
-                    logger.info(f'Universal Exit order dtls: {ext_inst}')
+                    # logger.info(f'Universal Exit order dtls: {ext_inst}')
+                    logger.info(f"\nUniversal Exit order dtls:\n {pp(ext_inst)}")
                     tr_insts.append(ext_inst.copy())
                 logger.info(
                     'Universal exit func completed. Breaking the main loop')
@@ -362,7 +372,8 @@ if __name__ == '__main__':
         # prints dump to excel
         getGlobalPnL()  # getting latest data
         # dataToExcel(pnl_dump)
-        data_to_excel(pnl_dump, df, gdf, gl_pnl, script_name, '09:59')
+        if isinstance(df, pd.DataFrame):
+            data_to_excel(pnl_dump, df, gdf, gl_pnl, script_name, '09:30')
         # logging the orders and data to log file
         logger.info('--------------------------------------------')
         logger.info(f'Total Orders and its status: \n {tr_insts} \n')

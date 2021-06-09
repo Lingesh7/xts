@@ -27,6 +27,7 @@ from openpyxl import load_workbook
 from logging.handlers import TimedRotatingFileHandler
 from sys import exit
 import os
+from pprint import pformat as pp
 
 try:
     os.chdir(r'D:\Python\First_Choice_Git\xts\strategy\live')
@@ -86,7 +87,7 @@ def getLTP():
         instruments = []
         for symbol in symbols:
             instruments.append(
-                {'exchangeSegment': 1, 'exchangeInstrumentID': symbol})
+                {'exchangeSegment': 2, 'exchangeInstrumentID': symbol})
         xt.send_unsubscription(Instruments=instruments, xtsMessageCode=1502)
         subs_resp = xt.send_subscription(
             Instruments=instruments, xtsMessageCode=1502)
@@ -171,10 +172,11 @@ def execute(orders):
                 else:
                     etr_inst['set_type'] = 'Entry'
                     orders['status'] = 'Entry_Failed'
-                logger.info(f'Entry order dtls: {etr_inst}')
+                # logger.info(f'Entry order dtls: {etr_inst}')
+                logger.info(f"\Entry order dtls:\n {pp(etr_inst)}")
                 tr_insts.append(etr_inst)
                 logger.info(
-                    f'order status of {rpr_inst["set"]}.{rpr_inst["name"]} is {orders["status"]}')
+                    f'order status of {etr_inst["set"]}.{etr_inst["name"]} is {orders["status"]}')
 
         if orders['status'] == 'Entered':
             logger.info(
@@ -191,11 +193,10 @@ def execute(orders):
             rpr_inst['optionType'] = orders['otype']
             rpr_inst['name'] = etr_inst["name"]
             rpr_inst['symbol'] = etr_inst["symbol"]
-            rpr_inst['orderID'] = None
-            rpr_inst['tradedPrice'] = None
-            orderID = xt.place_order_id(
+            orderID_sl = xt.place_order_id(
                 rpr_inst['symbol'], rpr_inst['txn_type'], rpr_inst['qty'], sl=orders["sl_points"])
-            rpr_inst['orderID'] = orderID
+            rpr_inst['orderID'] = orderID_sl
+            rpr_inst['status'] = 'TriggerPending'
             orders['status'] = 'SL_Placed'
             logger.info(
                 f'order status of {rpr_inst["set"]}.{rpr_inst["name"]} is {orders["status"]}')
@@ -223,8 +224,10 @@ def execute(orders):
                         rpr_inst['tradedPrice'] = sl_tradedPrice
                         rpr_inst['dateTime'] = sl_dateTime
                         rpr_inst['set_type'] = 'Repair'
+                        rpr_inst['status'] = 'Success'
                         orders['status'] = 'SL_Hit'
-                        logger.info(f'Repair order dtls: {rpr_inst}')
+                        # logger.info(f'Repair order dtls: {rpr_inst}')
+                        logger.info(f"\nRepair order dtls:\n {pp(rpr_inst)}")
                         tr_insts.append(rpr_inst)
                         logger.info(
                             f'order status of {rpr_inst["set"]}.{rpr_inst["name"]} is {orders["status"]}')
@@ -280,14 +283,16 @@ def exitCheck(universal):
                     tradedPrice, dateTime = xt.get_traded_price(orderID)
                     ext_inst['tradedPrice'] = tradedPrice
                     ext_inst['dateTime'] = dateTime
+                    ext_inst['set_type'] = 'Universal_Exit'
                     if orderID and tradedPrice:
-                        ext_inst['set_type'] = 'Universal_Exit'
+                        ext_inst['status'] = 'Success'
                         # universal['exit_status'] = 'Exited'
                     else:
-                        ext_inst['set_type'] = 'Universal_Exit'
+                        ext_inst['status'] = 'Fail'
                         logger.error(f"Error while exiting the order set \
                                      {orders['setno']}, Exit Immediately")
-                    logger.info(f'Universal Exit order dtls: {ext_inst}')
+                    # logger.info(f'Universal Exit order dtls: {ext_inst}')
+                    logger.info(f"\nUniversal Exit order dtls:\n {pp(ext_inst)}")
                     tr_insts.append(ext_inst.copy())
                 logger.info(
                     'Universal exit func completed. Breaking the main loop')

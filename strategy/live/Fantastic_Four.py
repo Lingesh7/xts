@@ -146,13 +146,16 @@ def execute(orders):
     tr_insts = []
     etr_inst = {}
     rpr_inst = {}
+    ext_inst = {}
+    startTime = datetime.strptime((cdate+" "+orders['startTime']),"%d-%m-%Y %H:%M:%S")
+
     while True:
         time.sleep(2)
         # print(f'{orders["name"]}: {ltp[orders["symbol"]]}')
         # logger.info(f'{orders["status"]}')
         if orders['status'] == 'Idle':
             # logger.info('idle block')
-            if (datetime.now() >= pd.Timestamp(cdate+" "+ orders['startTime'])):
+            if (datetime.now() >= startTime):
                 # symbol = orders['symbol']
                 df = fetchOHLC(orders["symbol"], 60)
                 # logger.info(df)
@@ -221,7 +224,7 @@ def execute(orders):
             orders['status'] = 'SL_Placed'
             logger.info(f'order status of {orders["name"]} is {orders["status"]}')
 
-        if universal['exit_status'] == 'Idle' and orders['status'] != 'active':
+        if universal['exit_status'] == 'Idle' and orders['status'] != 'Idle':
             if orders['status'] == 'SL_Placed' or orders['status'] == 'SL_Modified':
                 # logger.info(f'checking SL_Hit condtions for {orders["name"]}')
                 orderLists = xt.get_order_list()

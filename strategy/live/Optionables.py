@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Jun 3 23:50:22 2021
-Strategy : ATM Short Straddle at 09:59 AM
+Strategy : ATM Short Straddle at 01:00 pM
 Banknifty ATM short straddle
-Entry time 9.59 Am
-Exit time 3.06
-SL 50 points in CE
-SL 60 points in PE
-Strategy-1
+Entry time 1.00 pm
+Exit time 02.55 PM
+SL 30% points in CE
+SL 30% points in PE
+https://www.youtube.com/watch?v=O0PDivTMZXE
 @author: lmahendran
 """
 from datetime import datetime
@@ -37,7 +37,8 @@ except:
 from utils.utils import xts_init, \
     configure_logging, \
     RepeatedTimer, \
-    data_to_excel
+    data_to_excel, \
+    bot_init, bot_sendtext
 
 # logger settings
 script_name = os.path.basename(__file__).split('.')[0]
@@ -49,7 +50,7 @@ xt = xts_init(interactive=True)
 if not xt:
     logger.exception('XT initialization failed. Exiting..')
     exit()
-
+b_tok = bot_init()
 cdate = xt.CDATE
 # tickers = ['JINDALSTEL','IBULHSGFIN','TATASTEEL','TATAMOTORS']
 # startTime = '09:20:00'
@@ -57,12 +58,12 @@ cdate = xt.CDATE
 #           'startTime':"09:20:01", 'capital':50000}]
 
 orders = [{'refId': 10001, 'setno': 1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-           'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "09:30:00", 'sl_points': 50},
+           'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "13:30:00", 'sl_points': 1.30},
           {'refId': 10002, 'setno': 2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-           'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "09:30:00", 'sl_points': 60}]
+           'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "13:30:00", 'sl_points': 1.30}]
 
 universal = {'exit_status': 'Idle',
-             'exitTime': '15:06:00', 'ext_txn_type': 'buy'}
+             'exitTime': '14:55:00', 'ext_txn_type': 'buy'}
 
 etr_inst = None
 rpr_inst = None
@@ -345,6 +346,13 @@ if __name__ == '__main__':
         # prints dump to excel
         getGlobalPnL()  # getting latest data
         # dataToExcel(pnl_dump)
+        msg_df = pd.DataFrame(pnl_dump, columns=['date', 'pl'])
+        msg_df = msg_df.set_index(['date'])
+        msg_df.index = pd.to_datetime(msg_df.index, format='%d-%m-%Y %H:%M:%S')
+        t_df = msg_df['pl'].resample('1min').ohlc()
+        minp, maxp = t_df['close'].min(), t_df['close'].max()
+        bot_sendtext(
+            f'\n OPTIONABLES: \n Min PnL:{minp} \n Max PnL:{maxp} \n Final PnL:{gl_pnl}', b_tok)
         data_to_excel(pnl_dump, df, gdf, gl_pnl, script_name, '09:59')
         # logging the orders and data to log file
         logger.info('--------------------------------------------')

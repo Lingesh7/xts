@@ -37,7 +37,8 @@ except:
 from utils.utils import xts_init, \
     configure_logging, \
     RepeatedTimer, \
-    data_to_excel
+    data_to_excel, \
+    bot_init, bot_sendtext
 
 # logger settings
 script_name = os.path.basename(__file__).split('.')[0]
@@ -49,17 +50,15 @@ xt = xts_init(interactive=True)
 if not xt:
     logger.exception('XT initialization failed. Exiting..')
     exit()
-
+b_tok = bot_init()
 cdate = xt.CDATE
-# tickers = ['JINDALSTEL','IBULHSGFIN','TATASTEEL','TATAMOTORS']
-# startTime = '09:20:00'
-# orders = [{'refId':10001, 'setno':1, 'name':"TATAMOTORS", 'symbol':3456, 'status': "Idle",
-#           'startTime':"09:20:01", 'capital':50000}]
 
 orders = [{'refId': 10001, 'setno': 1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-           'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "09:30:00", 'sl_points': 50},
+           'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 
+           'startTime': "09:30:00", 'sl_points': 50},
           {'refId': 10002, 'setno': 2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-           'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "09:30:00", 'sl_points': 60}]
+           'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 
+           'startTime': "09:30:00", 'sl_points': 60}]
 
 universal = {'exit_status': 'Idle',
              'exitTime': '15:06:00', 'ext_txn_type': 'buy'}
@@ -68,8 +67,6 @@ etr_inst = None
 rpr_inst = None
 ext_inst = None
 tr_insts = None
-universal = {'exit_status': 'Idle',
-             'ext_txn_type': 'buy', 'exitTime': '15:06:00'}
 ltp = {}
 gl_pnl = None
 pnl_dump = []
@@ -77,13 +74,12 @@ df = None
 
 # functions
 
-
 def getLTP():
     global ltp
     # ltp={}
     if tr_insts:
         logger.info('inside tr_insts cond - getLTP')
-        symbols = [i['symbol'] for i in tr_insts if i['set_type'] == 'Entry']
+        symbols = [i['symbol'] for i in tr_insts if i['set_type'] == 'Entry' and i['tradedPrice'] != 0]
         instruments = []
         for symbol in symbols:
             instruments.append(
@@ -161,19 +157,21 @@ def execute(orders):
                 logger.info(
                     f'Placing orders for {etr_inst["set"]}. {etr_inst["name"]} at {orders["startTime"]}..')
                 orderID = xt.place_order_id(
-                    etr_inst['symbol'], etr_inst['txn_type'], etr_inst['qty'], xseg='eq')
+                    etr_inst['symbol'], etr_inst['txn_type'], etr_inst['qty'])
                 etr_inst['orderID'] = orderID
-                tradedPrice, dateTime = xt.get_traded_price(orderID)
-                etr_inst['tradedPrice'] = tradedPrice
-                etr_inst['dateTime'] = dateTime
+                if orderID:
+                    tradedPrice, dateTime = xt.get_traded_price(orderID)
+                    etr_inst['tradedPrice'] = tradedPrice
+                    etr_inst['dateTime'] = dateTime
+                etr_inst['set_type'] = 'Entry'
                 if orderID and tradedPrice:
-                    etr_inst['set_type'] = 'Entry'
+                    etr_inst['status'] = 'Success'
                     orders['status'] = 'Entered'
                 else:
-                    etr_inst['set_type'] = 'Entry'
+                    etr_inst['status'] = 'Fail'
                     orders['status'] = 'Entry_Failed'
                 # logger.info(f'Entry order dtls: {etr_inst}')
-                logger.info(f"\Entry order dtls:\n {pp(etr_inst)}")
+                logger.info(f"\nEntry order dtls:\n {pp(etr_inst)}")
                 tr_insts.append(etr_inst)
                 logger.info(
                     f'order status of {etr_inst["set"]}.{etr_inst["name"]} is {orders["status"]}')
@@ -299,6 +297,9 @@ def exitCheck(universal):
                     'Universal exit func completed. Breaking the main loop')
                 universal['exit_status'] = 'Exited'
                 break
+            elif all([True for order in orders if order['status'] == 'SL_Hit']):
+                logger.info('All sets hit stop loss. Closing the exitCheck func..')
+                universal['exit_status'] = 'Exited'
             else:
                 time.sleep(1)
 
@@ -344,7 +345,13 @@ if __name__ == '__main__':
         time.sleep(5)
         # prints dump to excel
         getGlobalPnL()  # getting latest data
-        # dataToExcel(pnl_dump)
+        msg_df = pd.DataFrame(pnl_dump, columns=['date', 'pl'])
+        msg_df = msg_df.set_index(['date'])
+        msg_df.index = pd.to_datetime(msg_df.index, format='%d-%m-%Y %H:%M:%S')
+        t_df = msg_df['pl'].resample('1min').ohlc()
+        minp, maxp = t_df['close'].min(), t_df['close'].max()
+        bot_sendtext(
+            f'\n {script_name}: \n Min PnL:{minp} \n Max PnL:{maxp} \n Final PnL:{gl_pnl}', b_tok)
         data_to_excel(pnl_dump, df, gdf, gl_pnl, script_name, '09:59')
         # logging the orders and data to log file
         logger.info('--------------------------------------------')

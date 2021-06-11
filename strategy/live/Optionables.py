@@ -52,39 +52,37 @@ if not xt:
     exit()
 b_tok = bot_init()
 cdate = xt.CDATE
-# tickers = ['JINDALSTEL','IBULHSGFIN','TATASTEEL','TATAMOTORS']
-# startTime = '09:20:00'
-# orders = [{'refId':10001, 'setno':1, 'name':"TATAMOTORS", 'symbol':3456, 'status': "Idle",
-#           'startTime':"09:20:01", 'capital':50000}]
+
 
 orders = [{'refId': 10001, 'setno': 1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-           'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "13:30:00", 'sl_points': 1.30},
+           'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1,
+           'startTime': "13:00:00", 'sl_points': 1.30},
           {'refId': 10002, 'setno': 2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-           'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "13:30:00", 'sl_points': 1.30}]
+           'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1,
+           'startTime': "13:00:00", 'sl_points': 1.30}]
 
 universal = {'exit_status': 'Idle',
-             'exitTime': '14:55:00', 'ext_txn_type': 'buy'}
+             'ext_txn_type': 'buy', 'exitTime': '15:06:00'}
 
 etr_inst = None
 rpr_inst = None
 ext_inst = None
 tr_insts = None
-universal = {'exit_status': 'Idle',
-             'ext_txn_type': 'buy', 'exitTime': '15:06:00'}
 ltp = {}
 gl_pnl = None
 pnl_dump = []
 df = None
 
 # functions
-
+def round_nearest(x,a=0.05):
+  return round(round(x/a)*a ,2)
 
 def getLTP():
     global ltp
     # ltp={}
     if tr_insts:
         logger.info('inside tr_insts cond - getLTP')
-        symbols = [i['symbol'] for i in tr_insts if i['set_type'] == 'Entry']
+        symbols = [i['symbol'] for i in tr_insts if i['set_type'] == 'Entry' and i['tradedPrice'] != 0]
         instruments = []
         for symbol in symbols:
             instruments.append(
@@ -162,19 +160,21 @@ def execute(orders):
                 logger.info(
                     f'Placing orders for {etr_inst["set"]}. {etr_inst["name"]} at {orders["startTime"]}..')
                 orderID = xt.place_order_id(
-                    etr_inst['symbol'], etr_inst['txn_type'], etr_inst['qty'], xseg='eq')
+                    etr_inst['symbol'], etr_inst['txn_type'], etr_inst['qty'])
                 etr_inst['orderID'] = orderID
-                tradedPrice, dateTime = xt.get_traded_price(orderID)
-                etr_inst['tradedPrice'] = tradedPrice
-                etr_inst['dateTime'] = dateTime
+                if orderID:
+                    tradedPrice, dateTime = xt.get_traded_price(orderID)
+                    etr_inst['tradedPrice'] = tradedPrice
+                    etr_inst['dateTime'] = dateTime
+                etr_inst['set_type'] = 'Entry'
                 if orderID and tradedPrice:
-                    etr_inst['set_type'] = 'Entry'
+                    etr_inst['status'] = 'Success'
                     orders['status'] = 'Entered'
                 else:
-                    etr_inst['set_type'] = 'Entry'
+                    etr_inst['status'] = 'Fail'
                     orders['status'] = 'Entry_Failed'
                 # logger.info(f'Entry order dtls: {etr_inst}')
-                logger.info(f"\Entry order dtls:\n {pp(etr_inst)}")
+                logger.info(f"\nEntry order dtls:\n {pp(etr_inst)}")
                 tr_insts.append(etr_inst)
                 logger.info(
                     f'order status of {etr_inst["set"]}.{etr_inst["name"]} is {orders["status"]}')
@@ -194,13 +194,15 @@ def execute(orders):
             rpr_inst['optionType'] = orders['otype']
             rpr_inst['name'] = etr_inst["name"]
             rpr_inst['symbol'] = etr_inst["symbol"]
+            sl = round_nearest(etr_inst['tradedPrice'] * orders["sl_points"])
             orderID_sl = xt.place_order_id(
-                rpr_inst['symbol'], rpr_inst['txn_type'], rpr_inst['qty'], sl=orders["sl_points"])
+                rpr_inst['symbol'], rpr_inst['txn_type'], rpr_inst['qty'], sl=sl)
             rpr_inst['orderID'] = orderID_sl
             rpr_inst['status'] = 'TriggerPending'
             orders['status'] = 'SL_Placed'
             logger.info(
                 f'order status of {rpr_inst["set"]}.{rpr_inst["name"]} is {orders["status"]}')
+            logger.info(f"\nRepair order dtls:\n {pp(rpr_inst)}")
             continue
 
         if universal['exit_status'] == 'Idle':
@@ -300,8 +302,11 @@ def exitCheck(universal):
                     'Universal exit func completed. Breaking the main loop')
                 universal['exit_status'] = 'Exited'
                 break
+            elif [order['status'] for order in orders].count('SL_Hit') == len(orders):
+                logger.info('All sets hit stop loss. Closing the exitCheck func..')
+                universal['exit_status'] = 'Exited'
             else:
-                time.sleep(1)
+                time.sleep(2)
 
 
 if __name__ == '__main__':
@@ -345,15 +350,14 @@ if __name__ == '__main__':
         time.sleep(5)
         # prints dump to excel
         getGlobalPnL()  # getting latest data
-        # dataToExcel(pnl_dump)
         msg_df = pd.DataFrame(pnl_dump, columns=['date', 'pl'])
         msg_df = msg_df.set_index(['date'])
         msg_df.index = pd.to_datetime(msg_df.index, format='%d-%m-%Y %H:%M:%S')
         t_df = msg_df['pl'].resample('1min').ohlc()
         minp, maxp = t_df['close'].min(), t_df['close'].max()
         bot_sendtext(
-            f'\n OPTIONABLES: \n Min PnL:{minp} \n Max PnL:{maxp} \n Final PnL:{gl_pnl}', b_tok)
-        data_to_excel(pnl_dump, df, gdf, gl_pnl, script_name, '09:59')
+            f'\n {script_name}: \n Min PnL:{minp} \n Max PnL:{maxp} \n Final PnL:{gl_pnl}', b_tok)
+        data_to_excel(pnl_dump, df, gdf, gl_pnl, script_name, '13:00')
         # logging the orders and data to log file
         logger.info('--------------------------------------------')
         logger.info(f'Total Orders and its status: \n {tr_insts} \n')

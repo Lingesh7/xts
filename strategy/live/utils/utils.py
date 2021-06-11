@@ -17,6 +17,7 @@ import pandas as pd
 from random import randint
 import os
 from openpyxl import load_workbook
+from openpyxl import Workbook
 from logging.handlers import TimedRotatingFileHandler
 import sqlite3
 from threading import Timer
@@ -144,7 +145,8 @@ def data_to_excel(pnl_dump, df, gdf, gl_pnl, script_name, startTime='00:00'):
         # writing the output to excel sheet
         filename = f'..\\pnl\\{script_name}_PnL.xlsx'
         if not os.path.exists(filename):
-             with open(filename, 'w'): pass #creating excel book if not exists
+             # with open(filename, 'w'): pass #creating excel book if not exists
+             Workbook().save(filename)
         writer = pd.ExcelWriter(filename, engine='openpyxl')
         writer.book = load_workbook(filename)
         resampled_df.to_excel(writer, sheet_name=(sheetname), index=True)
@@ -154,7 +156,7 @@ def data_to_excel(pnl_dump, df, gdf, gl_pnl, script_name, startTime='00:00'):
                      startrow=4, startcol=6, index=False)
         writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
         worksheet = writer.sheets[sheetname]
-        worksheet['G1'] = f"{script_name} - {sheetname}"
+        worksheet['G1'] = f"{script_name}"
         worksheet['G2'] = "MaxPnL"
         worksheet["G3"] = "=MAX(E:E)"
         worksheet['H2'] = "MinPnL"

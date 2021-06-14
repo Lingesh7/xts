@@ -64,9 +64,9 @@ cdate = xt.CDATE
 #           'startTime':"09:20:01", 'capital':50000}]
 
 orders = [{'refId': 10001, 'setno': 1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-           'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "09:59:00" },
+           'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "09:20:00" },
           {'refId': 10002, 'setno': 2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-           'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "09:59:00"}]
+           'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "09:20:00"}]
 universal = {'exit_status': 'Idle', 'exitTime': '15:06:00', 'ext_txn_type': 'buy','minPrice': -3000, 'maxPrice': 7500}
 
 etr_inst = None
@@ -176,7 +176,7 @@ def execute(orders):
     weekday = datetime.today().weekday()
     while True:
         try:
-            # time.sleep(30)
+            time.sleep(30)
             if startTime >= datetime.now():
                 continue
             # logger.info('Time window attained..')
@@ -185,13 +185,14 @@ def execute(orders):
                 df = vWAP(data_df)
                 sma_8 = df.rolling(window=8).mean()
                 # strike_price = xt.strike_price(orders['idx'])
-                logger.info(f"{df['uB'].iloc[-2]} - {sma_8['close'].iloc[-2]}")
+                # logger.info("    Ub         Lb       sma8")
+                logger.info(f"uB: {round(df['uB'].iloc[-2],2)} lB: {round(df['lB'].iloc[-2],2)} sma8: {round(sma_8['close'].iloc[-2],2)}")
                 if (df['uB'].iloc[-2] < sma_8['close'].iloc[-2]):
-                    logger.info(f'SMA-8 breaks Upper bound of VWAP in {spot}')
+                    logger.info(f'SMA-8 breaks Upper bound of VWAP in {spot} at {df.timestamp.iloc[-1]}')
                     strike_price = xt.strike_price(orders['idx'])
                     etr_inst['strike'] = strike_price + 300 if weekday != 3 else strike_price + 200
                 elif (df['lB'].iloc[-2] > sma_8['close'].iloc[-2]):
-                    logger.info(f'SMA-8 breaks Lower bound of VWAP in {spot}')
+                    logger.info(f'SMA-8 breaks Lower bound of VWAP in {spot} at {df.timestamp.iloc[-1]}')
                     strike_price = xt.strike_price(orders['idx'])
                     etr_inst['strike'] = strike_price - 300 if weekday != 3 else strike_price - 200
                 else:
@@ -247,7 +248,7 @@ def execute(orders):
                 logger.info(f'Exiting todays trade as entry missed. Reason: {orders["status"]}')
                 logger.info(f'Order Failed - Order set: {orders["setno"]}. Exiting the thread')
                 break
-            time.sleep(30)
+            # time.sleep(30)
         except Exception:
             logger.exception(f'API Error in MultiThread - set no: {orders["setno"]}')
             break
@@ -312,7 +313,7 @@ if __name__ == '__main__':
     fut_symbol = xt.fo_lookup(fut_name, instrument_df)
     wait()
     fetchOHLC(fut_symbol, 60)
-    fetch_ohlc = RepeatedTimer(59, fetchOHLC, fut_symbol, 60)
+    fetch_ohlc = RepeatedTimer(30, fetchOHLC, fut_symbol, 60)
     # all the sets will execute in parallel with threads
     for i in range(len(orders)):
         t = Thread(target=execute, args=(orders[i],))
@@ -344,7 +345,7 @@ if __name__ == '__main__':
         # prints dump to excel
         getGlobalPnL()  # getting latest data
         if isinstance(df, pd.DataFrame):
-            data_to_excel(pnl_dump, df, gdf, gl_pnl, script_name, '09:59')
+            data_to_excel(pnl_dump, df, gdf, gl_pnl, script_name, '09:20')
         logger.info('--------------------------------------------')
         logger.info(f'Total Orders and its status: \n {tr_insts} \n')
         logger.info('********** Summary **********')

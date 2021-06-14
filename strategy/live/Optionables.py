@@ -22,6 +22,7 @@ pd.set_option('display.max_columns', None)
 # pd.set_option('display.width', None)
 # pd.set_option('display.max_colwidth', -1)
 import configparser
+import argparse
 from threading import Thread
 from openpyxl import load_workbook
 from logging.handlers import TimedRotatingFileHandler
@@ -44,6 +45,23 @@ from utils.utils import xts_init, \
 script_name = os.path.basename(__file__).split('.')[0]
 logger = configure_logging(script_name)
 
+############## parsing args ##############
+
+parser = argparse.ArgumentParser(description='Optionables Script')
+parser.add_argument('-t', '--ticker',type=str, required=True, help='NIFTY or BANKNIFTY')
+parser.add_argument('-st', '--startTime',type=str, required=True, help='start time of the script')
+parser.add_argument('-et', '--endTime',type=str, default="15:05:00", help='end time')
+# parser.add_argument('-rt', '--repairTime',type=str, default="14:40:00", help='reapir time')
+# parser.add_argument('-sl', '--stopLoss',type=int, default=-1500, help='stopLoss amount')
+# parser.add_argument('-tgt', '--target',type=int, default=3000, help='Target amount')
+args = parser.parse_args()
+
+ticker = args.ticker
+startTime = args.startTime
+endTime = args.endTime
+# repairTime = args.repairTime
+# stopLoss = args.stopLoss
+# target = args.target
 
 # inits
 xt = xts_init(interactive=True)
@@ -55,14 +73,14 @@ cdate = xt.CDATE
 
 
 orders = [{'refId': 10001, 'setno': 1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-           'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1,
-           'startTime': "13:00:00", 'sl_points': 1.30},
+           'idx': ticker, 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1,
+           'startTime': startTime, 'sl_points': 1.30},
           {'refId': 10002, 'setno': 2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-           'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1,
-           'startTime': "13:00:00", 'sl_points': 1.30}]
+           'idx': ticker, 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1,
+           'startTime': startTime, 'sl_points': 1.30}]
 
 universal = {'exit_status': 'Idle',
-             'ext_txn_type': 'buy', 'exitTime': '15:06:00'}
+             'ext_txn_type': 'buy', 'exitTime': endTime}
 
 etr_inst = None
 rpr_inst = None
@@ -81,7 +99,7 @@ def getLTP():
     global ltp
     # ltp={}
     if tr_insts:
-        logger.info('inside tr_insts cond - getLTP')
+        # logger.info('inside tr_insts cond - getLTP')
         symbols = [i['symbol'] for i in tr_insts if i['set_type'] == 'Entry' and i['tradedPrice'] != 0]
         instruments = []
         for symbol in symbols:

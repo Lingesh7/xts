@@ -35,6 +35,7 @@ from openpyxl import load_workbook
 from logging.handlers import TimedRotatingFileHandler
 from sys import exit
 import os
+from pprint import pformat as pp
 
 try:
     os.chdir(r'D:\Python\First_Choice_Git\xts\strategy\live')
@@ -231,7 +232,8 @@ def execute(orders):
                 else:
                     etr_inst['status'] = 'Fail'
                     orders['status'] = 'Entry_Failed'
-                logger.info(f'Entry order dtls: {etr_inst}')
+                # logger.info(f'Entry order dtls: {etr_inst}')
+                logger.info(f"\nEntry order dtls:\n {pp(etr_inst)}")
                 tr_insts.append(etr_inst)
                 logger.info(f'order status of {etr_inst["set"]}.{etr_inst["name"]} is {orders["status"]}')
                 continue

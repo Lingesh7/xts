@@ -41,10 +41,6 @@ from utils.utils import xts_init, \
     data_to_excel, \
     bot_init, bot_sendtext
 
-# logger settings
-script_name = os.path.basename(__file__).split('.')[0]
-logger = configure_logging(script_name)
-
 ############## parsing args ##############
 
 parser = argparse.ArgumentParser(description='Optionables Script')
@@ -62,6 +58,11 @@ endTime = args.endTime
 # repairTime = args.repairTime
 # stopLoss = args.stopLoss
 # target = args.target
+
+# logger settings
+script_name = os.path.basename(__file__).split('.')[0]
+logger = configure_logging(script_name, startTime)
+
 
 # inits
 xt = xts_init(interactive=True)
@@ -374,7 +375,7 @@ if __name__ == '__main__':
         t_df = msg_df['pl'].resample('1min').ohlc()
         minp, maxp = t_df['close'].min(), t_df['close'].max()
         bot_sendtext(
-            f'\n {script_name}: \n Min PnL:{minp} \n Max PnL:{maxp} \n Final PnL:{gl_pnl}', b_tok)
+            f'\n {script_name}: {startTime} \n Min PnL:{minp} \n Max PnL:{maxp} \n Final PnL:{gl_pnl}', b_tok)
         data_to_excel(pnl_dump, df, gdf, gl_pnl, script_name, '13:00')
         # logging the orders and data to log file
         logger.info('--------------------------------------------')

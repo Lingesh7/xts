@@ -67,24 +67,23 @@ pnl_dump = []
 threads = []
 
 
-# orders = [{'legpair': 1, 'setno': 1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-#            'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "09:30:00" },
-#           {'legpair': 1, 'setno': 2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-#            'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "09:30:00"}]
-
 orders = [{'legpair': 1, 'setno': 1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-           'idx': "BANKNIFTY", 'otype': ["ce", "pe"], 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "09:30:00"},
-          {'legpair': 2, 'setno': 2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-           'idx': "BANKNIFTY", 'otype': ["ce", "pe"], 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "10:00:00"}]
+           'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1,
+           'startTime': "09:30:00", 'move': 0.75, 'endTime':"14:45:00"},
+          {'legpair': 1, 'setno': 2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
+           'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1,
+           'startTime': "09:30:00", 'move': 0.75, 'endTime':"14:45:00"}]
+
+# orders = [{'legpair': 1, 'setno': 1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
+#            'idx': "BANKNIFTY", 'otype': ["ce", "pe"], 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "09:30:00"},
+#           {'legpair': 2, 'setno': 2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
+#            'idx': "BANKNIFTY", 'otype': ["ce", "pe"], 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "10:00:00"}]
 
 
-universal = {'exit_status': 'Idle', 'exitTime': '15:06:00',
-             'ext_txn_type': 'buy', 'minPrice': -8000, 'maxPrice': 16000}
+universal = {'exit_status': 'Idle', 'exitTime': '15:06:00', 'ext_txn_type': 'buy', 'minPrice': -8000, 'maxPrice': 16000}
 
 # functions
-
-
-def get_spot(spot):
+def get_spot(idx):
     global ltp
     ids = 'NIFTY 50' if idx == 'NIFTY' else 'NIFTY BANK' if idx == 'BANKNIFTY' else None
     try:
@@ -152,58 +151,125 @@ def execute(orders):
     tr_insts = []
     etr_inst = {}
     rpr_inst = {}
-    startTime = datetime.strptime(
-        (cdate + " " + orders['startTime']), "%d-%m-%Y %H:%M:%S")
+    startTime = datetime.strptime((cdate + " " + orders['startTime']), "%d-%m-%Y %H:%M:%S")
+    endTime = datetime.strptime((cdate + " " + orders['endTime']), "%d-%m-%Y %H:%M:%S")
     while True:
         try:
             if startTime >= datetime.now():
                 continue
-            if orders['status'] == 'Idle':
-                etr_inst['legpair'] = orders['legpair']
-                etr_inst['set'] = orders['setno']
-                etr_inst['txn_type'] = orders['ent_txn_type']
-                etr_inst['spot']
-                etr_inst['strike'] = xt.strike_price(orders['idx'])
-                etr_inst['qty'] = 75 * \
-                    orders['lot'] if orders['idx'] == 'NIFTY' else 25 * \
-                    orders['lot']
-                etr_inst['tr_qty'] = - \
-                    etr_inst['qty'] if orders['ent_txn_type'] == 'sell' else etr_inst['qty']
-                etr_inst['expiry'] = weekly_exp if orders['expiry'] == 'week' else monthly_exp
-                # etr_inst['optionType'] = orders['otype'].upper()
-                if weekly_exp == monthly_exp:
-                    etr_inst['name'] = orders['idx'] + (datetime.strftime(datetime.strptime(
-                        etr_inst['expiry'], '%d%b%Y'), '%y%b')).upper() + str(etr_inst['strike']) + etr_inst['optionType']
-                else:
-                    etr_inst['name'] = orders['idx'] + (datetime.strftime(datetime.strptime(
-                        etr_inst['expiry'], '%d%b%Y'), '%y%#m%d')) + str(etr_inst['strike']) + etr_inst['optionType']
-                etr_inst['symbol'] = xt.fo_lookup(
-                    etr_inst['name'], instrument_df)
-                logger.info(
-                    f'Placing orders for {etr_inst["set"]}. {etr_inst["name"]} at {orders["startTime"]}..')
-                if etr_inst['symbol'] != -1:
-                    orderID = xt.place_order_id(
-                        etr_inst['symbol'], etr_inst['txn_type'], etr_inst['qty'])
-                else:
-                    logger.error(f'Symbol is not valid: {etr_inst["symbol"]}')
-                    raise Exception('Symbol is not valid')
-                etr_inst['orderID'] = orderID
-                if orderID:
-                    etr_inst['tradedPrice'], etr_inst['dateTime'] = xt.get_traded_price(
-                        orderID)
-                etr_inst['set_type'] = 'Entry'
-                if etr_inst['tradedPrice']:
-                    etr_inst['status'] = 'Sucess'
-                    orders['status'] = 'Entered'
-                else:
-                    etr_inst['status'] = 'Fail'
-                    orders['status'] = 'Entry_Failed'
-                logger.info(f"\nEntry order dtls:\n {pp(etr_inst)}")
-                tr_insts.append(etr_inst)
-                logger.info(
-                    f'order status of {etr_inst["set"]}.{etr_inst["name"]} is {orders["status"]}')
-                continue
+            if universal['exit_status'] == 'Idle' and (endTime > datetime.now()):
+                if orders['status'] == 'Idle':
+                    etr_inst['legpair'] = orders['legpair']
+                    etr_inst['set'] = orders['setno']
+                    etr_inst['txn_type'] = orders['ent_txn_type']
+                    etr_inst['spot'] = ltp[orders['idx']]
+                    etr_inst['strike'] = 100 * round(etr_inst['spot']/100) if orders['idx'] == 'BANKNIFTY' else 50 * round(etr_inst['spot']/50)
+                    etr_inst['qty'] = 75 * orders['lot'] if orders['idx'] == 'NIFTY' else 25 * orders['lot']
+                    etr_inst['tr_qty'] = -etr_inst['qty'] if orders['ent_txn_type'] == 'sell' else etr_inst['qty']
+                    etr_inst['expiry'] = weekly_exp if orders['expiry'] == 'week' else monthly_exp
+                    etr_inst['optionType'] = orders['otype'].upper()
+                    if weekly_exp == monthly_exp:
+                        etr_inst['name'] = orders['idx'] + (datetime.strftime(datetime.strptime(
+                            etr_inst['expiry'], '%d%b%Y'), '%y%b')).upper() + str(etr_inst['strike']) + etr_inst['optionType']
+                    else:
+                        etr_inst['name'] = orders['idx'] + (datetime.strftime(datetime.strptime(
+                            etr_inst['expiry'], '%d%b%Y'), '%y%#m%d')) + str(etr_inst['strike']) + etr_inst['optionType']
+                    etr_inst['symbol'] = xt.fo_lookup(etr_inst['name'], instrument_df)
+                    logger.info(f'Placing orders for leg {etr_inst["legpair"]} - set {etr_inst["set"]} - {etr_inst["name"]} at {orders["startTime"]}..')
+                    orderID = None
+                    if etr_inst['symbol'] != -1:
+                        orderID = xt.place_order_id(etr_inst['symbol'], etr_inst['txn_type'], etr_inst['qty'])
+                    else:
+                        logger.error(f'Symbol is not valid: {etr_inst["symbol"]}')
+                        raise Exception('Symbol is not valid')
+                    etr_inst['orderID'] = orderID
+                    if orderID:
+                        etr_inst['tradedPrice'], etr_inst['dateTime'] = xt.get_traded_price(orderID)
+                    etr_inst['set_type'] = 'Entry'
+                    if etr_inst['tradedPrice']:
+                        etr_inst['status'] = 'Success'
+                        orders['status'] = 'Entered'
+                    else:
+                        etr_inst['status'] = 'Fail'
+                        orders['status'] = 'Entry_Failed'
+                    logger.info(f"\nEntry order dtls:\n {pp(etr_inst)}")
+                    tr_insts.append(etr_inst)
+                    logger.info(f'order status of leg {etr_inst["legpair"]} - set {etr_inst["set"]} - {etr_inst["name"]} is {orders["status"]}')
+                    continue
+                if orders['status'] == 'Entered':
+                    if ltp[orders['idx']] > (etr_inst['spot'] * (1+(orders[0]["move"]/100))) or ltp[orders['idx']] < (etr_inst['spot'] * (1-(orders[0]["move"]/100))):
+                        rpr_inst['legpair'] = orders['legpair']
+                        rpr_inst['set'] = orders['setno']
+                        rpr_inst['txn_type'] = orders['rpr_txn_type']
+                        rpr_inst['strike'] = etr_inst['strike']
+                        rpr_inst['qty'] = etr_inst['qty']
+                        rpr_inst['tr_qty'] = -rpr_inst['qty'] if orders['rpr_txn_type'] == 'sell' else rpr_inst['qty']
+                        rpr_inst['expiry'] = etr_inst['expiry']
+                        rpr_inst['optionType'] = etr_inst['optionType']
+                        rpr_inst['name'] = etr_inst["name"]
+                        rpr_inst['symbol'] = etr_inst["symbol"]
+                        logger.info(f'Placing exit orders for leg {rpr_inst["legpair"]} - set {rpr_inst["set"]} - {rpr_inst["name"]}')
+                        rpr_inst['orderID'] = xt.place_order_id(rpr_inst['symbol'], rpr_inst['txn_type'], rpr_inst['qty'])
+                        if rpr_inst['orderID']:
+                            rpr_inst['tradedPrice'], rpr_inst['dateTime'] = xt.get_traded_price(rpr_inst['orderID'])
+                        rpr_inst['set_type'] = 'Repair'
+                        if rpr_inst['tradedPrice']:
+                            rpr_inst['status'] = 'Success'
+                            orders['status'] = 'Idle' #so that it will again start from the begining
+                        else:
+                            rpr_inst['status'] = 'Fail'
+                            orders['status'] = 'Repair_Failed'
+                        logger.info(f"\nRepair order dtls:\n {pp(rpr_inst)}")
+                        tr_insts.append(rpr_inst)
+                        logger.info(
+                            f'order status of leg {rpr_inst["legpair"]} - set {rpr_inst["set"]} - {rpr_inst["name"]} is {orders["status"]}')
+                        continue
+            elif universal['exit_status'] == 'Exited':
+                logger.info(f'Universal exit condition passed. Exiting the leg {orders["legpair"]} - set {orders["setno"]}')
+                break
+            if orders['status'] == 'Entry_Failed' or orders['status'] == 'Repair_Failed':
+                logger.info(f'Exiting todays trade as entry/repair missed. Reason: {orders["status"]}')
+                logger.info(f'Order Failed - Order leg {orders["legpair"]} - set: {orders["setno"]}. Exiting the thread')
+                break
+        except:
+            logger.exception(f'API Error in MultiThread - leg {orders["legpair"]} - set: {orders["setno"]}')
+            break
 
+
+def exitCheck(universal):
+    global tr_insts
+    ext_inst = {}
+    exitTime = datetime.strptime((cdate + " " + universal['exitTime']), "%d-%m-%Y %H:%M:%S")
+    while universal['exit_status'] == 'Idle':
+        if (datetime.now() >= exitTime) or (gl_pnl <= universal['minPrice']) or (gl_pnl >= universal['maxPrice']):
+            logger.info('Exit time condition passed. Squaring off all open positions')
+            if gdf is None:
+                continue
+            for i in range(len(gdf)):
+                if gdf["tr_qty"].values[i] == 0:
+                    continue
+                ext_inst['symbol'] = int(gdf['symbol'].values[i])
+                ext_inst['qty'] = abs(int(gdf['tr_qty'].values[i]))
+                ext_inst['tr_qty'] = -ext_inst['qty'] if universal['ext_txn_type'] == 'sell' else ext_inst['qty']
+                ext_inst['txn_type'] = universal['ext_txn_type']
+                ext_inst['name'] = str(gdf['name'].values[i])
+                ext_inst['optionType'] = ext_inst['name'][-2:]
+                ext_inst['strike'] = ext_inst['name'][-7:-2]
+                ext_inst['orderID'] = xt.place_order_id(ext_inst['symbol'], ext_inst['txn_type'], ext_inst['qty'])
+                ext_inst['tradedPrice'], ext_inst['dateTime']  = xt.get_traded_price(ext_inst['orderID'])
+                ext_inst['set_type'] = 'Universal_Exit'
+                if ext_inst['orderID'] and ext_inst['tradedPrice']:
+                    ext_inst['status'] = 'Success'
+                else:
+                    ext_inst['status'] = 'Fail'
+                    logger.error(f"Error while exiting the order set {orders['setno']}, Exit Immediately")
+                # logger.info(f'Universal Exit order dtls: {ext_inst}')
+                logger.info(f"\nUniversal Exit order dtls:\n {pp(ext_inst)}")
+                tr_insts.append(ext_inst.copy())
+            logger.info('Universal exit func completed. Breaking the main loop')
+            universal['exit_status'] = 'Exited'
+        else:
+            time.sleep(1)
 
 if __name__ == '__main__':
     try:
@@ -215,3 +281,43 @@ if __name__ == '__main__':
         logger.exception(
             f'Failed to get masterDump/ expiryDates. Reason --> {e} \n Exiting..')
         exit()
+    fetch_spot = RepeatedTimer(3, get_spot, spot)
+    # all the sets will execute in parallel with threads
+    for i in range(len(orders)):
+        t = Thread(target=execute, args=(orders[i],))
+        t.start()
+        threads.append(t)
+     # below function runs in background
+    logger.info('Starting a timer based thread to fetch LTP of traded instruments..')
+    getGlobalPnL()
+    fetchLtp = RepeatedTimer(5, getLTP)
+    fetchPnL = RepeatedTimer(5, getGlobalPnL)
+    try:
+        exitCheck(universal)
+        time.sleep(5)
+    except KeyboardInterrupt:
+        logger.error('\n\nKeyboard exception received. Exiting.')
+        universal['exit_status'] = 'Exited' #todo write dead case here to stop the threads in case of exitcheck exception
+        # exit()
+    except Exception:
+        universal['exit_status'] = 'Exited'
+        logger.exception('Error Occured..')
+    finally:
+        logger.info('Cleaning up..')
+        fetch_spot.stop()
+        fetchLtp.stop()
+        fetchPnL.stop()
+        _ = [t.join() for t in threads]
+        time.sleep(5)
+        # prints dump to excel
+        getGlobalPnL()  # getting latest data
+        if isinstance(df, pd.DataFrame):
+            data_to_excel(pnl_dump, df, gdf, gl_pnl, script_name)
+        logger.info('--------------------------------------------')
+        logger.info(f'Total Orders and its status: \n {tr_insts} \n')
+        logger.info('********** Summary **********')
+        logger.info(f'\n\n PositionList: \n {df}')
+        logger.info(f'\n\n CombinedPositionsLists: \n {gdf}')
+        logger.info(f'\n\n Global PnL : {gl_pnl} \n')
+        logger.info('--------------------------------------------')
+

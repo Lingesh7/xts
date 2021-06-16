@@ -208,9 +208,10 @@ def execute(orders):
             rpr_inst['qty'] = etr_inst['qty']
             rpr_inst['tr_qty'] = - \
                 rpr_inst['qty'] if orders['rpr_txn_type'] == 'sell' else rpr_inst['qty']
-            if orders['expiry'] == 'week':
-                rpr_inst['expiry'] = weekly_exp
-            rpr_inst['optionType'] = orders['otype']
+            # if orders['expiry'] == 'week':
+            #     rpr_inst['expiry'] = weekly_exp
+            rpr_inst['expiry'] = etr_inst['expiry']
+            rpr_inst['optionType'] = etr_inst['optionType']
             rpr_inst['name'] = etr_inst["name"]
             rpr_inst['symbol'] = etr_inst["symbol"]
             sl = round_nearest(etr_inst['tradedPrice'] * orders["sl_points"])

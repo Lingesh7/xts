@@ -250,6 +250,7 @@ def execute(orders):
                         orders['status'] = 'SL_Hit'
                         # logger.info(f'Repair order dtls: {rpr_inst}')
                         logger.info(f"\nRepair order dtls:\n {pp(rpr_inst)}")
+                        bot_sendtext(f'SL HIT on {rpr_inst["set"]}. {rpr_inst["name"]}', b_tok)
                         tr_insts.append(rpr_inst)
                         logger.info(
                             f'order status of {rpr_inst["set"]}.{rpr_inst["name"]} is {orders["status"]}')
@@ -376,7 +377,7 @@ if __name__ == '__main__':
         minp, maxp = t_df['close'].min(), t_df['close'].max()
         bot_sendtext(
             f'\n {script_name}: {startTime} \n Min PnL:{minp} \n Max PnL:{maxp} \n Final PnL:{gl_pnl}', b_tok)
-        data_to_excel(pnl_dump, df, gdf, gl_pnl, script_name, '13:00')
+        data_to_excel(pnl_dump, df, gdf, gl_pnl, script_name, startTime)
         # logging the orders and data to log file
         logger.info('--------------------------------------------')
         logger.info(f'Total Orders and its status: \n {tr_insts} \n')

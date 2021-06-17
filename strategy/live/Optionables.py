@@ -149,8 +149,6 @@ def execute(orders):
     startTime = datetime.strptime(
         (cdate + " " + orders['startTime']), "%d-%m-%Y %H:%M:%S")
     while True:
-        # print(f'{orders["name"]}: {ltp[orders["symbol"]]}')
-        # logger.info(f'{orders["status"]}')
         if orders['status'] == 'Idle':
             if (datetime.now() >= startTime):
                 etr_inst['set'] = orders['setno']

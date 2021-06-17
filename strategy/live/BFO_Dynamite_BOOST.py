@@ -74,12 +74,6 @@ orders = [{'legpair': 1, 'setno': 1, 'ent_txn_type': "sell", 'rpr_txn_type': "bu
            'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1,
            'startTime': "09:30:00", 'move': 0.75, 'endTime':"14:45:00"}]
 
-# orders = [{'legpair': 1, 'setno': 1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-#            'idx': "BANKNIFTY", 'otype': ["ce", "pe"], 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "09:30:00"},
-#           {'legpair': 2, 'setno': 2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-#            'idx': "BANKNIFTY", 'otype': ["ce", "pe"], 'status': "Idle", 'expiry': 'week', 'lot': 1, 'startTime': "10:00:00"}]
-
-
 universal = {'exit_status': 'Idle', 'exitTime': '15:06:00', 'ext_txn_type': 'buy', 'minPrice': -8000, 'maxPrice': 16000}
 
 # functions
@@ -137,10 +131,13 @@ def getGlobalPnL():
         gdf['ltp'] = gdf['symbol'].map(ltp)
         gdf['cur_amount'] = gdf['tr_qty'] * gdf['ltp']
         gdf['pnl'] = gdf['cur_amount'] - gdf['tr_amount']
-        logger.info(f'\n\nPositionList: \n {df}')
-        logger.info(f'\n\nCombinedPositionsLists: \n {gdf}')
         gl_pnl = round(gdf['pnl'].sum(), 2)
-        logger.info(f'\n\nGlobal PnL : {gl_pnl} \n')
+        # logger.info(f'\n\nPositionList: \n {df}')
+        # logger.info(f'\n\nCombinedPositionsLists: \n {gdf}')
+        # logger.info(f'\n\nGlobal PnL : {gl_pnl} \n')
+        print(f'\n\nPositionList: \n {df}')
+        print(f'\n\nCombinedPositionsLists: \n {gdf}')
+        print(f'\n\nGlobal PnL : {gl_pnl} \n')
         pnl_dump.append([time.strftime("%d-%m-%Y %H:%M:%S"), gl_pnl])
     else:
         gl_pnl = 0
@@ -175,7 +172,7 @@ def execute(orders):
                         etr_inst['name'] = orders['idx'] + (datetime.strftime(datetime.strptime(
                             etr_inst['expiry'], '%d%b%Y'), '%y%#m%d')) + str(etr_inst['strike']) + etr_inst['optionType']
                     etr_inst['symbol'] = xt.fo_lookup(etr_inst['name'], instrument_df)
-                    logger.info(f'Placing orders for leg {etr_inst["legpair"]} - set {etr_inst["set"]} - {etr_inst["name"]} at {orders["startTime"]}..')
+                    logger.info(f'Placing orders for leg {etr_inst["legpair"]} - set {etr_inst["set"]} - {etr_inst["name"]} at {datetime.now().strftime('%H:%M:%S')}..')
                     orderID = None
                     if etr_inst['symbol'] != -1:
                         orderID = xt.place_order_id(etr_inst['symbol'], etr_inst['txn_type'], etr_inst['qty'])
@@ -193,11 +190,12 @@ def execute(orders):
                         etr_inst['status'] = 'Fail'
                         orders['status'] = 'Entry_Failed'
                     logger.info(f"\nEntry order dtls:\n {pp(etr_inst)}")
-                    tr_insts.append(etr_inst)
+                    tr_insts.append(etr_inst.copy())
                     logger.info(f'order status of leg {etr_inst["legpair"]} - set {etr_inst["set"]} - {etr_inst["name"]} is {orders["status"]}')
                     continue
                 if orders['status'] == 'Entered':
                     if ltp[orders['idx']] > (etr_inst['spot'] * (1+(orders["move"]/100))) or ltp[orders['idx']] < (etr_inst['spot'] * (1-(orders["move"]/100))):
+                        logger.info(f'{spot} crossed +/- {orders["move"]}.')
                         rpr_inst['legpair'] = orders['legpair']
                         rpr_inst['set'] = orders['setno']
                         rpr_inst['txn_type'] = orders['rpr_txn_type']
@@ -220,7 +218,7 @@ def execute(orders):
                             rpr_inst['status'] = 'Fail'
                             orders['status'] = 'Repair_Failed'
                         logger.info(f"\nRepair order dtls:\n {pp(rpr_inst)}")
-                        tr_insts.append(rpr_inst)
+                        tr_insts.append(rpr_inst.copy())
                         logger.info(
                             f'order status of leg {rpr_inst["legpair"]} - set {rpr_inst["set"]} - {rpr_inst["name"]} is {orders["status"]}')
                         continue
@@ -266,8 +264,10 @@ def exitCheck(universal):
                 # logger.info(f'Universal Exit order dtls: {ext_inst}')
                 logger.info(f"\nUniversal Exit order dtls:\n {pp(ext_inst)}")
                 tr_insts.append(ext_inst.copy())
-            logger.info('Universal exit func completed. Breaking the main loop')
+            # logger.info('Universal exit func completed. Breaking the main loop')
             universal['exit_status'] = 'Exited'
+            logger.info(f'order status of leg {etr_inst["legpair"]} - set {etr_inst["set"]} - {etr_inst["name"]} is {orders["status"]}')
+            logger.info('Universal exit func completed. Breaking the main loop')
         else:
             time.sleep(1)
 

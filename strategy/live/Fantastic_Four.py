@@ -238,7 +238,7 @@ def execute(orders):
                                                       orderList['OrderStatus'] == 'Filled'),None).replace(',', ''))
                         LastUpdateDateTime=datetime.fromisoformat(next((orderList['LastUpdateDateTime'] for orderList in orderLists if orderList['AppOrderID'] == rpr_inst['orderID'] and orderList['OrderStatus'] == 'Filled'))[0:19])
                         sl_dateTime = LastUpdateDateTime.strftime("%Y-%m-%d %H:%M:%S")
-                        logger.info(f"traded price is: {tradedPrice} and ordered time is: {sl_dateTime}")
+                        logger.info(f"traded price is: {sl_tradedPrice} and ordered time is: {sl_dateTime}")
                         rpr_inst['tradedPrice'] = sl_tradedPrice
                         rpr_inst['dateTime'] = sl_dateTime
                         rpr_inst['set_type'] = 'Repair'
@@ -376,6 +376,10 @@ def exitCheck(universal):
                 logger.info('breaking from exitCheck function loop')
                 universal['exit_status'] = 'Exited'
                 logger.info(f'Universal exit status : {universal["exit_status"]}')
+                break
+            elif [order['status'] for order in orders].count('SL_Hit') == len(orders):
+                logger.info('All sets hit stop loss. Closing the exitCheck func..')
+                universal['exit_status'] = 'Exited'
                 break
             else:
                 time.sleep(5)

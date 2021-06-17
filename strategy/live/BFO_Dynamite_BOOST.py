@@ -197,7 +197,7 @@ def execute(orders):
                     logger.info(f'order status of leg {etr_inst["legpair"]} - set {etr_inst["set"]} - {etr_inst["name"]} is {orders["status"]}')
                     continue
                 if orders['status'] == 'Entered':
-                    if ltp[orders['idx']] > (etr_inst['spot'] * (1+(orders[0]["move"]/100))) or ltp[orders['idx']] < (etr_inst['spot'] * (1-(orders[0]["move"]/100))):
+                    if ltp[orders['idx']] > (etr_inst['spot'] * (1+(orders["move"]/100))) or ltp[orders['idx']] < (etr_inst['spot'] * (1-(orders["move"]/100))):
                         rpr_inst['legpair'] = orders['legpair']
                         rpr_inst['set'] = orders['setno']
                         rpr_inst['txn_type'] = orders['rpr_txn_type']
@@ -281,6 +281,7 @@ if __name__ == '__main__':
         logger.exception(
             f'Failed to get masterDump/ expiryDates. Reason --> {e} \n Exiting..')
         exit()
+    get_spot(spot)
     fetch_spot = RepeatedTimer(3, get_spot, spot)
     # all the sets will execute in parallel with threads
     for i in range(len(orders)):

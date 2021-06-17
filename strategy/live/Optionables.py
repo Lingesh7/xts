@@ -243,7 +243,7 @@ def execute(orders):
                         sl_dateTime = LastUpdateDateTime.strftime(
                             "%Y-%m-%d %H:%M:%S")
                         logger.info(
-                            f"Stop Loss traded price is: {tradedPrice} and ordered time is: {sl_dateTime}")
+                            f"Stop Loss traded price is: {sl_tradedPrice} and ordered time is: {sl_dateTime}")
                         rpr_inst['tradedPrice'] = sl_tradedPrice
                         rpr_inst['dateTime'] = sl_dateTime
                         rpr_inst['set_type'] = 'Repair'
@@ -326,6 +326,7 @@ def exitCheck(universal):
             elif [order['status'] for order in orders].count('SL_Hit') == len(orders):
                 logger.info('All sets hit stop loss. Closing the exitCheck func..')
                 universal['exit_status'] = 'Exited'
+                break
             else:
                 time.sleep(2)
 

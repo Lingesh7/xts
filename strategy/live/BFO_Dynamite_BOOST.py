@@ -78,13 +78,13 @@ orders = [{'legpair': 1, 'setno': 1, 'ent_txn_type': "sell", 'rpr_txn_type': "bu
            'startTime': "10:00:00", 'move': 0.75, 'endTime':"14:45:00"},
           {'legpair': 2, 'setno': 4, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
            'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1,
-           'startTime': "10:00:00", 'move': 0.75, 'endTime':"14:45:00"}
+           'startTime': "10:00:00", 'move': 0.75, 'endTime':"14:45:00"},
            {'legpair': 3, 'setno': 5, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
            'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1,
            'startTime': "10:30:00", 'move': 0.75, 'endTime':"14:45:00"},
           {'legpair': 3, 'setno': 6, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
            'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1,
-           'startTime': "10:30:00", 'move': 0.75, 'endTime':"14:45:00"}
+           'startTime': "10:30:00", 'move': 0.75, 'endTime':"14:45:00"},
            {'legpair': 4, 'setno': 7, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
            'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1,
            'startTime': "11:00:00", 'move': 0.75, 'endTime':"14:45:00"},
@@ -190,7 +190,7 @@ def execute(orders):
                         etr_inst['name'] = orders['idx'] + (datetime.strftime(datetime.strptime(
                             etr_inst['expiry'], '%d%b%Y'), '%y%#m%d')) + str(etr_inst['strike']) + etr_inst['optionType']
                     etr_inst['symbol'] = xt.fo_lookup(etr_inst['name'], instrument_df)
-                    logger.info(f'Placing orders for leg {etr_inst["legpair"]} - set {etr_inst["set"]} - {etr_inst["name"]} at {datetime.now().strftime('%H:%M:%S')}..')
+                    logger.info(f'Placing orders for leg {etr_inst["legpair"]} - set {etr_inst["set"]} - {etr_inst["name"]} at ..')
                     orderID = None
                     if etr_inst['symbol'] != -1:
                         orderID = xt.place_order_id(etr_inst['symbol'], etr_inst['txn_type'], etr_inst['qty'])

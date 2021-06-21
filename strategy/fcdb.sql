@@ -190,3 +190,53 @@ ALTER TABLE "public".api ADD CONSTRAINT fk_api_customer FOREIGN KEY ( customer_i
 ALTER TABLE "public".api ADD CONSTRAINT fk_api_broker FOREIGN KEY ( broker_id ) REFERENCES "public".broker( id );
 
 
+CREATE  TABLE "public".banknifty_options ( 
+	name                 varchar(100)   ,
+	datetime             timestamp(0)   ,
+	"open"               decimal(7,2)   ,
+	high                 decimal(7,2)   ,
+	low                  decimal(7,2)   ,
+	"close"              decimal(7,2)   ,
+	volume               bigint   ,
+	oi                   bigint   
+ );
+ 
+ CREATE  TABLE "public".nifty_options ( 
+	name                 varchar(100)   ,
+	datetime             timestamp(0)   ,
+	"open"               decimal(7,2)   ,
+	high                 decimal(7,2)   ,
+	low                  decimal(7,2)   ,
+	"close"              decimal(7,2)   ,
+	volume               bigint   ,
+	oi                   bigint   
+ );
+
+ CREATE  TABLE "public".nifty_futures ( 
+	name                 varchar(100)   ,
+	datetime             timestamp(0)   ,
+	"open"               decimal(7,2)   ,
+	high                 decimal(7,2)   ,
+	low                  decimal(7,2)   ,
+	"close"              decimal(7,2)   ,
+	volume               bigint   ,
+	oi                   bigint   
+ );
+ 
+CREATE  TABLE "public".nifty_equity ( 
+	name                 varchar(100)   ,
+	symbol 				 integer		,
+	datetime             timestamp(0)   ,
+	"open"               decimal(7,2)   ,
+	high                 decimal(7,2)   ,
+	low                  decimal(7,2)   ,
+	"close"              decimal(7,2)   ,
+	volume               bigint     
+);
+
+
+--backup of PG database
+--pg_dump -U postgres -W -F t fcdb > D:\Python\Postgres\fcdb.tar
+
+--to restore 
+-- pg_restore --dbname=newdbname --create --verbose c:\pgbackup\dbanme.tar

@@ -242,6 +242,7 @@ def execute(orders):
                         rpr_inst['tradedPrice'] = sl_tradedPrice
                         rpr_inst['dateTime'] = sl_dateTime
                         rpr_inst['set_type'] = 'Repair'
+                        etr_inst['set_type'] = [ 'Repaired' for trades in tr_insts if trade["set"] == rpr_inst["set"] ][0]
                         orders['status'] = 'SL_Hit'
                         logger.info(f'order status of {orders["name"]} is {orders["status"]}')
                         logger.info(f'Repair order dtls: {rpr_inst}')
@@ -294,6 +295,7 @@ def execute(orders):
                 ext_inst['dateTime'] = dateTime
                 if orderID and tradedPrice:
                     ext_inst['set_type']='Target_Hit'
+                    etr_inst['set_type'] = [ 'Target_Hit' for trades in tr_insts if trade["set"] == ext_inst["set"] ][0]
                     # universal['exit_status'] = 'Exited'
                 else:
                     ext_inst['set_type']='Target_Hit'

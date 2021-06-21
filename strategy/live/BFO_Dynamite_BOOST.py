@@ -72,7 +72,25 @@ orders = [{'legpair': 1, 'setno': 1, 'ent_txn_type': "sell", 'rpr_txn_type': "bu
            'startTime': "09:30:00", 'move': 0.75, 'endTime':"14:45:00"},
           {'legpair': 1, 'setno': 2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
            'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1,
-           'startTime': "09:30:00", 'move': 0.75, 'endTime':"14:45:00"}]
+           'startTime': "09:30:00", 'move': 0.75, 'endTime':"14:45:00"},
+           {'legpair': 2, 'setno': 3, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
+           'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1,
+           'startTime': "10:00:00", 'move': 0.75, 'endTime':"14:45:00"},
+          {'legpair': 2, 'setno': 4, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
+           'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1,
+           'startTime': "10:00:00", 'move': 0.75, 'endTime':"14:45:00"}
+           {'legpair': 3, 'setno': 5, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
+           'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1,
+           'startTime': "10:30:00", 'move': 0.75, 'endTime':"14:45:00"},
+          {'legpair': 3, 'setno': 6, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
+           'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1,
+           'startTime': "10:30:00", 'move': 0.75, 'endTime':"14:45:00"}
+           {'legpair': 4, 'setno': 7, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
+           'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1,
+           'startTime': "11:00:00", 'move': 0.75, 'endTime':"14:45:00"},
+          {'legpair': 4, 'setno': 8, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
+           'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1,
+           'startTime': "11:00:00", 'move': 0.75, 'endTime':"14:45:00"}]
 
 universal = {'exit_status': 'Idle', 'exitTime': '15:06:00', 'ext_txn_type': 'buy', 'minPrice': -8000, 'maxPrice': 16000}
 

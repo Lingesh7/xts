@@ -190,7 +190,7 @@ def execute(orders):
                         etr_inst['name'] = orders['idx'] + (datetime.strftime(datetime.strptime(
                             etr_inst['expiry'], '%d%b%Y'), '%y%#m%d')) + str(etr_inst['strike']) + etr_inst['optionType']
                     etr_inst['symbol'] = xt.fo_lookup(etr_inst['name'], instrument_df)
-                    logger.info(f'Placing orders for leg {etr_inst["legpair"]} - set {etr_inst["set"]} - {etr_inst["name"]} at ..')
+                    logger.info(f'Placing entry orders for leg {etr_inst["legpair"]} - set {etr_inst["set"]} - {etr_inst["name"]}')
                     orderID = None
                     if etr_inst['symbol'] != -1:
                         orderID = xt.place_order_id(etr_inst['symbol'], etr_inst['txn_type'], etr_inst['qty'])
@@ -224,7 +224,7 @@ def execute(orders):
                         rpr_inst['optionType'] = etr_inst['optionType']
                         rpr_inst['name'] = etr_inst["name"]
                         rpr_inst['symbol'] = etr_inst["symbol"]
-                        logger.info(f'Placing exit orders for leg {rpr_inst["legpair"]} - set {rpr_inst["set"]} - {rpr_inst["name"]}')
+                        logger.info(f'Placing exit orders for leg {rpr_inst["legpair"]} - set {rpr_inst["set"]} - {rpr_inst["name"]} at ')
                         rpr_inst['orderID'] = xt.place_order_id(rpr_inst['symbol'], rpr_inst['txn_type'], rpr_inst['qty'])
                         if rpr_inst['orderID']:
                             rpr_inst['tradedPrice'], rpr_inst['dateTime'] = xt.get_traded_price(rpr_inst['orderID'])

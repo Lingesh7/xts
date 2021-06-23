@@ -32,6 +32,7 @@ from sys import exit
 from pathlib import Path
 from threading import Thread
 from datetime import datetime
+from tabulate import tabulate
 from pprint import pformat as pp
 from openpyxl import load_workbook
 from logging.handlers import TimedRotatingFileHandler
@@ -40,7 +41,13 @@ pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
 os.chdir(r'D:\Python\First_Choice_Git\xts\strategy\live')
 
-from utils.utils import xts_init, configure_logging, RepeatedTimer, data_to_excel
+from utils.utils import xts_init, \
+                        configure_logging, \
+                        RepeatedTimer, \
+                        data_to_excel, \
+                        logger_tab,\
+                        bot_init, \
+                        bot_sendtext
 
 # logger settings
 script_name = os.path.basename(__file__).split('.')[0]
@@ -153,9 +160,12 @@ def getGlobalPnL():
         # logger.info(f'\n\nPositionList: \n {df}')
         # logger.info(f'\n\nCombinedPositionsLists: \n {gdf}')
         # logger.info(f'\n\nGlobal PnL : {gl_pnl} \n')
-        print(f'\n\nPositionList: \n {df}')
-        print(f'\n\nCombinedPositionsLists: \n {gdf}')
-        print(f'\n\nGlobal PnL : {gl_pnl} \n')
+        # print(f'\n\nPositionList: \n {df}')
+        # print(f'\n\nCombinedPositionsLists: \n {gdf}')
+        # print(f'\n\nGlobal PnL : {gl_pnl} \n')
+        print("PositionList:" + '\n' + tabulate(df, headers='keys', tablefmt='pretty'))
+        print("Combined_Position_Lists:" + '\n' + tabulate(gdf, headers='keys', tablefmt='pretty'))
+        print("Global PnL:" + '\n' + tabulate([gl_pnl]))
         pnl_dump.append([time.strftime("%d-%m-%Y %H:%M:%S"), gl_pnl])
     else:
         gl_pnl = 0
@@ -207,7 +217,8 @@ def execute(orders):
                     else:
                         etr_inst['status'] = 'Fail'
                         orders['status'] = 'Entry_Failed'
-                    logger.info(f"\nEntry order dtls:\n {pp(etr_inst)}")
+                    # logger.info(f"\nEntry order dtls:\n {pp(etr_inst)}")
+                    logger_tab(etr_inst, 'Entry Order Details')
                     tr_insts.append(etr_inst.copy())
                     logger.info(f'order status of leg {etr_inst["legpair"]} - set {etr_inst["set"]} - {etr_inst["name"]} is {orders["status"]}')
                     continue
@@ -235,7 +246,8 @@ def execute(orders):
                         else:
                             rpr_inst['status'] = 'Fail'
                             orders['status'] = 'Repair_Failed'
-                        logger.info(f"\nRepair order dtls:\n {pp(rpr_inst)}")
+                        # logger.info(f"\nRepair order dtls:\n {pp(rpr_inst)}")
+                        logger_tab(rpr_inst, 'Repair Order Details')
                         tr_insts.append(rpr_inst.copy())
                         logger.info(
                             f'order status of leg {rpr_inst["legpair"]} - set {rpr_inst["set"]} - {rpr_inst["name"]} is {orders["status"]}')
@@ -280,7 +292,8 @@ def exitCheck(universal):
                     ext_inst['status'] = 'Fail'
                     logger.error(f"Error while exiting the order set {orders['setno']}, Exit Immediately")
                 # logger.info(f'Universal Exit order dtls: {ext_inst}')
-                logger.info(f"\nUniversal Exit order dtls:\n {pp(ext_inst)}")
+                # logger.info(f"\nUniversal Exit order dtls:\n {pp(ext_inst)}")
+                logger_tab(ext_inst, 'Universal Exit Order Details')
                 tr_insts.append(ext_inst.copy())
             # logger.info('Universal exit func completed. Breaking the main loop')
             universal['exit_status'] = 'Exited'
@@ -332,11 +345,15 @@ if __name__ == '__main__':
         getGlobalPnL()  # getting latest data
         if isinstance(df, pd.DataFrame):
             data_to_excel(pnl_dump, df, gdf, gl_pnl, script_name)
-        logger.info('--------------------------------------------')
-        logger.info(f'Total Orders and its status: \n {tr_insts} \n')
-        logger.info('********** Summary **********')
-        logger.info(f'\n\n PositionList: \n {df}')
-        logger.info(f'\n\n CombinedPositionsLists: \n {gdf}')
-        logger.info(f'\n\n Global PnL : {gl_pnl} \n')
-        logger.info('--------------------------------------------')
+        # logger.info('--------------------------------------------')
+        # logger.info(f'Total Orders and its status: \n {tr_insts} \n')
+        # logger.info('********** Summary **********')
+        # logger.info(f'\n\n PositionList: \n {df}')
+        # logger.info(f'\n\n CombinedPositionsLists: \n {gdf}')
+        # logger.info(f'\n\n Global PnL : {gl_pnl} \n')
+        # logger.info('--------------------------------------------')
+        logger_tab(tr_insts, 'Total Orders')
+        logger_tab(df, 'PositionList')
+        logger_tab(gdf, 'Combined_Position_Lists')
+        logger_tab(gl_pnl, 'Global PnL')
 

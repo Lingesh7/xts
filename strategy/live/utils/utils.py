@@ -22,6 +22,8 @@ from logging.handlers import TimedRotatingFileHandler
 import sqlite3
 from threading import Timer
 import requests
+from tabulate import tabulate
+
 # this is referring the main script logger
 logger = logging.getLogger('__main__')
 
@@ -145,8 +147,8 @@ def data_to_excel(pnl_dump, df, gdf, gl_pnl, script_name, startTime='00:00'):
         # writing the output to excel sheet
         filename = f'..\\pnl\\{script_name}_PnL.xlsx'
         if not os.path.exists(filename):
-             # with open(filename, 'w'): pass #creating excel book if not exists
-             Workbook().save(filename)
+            # with open(filename, 'w'): pass #creating excel book if not exists
+            Workbook().save(filename)
         writer = pd.ExcelWriter(filename, engine='openpyxl')
         writer.book = load_workbook(filename)
         resampled_df.to_excel(writer, sheet_name=(sheetname), index=True)
@@ -175,35 +177,47 @@ def bot_init():
     fil = Path(bot_file)
     if fil.exists():
         logger.info('UTIL: Bot token file exists')
-        b_tok = open(bot_file,'r').read()
+        b_tok = open(bot_file, 'r').read()
     else:
-        logger.info('UTIL: Bot token missing.')    
+        logger.info('UTIL: Bot token missing.')
     return b_tok
-    
-    
-def bot_sendtext(bot_message,b_tok):
+
+
+def bot_sendtext(bot_message, b_tok):
     if b_tok:
-        userids = ['1647735620','968624719']#,'1245301878','1089456737']
+        userids = ['1647735620', '968624719']  # ,'1245301878','1089456737']
         for userid in userids:
             bot_token = b_tok
             bot_chatID = userid
-            send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + bot_message
+            send_text = 'https://api.telegram.org/bot' + bot_token + \
+                '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + bot_message
             response = requests.get(send_text)
             resp = response.json()
             if resp['ok']:
                 logger.info('Sent message to followers')
     else:
         logger.error('UTIL: Token Missing')
+
+
+def logger_tab(to_table, msg='printing in table format'):
+    if isinstance(to_table, dict):
+        to_table = [to_table]
+        logger.info(msg + "\n" + tabulate(to_table, headers='keys', tablefmt='pretty'))
+    elif isinstance(to_table, (int, str, float)):
+        to_table = [str(to_table)]
+        logger.info(msg + "\n" + tabulate(to_table))
+    else:
+        logger.info(msg + "\n" + tabulate(to_table, headers='keys', tablefmt='pretty',showindex=False))
         
 
 
 class RepeatedTimer(object):
     def __init__(self, interval, function, *args, **kwargs):
-        self._timer     = None
-        self.interval   = interval
-        self.function   = function
-        self.args       = args
-        self.kwargs     = kwargs
+        self._timer = None
+        self.interval = interval
+        self.function = function
+        self.args = args
+        self.kwargs = kwargs
         self.is_running = False
         self.start()
 
@@ -220,8 +234,7 @@ class RepeatedTimer(object):
 
     def stop(self):
         self._timer.cancel()
-        self.is_running = False 
-       
+        self.is_running = False
 
 
 # def retry(func=None, exception=Exception, n_tries=5, delay=5, backoff=1, tolog=True, kill=False):

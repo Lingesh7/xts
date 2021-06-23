@@ -28,8 +28,17 @@ from logging.handlers import TimedRotatingFileHandler
 from sys import exit
 import os
 from random import randint
+from tabulate import tabulate
 
 os.chdir(r'D:\Python\First_Choice_Git\xts\strategy\scripts')
+
+from utils.utils import xts_init, \
+                        configure_logging, \
+                        RepeatedTimer, \
+                        data_to_excel, \
+                        logger_tab,\
+                        bot_init, \
+                        bot_sendtext
 
 ############## parsing args ##############
 
@@ -502,10 +511,14 @@ def getGlobalPnL():
         gdf['ltp'] = gdf['symbol'].map(ltp)
         gdf['cur_amount'] = gdf['tr_qty']*gdf['ltp']
         gdf['pnl'] = gdf['cur_amount'] - gdf['tr_amount']
-        logger.info(f'\n\nPositionList: \n {df}')
-        logger.info(f'\n\nCombinedPositionsLists: \n {gdf}')
         gl_pnl = round(gdf['pnl'].sum(),2)
-        logger.info(f'\n\nGlobal PnL : {gl_pnl} \n')
+        # logger.info(f'\n\nPositionList: \n {df}')
+        # logger.info(f'\n\nCombinedPositionsLists: \n {gdf}')
+        # gl_pnl = round(gdf['pnl'].sum(),2)
+        # logger.info(f'\n\nGlobal PnL : {gl_pnl} \n')
+        print("PositionList:" + '\n' + tabulate(df, headers='keys', tablefmt='pretty'))
+        print("Combined_Position_Lists:" + '\n' + tabulate(gdf, headers='keys', tablefmt='pretty'))
+        print("Global PnL:" + '\n' + tabulate([gl_pnl]))
         pnl_dump.append([time.strftime("%d-%m-%Y %H:%M:%S"),gl_pnl])
     else:
         gl_pnl = 0
@@ -606,12 +619,16 @@ if __name__ == '__main__':
         getGlobalPnL()      #getting latest data
         dataToExcel(pnl_dump)
         # logging the orders and data to log file
-        logger.info('--------------------------------------------')
-        logger.info(f'Total Orders and its status: \n {tr_insts} \n')
-        logger.info('Summary')
-        logger.info(f'\n\n PositionList: \n {df}')
-        logger.info(f'\n\n CombinedPositionsLists: \n {gdf}')
-        logger.info(f'\n\n Global PnL : {gl_pnl} \n')
-        logger.info('--------------------------------------------')
+        # logger.info('--------------------------------------------')
+        # logger.info(f'Total Orders and its status: \n {tr_insts} \n')
+        # logger.info('Summary')
+        # logger.info(f'\n\n PositionList: \n {df}')
+        # logger.info(f'\n\n CombinedPositionsLists: \n {gdf}')
+        # logger.info(f'\n\n Global PnL : {gl_pnl} \n')
+        # logger.info('--------------------------------------------')
+        logger_tab(tr_insts, 'Total Orders')
+        logger_tab(df, 'PositionList')
+        logger_tab(gdf, 'Combined_Position_Lists')
+        logger_tab(gl_pnl, 'Global PnL')
 
 ############## END ##############

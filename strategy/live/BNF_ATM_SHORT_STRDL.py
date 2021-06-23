@@ -28,6 +28,7 @@ from logging.handlers import TimedRotatingFileHandler
 from sys import exit
 import os
 from pprint import pformat as pp
+from tabulate import tabulate
 
 try:
     os.chdir(r'D:\Python\First_Choice_Git\xts\strategy\live')
@@ -38,7 +39,9 @@ from utils.utils import xts_init, \
     configure_logging, \
     RepeatedTimer, \
     data_to_excel, \
-    bot_init, bot_sendtext
+    logger_tab,\
+    bot_init, \
+    bot_sendtext
 
 # logger settings
 script_name = os.path.basename(__file__).split('.')[0]
@@ -54,10 +57,10 @@ b_tok = bot_init()
 cdate = xt.CDATE
 
 orders = [{'refId': 10001, 'setno': 1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-           'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1, 
+           'idx': "BANKNIFTY", 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1,
            'startTime': "09:30:00", 'sl_points': 50},
           {'refId': 10002, 'setno': 2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
-           'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1, 
+           'idx': "BANKNIFTY", 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1,
            'startTime': "09:30:00", 'sl_points': 60}]
 
 universal = {'exit_status': 'Idle',
@@ -74,12 +77,14 @@ df = None
 
 # functions
 
+
 def getLTP():
     global ltp
     # ltp={}
     if tr_insts:
         logger.info('inside tr_insts cond - getLTP')
-        symbols = [i['symbol'] for i in tr_insts if i['set_type'] == 'Entry' and i['tradedPrice'] != 0]
+        symbols = [i['symbol'] for i in tr_insts if i['set_type']
+                   == 'Entry' and i['tradedPrice'] != 0]
         instruments = []
         for symbol in symbols:
             instruments.append(
@@ -110,10 +115,15 @@ def getGlobalPnL():
         gdf['ltp'] = gdf['symbol'].map(ltp)
         gdf['cur_amount'] = gdf['tr_qty'] * gdf['ltp']
         gdf['pnl'] = gdf['cur_amount'] - gdf['tr_amount']
-        logger.info(f'\n\nPositionList: \n {df}')
-        logger.info(f'\n\nCombinedPositionsLists: \n {gdf}')
         gl_pnl = round(gdf['pnl'].sum(), 2)
-        logger.info(f'\n\nGlobal PnL : {gl_pnl} \n')
+        # logger.info(f'\n\nPositionList: \n {df}')
+        # logger.info(f'\n\nCombinedPositionsLists: \n {gdf}')
+        # logger.info(f'\n\nGlobal PnL : {gl_pnl} \n')
+        print("PositionList:" + '\n' + tabulate(df,
+                                                headers='keys', tablefmt='pretty'))
+        print("Combined_Position_Lists:" + '\n' +
+              tabulate(gdf, headers='keys', tablefmt='pretty'))
+        print("Global PnL:" + '\n' + tabulate([gl_pnl]))
         pnl_dump.append([time.strftime("%d-%m-%Y %H:%M:%S"), gl_pnl])
     else:
         gl_pnl = 0
@@ -298,7 +308,8 @@ def exitCheck(universal):
                 universal['exit_status'] = 'Exited'
                 break
             elif all([True for order in orders if order['status'] == 'SL_Hit']):
-                logger.info('All sets hit stop loss. Closing the exitCheck func..')
+                logger.info(
+                    'All sets hit stop loss. Closing the exitCheck func..')
                 universal['exit_status'] = 'Exited'
             else:
                 time.sleep(1)
@@ -354,10 +365,14 @@ if __name__ == '__main__':
             f'\n {script_name}: \n Min PnL:{minp} \n Max PnL:{maxp} \n Final PnL:{gl_pnl}', b_tok)
         data_to_excel(pnl_dump, df, gdf, gl_pnl, script_name, '09:59')
         # logging the orders and data to log file
-        logger.info('--------------------------------------------')
-        logger.info(f'Total Orders and its status: \n {tr_insts} \n')
-        logger.info('********** Summary **********')
-        logger.info(f'\n\n PositionList: \n {df}')
-        logger.info(f'\n\n CombinedPositionsLists: \n {gdf}')
-        logger.info(f'\n\n Global PnL : {gl_pnl} \n')
-        logger.info('--------------------------------------------')
+        # logger.info('--------------------------------------------')
+        # logger.info(f'Total Orders and its status: \n {tr_insts} \n')
+        # logger.info('********** Summary **********')
+        # logger.info(f'\n\n PositionList: \n {df}')
+        # logger.info(f'\n\n CombinedPositionsLists: \n {gdf}')
+        # logger.info(f'\n\n Global PnL : {gl_pnl} \n')
+        # logger.info('--------------------------------------------')
+        logger_tab(tr_insts, 'Total Orders')
+        logger_tab(df, 'PositionList')
+        logger_tab(gdf, 'Combined_Position_Lists')
+        logger_tab(gl_pnl, 'Global PnL')

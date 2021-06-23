@@ -1,3 +1,11 @@
+CREATE DATABASE fcdb
+WITH OWNER = postgres
+   ENCODING = 'UTF8'
+   TABLESPACE = pg_default
+   LC_COLLATE = 'zh_CN.UTF-8'
+   CONNECTION LIMIT = -1
+   TEMPLATE template0;
+
 CREATE SEQUENCE "public".broker_id_seq START WITH 1;
 
 CREATE SEQUENCE "public".customer_id_seq START WITH 123456;
@@ -240,3 +248,4 @@ CREATE  TABLE "public".nifty_equity (
 
 --to restore 
 -- pg_restore --dbname=newdbname --create --verbose c:\pgbackup\dbanme.tar
+

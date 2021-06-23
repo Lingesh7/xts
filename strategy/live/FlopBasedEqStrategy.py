@@ -590,4 +590,8 @@ if __name__ == '__main__':
     logger.info(f'\n\n CombinedPositionsLists: \n {gdf}')
     logger.info(f'\n\n Global PnL : {gl_pnl} \n')
     logger.info('--------------------------------------------')
+    # logger_tab(tr_insts, 'Total Orders')
+    # logger_tab(df, 'PositionList')
+    # logger_tab(gdf, 'Combined_Position_Lists')
+    # logger_tab(gl_pnl, 'Global PnL')
     logger.info('============================== END =================================')

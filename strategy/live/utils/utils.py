@@ -183,7 +183,7 @@ def bot_init():
     
 def bot_sendtext(bot_message,b_tok):
     if b_tok:
-        userids = ['1647735620']#,'1245301878','1089456737']
+        userids = ['1647735620','968624719']#,'1245301878','1089456737']
         for userid in userids:
             bot_token = b_tok
             bot_chatID = userid

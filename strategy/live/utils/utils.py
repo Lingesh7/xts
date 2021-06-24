@@ -200,14 +200,18 @@ def bot_sendtext(bot_message, b_tok):
 
 
 def logger_tab(to_table, msg='printing in table format'):
-    if isinstance(to_table, dict):
-        to_table = [to_table]
-        logger.info(msg + "\n" + tabulate(to_table, headers='keys', tablefmt='pretty'))
-    elif isinstance(to_table, (int, str, float)):
-        to_table = [str(to_table)]
-        logger.info(msg + "\n" + tabulate(to_table))
-    else:
-        logger.info(msg + "\n" + tabulate(to_table, headers='keys', tablefmt='pretty',showindex=False))
+    try:
+        if not isinstance(to_table, (list,pd.DataFrame)):
+            if isinstance(to_table, dict):
+                to_table = [to_table]
+                logger.info(msg + "\n" + tabulate(to_table, headers='keys', tablefmt='pretty'))
+            elif isinstance(to_table, (int, str, float, tuple, numpy.float64)):
+                to_table = [str(to_table)]
+                logger.info(msg + "\n" + tabulate(to_table))
+        else:
+            logger.info(msg + "\n" + tabulate(to_table, headers='keys', tablefmt='pretty',showindex=False))
+    except Exception:
+        logger.info(f'{msg} - {totable}')
         
 
 

@@ -23,6 +23,7 @@ import sqlite3
 from threading import Timer
 import requests
 from tabulate import tabulate
+import numpy
 
 # this is referring the main script logger
 logger = logging.getLogger('__main__')
@@ -185,7 +186,7 @@ def bot_init():
 
 def bot_sendtext(bot_message, b_tok):
     if b_tok:
-        userids = ['1647735620', '968624719']  # ,'1245301878','1089456737']
+        userids = ['1647735620', '968624719', '1385809483']  # ,'1245301878','1089456737']
         for userid in userids:
             bot_token = b_tok
             bot_chatID = userid
@@ -211,7 +212,7 @@ def logger_tab(to_table, msg='printing in table format'):
         else:
             logger.info(msg + "\n" + tabulate(to_table, headers='keys', tablefmt='pretty',showindex=False))
     except Exception:
-        logger.info(f'{msg} - {totable}')
+        logger.info(f'{msg} - {to_table}')
         
 
 

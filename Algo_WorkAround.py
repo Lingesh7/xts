@@ -654,3 +654,24 @@ INSERT INTO "public".strategy_params
 select start_time[1] from strategy_params;
 delete from strategy_params;
 select * from strategy_params;
+
+
+
+SELECT distinct name, substring(string(datetime),1,10) FROM `algo-trading-311005.fcdb.nifty_options` LIMIT 100
+
+
+------------
+pd.read_sql_query("SELECT * from ADANIPORTS  where date(Timestamp) = '2021-05-24'", db)
+cur.execute("delete from ACC where date(Timestamp) = '2021-05-24'")
+
+
+https://github.com/ktandon91/straddle-trading/blob/master/stockmock_clone/helpers.py
+
+
+dbfile='D:\\Python\\First_Choice_Git\\xts\\strategy\\ohlc\\Archive\\NIFTY_MARCH_OHLC.db'
+sql_db = sqlite3.connect(dbfile)
+sql_cur = sql_db.cursor()
+sql_cur.execute("SELECT * FROM NIFTY_MARCH;")
+rows=sql_cur.fetchall()
+# pd.read_sql("SELECT name FROM sqlite_master WHERE type='table';",sql_db)
+df = pd.DataFrame(rows, columns=(['name','datetime', 'open', 'high', 'low', 'close', 'volume', 'oi']))df['Date'].astype('datetime64[ns]')

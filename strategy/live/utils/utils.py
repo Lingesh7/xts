@@ -24,6 +24,7 @@ from threading import Timer
 import requests
 from tabulate import tabulate
 
+
 # this is referring the main script logger
 logger = logging.getLogger('__main__')
 
@@ -202,13 +203,14 @@ def bot_sendtext(bot_message, b_tok):
 def logger_tab(to_table, msg='printing in table format'):
     if isinstance(to_table, dict):
         to_table = [to_table]
-        logger.info(msg + "\n" + tabulate(to_table, headers='keys', tablefmt='pretty'))
+        logger.info(msg + "\n" + tabulate(to_table,
+                                          headers='keys', tablefmt='pretty'))
     elif isinstance(to_table, (int, str, float)):
         to_table = [str(to_table)]
         logger.info(msg + "\n" + tabulate(to_table))
     else:
-        logger.info(msg + "\n" + tabulate(to_table, headers='keys', tablefmt='pretty',showindex=False))
-        
+        logger.info(msg + "\n" + tabulate(to_table, headers='keys',
+                                          tablefmt='pretty', showindex=False))
 
 
 class RepeatedTimer(object):

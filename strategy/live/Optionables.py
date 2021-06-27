@@ -50,14 +50,18 @@ parser = argparse.ArgumentParser(description='Optionables Script')
 parser.add_argument('-t', '--ticker',type=str, required=True, help='NIFTY or BANKNIFTY')
 parser.add_argument('-st', '--startTime',type=str, required=True, help='start time of the script')
 parser.add_argument('-et', '--endTime',type=str, default="15:05:00", help='end time')
-# parser.add_argument('-rt', '--repairTime',type=str, default="14:40:00", help='reapir time')
-# parser.add_argument('-sl', '--stopLoss',type=int, default=-1500, help='stopLoss amount')
+group = parser.add_mutually_exclusive_group()
+group.add_argument('-slc', '--stopLossPct',type=float,  help='StopLoss in percentage')
+group.add_argument('-slp', '--stopLossPoints',type=int, help='stopLoss  points')
 # parser.add_argument('-tgt', '--target',type=int, default=3000, help='Target amount')
 args = parser.parse_args()
-
 ticker = args.ticker
 startTime = args.startTime
 endTime = args.endTime
+stop_loss_pct = args.stopLossPct
+stop_loss_points = args.stopLossPoints
+
+
 # repairTime = args.repairTime
 # stopLoss = args.stopLoss
 # target = args.target
@@ -78,10 +82,10 @@ cdate = xt.CDATE
 
 orders = [{'refId': 10001, 'setno': 1, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
            'idx': ticker, 'otype': "ce", 'status': "Idle", 'expiry': 'week', 'lot': 1,
-           'startTime': startTime, 'sl_points': 1.30},
+           'startTime': startTime, 'sl_points': stop_loss_points,'sl_pct': stop_loss_pct},
           {'refId': 10002, 'setno': 2, 'ent_txn_type': "sell", 'rpr_txn_type': "buy",
            'idx': ticker, 'otype': "pe", 'status': "Idle", 'expiry': 'week', 'lot': 1,
-           'startTime': startTime, 'sl_points': 1.30}]
+           'startTime': startTime, 'sl_points': stop_loss_points,'sl_pct': stop_loss_pct}]
 
 universal = {'exit_status': 'Idle',
              'ext_txn_type': 'buy', 'exitTime': endTime}
@@ -218,7 +222,7 @@ def execute(orders):
             rpr_inst['optionType'] = etr_inst['optionType']
             rpr_inst['name'] = etr_inst["name"]
             rpr_inst['symbol'] = etr_inst["symbol"]
-            sl = round_nearest(etr_inst['tradedPrice'] * orders["sl_points"])
+            sl = round_nearest(etr_inst['tradedPrice'] * orders["sl_pct"]) if orders["sl_points"] is None else round_nearest(etr_inst['tradedPrice'] + orders["sl_points"])
             orderID_sl = xt.place_order_id(
                 rpr_inst['symbol'], rpr_inst['txn_type'], rpr_inst['qty'], sl=sl)
             rpr_inst['orderID'] = orderID_sl

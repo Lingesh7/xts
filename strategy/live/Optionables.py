@@ -145,7 +145,7 @@ def getGlobalPnL():
         # logger.info(f'\n\nGlobal PnL : {gl_pnl} \n')
         print("PositionList:" + '\n' + tabulate(df, headers='keys', tablefmt='pretty'))
         print("Combined_Position_Lists:" + '\n' + tabulate(gdf, headers='keys', tablefmt='pretty'))
-        print("Global PnL:" + '\n' + tabulate([gl_pnl]))
+        print("Global PnL:" + '\n' + tabulate([str(gl_pnl)]))
         pnl_dump.append([time.strftime("%d-%m-%Y %H:%M:%S"), gl_pnl])
     else:
         gl_pnl = 0
@@ -201,7 +201,8 @@ def execute(orders):
                     etr_inst['status'] = 'Fail'
                     orders['status'] = 'Entry_Failed'
                 # logger.info(f'Entry order dtls: {etr_inst}')
-                logger.info(f"\nEntry order dtls:\n {pp(etr_inst)}")
+                #logger.info(f"\nEntry order dtls:\n {pp(etr_inst)}")
+                logger_tab(etr_inst,'Entry order detail')
                 tr_insts.append(etr_inst)
                 logger.info(
                     f'order status of {etr_inst["set"]}.{etr_inst["name"]} is {orders["status"]}')
@@ -230,7 +231,8 @@ def execute(orders):
             orders['status'] = 'SL_Placed'
             logger.info(
                 f'order status of {rpr_inst["set"]}.{rpr_inst["name"]} is {orders["status"]}')
-            logger.info(f"\nRepair order dtls:\n {pp(rpr_inst)}")
+            #logger.info(f"\nRepair order dtls:\n {pp(rpr_inst)}")
+            logger_tab(rpr_inst,'Repair order detail')
             continue
 
         if universal['exit_status'] == 'Idle':
@@ -258,12 +260,13 @@ def execute(orders):
                         rpr_inst['status'] = 'Success'
                         orders['status'] = 'SL_Hit'
                         # logger.info(f'Repair order dtls: {rpr_inst}')
-                        logger.info(f"\nRepair order dtls:\n {pp(rpr_inst)}")
-                        bot_sendtext(f'SL HIT on {rpr_inst["set"]}. {rpr_inst["name"]}', b_tok)
+                        #logger.info(f"\nRepair order dtls:\n {pp(rpr_inst)}")
+                        logger_tab(rpr_inst,'Repair order detail')
+                        bot_sendtext(f'SL HIT on {orders["startTime"]} Entry - {rpr_inst["set"]}. {rpr_inst["name"]}', b_tok)
                         tr_insts.append(rpr_inst)
                         logger.info(
                             f'order status of {rpr_inst["set"]}.{rpr_inst["name"]} is {orders["status"]}')
-                        continue
+                        #continue
 
         elif universal['exit_status'] == 'Exited':
             orders['status'] = 'Universal_Exit'
@@ -274,7 +277,7 @@ def execute(orders):
 
         if orders['status'] == 'SL_Hit' or orders['status'] == 'Entry_Failed':
             logger.info(
-                f'Order must hit SL/Tgt. Exiting. Reason: {orders["status"]}')
+                f'Order must hit SL or Entry Failed. Exiting. Reason: {orders["status"]}')
             logger.info(
                 f'Completed - Order set: {orders["setno"]}. Exiting the thread')
             break
@@ -324,8 +327,8 @@ def exitCheck(universal):
                         logger.error(f"Error while exiting the order set \
                                      {orders['setno']}, Exit Immediately")
                     # logger.info(f'Universal Exit order dtls: {ext_inst}')
-                    logger.info(
-                        f"\nUniversal Exit order dtls:\n {pp(ext_inst)}")
+                    #logger.info(f"\nUniversal Exit order dtls:\n {pp(ext_inst)}")
+                    logger_tab(ext_inst,'Exit order detail')
                     tr_insts.append(ext_inst.copy())
                 logger.info(
                     'Universal exit func completed. Breaking the main loop')

@@ -165,7 +165,7 @@ def getGlobalPnL():
         # print(f'\n\nGlobal PnL : {gl_pnl} \n')
         print("PositionList:" + '\n' + tabulate(df, headers='keys', tablefmt='pretty'))
         print("Combined_Position_Lists:" + '\n' + tabulate(gdf, headers='keys', tablefmt='pretty'))
-        print("Global PnL:" + '\n' + tabulate([gl_pnl]))
+        print("Global PnL:" + '\n' + tabulate([str(gl_pnl)]))
         pnl_dump.append([time.strftime("%d-%m-%Y %H:%M:%S"), gl_pnl])
     else:
         gl_pnl = 0
@@ -220,7 +220,7 @@ def execute(orders):
                     # logger.info(f"\nEntry order dtls:\n {pp(etr_inst)}")
                     logger_tab(etr_inst, 'Entry Order Details')
                     tr_insts.append(etr_inst.copy())
-                    logger.info(f'order status of leg {etr_inst["legpair"]} - set {etr_inst["set"]} - {etr_inst["name"]} is {orders["status"]}')
+                    #logger.info(f'order status of leg {etr_inst["legpair"]} - set {etr_inst["set"]} - {etr_inst["name"]} is {orders["status"]}')
                     continue
                 if orders['status'] == 'Entered':
                     if ltp[orders['idx']] > (etr_inst['spot'] * (1+(orders["move"]/100))) or ltp[orders['idx']] < (etr_inst['spot'] * (1-(orders["move"]/100))):
@@ -297,7 +297,7 @@ def exitCheck(universal):
                 tr_insts.append(ext_inst.copy())
             # logger.info('Universal exit func completed. Breaking the main loop')
             universal['exit_status'] = 'Exited'
-            logger.info(f'order status of leg {etr_inst["legpair"]} - set {etr_inst["set"]} - {etr_inst["name"]} is {orders["status"]}')
+            #logger.info(f'order status of leg {etr_inst["legpair"]} - set {etr_inst["set"]} - {etr_inst["name"]} is {orders["status"]}')
             logger.info('Universal exit func completed. Breaking the main loop')
         else:
             time.sleep(1)

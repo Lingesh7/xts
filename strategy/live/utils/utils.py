@@ -23,6 +23,7 @@ import sqlite3
 from threading import Timer
 import requests
 from tabulate import tabulate
+import numpy
 
 
 # this is referring the main script logger
@@ -186,7 +187,8 @@ def bot_init():
 
 def bot_sendtext(bot_message, b_tok):
     if b_tok:
-        userids = ['1647735620', '968624719']  # ,'1245301878','1089456737']
+        # ,'1245301878','1089456737']
+        userids = ['1647735620', '968624719', '1385809483']
         for userid in userids:
             bot_token = b_tok
             bot_chatID = userid
@@ -201,16 +203,20 @@ def bot_sendtext(bot_message, b_tok):
 
 
 def logger_tab(to_table, msg='printing in table format'):
-    if isinstance(to_table, dict):
-        to_table = [to_table]
-        logger.info(msg + "\n" + tabulate(to_table,
-                                          headers='keys', tablefmt='pretty'))
-    elif isinstance(to_table, (int, str, float)):
-        to_table = [str(to_table)]
-        logger.info(msg + "\n" + tabulate(to_table))
-    else:
-        logger.info(msg + "\n" + tabulate(to_table, headers='keys',
-                                          tablefmt='pretty', showindex=False))
+    try:
+        if not isinstance(to_table, (list, pd.DataFrame)):
+            if isinstance(to_table, dict):
+                to_table = [to_table]
+                logger.info(msg + "\n" + tabulate(to_table,
+                                                  headers='keys', tablefmt='pretty'))
+            elif isinstance(to_table, (int, str, float, tuple, numpy.float64)):
+                to_table = [str(to_table)]
+                logger.info(msg + "\n" + tabulate(to_table))
+        else:
+            logger.info(msg + "\n" + tabulate(to_table,
+                                              headers='keys', tablefmt='pretty', showindex=False))
+    except Exception:
+        logger.info(f'{msg} - {to_table}')
 
 
 class RepeatedTimer(object):

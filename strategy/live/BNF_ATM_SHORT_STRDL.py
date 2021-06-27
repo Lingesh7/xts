@@ -123,7 +123,7 @@ def getGlobalPnL():
                                                 headers='keys', tablefmt='pretty'))
         print("Combined_Position_Lists:" + '\n' +
               tabulate(gdf, headers='keys', tablefmt='pretty'))
-        print("Global PnL:" + '\n' + tabulate([str(gl_pnl)]))
+        print("Global PnL:" + '\n' + str(gl_pnl))
         pnl_dump.append([time.strftime("%d-%m-%Y %H:%M:%S"), gl_pnl])
     else:
         gl_pnl = 0

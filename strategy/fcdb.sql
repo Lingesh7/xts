@@ -249,3 +249,80 @@ CREATE  TABLE "public".nifty_equity (
 --to restore 
 -- pg_restore --dbname=newdbname --create --verbose c:\pgbackup\dbanme.tar
 
+CREATE  TABLE "public".options_data_master (
+	datetime             timestamp(0)   ,
+	name                 varchar(100)  NOT NULL ,
+	"date"               date  NOT NULL ,
+	"time"               time  NOT NULL ,
+	underlying           varchar(50)   ,
+	option_type          varchar(2)   ,
+	expiry               date   ,
+	strike               bigint   ,
+	"open"               decimal(7,2)   ,
+	high                 decimal(7,2)   ,
+	low                  decimal(7,2)   ,
+	"close"              decimal(7,2)   ,
+	volume               bigint   ,
+	oi                   bigint
+ );
+
+CREATE UNIQUE INDEX unq_options_data_master_date ON "public".options_data_master ( name, datetime );
+
+
+INSERT INTO public.options_data_master
+	select
+	datetime, name, DATE(datetime) as "date", "datetime"::time as "time",
+	CASE
+  	WHEN name LIKE 'NIFTY%' THEN 'NIFTY'
+  	WHEN name LIKE 'BANKNIFTY%' THEN 'BANKNIFTY'
+	END underlying,
+	CASE
+  	WHEN name LIKE '%CE%' THEN 'CE'
+  	WHEN name LIKE '%PE%' THEN 'PE'
+	END option_type,
+	'01-01-1999' as expiry,
+	regexp_replace(LEFT(RIGHT(name,7),5) , '[[:alpha:]]', '', 'g')::bigint as strike, "open", "high", "low", "close", "volume", "oi" from nifty_options;
+
+
+select count(1) from banknifty_options;
+select count(1) from nifty_options_temp;
+select count(1) from options_data_master;
+
+
+--check for dups
+SELECT (nifty_options.*)::text, count(*)
+FROM nifty_options
+GROUP BY nifty_options.*
+HAVING count(*) > 1;
+
+
+-- step 1
+CREATE TABLE nifty_options_temp (LIKE banknifty_options);
+
+-- step 2
+INSERT INTO nifty_options_temp
+SELECT
+    DISTINCT (nifty_options) nifty_options
+FROM nifty_options;
+
+-- step 3
+--DROP TABLE nifty_options;
+
+-- step 4
+ALTER TABLE nifty_options_temp
+RENAME TO nifty_options;
+
+SELECT name, datetime, "open", high, low, "close", volume, oi
+FROM
+	"public".nifty_options_temp s limit 10;
+
+-- insert into nifty_options_temp
+-- SELECT right(split_part(name, ',', 1),-1)::varchar(100) AS name
+--      , split_part(name, ',', 2)::timestamp(0) AS datetime
+--      , split_part(name, ',', 3)::decimal(7,2) AS "open"
+--      , split_part(name, ',', 4)::decimal(7,2) AS "high"
+-- 	, split_part(name, ',', 5)::decimal(7,2) AS "low"
+-- 	, split_part(name, ',', 6)::decimal(7,2) AS "close"
+-- 	, split_part(name, ',', 7)::bigint AS "volume"
+-- 	, left(split_part(name, ',', 8),-1)::bigint AS "oi"
+-- FROM   nifty_options;

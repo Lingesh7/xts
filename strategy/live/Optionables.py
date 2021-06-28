@@ -68,6 +68,7 @@ stop_loss_points = args.stopLossPoints
 
 # logger settings
 script_name = os.path.basename(__file__).split('.')[0]
+script_name = script_name + "_sl_percent" if stop_loss_pct else script_name + "_sl_points"
 logger = configure_logging(script_name, startTime)
 
 

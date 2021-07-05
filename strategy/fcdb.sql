@@ -297,13 +297,13 @@ HAVING count(*) > 1;
 
 
 -- step 1
-CREATE TABLE nifty_options_temp (LIKE banknifty_options);
+CREATE TABLE nifty_options_temp (LIKE nifty_options);
 
 -- step 2
 INSERT INTO nifty_options_temp
 SELECT
-    DISTINCT (nifty_options) nifty_options
-FROM nifty_options;
+    DISTINCT a.*
+FROM nifty_options a;
 
 -- step 3
 --DROP TABLE nifty_options;

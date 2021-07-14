@@ -281,7 +281,7 @@ INSERT INTO public.options_data_master
   	WHEN name LIKE '%PE%' THEN 'PE'
 	END option_type,
 	'01-01-1999' as expiry,
-	regexp_replace(LEFT(RIGHT(name,7),5) , '[[:alpha:]]', '', 'g')::bigint as strike, "open", "high", "low", "close", "volume", "oi" from nifty_options;
+	regexp_replace(LEFT(RIGHT(name,7),5) , '[[:alpha:]]', '', 'g')::bigint as strike, "open", "high", "low", "close", "volume", "oi" from nifty_options where datetime >= '2021-05-28';
 
 
 select count(1) from banknifty_options;

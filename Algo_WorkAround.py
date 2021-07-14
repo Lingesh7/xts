@@ -675,3 +675,33 @@ sql_cur.execute("SELECT * FROM NIFTY_MARCH;")
 rows=sql_cur.fetchall()
 # pd.read_sql("SELECT name FROM sqlite_master WHERE type='table';",sql_db)
 df = pd.DataFrame(rows, columns=(['name','datetime', 'open', 'high', 'low', 'close', 'volume', 'oi']))df['Date'].astype('datetime64[ns]')
+
+
+
+-----------------------------------
+
+import re
+
+idx = ['NIFTY2171715000CE', 
+       'BANKNIFTY2160334300PE',
+       'BANKNIFTY21JUL36000CE','BANKNIFTY21123134300PE','NIFTY21MAR14000PE','NIFTY21111719000CE','BANKNIFTY21120334300PE','NIFTY21MAR5900PE' ,]
+
+# pattern1 = r'(NIFTY|BANKNIFTY)(\d{2})(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)(\d{5})(CE|PE)$'
+# pattern2 = r'(NIFTY|BANKNIFTY)(\d{2})([0-9])([0-9]{2})(\d{5})(CE|PE)$'
+
+
+# pattern1 = r'(?P<index>NIFaTY|BANKNaIFTY)(?P<year>\d{2})(?P<month>JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)(?P<strike>\d{5})(?P<otype>CE|PE)$'                            
+# pattern2 = r'(?P<index>NaIFTY|BANaKNIFTY)(?P<year>\d{2})(?P<month>[0-9])(?P<date>[0-9]{2})(?P<strike>\d{5})(?P<otype>CE|PE)$'
+pattern3= r'(?P<index>NIFTY|BANKNIFTY)(?P<year>\d{2})(?P<month>(0?[1-9]|1[0-2]))(?P<date>(0?[1-9]|[12]\d|30|31))(?P<strike>\d{5})(?P<otype>CE|PE)$'
+pattern4 = r'(?P<index>NIFTY|BANKNIFTY)(?P<year>\d{2})(?P<month>JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)(?P<strike>\d{4,5})(?P<otype>CE|PE)$'
+
+for i in range(len(idx)):
+    if re.search(pattern3, idx[i]):
+        mm = re.search(pattern3, idx[i])
+        # print('3 ',idx[i], 'strike', mm.group('strike'))
+        print('Weekly Expiry - ', 'date', mm.group('date'),'month', mm.group('month') , 'year', mm.group('year'), 'strike', mm.group('strike'))
+    elif re.search(pattern4, idx[i]):
+        mm = re.search(pattern4, idx[i])
+        # print('4 ',idx[i], 'strike', re.search(pattern4, idx[i]).group('strike'))
+        print('Monthly Expiry - ', 'month', mm.group('month') , 'year', mm.group('year'), 'strike', mm.group('strike'))
+        

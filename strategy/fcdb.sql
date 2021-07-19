@@ -114,6 +114,8 @@ INSERT INTO "public".customer( first_name, last_name, mobile, mail, address, act
 							  'Linges', 'M', 6382860148, 'nerus.q8@gmail.com', 'Chennai', 'Y', 1647735620);
 INSERT INTO "public".customer( first_name, last_name, mobile, mail, address, active, telegram_id ) VALUES ( 
 								'Raja', 'YOGI', 9884411611, 'acumeraja@yahoo.co.in', 'Cbe', 'Y', 1089456737);
+INSERT INTO "public".api( first_name, last_name, mobile, mail, address, active, telegram_id ) VALUES ( 
+								'IIFL', '28', 6312312312, 'iifl@yahoo.co.in', 'Madras', 'Y', 1647735620);							
 INSERT INTO "public".strategy(name, min_multiplier, capital_required, price_per_month, description ) VALUES (
 								'Option Scalper', 1, 50000, 500, 'BUY 1 lot CE and PE at the same time.');
 INSERT INTO "public".strategy(name, min_multiplier, capital_required, price_per_month, description ) VALUES ( 
@@ -124,7 +126,8 @@ INSERT INTO "public".strategy_params(  name, strategy_id, script_name, start_tim
 										'nfo_params', 502, 'NFO_Panther_Live', '09:30:00','14:40:00', '15:05:00', 24000, -12000);
 INSERT INTO "public".subscribers( customer_id, strategy_id, broker_id, is_active ) VALUES (
 								  123456, 501, 1, 'Y');
-
+INSERT INTO "public".api( customer_id, api_key, api_secret, token, token2, broker_id, login_id, login_password,2FA) VALUES (
+							123458, 8a2c9c2c650b2334c0e432, Yuis804$IK, token, token2, 1, "IIFL28", "Jul@123","123456");
 
 CREATE  TABLE "public".run_counter ( 
 	counter              integer   ,
@@ -183,19 +186,24 @@ ALTER TABLE "public".positions ADD CONSTRAINT fk_positions_broker FOREIGN KEY ( 
 ALTER TABLE "public".positions ADD CONSTRAINT fk_positions_order_book FOREIGN KEY ( order_id ) REFERENCES "public".order_book( order_id );
 
 
+--DROP TABLE public.api;
+
 CREATE  TABLE "public".api ( 
 	customer_id          integer   ,
 	api_key              char(30)   ,
 	api_secret           char(30)   ,
-	token                char(50)   ,
+	"token"              varchar(100)   ,
+	token2               varchar(100)   ,
 	broker_id            integer   ,
 	login_id             integer   ,
-	login_password       char(50)   
+	login_password       varchar(50),
+	"2fa"				 varchar(10)   
  );
+
+ALTER TABLE "public".api ADD CONSTRAINT fk_api_broker FOREIGN KEY ( broker_id ) REFERENCES "public".broker( id );
 
 ALTER TABLE "public".api ADD CONSTRAINT fk_api_customer FOREIGN KEY ( customer_id ) REFERENCES "public".customer( id );
 
-ALTER TABLE "public".api ADD CONSTRAINT fk_api_broker FOREIGN KEY ( broker_id ) REFERENCES "public".broker( id );
 
 
 CREATE  TABLE "public".banknifty_options ( 

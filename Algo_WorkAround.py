@@ -705,3 +705,118 @@ for i in range(len(idx)):
         # print('4 ',idx[i], 'strike', re.search(pattern4, idx[i]).group('strike'))
         print('Monthly Expiry - ', 'month', mm.group('month') , 'year', mm.group('year'), 'strike', mm.group('strike'))
         
+========================
+fc db
+
+
+# ---------------
+# from helpers import OptionsDataFrameFromQuery, DBConnection
+
+# DBConnection()
+import re
+
+idx = ['NIFTY2171715000CE', 
+       'BANKNIFTY2160334300PE',
+       'BANKNIFTY21JUL36000CE','BANKNIFTY21123134300PE','NIFTY21MAR14000PE','NIFTY21111719000CE','BANKNIFTY21120334300PE','NIFTY21MAR5900PE' ,]
+
+# pattern1 = r'(NIFTY|BANKNIFTY)(\d{2})(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)(\d{5})(CE|PE)$'
+# pattern2 = r'(NIFTY|BANKNIFTY)(\d{2})([0-9])([0-9]{2})(\d{5})(CE|PE)$'
+
+
+# pattern1 = r'(?P<index>NIFaTY|BANKNaIFTY)(?P<year>\d{2})(?P<month>JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)(?P<strike>\d{5})(?P<otype>CE|PE)$'                            
+# pattern2 = r'(?P<index>NaIFTY|BANaKNIFTY)(?P<year>\d{2})(?P<month>[0-9])(?P<date>[0-9]{2})(?P<strike>\d{5})(?P<otype>CE|PE)$'
+pattern3= r'(?P<index>NIFTY|BANKNIFTY)(?P<year>\d{2})(?P<month>(0?[1-9]|1[0-2]))(?P<date>(0?[1-9]|[12]\d|30|31))(?P<strike>\d{5})(?P<otype>CE|PE)$'
+pattern4 = r'(?P<index>NIFTY|BANKNIFTY)(?P<year>\d{2})(?P<month>JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)(?P<strike>\d{4,5})(?P<otype>CE|PE)$'
+
+for i in range(len(idx)):
+    if re.search(pattern3, idx[i]):
+        mm = re.search(pattern3, idx[i])
+        # print('3 ',idx[i], 'strike', mm.group('strike'))
+        print('Weekly Expiry - ', 'date', mm.group('date'),'month', mm.group('month') , 'year', mm.group('year'), 'strike', mm.group('strike'))
+    elif re.search(pattern4, idx[i]):
+        mm = re.search(pattern4, idx[i])
+        # print('4 ',idx[i], 'strike', re.search(pattern4, idx[i]).group('strike'))
+        print('Monthly Expiry - ', 'month', mm.group('month') , 'year', mm.group('year'), 'strike', mm.group('strike'))
+    # ee = re.search(pattern3, idx[i])
+    # if ee: 
+    #     print('1 ',idx[i], 'month', ee.group('month'))
+    # elif re.search(pattern4, idx[i]):
+    #     print('2 ',idx[i], 'month', (re.search(pattern4, idx[i])).group('month')) 
+    # # elif re.search(pattern3, idx[i]):
+    # #     print('3 ',idx[i], 'month', (re.search(pattern3, idx[i])).group('month'))
+    # # elif re.search(pattern4, idx[i]):
+    # #     print('4 ',idx[i], 'month', (re.search(pattern4, idx[i])).group('month'))
+    else:
+        print('Not Matched with any')
+
+
+# ((\b\d{1,2}\D{0,3})?\b(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|
+#                           Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)
+#                           ?|Oct(?:ober)?|(Nov|Dec)(?:ember)?)\D?)
+# (\d{1,2}(st|nd|rd|th)?)?((\s*[,.\-\/]\s*)\D?)?\s*((19[0-9]\d|20\d{2})|\d{2})*
+
+
+
+
+====================================
+
+#to load nifty, bankNifty and futures:
+dbfile='D:\\Python\\First_Choice_Git\\xts\\strategy\\ohlc\\FUT_JUL_OHLC.db'
+sql_db = sqlite3.connect(dbfile)
+sql_cur = sql_db.cursor()
+sql_cur.execute("SELECT * FROM FUT_JUL_2021;")
+rows=sql_cur.fetchall()
+# pd.read_sql("SELECT name FROM sqlite_master WHERE type='table';",sql_db)
+df = pd.DataFrame(rows, columns=(['name','datetime', 'open', 'high', 'low', 'close', 'volume', 'oi']))
+df_columns = list(df)
+table = 'nifty_futures'
+columns = ",".join(df_columns)
+values = "VALUES({})".format(",".join(["%s" for _ in df_columns]))
+insert_stmt = "INSERT INTO {} ({}) {}".format(table,columns,values)
+
+# NIFTY_MARCH
+pg_conn = psycopg2.connect(database="fcdb", user="postgres", password="postgres", host="127.0.0.1", port="5432")
+pg_cur = pg_conn.cursor()
+psycopg2.extras.execute_batch(pg_cur, insert_stmt, df.values)
+pg_conn.commit()
+pg_cur.close()
+pg_conn.close()
+sql_cur.close()
+sql_db.close()
+
+#to  load equity
+# dbfile='D:\\Python\\First_Choice_Git\\xts\\strategy\\ohlc\\EQ_JULY_OHLC.db'
+# sql_db = sqlite3.connect(dbfile)
+# sql_cur = sql_db.cursor()
+
+# sql_cur.execute('SELECT name FROM sqlite_master  WHERE type IN ("table","view") AND name NOT LIKE "sqlite_%" ORDER BY 1')
+# table_names = sql_cur.fetchall()
+# tables = []
+# ticker_dict = {}
+# for i in range(len(table_names)):
+#     tables.append(table_names[i][0])
+# symbols = [ xt.eq_lookup(ticker) for ticker in tables ]
+# for ticker,symbol in zip(tables,symbols):
+#     ticker_dict[ticker] = symbol
+# # ticker_dict['NIFTY_50']="NIFTY 50"
+# # ticker_dict['NIFTY_BANK']="NIFTY BANK"
+# pg_conn = psycopg2.connect(database="fcdb", user="postgres", password="postgres", host="127.0.0.1", port="5432")
+# pg_cur = pg_conn.cursor()
+
+# for ticker,symbol in ticker_dict.items():
+#     sql_cur.execute(f"SELECT '{ticker}' as name,'{symbol}' as symbol,* FROM '{ticker}';")
+#     rows=sql_cur.fetchall()
+#     df = pd.DataFrame(rows, columns=(['name', 'symbol', 'datetime', 'open', 'high', 'low', 'close', 'volume']))
+#     df_columns = list(df)
+#     table = 'nifty_equity'
+#     columns = ",".join(df_columns)
+#     values = "VALUES({})".format(",".join(["%s" for _ in df_columns]))
+#     insert_stmt = "INSERT INTO {} ({}) {}".format(table,columns,values)
+#     psycopg2.extras.execute_batch(pg_cur, insert_stmt, df.values)
+
+# # # NIFTY_MARCH
+# pg_conn.commit()
+# pg_cur.close()
+# pg_conn.close()
+# sql_cur.close()
+# sql_db.close()

@@ -9,6 +9,7 @@ from pathlib import Path
 from datetime import date,datetime
 import configparser
 import os, shutil
+
 try:
     os.chdir(r'D:\Python\First_Choice_Git\xts\strategy\scripts')
 except:

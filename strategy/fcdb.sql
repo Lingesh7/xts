@@ -126,8 +126,7 @@ INSERT INTO "public".strategy_params(  name, strategy_id, script_name, start_tim
 										'nfo_params', 502, 'NFO_Panther_Live', '09:30:00','14:40:00', '15:05:00', 24000, -12000);
 INSERT INTO "public".subscribers( customer_id, strategy_id, broker_id, is_active ) VALUES (
 								  123456, 501, 1, 'Y');
-INSERT INTO "public".api( customer_id, api_key, api_secret, token, token2, broker_id, login_id, login_password,2FA) VALUES (
-							123458, 8a2c9c2c650b2334c0e432, Yuis804$IK, token, token2, 1, "IIFL28", "Jul@123","123456");
+
 
 CREATE  TABLE "public".run_counter ( 
 	counter              integer   ,
@@ -197,14 +196,17 @@ CREATE  TABLE "public".api (
 	broker_id            integer   ,
 	login_id             integer   ,
 	login_password       varchar(50),
-	"2fa"				 varchar(10)   
+	"2fa"				 varchar(10),
+	created_at           timestamp(0) DEFAULT CURRENT_TIMESTAMP  ,
+    updated_at           timestamp(0) DEFAULT CURRENT_TIMESTAMP 	
  );
 
 ALTER TABLE "public".api ADD CONSTRAINT fk_api_broker FOREIGN KEY ( broker_id ) REFERENCES "public".broker( id );
 
 ALTER TABLE "public".api ADD CONSTRAINT fk_api_customer FOREIGN KEY ( customer_id ) REFERENCES "public".customer( id );
 
-
+INSERT INTO "public".api( customer_id, api_key, api_secret, broker_id, login_id, login_password,"2fa") VALUES (
+							123458, '8a2c9c2c650b2334c0e432', 'Yuis804$IK', 1, 'IIFL28', 'Jul@123',123456);
 
 CREATE  TABLE "public".banknifty_options ( 
 	name                 varchar(100)   ,
@@ -252,7 +254,7 @@ CREATE  TABLE "public".nifty_equity (
 
 
 --backup of PG database
---pg_dump -U postgres -W -F t fcdb > D:\Python\Postgres\fcdb.tar
+--pg_dump -U postgres -W -F t fcdb > "D:\Python\Postgres\fcdb.tar"
 
 --to restore 
 -- pg_restore --dbname=newdbname --create --verbose c:\pgbackup\dbanme.tar
@@ -289,7 +291,7 @@ INSERT INTO public.options_data_master
   	WHEN name LIKE '%PE%' THEN 'PE'
 	END option_type,
 	'01-01-1999' as expiry,
-	regexp_replace(LEFT(RIGHT(name,7),5) , '[[:alpha:]]', '', 'g')::bigint as strike, "open", "high", "low", "close", "volume", "oi" from nifty_options where datetime >= '2021-05-28';
+	regexp_replace(LEFT(RIGHT(name,7),5) , '[[:alpha:]]', '', 'g')::bigint as strike, "open", "high", "low", "close", "volume", "oi" from nifty_options where datetime >= '2021-06-25';
 
 
 select count(1) from banknifty_options;

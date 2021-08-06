@@ -723,8 +723,8 @@ idx = ['NIFTY2171715000CE',
 # pattern2 = r'(NIFTY|BANKNIFTY)(\d{2})([0-9])([0-9]{2})(\d{5})(CE|PE)$'
 
 
-# pattern1 = r'(?P<index>NIFaTY|BANKNaIFTY)(?P<year>\d{2})(?P<month>JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)(?P<strike>\d{5})(?P<otype>CE|PE)$'                            
-# pattern2 = r'(?P<index>NaIFTY|BANaKNIFTY)(?P<year>\d{2})(?P<month>[0-9])(?P<date>[0-9]{2})(?P<strike>\d{5})(?P<otype>CE|PE)$'
+# pattern1 = r'(?P<index>NIFTY|BANKNIFTY)(?P<year>\d{2})(?P<month>JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)(?P<strike>\d{5})(?P<otype>CE|PE)$'                            
+# pattern2 = r'(?P<index>NIFTY|BANKNIFTY)(?P<year>\d{2})(?P<month>[0-9])(?P<date>[0-9]{2})(?P<strike>\d{5})(?P<otype>CE|PE)$'
 pattern3= r'(?P<index>NIFTY|BANKNIFTY)(?P<year>\d{2})(?P<month>(0?[1-9]|1[0-2]))(?P<date>(0?[1-9]|[12]\d|30|31))(?P<strike>\d{5})(?P<otype>CE|PE)$'
 pattern4 = r'(?P<index>NIFTY|BANKNIFTY)(?P<year>\d{2})(?P<month>JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)(?P<strike>\d{4,5})(?P<otype>CE|PE)$'
 

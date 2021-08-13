@@ -107,6 +107,7 @@ CREATE TRIGGER set_timestamp BEFORE UPDATE ON public.strategy FOR EACH ROW EXECU
 
 CREATE TRIGGER set_timestamp BEFORE UPDATE ON public.subscribers FOR EACH ROW EXECUTE FUNCTION trigger_set_timestamp();
 
+CREATE TRIGGER set_timestamp BEFORE UPDATE ON public.api FOR EACH ROW EXECUTE FUNCTION trigger_set_timestamp();
 
 INSERT INTO "public".broker( id, name ) VALUES ( 1, 'IIFL');
 INSERT INTO "public".broker( id, name ) VALUES ( 2, 'Alice Blue');
@@ -254,7 +255,7 @@ CREATE  TABLE "public".nifty_equity (
 
 
 --backup of PG database
---pg_dump -U postgres -W -F t fcdb > "D:\Python\Postgres\fcdb.tar"
+--C:\Program Files\PostgreSQL\13\bin\pg_dump -U postgres -W -F t fcdb > "D:\Python\Postgres\fcdb.tar"
 
 --to restore 
 -- pg_restore --dbname=newdbname --create --verbose c:\pgbackup\dbanme.tar
@@ -336,3 +337,45 @@ FROM
 -- 	, split_part(name, ',', 7)::bigint AS "volume"
 -- 	, left(split_part(name, ',', 8),-1)::bigint AS "oi"
 -- FROM   nifty_options;
+
+
+--DROP TABLE public.master_instrument_dump;
+
+CREATE TABLE public.master_instrument_dump
+(
+    exchange_segment character varying(10) COLLATE pg_catalog."default",
+    exchange_instrument_id bigint,
+    instrument_type integer,
+    name character varying(50) COLLATE pg_catalog."default",
+    description character varying(100) COLLATE pg_catalog."default",
+    series character varying(10) COLLATE pg_catalog."default",
+    name_with_series character varying(50) COLLATE pg_catalog."default",
+    instrument_id bigint,
+    price_band_high numeric(12,2),
+    price_band_low numeric(12,2),
+    freeze_qty integer,
+    ticksize numeric(2,2),
+    lotsize integer,
+    underlying_instrument_id bigint,
+    underlying_index_name character varying(50) COLLATE pg_catalog."default",
+    contract_expiration timestamp without time zone,
+    strike_price numeric(10,2),
+    option_type integer,
+    updated_at timestamp(0) DEFAULT CURRENT_TIMESTAMP
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.master_instrument_dump
+    OWNER to postgres;
+
+-------
+SELECT 
+exchange_segment,exchange_instrument_id,name,description,series,underlying_index_name,contract_expiration
+strike_price,
+case 
+when option_type = 3 THEN 'CE'
+when option_type = 4 THEN 'PE'
+END option_type,
+FROM public.master_instrument_dump 
+where name in ('NIFTY','BANKNIFTY') 
+and series = 'OPTIDX' and strike_price in ();

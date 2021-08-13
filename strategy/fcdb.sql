@@ -107,6 +107,7 @@ CREATE TRIGGER set_timestamp BEFORE UPDATE ON public.strategy FOR EACH ROW EXECU
 
 CREATE TRIGGER set_timestamp BEFORE UPDATE ON public.subscribers FOR EACH ROW EXECUTE FUNCTION trigger_set_timestamp();
 
+CREATE TRIGGER set_timestamp BEFORE UPDATE ON public.api FOR EACH ROW EXECUTE FUNCTION trigger_set_timestamp();
 
 INSERT INTO "public".broker( id, name ) VALUES ( 1, 'IIFL');
 INSERT INTO "public".broker( id, name ) VALUES ( 2, 'Alice Blue');
@@ -185,12 +186,12 @@ ALTER TABLE "public".positions ADD CONSTRAINT fk_positions_order_book FOREIGN KE
 
 CREATE  TABLE "public".api ( 
 	customer_id          integer   ,
-	api_key              char(30)   ,
-	api_secret           char(30)   ,
-	token                char(50)   ,
+	api_key              varchar(30)   ,
+	api_secret           varchar(30)   ,
+	token                varchar(50)   ,
 	broker_id            integer   ,
 	login_id             integer   ,
-	login_password       char(50)   
+	login_password       varchar(50)
  );
 
 ALTER TABLE "public".api ADD CONSTRAINT fk_api_customer FOREIGN KEY ( customer_id ) REFERENCES "public".customer( id );
@@ -244,10 +245,10 @@ CREATE  TABLE "public".nifty_equity (
 
 
 --backup of PG database
---pg_dump -U postgres -W -F t fcdb > D:\Python\Postgres\fcdb.tar
+--pg_dump -U postgres -W -F t fcdb > D:\Python\Postgres\fcdb.tar ;
 
 --to restore 
--- pg_restore --dbname=newdbname --create --verbose c:\pgbackup\dbanme.tar
+-- pg_restore --dbname=newdbname --username postgres -W --create --verbose c:\pgbackup\dbanme.tar
 
 CREATE  TABLE "public".options_data_master (
 	datetime             timestamp(0)   ,

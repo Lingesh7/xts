@@ -17,55 +17,55 @@ os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = key
 
 gcp_project = 'algo-trading-311005'
 dataset = 'fcdb'
-table_ref = 'nifty_equity'
+table_ref = 'nifty_options'
 
 client = bigquery.Client(project=gcp_project)
 # ds = client.dataset(dataset)
 
 pg_conn = psycopg2.connect(database="fcdb", user="postgres", password="postgres", host="127.0.0.1", port="5432")
 pg_cur = pg_conn.cursor()
-query = ''' select * from public.nifty_equity'''
+query = ''' select * from public.nifty_options where datetime >= '2021-05-28' '''
 pg_cur.execute(query)
 pg_rows = pg_cur.fetchall()
-## df for options/futures
-# df = pd.DataFrame(pg_rows, columns=(['name','datetime', 'open', 'high', 'low', 'close', 'volume', 'oi']))
-# df = df.astype(dtype={'name': str, 'datetime':'datetime64[ns]', 'open': float, 'high': float,  \
-#                                  'low': float, 'close': float, 'volume': int, 'oi': int})
-
-# job_config = bigquery.LoadJobConfig(
-#     schema=[
-#         bigquery.SchemaField("name", bigquery.enums.SqlTypeNames.STRING),
-#         bigquery.SchemaField("datetime", bigquery.enums.SqlTypeNames.DATETIME),
-#         bigquery.SchemaField("open", bigquery.enums.SqlTypeNames.FLOAT64),
-#         bigquery.SchemaField("high", bigquery.enums.SqlTypeNames.FLOAT64),
-#         bigquery.SchemaField("low", bigquery.enums.SqlTypeNames.FLOAT64),
-#         bigquery.SchemaField("close", bigquery.enums.SqlTypeNames.FLOAT64),
-#         bigquery.SchemaField("volume", bigquery.enums.SqlTypeNames.INT64),
-#         bigquery.SchemaField("oi", bigquery.enums.SqlTypeNames.INT64)
-#     ], write_disposition="WRITE_APPEND", 
-#     source_format=bigquery.SourceFormat.CSV
-# )    
-    
-# df for equity  
-df = pd.DataFrame(pg_rows, columns=(['name','symbol','datetime', 'open', 
-                                     'high', 'low', 'close', 'volume']))
-df = df.astype(dtype={'name': str, 'symbol': int , 'datetime':'datetime64[ns]', 'open': float, 'high': float,  \
-                                 'low': float, 'close': float, 'volume': int})
-
+# df for options/futures
+df = pd.DataFrame(pg_rows, columns=(['name','datetime', 'open', 'high', 'low', 'close', 'volume', 'oi']))
+df = df.astype(dtype={'name': str, 'datetime':'datetime64[ns]', 'open': float, 'high': float,  \
+                                  'low': float, 'close': float, 'volume': int, 'oi': int})
 
 job_config = bigquery.LoadJobConfig(
     schema=[
         bigquery.SchemaField("name", bigquery.enums.SqlTypeNames.STRING),
-        bigquery.SchemaField("symbol", bigquery.enums.SqlTypeNames.INT64),
         bigquery.SchemaField("datetime", bigquery.enums.SqlTypeNames.DATETIME),
         bigquery.SchemaField("open", bigquery.enums.SqlTypeNames.FLOAT64),
         bigquery.SchemaField("high", bigquery.enums.SqlTypeNames.FLOAT64),
         bigquery.SchemaField("low", bigquery.enums.SqlTypeNames.FLOAT64),
         bigquery.SchemaField("close", bigquery.enums.SqlTypeNames.FLOAT64),
-        bigquery.SchemaField("volume", bigquery.enums.SqlTypeNames.INT64)
+        bigquery.SchemaField("volume", bigquery.enums.SqlTypeNames.INT64),
+        bigquery.SchemaField("oi", bigquery.enums.SqlTypeNames.INT64)
     ], write_disposition="WRITE_APPEND", 
     source_format=bigquery.SourceFormat.CSV
-)
+)    
+    
+# df for equity  
+# df = pd.DataFrame(pg_rows, columns=(['name','symbol','datetime', 'open', 
+#                                      'high', 'low', 'close', 'volume']))
+# df = df.astype(dtype={'name': str, 'symbol': int , 'datetime':'datetime64[ns]', 'open': float, 'high': float,  \
+#                                  'low': float, 'close': float, 'volume': int})
+
+
+# job_config = bigquery.LoadJobConfig(
+#     schema=[
+#         bigquery.SchemaField("name", bigquery.enums.SqlTypeNames.STRING),
+#         bigquery.SchemaField("symbol", bigquery.enums.SqlTypeNames.INT64),
+#         bigquery.SchemaField("datetime", bigquery.enums.SqlTypeNames.DATETIME),
+#         bigquery.SchemaField("open", bigquery.enums.SqlTypeNames.FLOAT64),
+#         bigquery.SchemaField("high", bigquery.enums.SqlTypeNames.FLOAT64),
+#         bigquery.SchemaField("low", bigquery.enums.SqlTypeNames.FLOAT64),
+#         bigquery.SchemaField("close", bigquery.enums.SqlTypeNames.FLOAT64),
+#         bigquery.SchemaField("volume", bigquery.enums.SqlTypeNames.INT64)
+#     ], write_disposition="WRITE_APPEND", 
+#     source_format=bigquery.SourceFormat.CSV
+# )
 
 table_id = f'{gcp_project}.{dataset}.{table_ref}'
 

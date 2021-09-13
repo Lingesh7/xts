@@ -6,24 +6,11 @@ Created on Tue Aug 24 19:25:24 2021
 """
 
 from datetime import datetime
-import XTConnect.Exception as ex
-from pathlib import Path
 import time
 import json
-import logging
 import pandas as pd
 pd.set_option('display.max_rows', None)
-pd.set_option('display.max_columns', None)
-# pd.set_option('display.width', None)
-# pd.set_option('display.max_colwidth', -1)
-import configparser
-import argparse
-from threading import Thread
-from openpyxl import load_workbook
-from logging.handlers import TimedRotatingFileHandler
-from sys import exit
 import os
-from pprint import pformat as pp
 import sqlite3
 import psycopg2
 import psycopg2.extras
@@ -36,22 +23,12 @@ try:
 except:
     pass
 
-from utils.utils import xts_init, \
-    configure_logging, \
-    RepeatedTimer, \
-    data_to_excel, \
-    bot_init, bot_sendtex
-
-
-# inits
-# xt = xts_init(market=True)
-
 
 #to load nifty, bankNifty and futures:
-dbfile='D:\\Python\\First_Choice_Git\\xts\\strategy\\ohlc\\Archive\\FUT_JUL_OHLC.db'
+dbfile='D:\\Python\\First_Choice_Git\\xts\\strategy\\ohlc\\Archive\\BANKNIFTY_AUG_OHLC.db'
 sql_db = sqlite3.connect(dbfile)
 sql_cur = sql_db.cursor()
-sql_cur.execute("SELECT * FROM FUT_JUL_2021;")
+sql_cur.execute("SELECT * FROM BANKNIFTY_AUGUST;")
 rows=sql_cur.fetchall()
 # pd.read_sql("SELECT name FROM sqlite_master WHERE type='table';",sql_db)
 df = pd.DataFrame(rows, columns=(['instrument_name','datetime', 'open', 'high', 'low', 'close', 'volume', 'oi']))
@@ -76,7 +53,55 @@ def get_strike(name):
     return strike
 
 
-def get_expiry(name):
+def get_expiry_nft(name):
+    if name.startswith('NIFTY21MAR'):
+        return pd.to_datetime('2021-03-25').replace(microsecond=0)
+    elif name.startswith('NIFTY21APR'):
+        return pd.to_datetime('2021-04-29').replace(microsecond=0)
+    elif name.startswith('NIFTY21MAY'):
+        return pd.to_datetime('2021-05-27').replace(microsecond=0)
+    elif name.startswith('NIFTY21JUN'):
+        return pd.to_datetime('2021-06-24').replace(microsecond=0)
+    elif name.startswith('NIFTY21JUL'):
+        return pd.to_datetime('2021-07-29').replace(microsecond=0)
+    elif name.startswith('NIFTY21AUG'):
+        return pd.to_datetime('2021-08-26').replace(microsecond=0)
+    elif name.startswith('NIFTY21SEP'):
+        return pd.to_datetime('2021-09-24').replace(microsecond=0)
+    elif name.startswith('NIFTY21408'):
+        return pd.to_datetime('2021-04-08').replace(microsecond=0)
+    elif name.startswith('NIFTY21415'):
+        return pd.to_datetime('2021-04-15').replace(microsecond=0)
+    elif name.startswith('NIFTY21422'):
+        return pd.to_datetime('2021-04-22').replace(microsecond=0)
+    elif name.startswith('NIFTY21506'):
+        return pd.to_datetime('2021-05-06').replace(microsecond=0)
+    elif name.startswith('NIFTY21512'):
+        return pd.to_datetime('2021-05-12').replace(microsecond=0)
+    elif name.startswith('NIFTY21520'):
+        return pd.to_datetime('2021-06-20').replace(microsecond=0)
+    elif name.startswith('NIFTY21603'):
+        return pd.to_datetime('2021-06-03').replace(microsecond=0)
+    elif name.startswith('NIFTY21610'):
+        return pd.to_datetime('2021-06-10').replace(microsecond=0)
+    elif name.startswith('NIFTY21617'):
+        return pd.to_datetime('2021-06-17').replace(microsecond=0)
+    elif name.startswith('NIFTY21722'):
+        return pd.to_datetime('2021-07-22').replace(microsecond=0)
+    elif name.startswith('NIFTY21715'):
+        return pd.to_datetime('2021-07-15').replace(microsecond=0)
+    elif name.startswith('NIFTY21701'):
+        return pd.to_datetime('2021-07-01').replace(microsecond=0)
+    elif name.startswith('NIFTY21708'):
+        return pd.to_datetime('2021-07-08').replace(microsecond=0)
+    elif name.startswith('NIFTY21805'):
+        return pd.to_datetime('2021-08-05').replace(microsecond=0)
+    elif name.startswith('NIFTY21812'):
+        return pd.to_datetime('2021-08-12').replace(microsecond=0)
+    elif name.startswith('NIFTY21818'):
+        return pd.to_datetime('2021-08-18').replace(microsecond=0)
+
+def get_expiry_bnft(name):
     if name.startswith('BANKNIFTY21MAR'):
         return pd.to_datetime('2021-03-25').replace(microsecond=0)
     elif name.startswith('BANKNIFTY21APR'):
@@ -89,6 +114,8 @@ def get_expiry(name):
         return pd.to_datetime('2021-07-29').replace(microsecond=0)
     elif name.startswith('BANKNIFTY21AUG'):
         return pd.to_datetime('2021-08-26').replace(microsecond=0)
+    elif name.startswith('BANKNIFTY21SEP'):
+        return pd.to_datetime('2021-09-24').replace(microsecond=0)
     elif name.startswith('BANKNIFTY21408'):
         return pd.to_datetime('2021-04-08').replace(microsecond=0)
     elif name.startswith('BANKNIFTY21415'):
@@ -115,6 +142,12 @@ def get_expiry(name):
         return pd.to_datetime('2021-07-01').replace(microsecond=0)
     elif name.startswith('BANKNIFTY21708'):
         return pd.to_datetime('2021-07-08').replace(microsecond=0)
+    elif name.startswith('BANKNIFTY21805'):
+        return pd.to_datetime('2021-08-05').replace(microsecond=0)
+    elif name.startswith('BANKNIFTY21812'):
+        return pd.to_datetime('2021-08-12').replace(microsecond=0)
+    elif name.startswith('BANKNIFTY21818'):
+        return pd.to_datetime('2021-08-18').replace(microsecond=0)    
     
 
 def get_exp_fut(name):
@@ -128,21 +161,22 @@ def get_exp_fut(name):
         return pd.to_datetime('2021-07-29').replace(microsecond=0)
     elif 'AUG' in name:
         return pd.to_datetime('2021-08-26').replace(microsecond=0)
+    elif 'SEP' in name:
+        return pd.to_datetime('2021-09-24').replace(microsecond=0)
         
     
     
-# df["underlying"] = df.instrument_name.split('21')[0]
 df["underlying"] = df.instrument_name.apply(lambda x: pd.Series(str(x).split("21")[0]))
-df["instrument_type"] = 1
-df['series'] = 'FUTSTK'
+df["instrument_type"] = 2
+df['series'] = 'OPTIDX'
 # df.insert(12, 'expiry', pd.to_datetime('2021-03-27').replace(microsecond=0))
-df["expiry"] = df.apply(lambda row: get_exp_fut(str(row["instrument_name"])), axis =1)
-# df["strike_price"] = df.apply(lambda row: get_strike(str(row["instrument_name"])), axis =1)
-# df["option_type"] = df['instrument_name'].str[-2:]
+df["expiry"] = df.apply(lambda row: get_expiry_bnft(str(row["instrument_name"])), axis =1)
+df["strike_price"] = df.apply(lambda row: get_strike(str(row["instrument_name"])), axis =1)
+df["option_type"] = df['instrument_name'].str[-2:]
 # df = df.replace({np.NaN: None})
 df_columns = list(df)
 
-table = 'nifty_futures'
+table = 'banknifty_options'
 columns = ",".join(df_columns)
 values = "VALUES({})".format(",".join(["%s" for _ in df_columns]))
 insert_stmt = "INSERT INTO {} ({}) {}".format(table,columns,values)
@@ -159,7 +193,7 @@ sql_db.close()
 
 #to load eq
 
-# dbfile='D:\\Python\\First_Choice_Git\\xts\\strategy\\ohlc\\Archive\\EQ_MAY_OHLC_lastWeek.db'
+# dbfile='D:\\Python\\First_Choice_Git\\xts\\strategy\\ohlc\\Archive\\EQ_AUGUST_OHLC.db'
 # sql_db = sqlite3.connect(dbfile)
 # sql_cur = sql_db.cursor()
 

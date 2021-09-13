@@ -820,3 +820,14 @@ sql_db.close()
 # pg_conn.close()
 # sql_cur.close()
 # sql_db.close()
+
+delete dups in sql db
+---------------------
+delete from banknifty_september
+where rowid not in (select min(rowid)
+                    from banknifty_september
+                    group by timestamp,Name)
+
+select count(1) from banknifty_september; 939851
+select count(1) from (select distinct timestamp, name from banknifty_september) a;	706055
+

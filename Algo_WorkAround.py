@@ -831,3 +831,39 @@ where rowid not in (select min(rowid)
 select count(1) from banknifty_september; 939851
 select count(1) from (select distinct timestamp, name from banknifty_september) a;	706055
 
+------------------------
+class derived from base class :
+from XTConnect import XTSConnect
+
+
+API_KEY = "8a2c9c2c650b2334c0e432"
+API_SECRET = "Yuis804$IK"
+source = "WEBAPI"
+config_file = r''
+"""Make XTSConnect object by passing your interactive API appKey, secretKey and source"""
+# xt = XTSConnect(API_KEY, API_SECRET, source)
+
+
+class FC_Xts(XTSConnect):
+    def __init__(self,
+                 apiKey,
+                 secretKey,
+                 config_file,
+                 source="WEBAPI",
+                 root=None,
+                 debug=False,
+                 timeout=None,
+                 pool=None
+                 ):
+        super().__init__(apiKey,
+                         secretKey,
+                         source,
+                         root=None,
+                         debug=False,
+                         timeout=None,
+                         pool=None)
+        self.config_file = config_file
+        
+    
+
+xt = FC_Xts(API_KEY, API_SECRET,)
